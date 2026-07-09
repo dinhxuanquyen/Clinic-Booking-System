@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#dbeafe"/>
+  <rect x="150" y="150" width="660" height="260" rx="18" fill="#ffffff"/>
+  <rect x="210" y="220" width="120" height="190" fill="#93c5fd"/>
+  <rect x="390" y="220" width="180" height="120" rx="10" fill="#bfdbfe"/>
+  <rect x="630" y="220" width="120" height="120" rx="10" fill="#bfdbfe"/>
+  <rect x="455" y="95" width="50" height="150" fill="#2563eb"/>
+  <rect x="405" y="145" width="150" height="50" fill="#2563eb"/>
+  <text x="480" y="470" text-anchor="middle" font-family="Arial" font-size="42" font-weight="700" fill="#1e3a8a">Clinic</text>
+</svg>
