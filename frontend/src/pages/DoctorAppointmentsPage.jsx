@@ -54,6 +54,40 @@ function recordValue(value) {
   return typeof value === 'object' ? value.name : value;
 }
 
+function isFollowUpAppointment(appointment) {
+  return Boolean(appointment?.isFollowUp || appointment?.followUpRecordId);
+}
+
+function formatRecordDate(value) {
+  if (!value) return 'Chưa cập nhật';
+  return String(value).slice(0, 10);
+}
+
+function getFollowUpAppointmentHint(appointment) {
+  const record = appointment?.followUpRecordId && typeof appointment.followUpRecordId === 'object'
+    ? appointment.followUpRecordId
+    : null;
+  const original = record?.appointmentId && typeof record.appointmentId === 'object'
+    ? record.appointmentId
+    : appointment?.originalAppointmentId;
+
+  if (original && typeof original === 'object' && original.date) {
+    return `Theo hồ sơ ${formatRecordDate(original.date)}${original.timeSlot ? ` · ${original.timeSlot}` : ''}`;
+  }
+  if (record?.followUpDate) return `Ngày khuyến nghị ${formatRecordDate(record.followUpDate)}`;
+  return 'Lịch tái khám theo hồ sơ đã tạo';
+}
+
+function FollowUpAppointmentChip({ appointment }) {
+  if (!isFollowUpAppointment(appointment)) return null;
+
+  return (
+    <span className="follow-up-appointment-chip doctor-follow-up-appointment-chip" title={getFollowUpAppointmentHint(appointment)}>
+      Tái khám
+    </span>
+  );
+}
+
 function recordFollowUpText(record) {
   if (!record?.followUpRequired) return 'Không cần tái khám';
   return record.followUpDate ? String(record.followUpDate).slice(0, 10) : 'Chưa cập nhật';
@@ -902,7 +936,12 @@ export default function DoctorAppointmentsPage() {
                       <tr key={item._id}>
                         <td className="fw-semibold">{item.date}</td>
                         <td>{item.timeSlot}</td>
-                        <td>{patientName(item)}</td>
+                        <td>
+                          <div className="doctor-patient-cell">
+                            <span>{patientName(item)}</span>
+                            <FollowUpAppointmentChip appointment={item} />
+                          </div>
+                        </td>
                         <td>{getName(item.clinicId)}</td>
                         <td>{getName(item.specialtyId)}</td>
                         <td><span className={`badge ${status.className}`}>{status.label}</span></td>
@@ -930,6 +969,7 @@ export default function DoctorAppointmentsPage() {
                     <div className="dam-body">
                       <h4 className="dam-patient">{patientName(item)}</h4>
                       <div className="dam-chips">
+                        <FollowUpAppointmentChip appointment={item} />
                         <span className="dam-chip">{getName(item.specialtyId)}</span>
                         <span className="dam-chip dam-chip-muted">{getName(item.clinicId)}</span>
                       </div>

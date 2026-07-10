@@ -2,6 +2,7 @@ import Appointment from '../models/appointmentModel.js';
 import MedicalRecord from '../models/medicalRecordModel.js';
 import Notification from '../models/notificationModel.js';
 import { APPOINTMENT_STATUSES } from '../constants/appointmentStatus.js';
+import { FOLLOW_UP_STATUSES } from '../constants/followUpStatus.js';
 import { createAuditLog } from '../utils/auditLogger.js';
 import { emitNotification } from './socketService.js';
 
@@ -71,7 +72,7 @@ export async function syncFollowUpStatusForAppointment(appointment, now = new Da
   if (!record || !record.followUpRequired) return null;
 
   if (appointment.status === APPOINTMENT_STATUSES.COMPLETED) {
-    record.followUpStatus = 'completed';
+    record.followUpStatus = FOLLOW_UP_STATUSES.COMPLETED;
     record.followUpCompletedAt = appointment.completedAt || now;
     record.followUpOverdueAt = undefined;
     await record.save();
@@ -81,16 +82,16 @@ export async function syncFollowUpStatusForAppointment(appointment, now = new Da
   if ([APPOINTMENT_STATUSES.CANCELLED, APPOINTMENT_STATUSES.NO_SHOW].includes(appointment.status)) {
     record.followUpAppointmentId = null;
     record.followUpCompletedAt = undefined;
-    record.followUpStatus = isPastFollowUpDate(record, now) ? 'overdue' : 'recommended';
-    if (record.followUpStatus === 'overdue') {
+    record.followUpStatus = isPastFollowUpDate(record, now) ? FOLLOW_UP_STATUSES.OVERDUE : FOLLOW_UP_STATUSES.RECOMMENDED;
+    if (record.followUpStatus === FOLLOW_UP_STATUSES.OVERDUE) {
       record.followUpOverdueAt = record.followUpOverdueAt || now;
     }
     await record.save();
     return record;
   }
 
-  if (record.followUpStatus !== 'scheduled') {
-    record.followUpStatus = 'scheduled';
+  if (record.followUpStatus !== FOLLOW_UP_STATUSES.SCHEDULED) {
+    record.followUpStatus = FOLLOW_UP_STATUSES.SCHEDULED;
     record.followUpAppointmentId = toObjectId(appointment._id);
     await record.save();
   }
@@ -101,7 +102,7 @@ export async function syncFollowUpStatusForAppointment(appointment, now = new Da
 async function syncScheduledFollowUps(now) {
   const records = await MedicalRecord.find({
     followUpRequired: true,
-    followUpStatus: 'scheduled',
+    followUpStatus: FOLLOW_UP_STATUSES.SCHEDULED,
     followUpAppointmentId: { $ne: null }
   }).select('_id followUpRequired followUpStatus followUpDate followUpAppointmentId followUpCompletedAt followUpOverdueAt');
 
@@ -122,14 +123,14 @@ async function markOverdueFollowUps(now) {
   const todayStart = startOfTodayInVietnam(now);
   const records = await MedicalRecord.find({
     followUpRequired: true,
-    followUpStatus: 'recommended',
+    followUpStatus: FOLLOW_UP_STATUSES.RECOMMENDED,
     followUpDate: { $lt: todayStart },
     followUpAppointmentId: null
   }).select('_id patientId appointmentId doctorId clinicId followUpDate followUpStatus followUpOverdueAt');
 
   let updated = 0;
   for (const record of records) {
-    record.followUpStatus = 'overdue';
+    record.followUpStatus = FOLLOW_UP_STATUSES.OVERDUE;
     record.followUpOverdueAt = record.followUpOverdueAt || now;
     await record.save();
     updated += 1;
@@ -162,7 +163,7 @@ async function sendDueSoonFollowUpReminders(now) {
   const maxDate = new Date(now.getTime() + REMINDER_WINDOW_MS);
   const records = await MedicalRecord.find({
     followUpRequired: true,
-    followUpStatus: 'recommended',
+    followUpStatus: FOLLOW_UP_STATUSES.RECOMMENDED,
     followUpDate: { $gte: startOfTodayInVietnam(now), $lte: maxDate },
     followUpAppointmentId: null,
     $or: [

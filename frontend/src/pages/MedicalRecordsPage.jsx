@@ -20,7 +20,8 @@ function formatDate(value) {
 }
 
 function followUpText(record) {
-  return record?.followUpRequired ? formatDate(record.followUpDate) : 'Không cần tái khám';
+  if (!record?.followUpRequired) return 'Không cần tái khám';
+  return record.followUpDate ? formatDate(record.followUpDate) : 'Bác sĩ chưa chỉ định ngày cụ thể';
 }
 
 function followUpStatusLabel(record) {
@@ -29,6 +30,35 @@ function followUpStatusLabel(record) {
   if (record.followUpStatus === 'scheduled') return { label: 'Đã đặt lịch tái khám', tone: 'success' };
   if (record.followUpStatus === 'overdue') return { label: 'Quá hạn tái khám', tone: 'danger' };
   return { label: 'Cần tái khám', tone: 'warning' };
+}
+
+function canBookFollowUp(record) {
+  if (!record?.followUpRequired) return false;
+  return ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended') && !record.followUpAppointmentId;
+}
+
+function linkedFollowUpAppointmentId(record) {
+  const appointment = record?.followUpAppointmentId;
+  if (!appointment) return '';
+  return typeof appointment === 'object' ? appointment._id : appointment;
+}
+
+function followUpDescription(record) {
+  if (!record?.followUpRequired) {
+    return 'Bác sĩ chưa yêu cầu tái khám. Nếu có triệu chứng bất thường, bạn nên đặt lịch kiểm tra lại.';
+  }
+  if (record.followUpStatus === 'scheduled' && record.followUpAppointmentId) {
+    const appointment = record.followUpAppointmentId;
+    if (!appointment.date) return 'Bạn đã đặt lịch tái khám cho hồ sơ này. Vui lòng kiểm tra trong mục Lịch hẹn của tôi.';
+    return `Bạn đã đặt lịch tái khám ngày ${formatDate(appointment.date)}${appointment.timeSlot ? `, khung giờ ${appointment.timeSlot}` : ''}.`;
+  }
+  if (record.followUpStatus === 'completed') {
+    return 'Bạn đã hoàn thành lịch tái khám cho hồ sơ này.';
+  }
+  if (record.followUpDate) {
+    return `Ngày tái khám khuyến nghị: ${formatDate(record.followUpDate)}. Vui lòng đặt lịch phù hợp để được theo dõi tiếp.`;
+  }
+  return 'Bác sĩ chưa chỉ định ngày cụ thể. Bạn có thể chọn ngày phù hợp khi đặt lịch tái khám.';
 }
 
 function followUpBookingUrl(record) {
@@ -43,6 +73,76 @@ function followUpBookingUrl(record) {
   });
 
   return `/booking?${params.toString()}`;
+}
+
+function FollowUpDashboard({ records, summary, onOpenRecord }) {
+  const navigate = useNavigate();
+  if (!records.length) return null;
+
+  const cards = [
+    { label: 'Cần đặt lịch', value: summary.needBooking || 0, tone: 'warning' },
+    { label: 'Đã đặt lịch', value: summary.scheduled || 0, tone: 'success' },
+    { label: 'Quá hạn', value: summary.overdue || 0, tone: 'danger' },
+    { label: 'Không có ngày cố định', value: summary.noDate || 0, tone: 'neutral' }
+  ];
+
+  return (
+    <section className="patient-follow-up-panel">
+      <div className="patient-follow-up-header">
+        <div>
+          <span className="section-eyebrow">Tái khám</span>
+          <h2>Lịch tái khám của tôi</h2>
+          <p>Theo dõi các hồ sơ được bác sĩ chỉ định tái khám và đặt lịch theo đúng bác sĩ/chuyên khoa đã khám.</p>
+        </div>
+      </div>
+      <div className="patient-follow-up-summary">
+        {cards.map((card) => (
+          <div className={`patient-follow-up-summary-card ${card.tone}`} key={card.label}>
+            <strong>{card.value}</strong>
+            <span>{card.label}</span>
+          </div>
+        ))}
+      </div>
+      <div className="patient-follow-up-list">
+        {records.map((record) => {
+          const appointment = record.appointmentId || {};
+          const followUpStatus = followUpStatusLabel(record);
+          return (
+            <article className={`patient-follow-up-item ${followUpStatus.tone}`} key={record._id}>
+              <div className="patient-follow-up-item-main">
+                <span className={`follow-up-status-pill ${followUpStatus.tone}`}>{followUpStatus.label}</span>
+                <h3>{getName(record.specialtyId)} với {getName(record.doctorId)}</h3>
+                <p>{followUpDescription(record)}</p>
+                <div className="patient-follow-up-meta">
+                  <span>Lần khám gốc: {formatDate(appointment.date || record.createdAt)}</span>
+                  <span>Cơ sở: {getName(record.clinicId)}</span>
+                </div>
+              </div>
+              <div className="patient-follow-up-actions">
+                <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => onOpenRecord(record)}>
+                  Xem hồ sơ
+                </button>
+                {record.followUpStatus === 'scheduled' && linkedFollowUpAppointmentId(record) && (
+                  <button
+                    className="btn btn-sm btn-outline-success"
+                    type="button"
+                    onClick={() => navigate(`/appointments/my?appointmentId=${linkedFollowUpAppointmentId(record)}`)}
+                  >
+                    Xem lịch hẹn
+                  </button>
+                )}
+                {canBookFollowUp(record) && (
+                  <button className="btn btn-sm btn-primary" type="button" onClick={() => navigate(followUpBookingUrl(record))}>
+                    Đặt lịch tái khám
+                  </button>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
 }
 
 function InsuranceSnapshotCard({ insurance }) {
@@ -170,13 +270,9 @@ function MedicalRecordDetailModal({ record, onClose }) {
         <div>
           <span>Kế hoạch tái khám</span>
           <strong>{followUpStatus.label}</strong>
-          <p>
-            {record.followUpRequired
-              ? `Ngày tái khám khuyến nghị: ${formatDate(record.followUpDate)}`
-              : 'Bác sĩ chưa yêu cầu tái khám. Nếu có triệu chứng bất thường, bạn nên đặt lịch kiểm tra lại.'}
-          </p>
+          <p>{followUpDescription(record)}</p>
         </div>
-        {record.followUpRequired && ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended') && (
+        {canBookFollowUp(record) && (
           <button
             className="btn btn-sm btn-primary"
             type="button"
@@ -287,6 +383,8 @@ export default function MedicalRecordsPage() {
   const location = useLocation();
   const toast = useToast();
   const [records, setRecords] = useState([]);
+  const [followUpRecords, setFollowUpRecords] = useState([]);
+  const [followUpSummary, setFollowUpSummary] = useState({});
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
   const [queryHandled, setQueryHandled] = useState('');
@@ -295,8 +393,15 @@ export default function MedicalRecordsPage() {
   const loadRecords = useCallback(() => {
     setLoading(true);
     setRecordsLoaded(false);
-    return api('/medical-records/my')
-      .then((payload) => setRecords(payload.data || []))
+    return Promise.all([
+      api('/medical-records/my'),
+      api('/medical-records/my/follow-ups')
+    ])
+      .then(([recordsPayload, followUpPayload]) => {
+        setRecords(recordsPayload.data || []);
+        setFollowUpRecords(followUpPayload.data || []);
+        setFollowUpSummary(followUpPayload.meta?.summary || {});
+      })
       .catch((error) => toast.error(error.message || 'Không tải được lịch sử khám'))
       .finally(() => {
         setLoading(false);
@@ -349,6 +454,14 @@ export default function MedicalRecordsPage() {
         <h1>Hồ sơ khám bệnh</h1>
         <p className="text-secondary">Theo dõi dòng thời gian sức khỏe, chẩn đoán và đơn thuốc điện tử của bạn.</p>
       </div>
+
+      {!loading && (
+        <FollowUpDashboard
+          records={followUpRecords}
+          summary={followUpSummary}
+          onOpenRecord={setSelected}
+        />
+      )}
 
       {loading ? (
         <SkeletonList count={3} height={96} />

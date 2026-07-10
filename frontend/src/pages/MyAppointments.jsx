@@ -45,7 +45,8 @@ function formatRecordDate(value) {
 }
 
 function recordFollowUpText(record) {
-  return record?.followUpRequired ? formatRecordDate(record.followUpDate) : 'Không cần tái khám';
+  if (!record?.followUpRequired) return 'Không cần tái khám';
+  return record.followUpDate ? formatRecordDate(record.followUpDate) : 'Bác sĩ chưa chỉ định ngày cụ thể';
 }
 
 function followUpStatusLabel(record) {
@@ -54,6 +55,29 @@ function followUpStatusLabel(record) {
   if (record.followUpStatus === 'scheduled') return { label: 'Đã đặt lịch tái khám', tone: 'success' };
   if (record.followUpStatus === 'overdue') return { label: 'Quá hạn tái khám', tone: 'danger' };
   return { label: 'Cần tái khám', tone: 'warning' };
+}
+
+function canBookFollowUp(record) {
+  if (!record?.followUpRequired) return false;
+  return ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended') && !record.followUpAppointmentId;
+}
+
+function followUpDescription(record) {
+  if (!record?.followUpRequired) {
+    return 'Bác sĩ chưa yêu cầu tái khám. Nếu có triệu chứng bất thường, bạn nên đặt lịch kiểm tra lại.';
+  }
+  if (record.followUpStatus === 'scheduled' && record.followUpAppointmentId) {
+    const appointment = record.followUpAppointmentId;
+    if (!appointment.date) return 'Bạn đã đặt lịch tái khám cho hồ sơ này. Vui lòng kiểm tra trong mục Lịch hẹn của tôi.';
+    return `Bạn đã đặt lịch tái khám ngày ${formatRecordDate(appointment.date)}${appointment.timeSlot ? `, khung giờ ${appointment.timeSlot}` : ''}.`;
+  }
+  if (record.followUpStatus === 'completed') {
+    return 'Bạn đã hoàn thành lịch tái khám cho hồ sơ này.';
+  }
+  if (record.followUpDate) {
+    return `Ngày tái khám khuyến nghị: ${formatRecordDate(record.followUpDate)}. Vui lòng đặt lịch phù hợp để được theo dõi tiếp.`;
+  }
+  return 'Bác sĩ chưa chỉ định ngày cụ thể. Bạn có thể chọn ngày phù hợp khi đặt lịch tái khám.';
 }
 
 function followUpBookingUrl(record) {
@@ -160,13 +184,9 @@ function MedicalRecordDetailModal({ record, onClose }) {
         <div>
           <span>Kế hoạch tái khám</span>
           <strong>{followUpStatus.label}</strong>
-          <p>
-            {record.followUpRequired
-              ? `Ngày tái khám khuyến nghị: ${formatRecordDate(record.followUpDate)}`
-              : 'Bác sĩ chưa yêu cầu tái khám. Nếu có triệu chứng bất thường, bạn nên đặt lịch kiểm tra lại.'}
-          </p>
+          <p>{followUpDescription(record)}</p>
         </div>
-        {record.followUpRequired && ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended') && (
+        {canBookFollowUp(record) && (
           <button
             className="btn btn-sm btn-primary"
             type="button"
@@ -340,6 +360,42 @@ function canReviewDoctor(appointment) {
 
 function entityId(value) {
   return typeof value === 'object' ? value?._id : value;
+}
+
+function isFollowUpAppointment(appointment) {
+  return Boolean(appointment?.isFollowUp || appointment?.followUpRecordId);
+}
+
+function getFollowUpRecord(appointment) {
+  const record = appointment?.followUpRecordId;
+  return record && typeof record === 'object' ? record : null;
+}
+
+function getFollowUpAppointmentHint(appointment) {
+  const record = getFollowUpRecord(appointment);
+  const original = record?.appointmentId && typeof record.appointmentId === 'object'
+    ? record.appointmentId
+    : appointment?.originalAppointmentId;
+
+  if (original && typeof original === 'object' && original.date) {
+    return `Theo hồ sơ ${formatRecordDate(original.date)}${original.timeSlot ? ` · ${original.timeSlot}` : ''}`;
+  }
+
+  if (record?.followUpDate) {
+    return `Ngày khuyến nghị ${formatRecordDate(record.followUpDate)}`;
+  }
+
+  return 'Theo chỉ định tái khám';
+}
+
+function FollowUpAppointmentChip({ appointment }) {
+  if (!isFollowUpAppointment(appointment)) return null;
+
+  return (
+    <span className="follow-up-appointment-chip" title={getFollowUpAppointmentHint(appointment)}>
+      Tái khám
+    </span>
+  );
 }
 
 function cancelActionLabel(appointment) {
@@ -529,6 +585,7 @@ function AppointmentMobileCard({ appointment, downloadingPdfKey, onCancel, onCan
           <span className="amc-chip amc-chip-muted">{valueName(appointment.clinicId)}</span>
         </div>
         <AppointmentQueueSummary appointment={appointment} />
+        <FollowUpAppointmentChip appointment={appointment} />
         <AppointmentServicePackageChip appointment={appointment} />
       </div>
 
@@ -1082,6 +1139,7 @@ export default function MyAppointments() {
                           <div className="appointment-status-stack">
                             <StatusBadge status={item.status} />
                             <AppointmentQueueSummary appointment={item} />
+                            <FollowUpAppointmentChip appointment={item} />
                             <AppointmentServicePackageChip appointment={item} />
                           </div>
                         </td>

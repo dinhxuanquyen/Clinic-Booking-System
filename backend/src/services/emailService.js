@@ -43,9 +43,10 @@ function renderInsuranceRows(insuranceSnapshot) {
 }
 
 function followUpText(record) {
-  return record?.followUpRequired
-    ? text(formatDate(record?.followUpDate))
-    : 'Không cần tái khám';
+  if (!record?.followUpRequired) return 'Không cần tái khám';
+  return record.followUpDate
+    ? text(formatDate(record.followUpDate))
+    : 'Cần tái khám - bệnh nhân chọn ngày phù hợp';
 }
 
 function renderEmailLayout({ title, children }) {

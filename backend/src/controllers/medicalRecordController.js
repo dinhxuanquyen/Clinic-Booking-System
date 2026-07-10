@@ -11,6 +11,7 @@ import { createAuditLog } from '../utils/auditLogger.js';
 import { emitNotification, emitToRole, emitToUser } from '../services/socketService.js';
 import { sendMedicalRecordUpdatedEmail } from '../services/emailService.js';
 import { generateMedicalRecordPdf } from '../services/pdfService.js';
+import { FOLLOW_UP_STATUSES } from '../constants/followUpStatus.js';
 
 const medicalRecordPopulate = [
   { path: 'appointmentId', select: 'date timeSlot reason status queueNumber consultationStatus completedAt noShowAt noShowAuto servicePackageId servicePackageSnapshot insuranceSnapshot paymentStatus paymentMethod isFollowUp followUpRecordId originalAppointmentId' },
@@ -29,6 +30,11 @@ const appointmentPopulate = [
   { path: 'specialtyId', select: 'name description image clinicId' },
   { path: 'servicePackageId', select: 'name code price durationMinutes description targetPatients includes doctorId' }
 ];
+
+const followUpAppointmentPopulate = {
+  path: 'followUpAppointmentId',
+  select: 'date timeSlot status queueNumber consultationStatus cancelledAt completedAt noShowAt'
+};
 
 export const createMedicalRecordRules = [
   body('appointmentId').isMongoId().withMessage('appointmentId is invalid'),
@@ -248,16 +254,20 @@ async function notifyPatientReviewAvailable(appointment) {
 }
 
 async function notifyPatientFollowUpRecommended(record, appointment) {
-  if (!record.followUpRequired || !record.followUpDate) return;
+  if (!record.followUpRequired) return;
 
-  const followUpDate = String(record.followUpDate).slice(0, 10);
+  const followUpDate = record.followUpDate ? String(record.followUpDate).slice(0, 10) : null;
+  const message = followUpDate
+    ? `Bạn nên tái khám vào ngày ${followUpDate}. Vui lòng đặt lịch để được theo dõi tiếp.`
+    : 'Bác sĩ khuyến nghị bạn tái khám. Vui lòng chọn thời gian phù hợp để đặt lịch tái khám.';
+
   const notification = await Notification.create({
     userId: appointment.patientId,
     role: 'patient',
     appointmentId: appointment._id,
     type: 'follow_up_recommended',
     title: 'Bác sĩ khuyến nghị tái khám',
-    message: `Bạn nên tái khám vào ngày ${followUpDate}. Vui lòng đặt lịch để được theo dõi tiếp.`,
+    message,
     targetUrl: `/medical-records?recordId=${record._id}`,
     metadata: {
       appointmentId: appointment._id,
@@ -337,10 +347,7 @@ export const createMedicalRecord = asyncHandler(async (req, res) => {
   assertPrescriptionValid(prescription);
   const vitals = normalizeVitals(req.body.vitals);
   const followUpRequired = parseBoolean(req.body.followUpRequired);
-  const followUpDate = followUpRequired ? req.body.followUpDate : null;
-  if (followUpRequired && !followUpDate) {
-    throw new ApiError(400, 'Vui lòng chọn ngày tái khám');
-  }
+  const followUpDate = followUpRequired && req.body.followUpDate ? req.body.followUpDate : null;
 
   const now = new Date();
   const record = await MedicalRecord.create({
@@ -360,7 +367,7 @@ export const createMedicalRecord = asyncHandler(async (req, res) => {
     advice: req.body.advice || '',
     followUpRequired,
     followUpDate,
-    followUpStatus: followUpRequired ? 'recommended' : 'none',
+    followUpStatus: followUpRequired ? FOLLOW_UP_STATUSES.RECOMMENDED : FOLLOW_UP_STATUSES.NONE,
     note: req.body.note || '',
     createdBy: req.user._id,
     updatedBy: req.user._id
@@ -469,6 +476,41 @@ export const getMyMedicalRecords = asyncHandler(async (req, res) => {
     success: true,
     message: 'Medical records fetched successfully',
     data: records
+  });
+});
+
+export const getMyFollowUpRecords = asyncHandler(async (req, res) => {
+  const records = await MedicalRecord.find({
+    patientId: req.user._id,
+    followUpRequired: true
+  })
+    .populate([...medicalRecordPopulate, followUpAppointmentPopulate])
+    .sort({ followUpStatus: 1, followUpDate: 1, createdAt: -1 });
+
+  const summary = records.reduce((result, record) => {
+    const status = record.followUpStatus || FOLLOW_UP_STATUSES.RECOMMENDED;
+    result.total += 1;
+    result[status] = (result[status] || 0) + 1;
+    if (!record.followUpDate) result.noDate += 1;
+    if ([FOLLOW_UP_STATUSES.RECOMMENDED, FOLLOW_UP_STATUSES.OVERDUE].includes(status)) {
+      result.needBooking += 1;
+    }
+    return result;
+  }, {
+    total: 0,
+    needBooking: 0,
+    noDate: 0,
+    recommended: 0,
+    scheduled: 0,
+    completed: 0,
+    overdue: 0
+  });
+
+  res.json({
+    success: true,
+    message: 'Follow-up records fetched successfully',
+    data: records,
+    meta: { summary }
   });
 });
 

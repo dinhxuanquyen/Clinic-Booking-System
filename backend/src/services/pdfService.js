@@ -168,6 +168,10 @@ function servicePackageName(source) {
   return servicePackage.name || 'Khám theo tư vấn của bác sĩ';
 }
 
+function appointmentTypeLabel(appointment) {
+  return appointment?.isFollowUp || appointment?.followUpRecordId ? 'Tái khám' : 'Khám mới';
+}
+
 function appointmentStatusLabel(status) {
   const labels = {
     pending: 'Chờ xác nhận',
@@ -243,6 +247,7 @@ export function generateAppointmentPdf(appointment) {
     ['Cơ sở', nameOf(appointment.clinicId)],
     ['Ngày khám', appointment.date],
     ['Khung giờ', appointment.timeSlot],
+    ['Loại lịch', appointmentTypeLabel(appointment)],
     ['Dịch vụ khám', servicePackageName(appointment)],
     ['Trạng thái', appointmentStatusLabel(appointment.status)],
     ['Lý do khám', appointment.reason],
@@ -263,6 +268,7 @@ export function generateQueueTicketPdf(appointment) {
     ['Bác sĩ', nameOf(appointment.doctorId)],
     ['Ngày khám', appointment.date],
     ['Khung giờ', appointment.timeSlot],
+    ['Loại lịch', appointmentTypeLabel(appointment)],
     ['Cơ sở', nameOf(appointment.clinicId)],
     ['Dịch vụ khám', servicePackageName(appointment)],
     ['Trạng thái hàng đợi', consultationStatusLabel(appointment.consultationStatus)],

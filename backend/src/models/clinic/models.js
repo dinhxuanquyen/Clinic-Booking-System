@@ -92,8 +92,8 @@ const appointmentSchema = new mongoose.Schema(
       default: 'clinic'
     },
     isFollowUp: { type: Boolean, default: false, index: true },
-    followUpRecordId: { type: mongoose.Schema.Types.ObjectId, default: null, index: true },
-    originalAppointmentId: { type: mongoose.Schema.Types.ObjectId, default: null },
+    followUpRecordId: { type: mongoose.Schema.Types.ObjectId, ref: 'MedicalRecord', default: null, index: true },
+    originalAppointmentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Appointment', default: null },
     date: { type: String, required: true },
     timeSlot: { type: String, required: true },
     reason: { type: String, default: '' },

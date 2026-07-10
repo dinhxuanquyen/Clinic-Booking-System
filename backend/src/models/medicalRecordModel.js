@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { FOLLOW_UP_STATUSES, FOLLOW_UP_STATUS_VALUES } from '../constants/followUpStatus.js';
 
 const prescriptionItemSchema = new mongoose.Schema(
   {
@@ -80,8 +81,8 @@ const medicalRecordSchema = new mongoose.Schema(
     followUpDate: Date,
     followUpStatus: {
       type: String,
-      enum: ['none', 'recommended', 'scheduled', 'completed', 'overdue'],
-      default: 'none',
+      enum: FOLLOW_UP_STATUS_VALUES,
+      default: FOLLOW_UP_STATUSES.NONE,
       index: true
     },
     followUpAppointmentId: {

@@ -168,11 +168,6 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
 
   function submit(event) {
     event.preventDefault();
-    if (form.followUpRequired && !form.followUpDate) {
-      event.currentTarget.reportValidity();
-      return;
-    }
-
     onSubmit?.({
       ...form,
       appointmentId: appointment._id,
@@ -405,11 +400,15 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
               <input
                 className="form-control"
                 disabled={!form.followUpRequired || submitting}
-                required={form.followUpRequired}
                 type="date"
                 value={form.followUpDate}
                 onChange={(event) => update('followUpDate', event.target.value)}
               />
+              {form.followUpRequired ? (
+                <p className="text-secondary small mb-0 mt-2">
+                  Nếu chưa chọn ngày, bệnh nhân sẽ tự chọn thời gian tái khám phù hợp khi đặt lịch.
+                </p>
+              ) : null}
             </div>
             <div className="medical-record-field">
               <label className="form-label">Ghi chú nội bộ</label>

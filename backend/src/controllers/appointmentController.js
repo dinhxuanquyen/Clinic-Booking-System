@@ -23,6 +23,7 @@ import { emitNotification, emitToRole, emitToUser } from '../services/socketServ
 import { assertBookableDateTime } from '../utils/vietnamTime.js';
 import { safelyOfferNextWaitingPatient } from '../services/waitingListService.js';
 import { syncFollowUpStatusForAppointment } from '../services/followUpService.js';
+import { FOLLOW_UP_STATUSES } from '../constants/followUpStatus.js';
 import { createAuditLog } from '../utils/auditLogger.js';
 import { generateAppointmentPdf, generateQueueTicketPdf } from '../services/pdfService.js';
 import { resolveServicePackageForAppointment } from '../services/servicePackageService.js';
@@ -40,7 +41,13 @@ const appointmentPopulate = [
   { path: 'doctorId', select: 'name email personalEmail loginEmail phone avatar degree experienceYears clinicId specialtyId' },
   { path: 'clinicId', select: 'name address phone email' },
   { path: 'specialtyId', select: 'name description image clinicId' },
-  { path: 'servicePackageId', select: 'name code price durationMinutes description targetPatients includes doctorId' }
+  { path: 'servicePackageId', select: 'name code price durationMinutes description targetPatients includes doctorId' },
+  {
+    path: 'followUpRecordId',
+    select: 'appointmentId diagnosis conclusion followUpRequired followUpDate followUpStatus followUpAppointmentId createdAt',
+    populate: { path: 'appointmentId', select: 'date timeSlot status' }
+  },
+  { path: 'originalAppointmentId', select: 'date timeSlot status' }
 ];
 
 const ACTIVE_WAITING_SLOT_STATUSES = ['offered'];
@@ -696,7 +703,7 @@ export const createAppointment = asyncHandler(async (req, res) => {
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
 
   if (followUpRecord) {
-    followUpRecord.followUpStatus = 'scheduled';
+    followUpRecord.followUpStatus = FOLLOW_UP_STATUSES.SCHEDULED;
     followUpRecord.followUpAppointmentId = appointment._id;
     await followUpRecord.save();
   }

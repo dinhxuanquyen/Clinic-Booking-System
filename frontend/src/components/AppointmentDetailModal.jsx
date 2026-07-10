@@ -26,6 +26,38 @@ function getServicePackage(appointment) {
   return servicePackage && typeof servicePackage === 'object' ? servicePackage : null;
 }
 
+function entityId(value) {
+  return typeof value === 'object' ? value?._id : value;
+}
+
+function isFollowUpAppointment(appointment) {
+  return Boolean(appointment?.isFollowUp || appointment?.followUpRecordId);
+}
+
+function getFollowUpRecord(appointment) {
+  const record = appointment?.followUpRecordId;
+  return record && typeof record === 'object' ? record : null;
+}
+
+function getOriginalAppointment(appointment) {
+  const record = getFollowUpRecord(appointment);
+  if (record?.appointmentId && typeof record.appointmentId === 'object') return record.appointmentId;
+  if (appointment?.originalAppointmentId && typeof appointment.originalAppointmentId === 'object') return appointment.originalAppointmentId;
+  return null;
+}
+
+function formatSimpleDate(value) {
+  if (!value) return 'Chưa cập nhật';
+  return String(value).slice(0, 10);
+}
+
+function followUpStatusText(status) {
+  if (status === 'scheduled') return 'Đã đặt lịch tái khám';
+  if (status === 'completed') return 'Đã hoàn thành tái khám';
+  if (status === 'overdue') return 'Quá hạn tái khám';
+  return 'Lịch tái khám';
+}
+
 function formatInsuranceDate(value) {
   if (!value) return 'Chưa cập nhật';
   return String(value).slice(0, 10);
@@ -556,6 +588,10 @@ export default function AppointmentDetailModal({
   const consultationBadge = getConsultationStatusBadge(consultationStatus);
   const consultationNotice = getConsultationNotice(consultationStatus);
   const servicePackage = getServicePackage(appointment);
+  const followUpRecord = getFollowUpRecord(appointment);
+  const originalAppointment = getOriginalAppointment(appointment);
+  const showFollowUpContext = isFollowUpAppointment(appointment);
+  const followUpRecordId = entityId(appointment.followUpRecordId);
   const servicePackageTargets = Array.isArray(servicePackage?.targetPatients)
     ? servicePackage.targetPatients.filter(Boolean).slice(0, 4)
     : [];
@@ -770,6 +806,9 @@ export default function AppointmentDetailModal({
         <div><strong>Bác sĩ</strong><span>{valueName(appointment.doctorId)}</span></div>
         <div><strong>Cơ sở</strong><span>{valueName(appointment.clinicId)}</span></div>
         <div><strong>Chuyên khoa</strong><span>{valueName(appointment.specialtyId)}</span></div>
+        {showFollowUpContext && (
+          <div><strong>Loại lịch</strong><span><span className="follow-up-appointment-chip">Tái khám</span></span></div>
+        )}
         <div><strong>Ngày đặt lịch</strong><span>{formatDateTime(appointment.createdAt)}</span></div>
         <div><strong>Người đặt</strong><span>{bookingUserValue(appointment, 'name')}</span></div>
         <div><strong>Trạng thái</strong><span><span className={`badge ${badge.className}`}>{badge.label}</span></span></div>
@@ -778,6 +817,42 @@ export default function AppointmentDetailModal({
             <div><strong>Trạng thái tham dự</strong><span>Không đến khám</span></div>
             <div><strong>Thời gian ghi nhận</strong><span>{formatDateTime(appointment.noShowAt || appointment.updatedAt)}</span></div>
           </>
+        )}
+
+        {showFollowUpContext && (
+          <div className="appointment-detail-full follow-up-appointment-card">
+            <div className="follow-up-appointment-card-main">
+              <span className="eyebrow">Lịch tái khám</span>
+              <strong>{followUpStatusText(followUpRecord?.followUpStatus)}</strong>
+              <p>
+                Lịch này được tạo để theo dõi tiếp sau buổi khám trước.
+                {followUpRecord?.followUpDate
+                  ? ` Ngày tái khám được bác sĩ khuyến nghị: ${formatSimpleDate(followUpRecord.followUpDate)}.`
+                  : ' Bác sĩ chưa chỉ định ngày cố định, bệnh nhân đã chọn thời gian phù hợp.'}
+              </p>
+            </div>
+            <dl className="follow-up-appointment-meta">
+              <div>
+                <dt>Hồ sơ gốc</dt>
+                <dd>
+                  {originalAppointment
+                    ? `${formatSimpleDate(originalAppointment.date)}${originalAppointment.timeSlot ? ` · ${originalAppointment.timeSlot}` : ''}`
+                    : 'Đã liên kết hồ sơ khám bệnh'}
+                </dd>
+              </div>
+              {followUpRecord?.diagnosis && (
+                <div>
+                  <dt>Chẩn đoán trước đó</dt>
+                  <dd>{followUpRecord.diagnosis}</dd>
+                </div>
+              )}
+            </dl>
+            {userRole === 'patient' && followUpRecordId && (
+              <Link className="btn btn-sm btn-outline-primary" to={`/medical-records?recordId=${followUpRecordId}`}>
+                Xem hồ sơ gốc
+              </Link>
+            )}
+          </div>
         )}
 
         {showPatientQueueStatus && (

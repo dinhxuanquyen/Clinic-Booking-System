@@ -33,6 +33,10 @@ function formatCurrency(value) {
   }).format(Number(value || 0));
 }
 
+function formatSimpleDate(value) {
+  return value ? String(value).slice(0, 10) : '';
+}
+
 function apiErrorMessage(error) {
   return cleanDisplayText(error?.message, 'Đã xảy ra lỗi, vui lòng thử lại');
 }
@@ -478,7 +482,11 @@ export default function BookingPage() {
             <span className="booking-follow-up-icon">↻</span>
             <div>
               <strong>Đặt lịch tái khám theo hồ sơ đã tạo</strong>
-              <p>Hệ thống đã điền sẵn bác sĩ, chuyên khoa và ngày tái khám được khuyến nghị. Bạn vẫn có thể chọn khung giờ phù hợp trước khi xác nhận.</p>
+              <p>
+                {followUpRecord.followUpDate
+                  ? `Hệ thống đã điền sẵn bác sĩ, chuyên khoa và ngày tái khám khuyến nghị ${formatSimpleDate(followUpRecord.followUpDate)}. Bạn vẫn có thể chọn khung giờ phù hợp trước khi xác nhận.`
+                  : 'Hệ thống đã điền sẵn bác sĩ và chuyên khoa từ hồ sơ khám. Bác sĩ chưa chỉ định ngày cụ thể, bạn có thể chọn ngày và khung giờ phù hợp.'}
+              </p>
             </div>
           </div>
         )}
@@ -766,7 +774,12 @@ export default function BookingPage() {
                     <dt>Loại lịch</dt>
                     <dd>
                       <strong>Lịch tái khám</strong>
-                      <span>Theo hồ sơ khám ngày {String(followUpRecord.appointmentId?.date || followUpRecord.createdAt || '').slice(0, 10)}</span>
+                      <span>Theo hồ sơ khám ngày {formatSimpleDate(followUpRecord.appointmentId?.date || followUpRecord.createdAt)}</span>
+                      <span>
+                        {followUpRecord.followUpDate
+                          ? `Ngày khuyến nghị: ${formatSimpleDate(followUpRecord.followUpDate)}`
+                          : 'Bác sĩ chưa chỉ định ngày cụ thể'}
+                      </span>
                     </dd>
                   </div>
                 )}
