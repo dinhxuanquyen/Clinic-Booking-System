@@ -21493,3 +21493,118 @@ html, body, #root {
     width: 100%;
   }
 }
+
+
+.doctor-record-follow-up-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.doctor-record-follow-up-card {
+  border: 1px solid #dbeafe;
+  border-radius: 20px;
+  background: #fff;
+  padding: 18px;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+}
+
+.doctor-record-follow-up-card span {
+  display: block;
+  color: #64748b;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.doctor-record-follow-up-card strong {
+  display: block;
+  color: #0f2d5c;
+  font-size: 34px;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.doctor-record-follow-up-card p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.doctor-record-follow-up-card.warning {
+  background: linear-gradient(135deg, #fffbeb, #ffffff);
+  border-color: #fde68a;
+}
+
+.doctor-record-follow-up-card.danger {
+  background: linear-gradient(135deg, #fff1f2, #ffffff);
+  border-color: #fecdd3;
+}
+
+.doctor-record-follow-up-card.success {
+  background: linear-gradient(135deg, #ecfdf5, #ffffff);
+  border-color: #bbf7d0;
+}
+
+.doctor-record-follow-up-card.neutral {
+  background: linear-gradient(135deg, #f8fafc, #ffffff);
+}
+
+.doctor-follow-up-status-filter {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.doctor-follow-up-status-filter span {
+  color: #64748b;
+  font-weight: 800;
+  margin-right: 4px;
+}
+
+.doctor-follow-up-status-filter button {
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #fff;
+  color: #0f2d5c;
+  font-weight: 800;
+  padding: 8px 14px;
+}
+
+.doctor-follow-up-status-filter button.active {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(14, 165, 233, 0.22);
+}
+
+.doctor-follow-up-table-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.doctor-follow-up-table-cell small {
+  color: #64748b;
+  font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .doctor-record-follow-up-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .doctor-record-follow-up-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-follow-up-status-filter button {
+    flex: 1 1 auto;
+  }
+}

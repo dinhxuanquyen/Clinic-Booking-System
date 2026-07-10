@@ -480,6 +480,14 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
   const filter = { doctorId: req.user.doctorId };
   if (req.query.clinicId) filter.clinicId = req.query.clinicId;
   if (req.query.specialtyId) filter.specialtyId = req.query.specialtyId;
+  if (req.query.followUpStatus) filter.followUpStatus = req.query.followUpStatus;
+  if (String(req.query.followUpOnly || '') === 'true') filter.followUpRequired = true;
+
+  if (req.query.followUpFrom || req.query.followUpTo) {
+    filter.followUpDate = {};
+    if (req.query.followUpFrom) filter.followUpDate.$gte = new Date(`${req.query.followUpFrom}T00:00:00.000Z`);
+    if (req.query.followUpTo) filter.followUpDate.$lte = new Date(`${req.query.followUpTo}T23:59:59.999Z`);
+  }
 
   if (req.query.date) {
     const start = new Date(`${req.query.date}T00:00:00.000Z`);
@@ -496,10 +504,25 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
     records = records.filter((record) => String(record.patientId?.name || '').toLowerCase().includes(keyword));
   }
 
+  const followUpSummary = records.reduce((summary, record) => {
+    if (!record.followUpRequired) return summary;
+    const status = record.followUpStatus || 'recommended';
+    summary.total += 1;
+    summary[status] = (summary[status] || 0) + 1;
+    return summary;
+  }, {
+    total: 0,
+    recommended: 0,
+    scheduled: 0,
+    completed: 0,
+    overdue: 0
+  });
+
   res.json({
     success: true,
     message: 'Doctor medical records fetched successfully',
-    data: records
+    data: records,
+    meta: { followUpSummary }
   });
 });
 

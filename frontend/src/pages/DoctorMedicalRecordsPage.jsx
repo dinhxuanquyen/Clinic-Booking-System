@@ -26,6 +26,30 @@ function followUpStatusLabel(record) {
   return { label: 'Cần tái khám', tone: 'warning' };
 }
 
+function buildFollowUpSummary(items) {
+  return items.reduce((summary, record) => {
+    if (!record.followUpRequired) return summary;
+    const status = record.followUpStatus || 'recommended';
+    summary.total += 1;
+    summary[status] = (summary[status] || 0) + 1;
+    return summary;
+  }, {
+    total: 0,
+    recommended: 0,
+    scheduled: 0,
+    completed: 0,
+    overdue: 0
+  });
+}
+
+const FOLLOW_UP_FILTERS = [
+  { value: '', label: 'Tất cả' },
+  { value: 'recommended', label: 'Cần tái khám' },
+  { value: 'overdue', label: 'Quá hạn' },
+  { value: 'scheduled', label: 'Đã đặt lịch' },
+  { value: 'completed', label: 'Đã hoàn thành' }
+];
+
 function InsuranceSnapshotCard({ insurance }) {
   const hasInsurance = Boolean(insurance?.enabled && insurance?.insuranceNumber);
 
@@ -154,11 +178,13 @@ export default function DoctorMedicalRecordsPage() {
   const [clinics, setClinics] = useState([]);
   const [specialties, setSpecialties] = useState([]);
   const [downloadingRecordId, setDownloadingRecordId] = useState('');
+  const [followUpSummary, setFollowUpSummary] = useState({ total: 0, recommended: 0, scheduled: 0, completed: 0, overdue: 0 });
   const [filters, setFilters] = useState({
     patientName: '',
     date: '',
     clinicId: '',
-    specialtyId: ''
+    specialtyId: '',
+    followUpStatus: ''
   });
 
   const query = useMemo(() => {
@@ -173,7 +199,9 @@ export default function DoctorMedicalRecordsPage() {
     setLoading(true);
     try {
       const payload = await api(`/doctor/medical-records${query ? `?${query}` : ''}`);
-      setRecords(payload.data || []);
+      const items = payload.data || [];
+      setRecords(items);
+      setFollowUpSummary(payload.meta?.followUpSummary || buildFollowUpSummary(items));
     } catch (error) {
       toast.error(error.message || 'Không tải được hồ sơ đã tạo');
     } finally {
@@ -194,6 +222,10 @@ export default function DoctorMedicalRecordsPage() {
 
   function updateFilter(field, value) {
     setFilters((current) => ({ ...current, [field]: value }));
+  }
+
+  function resetFilters() {
+    setFilters({ patientName: '', date: '', clinicId: '', specialtyId: '', followUpStatus: '' });
   }
 
   async function downloadRecordPdf(record) {
@@ -217,6 +249,29 @@ export default function DoctorMedicalRecordsPage() {
           <p className="doctor-page-subtitle">Xem lại kết quả khám, chẩn đoán và đơn thuốc bạn đã cập nhật cho bệnh nhân.</p>
         </div>
       </div>
+
+      <section className="doctor-record-follow-up-summary" aria-label="Tổng quan tái khám">
+        <article className="doctor-record-follow-up-card warning">
+          <span>Cần tái khám</span>
+          <strong>{followUpSummary.recommended}</strong>
+          <p>Hồ sơ có chỉ định tái khám, bệnh nhân chưa đặt lịch mới.</p>
+        </article>
+        <article className="doctor-record-follow-up-card danger">
+          <span>Quá hạn</span>
+          <strong>{followUpSummary.overdue}</strong>
+          <p>Đã quá ngày tái khám khuyến nghị, cần nhắc bệnh nhân.</p>
+        </article>
+        <article className="doctor-record-follow-up-card success">
+          <span>Đã đặt lịch</span>
+          <strong>{followUpSummary.scheduled}</strong>
+          <p>Bệnh nhân đã có lịch tái khám liên kết với hồ sơ.</p>
+        </article>
+        <article className="doctor-record-follow-up-card neutral">
+          <span>Đã hoàn thành</span>
+          <strong>{followUpSummary.completed}</strong>
+          <p>Hồ sơ đã được ghi nhận hoàn tất vòng tái khám.</p>
+        </article>
+      </section>
 
       <section className="queue-filter-card medical-record-filter-card">
         <div>
@@ -245,7 +300,20 @@ export default function DoctorMedicalRecordsPage() {
             ))}
           </select>
         </div>
-        <button className="btn btn-outline-secondary align-self-end" type="button" onClick={() => setFilters({ patientName: '', date: '', clinicId: '', specialtyId: '' })}>
+        <div className="doctor-follow-up-status-filter">
+          <span>Trạng thái tái khám</span>
+          {FOLLOW_UP_FILTERS.map((item) => (
+            <button
+              className={filters.followUpStatus === item.value ? 'active' : ''}
+              key={item.value || 'all'}
+              type="button"
+              onClick={() => updateFilter('followUpStatus', item.value)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        <button className="btn btn-outline-secondary align-self-end" type="button" onClick={resetFilters}>
           Xóa lọc
         </button>
       </section>
@@ -263,12 +331,14 @@ export default function DoctorMedicalRecordsPage() {
                   <th>Cơ sở</th>
                   <th>Chuyên khoa</th>
                   <th>Chẩn đoán</th>
+                  <th>Tái khám</th>
                   <th className="text-end">Thao tác</th>
                 </tr>
               </thead>
               <tbody>
                 {records.map((record) => {
                   const appointment = record.appointmentId || {};
+                  const followUpStatus = followUpStatusLabel(record);
                   return (
                     <tr key={record._id}>
                       <td>{appointment.date || formatDate(record.createdAt)}</td>
@@ -276,6 +346,12 @@ export default function DoctorMedicalRecordsPage() {
                       <td>{getName(record.clinicId)}</td>
                       <td>{getName(record.specialtyId)}</td>
                       <td>{record.diagnosis}</td>
+                      <td>
+                        <div className="doctor-follow-up-table-cell">
+                          <span className={`follow-up-status-pill ${followUpStatus.tone}`}>{followUpStatus.label}</span>
+                          {record.followUpRequired && <small>{formatDate(record.followUpDate)}</small>}
+                        </div>
+                      </td>
                       <td className="text-end">
                         <div className="d-flex flex-wrap justify-content-end gap-2">
                           <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => setSelected(record)}>
