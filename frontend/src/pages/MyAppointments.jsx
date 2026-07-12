@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../api/client.js';
 import AppointmentDetailModal from '../components/AppointmentDetailModal.jsx';
 import BaseModal from '../components/BaseModal.jsx';
+import SharedMedicalRecordDetailModal from '../components/MedicalRecordDetailModal.jsx';
 import ReviewDoctorModal from '../components/ReviewDoctorModal.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { connectSocket, joinSocketRoom } from '../services/socket.js';
@@ -60,6 +61,12 @@ function followUpStatusLabel(record) {
 function canBookFollowUp(record) {
   if (!record?.followUpRequired) return false;
   return ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended') && !record.followUpAppointmentId;
+}
+
+function linkedFollowUpAppointmentId(record) {
+  const appointment = record?.followUpAppointmentId;
+  if (!appointment) return '';
+  return typeof appointment === 'object' ? appointment._id : appointment;
 }
 
 function followUpDescription(record) {
@@ -196,6 +203,18 @@ function MedicalRecordDetailModal({ record, onClose }) {
             }}
           >
             Đặt lịch tái khám
+          </button>
+        )}
+        {record.followUpStatus === 'scheduled' && linkedFollowUpAppointmentId(record) && (
+          <button
+            className="btn btn-sm btn-outline-primary"
+            type="button"
+            onClick={() => {
+              onClose();
+              navigate(`/appointments/my?appointmentId=${linkedFollowUpAppointmentId(record)}`);
+            }}
+          >
+            Xem lịch tái khám
           </button>
         )}
       </div>
@@ -1339,7 +1358,7 @@ export default function MyAppointments() {
           onCancel={setCancellingAppointment}
           onClose={() => setSelectedAppointment(null)}
         />
-        <MedicalRecordDetailModal
+        <SharedMedicalRecordDetailModal
           record={selectedMedicalRecord}
           onClose={() => setSelectedMedicalRecord(null)}
         />

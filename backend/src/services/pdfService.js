@@ -188,6 +188,38 @@ function appointmentStatusLabel(status) {
   return labels[status] || status || '-';
 }
 
+function followUpStatusLabel(status) {
+  const labels = {
+    none: 'Không cần tái khám',
+    recommended: 'Cần đặt lịch tái khám',
+    scheduled: 'Đã đặt lịch tái khám',
+    completed: 'Đã hoàn thành tái khám',
+    overdue: 'Quá hạn tái khám'
+  };
+
+  return labels[status] || 'Cần tái khám';
+}
+
+function medicalRecordFollowUpRows(record) {
+  if (!record.followUpRequired) {
+    return [['Kế hoạch tái khám', 'Không cần tái khám']];
+  }
+
+  const rows = [
+    ['Kế hoạch tái khám', followUpStatusLabel(record.followUpStatus || 'recommended')],
+    [
+      'Ngày tái khám khuyến nghị',
+      record.followUpDate ? formatDateOnly(record.followUpDate) : 'Bệnh nhân tự chọn ngày phù hợp'
+    ]
+  ];
+
+  if (record.followUpAppointmentId) {
+    rows.push(['Mã lịch tái khám', `AP-${idOf(record.followUpAppointmentId).slice(-8).toUpperCase()}`]);
+  }
+
+  return rows;
+}
+
 function consultationStatusLabel(status) {
   const labels = {
     waiting: 'Chờ khám',
@@ -310,9 +342,11 @@ export function generateMedicalRecordPdf(record) {
     ['Triệu chứng', record.symptoms || '-'],
     ['Chẩn đoán', record.diagnosis || '-'],
     ['Kết luận', record.conclusion || '-'],
-    ['Lời dặn', record.advice || '-'],
-    ['Tái khám', record.followUpRequired ? (record.followUpDate ? formatDateTime(record.followUpDate) : 'Cần tái khám') : 'Không cần tái khám']
+    ['Lời dặn', record.advice || '-']
   ]);
+
+  drawSectionTitle(doc, 'Kế hoạch tái khám');
+  drawRows(doc, medicalRecordFollowUpRows(record));
 
   drawSectionTitle(doc, 'Đơn thuốc');
   drawPrescription(doc, record.prescription || []);

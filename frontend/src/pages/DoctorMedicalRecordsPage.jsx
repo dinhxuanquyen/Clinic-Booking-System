@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../api/client.js';
 import BaseModal from '../components/BaseModal.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { downloadPdf } from '../utils/downloadFile.js';
+import { connectSocket, getSocket } from '../services/socket.js';
+import { getToken, getUser } from '../utils/auth.js';
 
 function getName(value) {
   if (!value) return 'Đang cập nhật';
@@ -14,16 +17,43 @@ function formatDate(value) {
   return String(value).slice(0, 10);
 }
 
-function followUpText(record) {
-  return record?.followUpRequired ? formatDate(record.followUpDate) : 'Không cần tái khám';
+function doctorFollowUpText(record) {
+  if (!record?.followUpRequired) return 'Không cần tái khám';
+  return record.followUpDate ? formatDate(record.followUpDate) : 'Chưa chỉ định ngày cụ thể';
 }
 
-function followUpStatusLabel(record) {
+function doctorFollowUpStatusLabel(record) {
   if (record?.followUpStatus === 'completed') return { label: 'Đã hoàn thành tái khám', tone: 'success' };
   if (!record?.followUpRequired) return { label: 'Không cần tái khám', tone: 'neutral' };
   if (record.followUpStatus === 'scheduled') return { label: 'Đã đặt lịch tái khám', tone: 'success' };
   if (record.followUpStatus === 'overdue') return { label: 'Quá hạn tái khám', tone: 'danger' };
   return { label: 'Cần tái khám', tone: 'warning' };
+}
+
+function linkedFollowUpAppointmentId(record) {
+  const appointment = record?.followUpAppointmentId;
+  if (!appointment) return '';
+  return typeof appointment === 'object' ? appointment._id : appointment;
+}
+
+function doctorFollowUpDescription(record) {
+  if (!record?.followUpRequired) {
+    return 'Hồ sơ này không có chỉ định tái khám.';
+  }
+  if (record.followUpStatus === 'scheduled' && record.followUpAppointmentId) {
+    const appointment = record.followUpAppointmentId;
+    if (appointment && typeof appointment === 'object' && appointment.date) {
+      return `Bệnh nhân đã đặt lịch tái khám ngày ${formatDate(appointment.date)}${appointment.timeSlot ? `, khung giờ ${appointment.timeSlot}` : ''}.`;
+    }
+    return 'Bệnh nhân đã đặt lịch tái khám cho hồ sơ này.';
+  }
+  if (record.followUpStatus === 'completed') {
+    return 'Bệnh nhân đã hoàn thành vòng tái khám cho hồ sơ này.';
+  }
+  if (record.followUpDate) {
+    return `Ngày tái khám khuyến nghị: ${formatDate(record.followUpDate)}.`;
+  }
+  return 'Bác sĩ đã chỉ định cần tái khám nhưng chưa chọn ngày cụ thể. Bệnh nhân có thể tự chọn ngày phù hợp khi đặt lịch tái khám.';
 }
 
 function buildFollowUpSummary(items) {
@@ -32,9 +62,15 @@ function buildFollowUpSummary(items) {
     const status = record.followUpStatus || 'recommended';
     summary.total += 1;
     summary[status] = (summary[status] || 0) + 1;
+    if (!record.followUpDate) summary.noDate += 1;
+    if (['recommended', 'overdue'].includes(status) && !record.followUpAppointmentId) {
+      summary.needBooking += 1;
+    }
     return summary;
   }, {
     total: 0,
+    needBooking: 0,
+    noDate: 0,
     recommended: 0,
     scheduled: 0,
     completed: 0,
@@ -83,9 +119,11 @@ function InsuranceSnapshotCard({ insurance }) {
 }
 
 function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }) {
+  const navigate = useNavigate();
   if (!record) return null;
   const appointment = record.appointmentId || {};
-  const followUpStatus = followUpStatusLabel(record);
+  const followUpStatus = doctorFollowUpStatusLabel(record);
+  const linkedAppointmentId = linkedFollowUpAppointmentId(record);
 
   return (
     <BaseModal className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
@@ -107,7 +145,7 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
         <div><span>Bệnh nhân</span><strong>{getName(record.patientId)}</strong></div>
         <div><span>Cơ sở</span><strong>{getName(record.clinicId)}</strong></div>
         <div><span>Chuyên khoa</span><strong>{getName(record.specialtyId)}</strong></div>
-        <div><span>Tái khám</span><strong>{followUpText(record)}</strong></div>
+        <div><span>Tái khám</span><strong>{doctorFollowUpText(record)}</strong></div>
       </div>
 
       {record.followUpRequired && (
@@ -115,8 +153,20 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
           <div>
             <span>Kế hoạch tái khám</span>
             <strong>{followUpStatus.label}</strong>
-            <p>Ngày tái khám khuyến nghị: {formatDate(record.followUpDate)}</p>
+            <p>{doctorFollowUpDescription(record)}</p>
           </div>
+          {linkedAppointmentId && (
+            <button
+              className="btn btn-sm btn-outline-primary"
+              type="button"
+              onClick={() => {
+                onClose();
+                navigate(`/doctor/appointments?appointmentId=${linkedAppointmentId}`);
+              }}
+            >
+              Xem lịch tái khám
+            </button>
+          )}
         </div>
       )}
 
@@ -171,14 +221,28 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
 }
 
 export default function DoctorMedicalRecordsPage() {
+  const location = useLocation();
   const toast = useToast();
+  const currentDoctorId = useMemo(() => {
+    const authUser = getUser();
+    return String(authUser?.doctorId?._id || authUser?.doctorId || '');
+  }, []);
   const [records, setRecords] = useState([]);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
   const [clinics, setClinics] = useState([]);
   const [specialties, setSpecialties] = useState([]);
   const [downloadingRecordId, setDownloadingRecordId] = useState('');
-  const [followUpSummary, setFollowUpSummary] = useState({ total: 0, recommended: 0, scheduled: 0, completed: 0, overdue: 0 });
+  const [queryHandled, setQueryHandled] = useState('');
+  const [followUpSummary, setFollowUpSummary] = useState({
+    total: 0,
+    needBooking: 0,
+    noDate: 0,
+    recommended: 0,
+    scheduled: 0,
+    completed: 0,
+    overdue: 0
+  });
   const [filters, setFilters] = useState({
     patientName: '',
     date: '',
@@ -212,6 +276,51 @@ export default function DoctorMedicalRecordsPage() {
   useEffect(() => {
     loadRecords();
   }, [query]);
+
+  useEffect(() => {
+    const socket = getSocket() || connectSocket(getToken());
+    if (!socket) return undefined;
+
+    function handleFollowUpUpdated(payload = {}) {
+      if (payload.doctorId && currentDoctorId && String(payload.doctorId) !== currentDoctorId) return;
+      loadRecords().catch(() => {});
+    }
+
+    socket.on('follow-up:updated', handleFollowUpUpdated);
+    return () => {
+      socket.off('follow-up:updated', handleFollowUpUpdated);
+    };
+  }, [currentDoctorId, query]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const recordId = params.get('recordId');
+    if (!recordId || loading || queryHandled === recordId) return;
+
+    const record = records.find((item) => String(item._id) === String(recordId));
+    if (record) {
+      setSelected(record);
+      setQueryHandled(recordId);
+      return;
+    }
+
+    let cancelled = false;
+    api(`/medical-records/${recordId}`)
+      .then((payload) => {
+        if (cancelled) return;
+        setSelected(payload.data);
+        setQueryHandled(recordId);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        toast.warning(error.message || 'Không tìm thấy hồ sơ khám bệnh');
+        setQueryHandled(recordId);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, location.search, queryHandled, records, toast]);
 
   useEffect(() => {
     Promise.allSettled([api('/clinics'), api('/specialties')]).then(([clinicResult, specialtyResult]) => {
@@ -251,26 +360,31 @@ export default function DoctorMedicalRecordsPage() {
       </div>
 
       <section className="doctor-record-follow-up-summary" aria-label="Tổng quan tái khám">
-        <article className="doctor-record-follow-up-card warning">
+        <button className="doctor-record-follow-up-card warning" type="button" onClick={() => updateFilter('followUpStatus', 'recommended')}>
           <span>Cần tái khám</span>
-          <strong>{followUpSummary.recommended}</strong>
+          <strong>{followUpSummary.needBooking || followUpSummary.recommended}</strong>
           <p>Hồ sơ có chỉ định tái khám, bệnh nhân chưa đặt lịch mới.</p>
-        </article>
-        <article className="doctor-record-follow-up-card danger">
+        </button>
+        <button className="doctor-record-follow-up-card danger" type="button" onClick={() => updateFilter('followUpStatus', 'overdue')}>
           <span>Quá hạn</span>
           <strong>{followUpSummary.overdue}</strong>
           <p>Đã quá ngày tái khám khuyến nghị, cần nhắc bệnh nhân.</p>
-        </article>
-        <article className="doctor-record-follow-up-card success">
+        </button>
+        <button className="doctor-record-follow-up-card success" type="button" onClick={() => updateFilter('followUpStatus', 'scheduled')}>
           <span>Đã đặt lịch</span>
           <strong>{followUpSummary.scheduled}</strong>
           <p>Bệnh nhân đã có lịch tái khám liên kết với hồ sơ.</p>
-        </article>
-        <article className="doctor-record-follow-up-card neutral">
+        </button>
+        <button className="doctor-record-follow-up-card neutral" type="button" onClick={() => updateFilter('followUpStatus', 'recommended')}>
+          <span>Chưa có ngày cố định</span>
+          <strong>{followUpSummary.noDate || 0}</strong>
+          <p>Bác sĩ chỉ định cần tái khám nhưng để bệnh nhân tự chọn ngày phù hợp.</p>
+        </button>
+        <button className="doctor-record-follow-up-card neutral" type="button" onClick={() => updateFilter('followUpStatus', 'completed')}>
           <span>Đã hoàn thành</span>
           <strong>{followUpSummary.completed}</strong>
           <p>Hồ sơ đã được ghi nhận hoàn tất vòng tái khám.</p>
-        </article>
+        </button>
       </section>
 
       <section className="queue-filter-card medical-record-filter-card">
@@ -338,7 +452,7 @@ export default function DoctorMedicalRecordsPage() {
               <tbody>
                 {records.map((record) => {
                   const appointment = record.appointmentId || {};
-                  const followUpStatus = followUpStatusLabel(record);
+                  const followUpStatus = doctorFollowUpStatusLabel(record);
                   return (
                     <tr key={record._id}>
                       <td>{appointment.date || formatDate(record.createdAt)}</td>
@@ -349,7 +463,7 @@ export default function DoctorMedicalRecordsPage() {
                       <td>
                         <div className="doctor-follow-up-table-cell">
                           <span className={`follow-up-status-pill ${followUpStatus.tone}`}>{followUpStatus.label}</span>
-                          {record.followUpRequired && <small>{formatDate(record.followUpDate)}</small>}
+                          {record.followUpRequired && <small>{doctorFollowUpText(record)}</small>}
                         </div>
                       </td>
                       <td className="text-end">

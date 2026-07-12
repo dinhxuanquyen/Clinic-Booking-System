@@ -49,6 +49,10 @@ function followUpText(record) {
     : 'Cần tái khám - bệnh nhân chọn ngày phù hợp';
 }
 
+function followUpRecordUrl(record) {
+  return `${env.appUrl}/medical-records?recordId=${record?._id || record?.id || ''}`;
+}
+
 function renderEmailLayout({ title, children }) {
   return `
     <div style="margin: 0; padding: 24px; background: #f0f7ff; font-family: Arial, sans-serif; color: #172033;">
@@ -449,6 +453,54 @@ export async function sendMedicalRecordUpdatedEmail({ patient, doctor, appointme
         <p style="margin-top: 16px;">
           <a href="${env.appUrl}/medical-records?recordId=${record?._id || record?.id || ''}" style="display: inline-block; padding: 11px 16px; border-radius: 999px; background: #0d6efd; color: #ffffff; text-decoration: none; font-weight: 700;">
             Xem hồ sơ khám bệnh
+          </a>
+        </p>
+      `
+    })
+  });
+}
+
+export async function sendFollowUpDueSoonEmail({ patient, record }) {
+  return sendBusinessEmail({
+    to: patientEmail(patient),
+    subject: 'Sắp đến lịch tái khám được khuyến nghị',
+    missingRecipientLog: `Patient ${patient?._id || record?.patientId || 'unknown'} has no email for follow-up reminder`,
+    html: renderEmailLayout({
+      title: 'Sắp đến lịch tái khám',
+      children: `
+        <p>Xin chào <strong>${text(patient?.name)}</strong>,</p>
+        <p>Bác sĩ đã khuyến nghị bạn tái khám để theo dõi kết quả điều trị. Bạn nên đặt lịch phù hợp trước hoặc đúng ngày được khuyến nghị.</p>
+        ${renderInfoCard([
+          ['Ngày tái khám khuyến nghị', followUpText(record)],
+          ['Trạng thái', 'Chưa đặt lịch tái khám']
+        ])}
+        <p style="margin-top: 16px;">
+          <a href="${followUpRecordUrl(record)}" style="display: inline-block; padding: 11px 16px; border-radius: 999px; background: #0d6efd; color: #ffffff; text-decoration: none; font-weight: 700;">
+            Xem kế hoạch tái khám
+          </a>
+        </p>
+      `
+    })
+  });
+}
+
+export async function sendFollowUpOverdueEmail({ patient, record }) {
+  return sendBusinessEmail({
+    to: patientEmail(patient),
+    subject: 'Bạn đã quá hạn tái khám',
+    missingRecipientLog: `Patient ${patient?._id || record?.patientId || 'unknown'} has no email for overdue follow-up`,
+    html: renderEmailLayout({
+      title: 'Quá hạn tái khám',
+      children: `
+        <p>Xin chào <strong>${text(patient?.name)}</strong>,</p>
+        <p>Bạn đã quá ngày tái khám theo khuyến nghị của bác sĩ. Nếu vẫn còn triệu chứng hoặc cần theo dõi thêm, vui lòng đặt lịch tái khám sớm.</p>
+        ${renderInfoCard([
+          ['Ngày tái khám khuyến nghị', followUpText(record)],
+          ['Trạng thái', 'Quá hạn tái khám']
+        ])}
+        <p style="margin-top: 16px;">
+          <a href="${followUpRecordUrl(record)}" style="display: inline-block; padding: 11px 16px; border-radius: 999px; background: #dc2626; color: #ffffff; text-decoration: none; font-weight: 700;">
+            Đặt lịch tái khám
           </a>
         </p>
       `

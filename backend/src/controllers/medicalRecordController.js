@@ -420,7 +420,7 @@ export const createMedicalRecord = asyncHandler(async (req, res) => {
 });
 
 export const getMedicalRecordById = asyncHandler(async (req, res) => {
-  const record = await MedicalRecord.findById(req.params.id).populate(medicalRecordPopulate);
+  const record = await MedicalRecord.findById(req.params.id).populate([...medicalRecordPopulate, followUpAppointmentPopulate]);
   if (!record) throw new ApiError(404, 'Không tìm thấy dữ liệu');
 
   assertRecordAccess(req.user, record);
@@ -433,7 +433,7 @@ export const getMedicalRecordById = asyncHandler(async (req, res) => {
 });
 
 export const exportMedicalRecordPdf = asyncHandler(async (req, res) => {
-  const record = await MedicalRecord.findById(req.params.id).populate(medicalRecordPopulate);
+  const record = await MedicalRecord.findById(req.params.id).populate([...medicalRecordPopulate, followUpAppointmentPopulate]);
   if (!record) throw new ApiError(404, 'Không tìm thấy dữ liệu');
 
   assertRecordAccess(req.user, record);
@@ -455,7 +455,7 @@ export const exportMedicalRecordPdf = asyncHandler(async (req, res) => {
 });
 
 export const getMedicalRecordByAppointment = asyncHandler(async (req, res) => {
-  const record = await MedicalRecord.findOne({ appointmentId: req.params.appointmentId }).populate(medicalRecordPopulate);
+  const record = await MedicalRecord.findOne({ appointmentId: req.params.appointmentId }).populate([...medicalRecordPopulate, followUpAppointmentPopulate]);
   if (!record) throw new ApiError(404, 'Không tìm thấy dữ liệu');
 
   assertRecordAccess(req.user, record);
@@ -469,7 +469,7 @@ export const getMedicalRecordByAppointment = asyncHandler(async (req, res) => {
 
 export const getMyMedicalRecords = asyncHandler(async (req, res) => {
   const records = await MedicalRecord.find({ patientId: req.user._id })
-    .populate(medicalRecordPopulate)
+    .populate([...medicalRecordPopulate, followUpAppointmentPopulate])
     .sort({ createdAt: -1 });
 
   res.json({
@@ -538,7 +538,7 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
   }
 
   let records = await MedicalRecord.find(filter)
-    .populate(medicalRecordPopulate)
+    .populate([...medicalRecordPopulate, followUpAppointmentPopulate])
     .sort({ createdAt: -1 });
 
   if (req.query.patientName) {
@@ -551,9 +551,15 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
     const status = record.followUpStatus || 'recommended';
     summary.total += 1;
     summary[status] = (summary[status] || 0) + 1;
+    if (!record.followUpDate) summary.noDate += 1;
+    if ([FOLLOW_UP_STATUSES.RECOMMENDED, FOLLOW_UP_STATUSES.OVERDUE].includes(status) && !record.followUpAppointmentId) {
+      summary.needBooking += 1;
+    }
     return summary;
   }, {
     total: 0,
+    needBooking: 0,
+    noDate: 0,
     recommended: 0,
     scheduled: 0,
     completed: 0,

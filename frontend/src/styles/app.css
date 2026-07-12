@@ -21459,6 +21459,12 @@ html, body, #root {
   color: #64748b;
 }
 
+.booking-follow-up-banner .booking-follow-up-warning {
+  margin-top: 10px;
+  color: #92400e;
+  font-weight: 800;
+}
+
 .medical-record-follow-up-card {
   margin-bottom: 12px;
 }
@@ -21746,7 +21752,7 @@ html, body, #root {
 
 .doctor-record-follow-up-summary {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -21757,6 +21763,25 @@ html, body, #root {
   background: #fff;
   padding: 18px;
   box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+  color: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+button.doctor-record-follow-up-card {
+  cursor: pointer;
+  appearance: none;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+button.doctor-record-follow-up-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.12);
+}
+
+button.doctor-record-follow-up-card:focus-visible {
+  outline: 3px solid rgba(14, 165, 233, 0.28);
+  outline-offset: 3px;
 }
 
 .doctor-record-follow-up-card span {

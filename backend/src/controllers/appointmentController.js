@@ -23,7 +23,6 @@ import { emitNotification, emitToRole, emitToUser } from '../services/socketServ
 import { assertBookableDateTime } from '../utils/vietnamTime.js';
 import { safelyOfferNextWaitingPatient } from '../services/waitingListService.js';
 import { syncFollowUpStatusForAppointment } from '../services/followUpService.js';
-import { FOLLOW_UP_STATUSES } from '../constants/followUpStatus.js';
 import { createAuditLog } from '../utils/auditLogger.js';
 import { generateAppointmentPdf, generateQueueTicketPdf } from '../services/pdfService.js';
 import { resolveServicePackageForAppointment } from '../services/servicePackageService.js';
@@ -450,12 +449,28 @@ async function validateFollowUpBooking({ followUpRecordId, patientId, clinicId, 
     throw new ApiError(400, 'Hồ sơ này không yêu cầu tái khám');
   }
 
-  if (
-    String(record.clinicId) !== String(clinicId) ||
-    String(record.specialtyId) !== String(specialtyId) ||
-    String(record.doctorId) !== String(doctorId)
-  ) {
-    throw new ApiError(400, 'Thông tin tái khám không khớp với hồ sơ khám bệnh');
+  if (String(record.clinicId) !== String(clinicId) || String(record.specialtyId) !== String(specialtyId)) {
+    throw new ApiError(400, 'Thông tin tái khám không khớp với cơ sở và chuyên khoa trong hồ sơ khám bệnh');
+  }
+
+  const originalDoctor = await Doctor.findById(record.doctorId).select('_id isActive name');
+  const originalDoctorAvailable = Boolean(originalDoctor?.isActive);
+
+  if (originalDoctorAvailable && String(record.doctorId) !== String(doctorId)) {
+    throw new ApiError(400, 'Lịch tái khám cần đặt với bác sĩ đã chỉ định trong hồ sơ khám bệnh');
+  }
+
+  if (!originalDoctorAvailable) {
+    const replacementDoctor = await Doctor.findOne({
+      _id: doctorId,
+      clinicId,
+      specialtyId,
+      isActive: true
+    }).select('_id');
+
+    if (!replacementDoctor) {
+      throw new ApiError(400, 'Bác sĩ chỉ định tái khám hiện không còn hoạt động. Vui lòng chọn bác sĩ khác cùng chuyên khoa.');
+    }
   }
 
   if (record.followUpAppointmentId) {
@@ -703,9 +718,9 @@ export const createAppointment = asyncHandler(async (req, res) => {
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
 
   if (followUpRecord) {
-    followUpRecord.followUpStatus = FOLLOW_UP_STATUSES.SCHEDULED;
-    followUpRecord.followUpAppointmentId = appointment._id;
-    await followUpRecord.save();
+    await runAppointmentSideEffect('Follow-up appointment status sync', () => (
+      syncFollowUpStatusForAppointment(populatedAppointment)
+    ));
   }
 
   await syncClinicAppointment(appointment, req.user);
@@ -1210,6 +1225,13 @@ export const cancelAppointment = asyncHandler(async (req, res) => {
   await syncClinicAppointment(appointment, req.user);
 
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
+
+  if (nextStatus === 'cancelled') {
+    await runAppointmentSideEffect('Follow-up appointment cancellation sync', () => (
+      syncFollowUpStatusForAppointment(populatedAppointment)
+    ));
+    await runAppointmentSideEffect('Appointment cancellation realtime emit', () => emitAppointmentUpdated(populatedAppointment));
+  }
 
   if (nextStatus === 'cancel_requested') {
     const { patientName, doctorName } = adminAppointmentNames(populatedAppointment);

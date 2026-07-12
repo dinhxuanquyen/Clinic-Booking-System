@@ -114,6 +114,7 @@ export default function BookingPage() {
   const [servicePackages, setServicePackages] = useState([]);
   const [waitingEntries, setWaitingEntries] = useState([]);
   const [followUpRecord, setFollowUpRecord] = useState(null);
+  const [followUpDoctorUnavailable, setFollowUpDoctorUnavailable] = useState(false);
   const [form, setForm] = useState({
     clinicId: initialClinicId,
     specialtyId: initialSpecialtyId,
@@ -211,6 +212,7 @@ export default function BookingPage() {
         const visitDate = appointmentDate ? String(appointmentDate).slice(0, 10) : '';
 
         setFollowUpRecord(record);
+        setFollowUpDoctorUnavailable(false);
         pendingDoctorIdRef.current = doctorId || '';
         preserveInitialSpecialtyRef.current = Boolean(clinicId && specialtyId);
         setForm((current) => ({
@@ -275,9 +277,14 @@ export default function BookingPage() {
     const doctorId = pendingDoctorIdRef.current;
     if (doctors.some((doctor) => doctor._id === doctorId)) {
       setForm((current) => ({ ...current, doctorId }));
+      setFollowUpDoctorUnavailable(false);
       pendingDoctorIdRef.current = '';
+    } else if (followUpRecord) {
+      setFollowUpDoctorUnavailable(true);
+      pendingDoctorIdRef.current = '';
+      toast.warning('Bác sĩ chỉ định tái khám hiện không còn hoạt động. Vui lòng chọn bác sĩ khác cùng chuyên khoa.');
     }
-  }, [doctors]);
+  }, [doctors, followUpRecord, toast]);
 
   useEffect(() => {
     setServicePackages([]);
@@ -487,6 +494,11 @@ export default function BookingPage() {
                   ? `Hệ thống đã điền sẵn bác sĩ, chuyên khoa và ngày tái khám khuyến nghị ${formatSimpleDate(followUpRecord.followUpDate)}. Bạn vẫn có thể chọn khung giờ phù hợp trước khi xác nhận.`
                   : 'Hệ thống đã điền sẵn bác sĩ và chuyên khoa từ hồ sơ khám. Bác sĩ chưa chỉ định ngày cụ thể, bạn có thể chọn ngày và khung giờ phù hợp.'}
               </p>
+              {followUpDoctorUnavailable && (
+                <p className="booking-follow-up-warning">
+                  Bác sĩ chỉ định tái khám hiện không còn hoạt động. Bạn có thể chọn bác sĩ khác cùng chuyên khoa để tiếp tục đặt lịch.
+                </p>
+              )}
             </div>
           </div>
         )}

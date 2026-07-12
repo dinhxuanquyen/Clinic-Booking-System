@@ -20,6 +20,7 @@ export const doctorMedicalRecordRouter = express.Router();
 export const appointmentMedicalRecordRouter = express.Router({ mergeParams: true });
 
 router.post('/', auth, roleMiddleware('doctor'), createMedicalRecordRules, validate, createMedicalRecord);
+router.get('/follow-ups/my', auth, roleMiddleware('patient'), getMyFollowUpRecords);
 router.get('/my/follow-ups', auth, roleMiddleware('patient'), getMyFollowUpRecords);
 router.get('/my', auth, roleMiddleware('patient'), getMyMedicalRecords);
 router.get('/:id/pdf', auth, roleMiddleware('admin', 'doctor', 'patient'), medicalRecordIdRule, validate, exportMedicalRecordPdf);

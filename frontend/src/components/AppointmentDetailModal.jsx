@@ -852,6 +852,11 @@ export default function AppointmentDetailModal({
                 Xem hồ sơ gốc
               </Link>
             )}
+            {userRole === 'doctor' && followUpRecordId && (
+              <Link className="btn btn-sm btn-outline-primary" to={`/doctor/medical-records?recordId=${followUpRecordId}`}>
+                Xem hồ sơ gốc
+              </Link>
+            )}
           </div>
         )}
 

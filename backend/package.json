@@ -11,7 +11,8 @@
     "seed:service-packages": "node src/seed/seedServicePackages.js",
     "seed:articles": "node src/seed/seedArticles.js",
     "migrate:clinic-doctor-codes": "node src/scripts/fixDoctorClinicCodes.js",
-    "fix:doctor-clinic-codes": "node src/scripts/fixDoctorClinicCodes.js"
+    "fix:doctor-clinic-codes": "node src/scripts/fixDoctorClinicCodes.js",
+    "sync:follow-ups": "node src/scripts/syncFollowUpStatuses.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
