@@ -137,6 +137,12 @@ export default function UserMenu({ user, onLogout, isOpen: controlledOpen, onTog
                   Hồ sơ khám bệnh
                 </Link>
               )}
+              {isPatient && (
+                <Link className="user-menu-item" to="/medical-records?tab=follow-ups" onClick={closeMenu}>
+                  <FaCalendarCheck size={17} />
+                  Lịch tái khám
+                </Link>
+              )}
               <button className="user-menu-item" type="button" onClick={openChangePassword}>
                 <FaUser size={17} />
                 Đổi mật khẩu

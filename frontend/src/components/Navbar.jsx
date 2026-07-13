@@ -121,6 +121,12 @@ function MobileDrawer({ user, isPatient, open, onClose, onLogout, onOpenChangePa
                   <span>Hồ sơ khám bệnh</span>
                 </NavLink>
               )}
+              {isPatient && (
+                <NavLink className="mobile-drawer-link" to="/medical-records?tab=follow-ups" onClick={onClose}>
+                  <FaCalendarCheck size={20} className="mobile-drawer-link-icon" />
+                  <span>Lịch tái khám</span>
+                </NavLink>
+              )}
               <button className="mobile-drawer-link" type="button" onClick={() => closeAndRun(onOpenChangePassword)}>
                 <FaUser size={20} className="mobile-drawer-link-icon" />
                 <span>Đổi mật khẩu</span>

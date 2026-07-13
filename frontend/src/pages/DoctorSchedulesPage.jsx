@@ -62,6 +62,15 @@ function overlaps(first, second) {
     && toMinutes(second.startTime) < toMinutes(first.endTime);
 }
 
+function shiftOverlapsRows(rows, shift) {
+  const candidate = { ...shift, isWorking: true };
+  return rows.some((item) => overlaps(item, candidate));
+}
+
+function canAddShift(rows, shift) {
+  return !hasShift(rows, shift) && !shiftOverlapsRows(rows, shift);
+}
+
 function getShiftLabel(item) {
   const start = toMinutes(item.startTime);
   if (start >= 5 * 60 && start < 12 * 60) return 'Ca sáng';
@@ -70,17 +79,21 @@ function getShiftLabel(item) {
 }
 
 function getNextSuggestedShift(dayOfWeek, rows) {
-  if (!rows.length || !hasShift(rows, morningShift)) {
+  if ((!rows.length || !hasShift(rows, morningShift)) && canAddShift(rows, morningShift)) {
     return newTemplateItem(dayOfWeek, morningShift);
   }
 
-  if (!hasShift(rows, afternoonShift)) {
+  if (!hasShift(rows, afternoonShift) && canAddShift(rows, afternoonShift)) {
     return newTemplateItem(dayOfWeek, afternoonShift);
   }
 
   const latestShift = [...rows].sort((a, b) => toMinutes(b.endTime) - toMinutes(a.endTime))[0];
   const startMinutes = toMinutes(latestShift.endTime) + 30;
   const endMinutes = Math.min(startMinutes + 150, 23 * 60);
+
+  if (startMinutes >= 23 * 60 || endMinutes <= startMinutes) {
+    return null;
+  }
 
   return newTemplateItem(dayOfWeek, {
     startTime: toTime(startMinutes),
@@ -221,12 +234,17 @@ export default function DoctorSchedulesPage() {
         ? newTemplateItem(dayOfWeek, presetShift)
         : getNextSuggestedShift(dayOfWeek, rows);
 
+      if (!nextShift) {
+        toast.warning('Không còn khoảng trống phù hợp để thêm ca trong ngày này');
+        return current;
+      }
+
       if (rows.some((item) => isSameShift(item, nextShift))) {
         toast.warning('Ca làm việc này đã tồn tại');
         return current;
       }
 
-      if (rows.some((item) => overlaps(item, nextShift))) {
+      if (!canAddShift(rows, nextShift)) {
         toast.warning('Ca làm việc không được chồng lấn thời gian');
         return current;
       }
@@ -397,18 +415,23 @@ export default function DoctorSchedulesPage() {
               const rows = templateByDay.get(day) || [];
               const hasMorning = hasShift(rows, morningShift);
               const hasAfternoon = hasShift(rows, afternoonShift);
+              const canAddMorning = canAddShift(rows, morningShift);
+              const canAddAfternoon = canAddShift(rows, afternoonShift);
+              const canAddSuggested = Boolean(getNextSuggestedShift(day, rows));
+              const morningTitle = hasMorning ? 'Ca sáng đã tồn tại' : 'Ca sáng bị chồng lấn với ca hiện có';
+              const afternoonTitle = hasAfternoon ? 'Ca chiều đã tồn tại' : 'Ca chiều bị chồng lấn với ca hiện có';
               return (
                 <article className="doctor-day-template-card" key={day}>
                   <div className="doctor-day-template-title">
                     <strong>{label}</strong>
                     <div className="doctor-day-template-actions">
-                      <button className="btn btn-sm btn-outline-primary" disabled={hasMorning} type="button" onClick={() => addTemplateShift(day, morningShift)}>
+                      <button className="btn btn-sm btn-outline-primary" disabled={!canAddMorning} title={!canAddMorning ? morningTitle : undefined} type="button" onClick={() => addTemplateShift(day, morningShift)}>
                         Thêm ca sáng
                       </button>
-                      <button className="btn btn-sm btn-outline-primary" disabled={hasAfternoon} type="button" onClick={() => addTemplateShift(day, afternoonShift)}>
+                      <button className="btn btn-sm btn-outline-primary" disabled={!canAddAfternoon} title={!canAddAfternoon ? afternoonTitle : undefined} type="button" onClick={() => addTemplateShift(day, afternoonShift)}>
                         Thêm ca chiều
                       </button>
-                      <button className="btn btn-sm btn-primary" type="button" onClick={() => addTemplateShift(day)}>
+                      <button className="btn btn-sm btn-primary" disabled={!canAddSuggested} title={!canAddSuggested ? 'Không còn khoảng trống phù hợp để thêm ca' : undefined} type="button" onClick={() => addTemplateShift(day)}>
                       Thêm ca
                       </button>
                     </div>

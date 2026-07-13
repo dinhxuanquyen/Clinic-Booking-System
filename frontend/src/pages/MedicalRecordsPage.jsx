@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../api/client.js';
 import BaseModal from '../components/BaseModal.jsx';
@@ -133,9 +133,9 @@ function InsuranceSnapshotCard({ insurance }) {
   );
 }
 
-function FollowUpDashboard({ records, summary, onOpenRecord }) {
+function FollowUpDashboard({ records, summary, onOpenRecord, forceVisible = false }) {
   const navigate = useNavigate();
-  if (!records.length) return null;
+  if (!records.length && !forceVisible) return null;
 
   const cards = [
     { label: 'Cần đặt lịch', value: summary.needBooking || 0, tone: 'warning' },
@@ -164,7 +164,12 @@ function FollowUpDashboard({ records, summary, onOpenRecord }) {
       </div>
 
       <div className="patient-follow-up-list">
-        {records.map((record) => {
+        {!records.length ? (
+          <div className="patient-follow-up-empty">
+            <strong>Chưa có hồ sơ cần tái khám</strong>
+            <p>Khi bác sĩ chỉ định tái khám, hồ sơ sẽ xuất hiện tại đây để bạn đặt lịch và theo dõi trạng thái.</p>
+          </div>
+        ) : records.map((record) => {
           const appointment = record.appointmentId || {};
           const followUpStatus = followUpStatusLabel(record);
 
@@ -389,6 +394,7 @@ export default function MedicalRecordsPage() {
   const [loading, setLoading] = useState(false);
   const [queryHandled, setQueryHandled] = useState('');
   const [recordsLoaded, setRecordsLoaded] = useState(false);
+  const followUpPanelRef = useRef(null);
 
   const loadRecords = useCallback(() => {
     setLoading(true);
@@ -453,6 +459,18 @@ export default function MedicalRecordsPage() {
     }
   }, [loading, location.search, queryHandled, records, recordsLoaded, toast]);
 
+  useEffect(() => {
+    if (loading || !recordsLoaded) return;
+
+    const params = new URLSearchParams(location.search);
+    const shouldFocusFollowUps = params.get('tab') === 'follow-ups' || params.get('followUps') === 'true';
+    if (!shouldFocusFollowUps) return;
+
+    window.requestAnimationFrame(() => {
+      followUpPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [loading, location.search, recordsLoaded]);
+
   async function handleDownloadPdf(record) {
     try {
       await downloadPdf(`/medical-records/${record._id}/pdf`, `ket-qua-kham-${record._id}.pdf`);
@@ -470,11 +488,17 @@ export default function MedicalRecordsPage() {
       </div>
 
       {!loading && (
-        <FollowUpDashboard
-          records={followUpRecords}
-          summary={followUpSummary}
-          onOpenRecord={setSelected}
-        />
+        <div ref={followUpPanelRef}>
+          <FollowUpDashboard
+            records={followUpRecords}
+            summary={followUpSummary}
+            forceVisible={
+              new URLSearchParams(location.search).get('tab') === 'follow-ups'
+              || new URLSearchParams(location.search).get('followUps') === 'true'
+            }
+            onOpenRecord={setSelected}
+          />
+        </div>
       )}
 
       {loading ? (

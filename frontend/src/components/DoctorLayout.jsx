@@ -6,6 +6,7 @@ const links = [
   { to: '/doctor/schedules', label: 'Lịch làm việc của tôi' },
   { to: '/doctor/appointments', label: 'Lịch hẹn của tôi' },
   { to: '/doctor/medical-records', label: 'Hồ sơ đã tạo' },
+  { to: '/doctor/medical-records?followUpOnly=true', label: 'Theo dõi tái khám' },
   { to: '/doctor/articles', label: 'Bài viết của tôi' },
   { to: '/doctor/reviews', label: 'Đánh giá của tôi' },
   { to: '/doctor/profile', label: 'Hồ sơ bác sĩ' }
@@ -14,6 +15,8 @@ const links = [
 export default function DoctorLayout() {
   const location = useLocation();
   const mainRef = useRef(null);
+  const searchParams = new URLSearchParams(location.search);
+  const isFollowUpMode = location.pathname === '/doctor/medical-records' && searchParams.get('followUpOnly') === 'true';
 
   useLayoutEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -28,14 +31,28 @@ export default function DoctorLayout() {
     if (mainRef.current) {
       mainRef.current.scrollTop = 0;
     }
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   return (
     <main className="doctor-layout">
       <aside className="doctor-sidebar">
         <h1 className="h5 mb-3">Bác sĩ</h1>
         {links.map((item) => (
-          <NavLink key={item.to} to={item.to}>
+          <NavLink
+            className={({ isActive }) => {
+              if (item.to === '/doctor/medical-records?followUpOnly=true') {
+                return isFollowUpMode ? 'active' : undefined;
+              }
+
+              if (item.to === '/doctor/medical-records') {
+                return location.pathname === '/doctor/medical-records' && !isFollowUpMode ? 'active' : undefined;
+              }
+
+              return isActive ? 'active' : undefined;
+            }}
+            key={item.to}
+            to={item.to}
+          >
             {item.label}
           </NavLink>
         ))}

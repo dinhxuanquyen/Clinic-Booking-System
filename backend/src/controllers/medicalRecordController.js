@@ -524,8 +524,22 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
   if (req.query.specialtyId) filter.specialtyId = req.query.specialtyId;
   if (req.query.followUpStatus) filter.followUpStatus = req.query.followUpStatus;
   if (String(req.query.followUpOnly || '') === 'true') filter.followUpRequired = true;
+  if (String(req.query.followUpNoDate || '') === 'true') {
+    filter.followUpRequired = true;
+    filter.$or = [
+      { followUpDate: null },
+      { followUpDate: { $exists: false } }
+    ];
+  }
 
-  if (req.query.followUpFrom || req.query.followUpTo) {
+  const summaryFilter = {
+    doctorId: req.user.doctorId,
+    followUpRequired: true
+  };
+  if (req.query.clinicId) summaryFilter.clinicId = req.query.clinicId;
+  if (req.query.specialtyId) summaryFilter.specialtyId = req.query.specialtyId;
+
+  if (String(req.query.followUpNoDate || '') !== 'true' && (req.query.followUpFrom || req.query.followUpTo)) {
     filter.followUpDate = {};
     if (req.query.followUpFrom) filter.followUpDate.$gte = new Date(`${req.query.followUpFrom}T00:00:00.000Z`);
     if (req.query.followUpTo) filter.followUpDate.$lte = new Date(`${req.query.followUpTo}T23:59:59.999Z`);
@@ -546,7 +560,10 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
     records = records.filter((record) => String(record.patientId?.name || '').toLowerCase().includes(keyword));
   }
 
-  const followUpSummary = records.reduce((summary, record) => {
+  const summaryRecords = await MedicalRecord.find(summaryFilter)
+    .select('_id followUpRequired followUpStatus followUpDate followUpAppointmentId');
+
+  const followUpSummary = summaryRecords.reduce((summary, record) => {
     if (!record.followUpRequired) return summary;
     const status = record.followUpStatus || 'recommended';
     summary.total += 1;

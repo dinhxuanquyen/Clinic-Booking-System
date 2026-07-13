@@ -21581,6 +21581,26 @@ html, body, #root {
   gap: 12px;
 }
 
+.patient-follow-up-empty {
+  padding: 22px;
+  border: 1px dashed #bae6fd;
+  border-radius: 18px;
+  background: rgba(240, 249, 255, 0.72);
+  color: #64748b;
+}
+
+.patient-follow-up-empty strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #0f2b5b;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.patient-follow-up-empty p {
+  margin: 0;
+}
+
 .patient-follow-up-item {
   display: flex;
   justify-content: space-between;
@@ -21867,6 +21887,33 @@ button.doctor-record-follow-up-card:focus-visible {
   font-weight: 700;
 }
 
+.doctor-follow-up-mode-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 20px;
+  padding: 18px 20px;
+  border: 1px solid #bae6fd;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 34%),
+    #f0f9ff;
+}
+
+.doctor-follow-up-mode-banner strong {
+  display: block;
+  color: #0f2d5c;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.doctor-follow-up-mode-banner p {
+  margin: 4px 0 0;
+  color: #64748b;
+  line-height: 1.5;
+}
+
 @media (max-width: 1024px) {
   .doctor-record-follow-up-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -21880,5 +21927,14 @@ button.doctor-record-follow-up-card:focus-visible {
 
   .doctor-follow-up-status-filter button {
     flex: 1 1 auto;
+  }
+
+  .doctor-follow-up-mode-banner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .doctor-follow-up-mode-banner .btn {
+    width: 100%;
   }
 }

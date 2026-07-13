@@ -223,6 +223,9 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
 export default function DoctorMedicalRecordsPage() {
   const location = useLocation();
   const toast = useToast();
+  const initialFollowUpOnly = useMemo(() => (
+    new URLSearchParams(location.search).get('followUpOnly') === 'true'
+  ), [location.search]);
   const currentDoctorId = useMemo(() => {
     const authUser = getUser();
     return String(authUser?.doctorId?._id || authUser?.doctorId || '');
@@ -248,7 +251,9 @@ export default function DoctorMedicalRecordsPage() {
     date: '',
     clinicId: '',
     specialtyId: '',
-    followUpStatus: ''
+    followUpStatus: '',
+    followUpOnly: initialFollowUpOnly ? 'true' : '',
+    followUpNoDate: ''
   });
 
   const query = useMemo(() => {
@@ -334,8 +339,34 @@ export default function DoctorMedicalRecordsPage() {
   }
 
   function resetFilters() {
-    setFilters({ patientName: '', date: '', clinicId: '', specialtyId: '', followUpStatus: '' });
+    setFilters({
+      patientName: '',
+      date: '',
+      clinicId: '',
+      specialtyId: '',
+      followUpStatus: '',
+      followUpOnly: '',
+      followUpNoDate: ''
+    });
   }
+
+  function applyFollowUpFilter(status, options = {}) {
+    setFilters((current) => ({
+      ...current,
+      followUpOnly: 'true',
+      followUpStatus: status,
+      followUpNoDate: options.noDate ? 'true' : ''
+    }));
+  }
+
+  useEffect(() => {
+    const shouldShowFollowUps = new URLSearchParams(location.search).get('followUpOnly') === 'true';
+    setFilters((current) => {
+      const nextValue = shouldShowFollowUps ? 'true' : '';
+      if (current.followUpOnly === nextValue) return current;
+      return { ...current, followUpOnly: nextValue };
+    });
+  }, [location.search]);
 
   async function downloadRecordPdf(record) {
     if (!record?._id || downloadingRecordId) return;
@@ -360,32 +391,44 @@ export default function DoctorMedicalRecordsPage() {
       </div>
 
       <section className="doctor-record-follow-up-summary" aria-label="Tổng quan tái khám">
-        <button className="doctor-record-follow-up-card warning" type="button" onClick={() => updateFilter('followUpStatus', 'recommended')}>
+        <button className="doctor-record-follow-up-card warning" type="button" onClick={() => applyFollowUpFilter('recommended')}>
           <span>Cần tái khám</span>
           <strong>{followUpSummary.needBooking || followUpSummary.recommended}</strong>
           <p>Hồ sơ có chỉ định tái khám, bệnh nhân chưa đặt lịch mới.</p>
         </button>
-        <button className="doctor-record-follow-up-card danger" type="button" onClick={() => updateFilter('followUpStatus', 'overdue')}>
+        <button className="doctor-record-follow-up-card danger" type="button" onClick={() => applyFollowUpFilter('overdue')}>
           <span>Quá hạn</span>
           <strong>{followUpSummary.overdue}</strong>
           <p>Đã quá ngày tái khám khuyến nghị, cần nhắc bệnh nhân.</p>
         </button>
-        <button className="doctor-record-follow-up-card success" type="button" onClick={() => updateFilter('followUpStatus', 'scheduled')}>
+        <button className="doctor-record-follow-up-card success" type="button" onClick={() => applyFollowUpFilter('scheduled')}>
           <span>Đã đặt lịch</span>
           <strong>{followUpSummary.scheduled}</strong>
           <p>Bệnh nhân đã có lịch tái khám liên kết với hồ sơ.</p>
         </button>
-        <button className="doctor-record-follow-up-card neutral" type="button" onClick={() => updateFilter('followUpStatus', 'recommended')}>
+        <button className="doctor-record-follow-up-card neutral" type="button" onClick={() => applyFollowUpFilter('recommended', { noDate: true })}>
           <span>Chưa có ngày cố định</span>
           <strong>{followUpSummary.noDate || 0}</strong>
           <p>Bác sĩ chỉ định cần tái khám nhưng để bệnh nhân tự chọn ngày phù hợp.</p>
         </button>
-        <button className="doctor-record-follow-up-card neutral" type="button" onClick={() => updateFilter('followUpStatus', 'completed')}>
+        <button className="doctor-record-follow-up-card neutral" type="button" onClick={() => applyFollowUpFilter('completed')}>
           <span>Đã hoàn thành</span>
           <strong>{followUpSummary.completed}</strong>
           <p>Hồ sơ đã được ghi nhận hoàn tất vòng tái khám.</p>
         </button>
       </section>
+
+      {filters.followUpOnly === 'true' && (
+        <section className="doctor-follow-up-mode-banner">
+          <div>
+            <strong>Đang theo dõi hồ sơ tái khám</strong>
+            <p>Danh sách chỉ hiển thị các hồ sơ có chỉ định tái khám để bác sĩ kiểm soát bệnh nhân cần quay lại, đã đặt lịch hoặc đã quá hạn.</p>
+          </div>
+          <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => updateFilter('followUpOnly', '')}>
+            Xem tất cả hồ sơ
+          </button>
+        </section>
+      )}
 
       <section className="queue-filter-card medical-record-filter-card">
         <div>
@@ -421,7 +464,14 @@ export default function DoctorMedicalRecordsPage() {
               className={filters.followUpStatus === item.value ? 'active' : ''}
               key={item.value || 'all'}
               type="button"
-              onClick={() => updateFilter('followUpStatus', item.value)}
+              onClick={() => {
+                setFilters((current) => ({
+                  ...current,
+                  followUpOnly: item.value ? 'true' : current.followUpOnly,
+                  followUpStatus: item.value,
+                  followUpNoDate: ''
+                }));
+              }}
             >
               {item.label}
             </button>
