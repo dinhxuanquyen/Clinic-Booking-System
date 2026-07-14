@@ -12,9 +12,21 @@ import { emitNotification, emitToRole, emitToUser } from '../services/socketServ
 import { sendMedicalRecordUpdatedEmail } from '../services/emailService.js';
 import { generateMedicalRecordPdf } from '../services/pdfService.js';
 import { FOLLOW_UP_STATUSES } from '../constants/followUpStatus.js';
+import { syncFollowUpStatusForAppointment } from '../services/followUpService.js';
 
 const medicalRecordPopulate = [
-  { path: 'appointmentId', select: 'date timeSlot reason status queueNumber consultationStatus completedAt noShowAt noShowAuto servicePackageId servicePackageSnapshot insuranceSnapshot paymentStatus paymentMethod isFollowUp followUpRecordId originalAppointmentId' },
+  {
+    path: 'appointmentId',
+    select: 'date timeSlot reason status queueNumber consultationStatus completedAt noShowAt noShowAuto servicePackageId servicePackageSnapshot insuranceSnapshot paymentStatus paymentMethod isFollowUp followUpRecordId followUpType originalAppointmentId',
+    populate: [
+      {
+        path: 'followUpRecordId',
+        select: 'appointmentId diagnosis followUpDate followUpStatus createdAt',
+        populate: { path: 'appointmentId', select: 'date timeSlot status' }
+      },
+      { path: 'originalAppointmentId', select: 'date timeSlot status' }
+    ]
+  },
   { path: 'patientId', select: 'name email phone' },
   { path: 'doctorId', select: 'name degree avatar personalEmail email' },
   { path: 'clinicId', select: 'name address phone' },
@@ -34,6 +46,12 @@ const appointmentPopulate = [
 const followUpAppointmentPopulate = {
   path: 'followUpAppointmentId',
   select: 'date timeSlot status queueNumber consultationStatus cancelledAt completedAt noShowAt'
+};
+
+const followUpCompletedRecordPopulate = {
+  path: 'followUpCompletedRecordId',
+  select: 'appointmentId diagnosis conclusion createdAt',
+  populate: { path: 'appointmentId', select: 'date timeSlot status' }
 };
 
 export const createMedicalRecordRules = [
@@ -319,7 +337,7 @@ export const createMedicalRecord = asyncHandler(async (req, res) => {
     throw new ApiError(403, 'Bạn không có quyền thực hiện thao tác này');
   }
 
-  const existed = await MedicalRecord.findOne({ appointmentId: appointment._id }).populate(medicalRecordPopulate);
+  const existed = await MedicalRecord.findOne({ appointmentId: appointment._id }).populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate]);
   if (existed) {
     const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
     return res.status(200).json({
@@ -380,12 +398,16 @@ export const createMedicalRecord = asyncHandler(async (req, res) => {
   appointment.finishConsultationAt = appointment.finishConsultationAt || now;
   await appointment.save();
 
+  if (appointment.followUpRecordId) {
+    await runMedicalRecordSideEffect('Follow-up completion sync', () => syncFollowUpStatusForAppointment(appointment, now));
+  }
+
   const patientUser = await User.findById(appointment.patientId).select('name email phone');
   if (patientUser) {
     await runMedicalRecordSideEffect('Medical record clinic sync', () => syncClinicAppointment(appointment, patientUser));
   }
 
-  const populatedRecord = await MedicalRecord.findById(record._id).populate(medicalRecordPopulate);
+  const populatedRecord = await MedicalRecord.findById(record._id).populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate]);
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
 
   await runMedicalRecordSideEffect('Medical record patient notification', () => notifyPatientMedicalRecordCreated(record, appointment));
@@ -420,7 +442,7 @@ export const createMedicalRecord = asyncHandler(async (req, res) => {
 });
 
 export const getMedicalRecordById = asyncHandler(async (req, res) => {
-  const record = await MedicalRecord.findById(req.params.id).populate([...medicalRecordPopulate, followUpAppointmentPopulate]);
+  const record = await MedicalRecord.findById(req.params.id).populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate]);
   if (!record) throw new ApiError(404, 'Không tìm thấy dữ liệu');
 
   assertRecordAccess(req.user, record);
@@ -433,7 +455,7 @@ export const getMedicalRecordById = asyncHandler(async (req, res) => {
 });
 
 export const exportMedicalRecordPdf = asyncHandler(async (req, res) => {
-  const record = await MedicalRecord.findById(req.params.id).populate([...medicalRecordPopulate, followUpAppointmentPopulate]);
+  const record = await MedicalRecord.findById(req.params.id).populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate]);
   if (!record) throw new ApiError(404, 'Không tìm thấy dữ liệu');
 
   assertRecordAccess(req.user, record);
@@ -455,7 +477,7 @@ export const exportMedicalRecordPdf = asyncHandler(async (req, res) => {
 });
 
 export const getMedicalRecordByAppointment = asyncHandler(async (req, res) => {
-  const record = await MedicalRecord.findOne({ appointmentId: req.params.appointmentId }).populate([...medicalRecordPopulate, followUpAppointmentPopulate]);
+  const record = await MedicalRecord.findOne({ appointmentId: req.params.appointmentId }).populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate]);
   if (!record) throw new ApiError(404, 'Không tìm thấy dữ liệu');
 
   assertRecordAccess(req.user, record);
@@ -469,7 +491,7 @@ export const getMedicalRecordByAppointment = asyncHandler(async (req, res) => {
 
 export const getMyMedicalRecords = asyncHandler(async (req, res) => {
   const records = await MedicalRecord.find({ patientId: req.user._id })
-    .populate([...medicalRecordPopulate, followUpAppointmentPopulate])
+    .populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate])
     .sort({ createdAt: -1 });
 
   res.json({
@@ -484,7 +506,7 @@ export const getMyFollowUpRecords = asyncHandler(async (req, res) => {
     patientId: req.user._id,
     followUpRequired: true
   })
-    .populate([...medicalRecordPopulate, followUpAppointmentPopulate])
+    .populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate])
     .sort({ followUpStatus: 1, followUpDate: 1, createdAt: -1 });
 
   const summary = records.reduce((result, record) => {
@@ -522,8 +544,19 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
   const filter = { doctorId: req.user.doctorId };
   if (req.query.clinicId) filter.clinicId = req.query.clinicId;
   if (req.query.specialtyId) filter.specialtyId = req.query.specialtyId;
-  if (req.query.followUpStatus) filter.followUpStatus = req.query.followUpStatus;
-  if (String(req.query.followUpOnly || '') === 'true') filter.followUpRequired = true;
+  if (req.query.followUpStatus) {
+    if (req.query.followUpStatus === FOLLOW_UP_STATUSES.NONE) {
+      filter.$or = [
+        { followUpRequired: false },
+        { followUpStatus: FOLLOW_UP_STATUSES.NONE }
+      ];
+    } else {
+      filter.followUpStatus = req.query.followUpStatus;
+    }
+  }
+  if (String(req.query.followUpOnly || '') === 'true' && req.query.followUpStatus !== FOLLOW_UP_STATUSES.NONE) {
+    filter.followUpRequired = true;
+  }
   if (String(req.query.followUpNoDate || '') === 'true') {
     filter.followUpRequired = true;
     filter.$or = [
@@ -532,10 +565,7 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
     ];
   }
 
-  const summaryFilter = {
-    doctorId: req.user.doctorId,
-    followUpRequired: true
-  };
+  const summaryFilter = { doctorId: req.user.doctorId };
   if (req.query.clinicId) summaryFilter.clinicId = req.query.clinicId;
   if (req.query.specialtyId) summaryFilter.specialtyId = req.query.specialtyId;
 
@@ -552,7 +582,7 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
   }
 
   let records = await MedicalRecord.find(filter)
-    .populate([...medicalRecordPopulate, followUpAppointmentPopulate])
+    .populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate])
     .sort({ createdAt: -1 });
 
   if (req.query.patientName) {
@@ -564,12 +594,11 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
     .select('_id followUpRequired followUpStatus followUpDate followUpAppointmentId');
 
   const followUpSummary = summaryRecords.reduce((summary, record) => {
-    if (!record.followUpRequired) return summary;
-    const status = record.followUpStatus || 'recommended';
+    const status = record.followUpRequired ? (record.followUpStatus || 'recommended') : FOLLOW_UP_STATUSES.NONE;
     summary.total += 1;
     summary[status] = (summary[status] || 0) + 1;
-    if (!record.followUpDate) summary.noDate += 1;
-    if ([FOLLOW_UP_STATUSES.RECOMMENDED, FOLLOW_UP_STATUSES.OVERDUE].includes(status) && !record.followUpAppointmentId) {
+    if (record.followUpRequired && !record.followUpDate) summary.noDate += 1;
+    if (record.followUpRequired && [FOLLOW_UP_STATUSES.RECOMMENDED, FOLLOW_UP_STATUSES.OVERDUE].includes(status) && !record.followUpAppointmentId) {
       summary.needBooking += 1;
     }
     return summary;
@@ -580,7 +609,9 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
     recommended: 0,
     scheduled: 0,
     completed: 0,
-    overdue: 0
+    overdue: 0,
+    none: 0,
+    cancelled: 0
   });
 
   res.json({

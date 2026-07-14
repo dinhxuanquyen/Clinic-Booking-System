@@ -27,7 +27,34 @@ function doctorFollowUpStatusLabel(record) {
   if (!record?.followUpRequired) return { label: 'Không cần tái khám', tone: 'neutral' };
   if (record.followUpStatus === 'scheduled') return { label: 'Đã đặt lịch tái khám', tone: 'success' };
   if (record.followUpStatus === 'overdue') return { label: 'Quá hạn tái khám', tone: 'danger' };
+  if (record.followUpStatus === 'cancelled') return { label: 'Đã hủy lịch tái khám', tone: 'danger' };
   return { label: 'Cần tái khám', tone: 'warning' };
+}
+
+function appointmentStatusLabel(status) {
+  const labels = {
+    pending: 'Chờ xác nhận',
+    confirmed: 'Đã xác nhận',
+    in_progress: 'Đang khám',
+    completed: 'Đã hoàn thành khám',
+    cancelled: 'Đã hủy',
+    no_show: 'Không đến khám',
+    cancel_requested: 'Yêu cầu hủy',
+    reschedule_requested: 'Yêu cầu đổi lịch',
+    reschedule_rejected: 'Từ chối đổi lịch'
+  };
+  return labels[status] || 'Chưa cập nhật';
+}
+
+function appointmentStatusTone(status) {
+  if (status === 'completed') return 'success';
+  if (['cancelled', 'no_show'].includes(status)) return 'danger';
+  if (['pending', 'cancel_requested', 'reschedule_requested'].includes(status)) return 'warning';
+  return 'neutral';
+}
+
+function getId(value) {
+  return typeof value === 'object' ? value?._id : value;
 }
 
 function linkedFollowUpAppointmentId(record) {
@@ -58,12 +85,11 @@ function doctorFollowUpDescription(record) {
 
 function buildFollowUpSummary(items) {
   return items.reduce((summary, record) => {
-    if (!record.followUpRequired) return summary;
-    const status = record.followUpStatus || 'recommended';
+    const status = record.followUpRequired ? (record.followUpStatus || 'recommended') : 'none';
     summary.total += 1;
     summary[status] = (summary[status] || 0) + 1;
-    if (!record.followUpDate) summary.noDate += 1;
-    if (['recommended', 'overdue'].includes(status) && !record.followUpAppointmentId) {
+    if (record.followUpRequired && !record.followUpDate) summary.noDate += 1;
+    if (record.followUpRequired && ['recommended', 'overdue'].includes(status) && !record.followUpAppointmentId) {
       summary.needBooking += 1;
     }
     return summary;
@@ -74,16 +100,18 @@ function buildFollowUpSummary(items) {
     recommended: 0,
     scheduled: 0,
     completed: 0,
-    overdue: 0
+    overdue: 0,
+    none: 0,
+    cancelled: 0
   });
 }
 
 const FOLLOW_UP_FILTERS = [
-  { value: '', label: 'Tất cả' },
   { value: 'recommended', label: 'Cần tái khám' },
-  { value: 'overdue', label: 'Quá hạn' },
   { value: 'scheduled', label: 'Đã đặt lịch' },
-  { value: 'completed', label: 'Đã hoàn thành' }
+  { value: 'overdue', label: 'Quá hạn' },
+  { value: 'completed', label: 'Đã hoàn thành' },
+  { value: 'none', label: 'Không cần tái khám' }
 ];
 
 function InsuranceSnapshotCard({ insurance }) {
@@ -124,6 +152,12 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
   const appointment = record.appointmentId || {};
   const followUpStatus = doctorFollowUpStatusLabel(record);
   const linkedAppointmentId = linkedFollowUpAppointmentId(record);
+  const sourceFollowUpRecord = appointment.followUpRecordId && typeof appointment.followUpRecordId === 'object'
+    ? appointment.followUpRecordId
+    : null;
+  const sourceAppointment = sourceFollowUpRecord?.appointmentId || appointment.originalAppointmentId;
+  const isFollowUpRecord = Boolean(appointment.isFollowUp || appointment.followUpRecordId);
+  const sourceDate = sourceAppointment?.date || sourceFollowUpRecord?.createdAt;
 
   return (
     <BaseModal className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
@@ -147,6 +181,19 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
         <div><span>Chuyên khoa</span><strong>{getName(record.specialtyId)}</strong></div>
         <div><span>Tái khám</span><strong>{doctorFollowUpText(record)}</strong></div>
       </div>
+
+      {isFollowUpRecord && (
+        <div className="doctor-follow-up-source-banner">
+          <div>
+            <span>Hồ sơ tái khám</span>
+            <strong>
+              Hồ sơ này là tái khám từ hồ sơ ngày {sourceDate ? formatDate(sourceDate) : 'trước đó'}
+              {sourceAppointment?.timeSlot ? `, khung giờ ${sourceAppointment.timeSlot}` : ''}.
+            </strong>
+            {sourceFollowUpRecord?.diagnosis && <p>Chẩn đoán lần khám gốc: {sourceFollowUpRecord.diagnosis}</p>}
+          </div>
+        </div>
+      )}
 
       {record.followUpRequired && (
         <div className={`medical-record-follow-up-card ${followUpStatus.tone}`}>
@@ -222,6 +269,7 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
 
 export default function DoctorMedicalRecordsPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const toast = useToast();
   const initialFollowUpOnly = useMemo(() => (
     new URLSearchParams(location.search).get('followUpOnly') === 'true'
@@ -244,7 +292,9 @@ export default function DoctorMedicalRecordsPage() {
     recommended: 0,
     scheduled: 0,
     completed: 0,
-    overdue: 0
+    overdue: 0,
+    none: 0,
+    cancelled: 0
   });
   const [filters, setFilters] = useState({
     patientName: '',
@@ -255,6 +305,7 @@ export default function DoctorMedicalRecordsPage() {
     followUpOnly: initialFollowUpOnly ? 'true' : '',
     followUpNoDate: ''
   });
+  const isFollowUpDashboard = filters.followUpOnly === 'true';
 
   const query = useMemo(() => {
     const params = new URLSearchParams();
@@ -359,6 +410,26 @@ export default function DoctorMedicalRecordsPage() {
     }));
   }
 
+  async function openRecordDetail(recordOrId) {
+    if (!recordOrId) return;
+    if (typeof recordOrId === 'object' && recordOrId.patientId && recordOrId.doctorId) {
+      setSelected(recordOrId);
+      return;
+    }
+    try {
+      const payload = await api(`/medical-records/${getId(recordOrId)}`);
+      setSelected(payload.data);
+    } catch (error) {
+      toast.error(error.message || 'Không mở được hồ sơ khám bệnh');
+    }
+  }
+
+  function openFollowUpAppointment(record) {
+    const appointmentId = linkedFollowUpAppointmentId(record);
+    if (!appointmentId) return;
+    navigate(`/doctor/appointments?appointmentId=${appointmentId}`);
+  }
+
   useEffect(() => {
     const shouldShowFollowUps = new URLSearchParams(location.search).get('followUpOnly') === 'true';
     setFilters((current) => {
@@ -385,44 +456,48 @@ export default function DoctorMedicalRecordsPage() {
       <div className="doctor-page-header">
         <div className="doctor-page-header-main">
           <p className="doctor-page-eyebrow">Hồ sơ khám bệnh</p>
-          <h1 className="doctor-page-title">Hồ sơ đã tạo</h1>
-          <p className="doctor-page-subtitle">Xem lại kết quả khám, chẩn đoán và đơn thuốc bạn đã cập nhật cho bệnh nhân.</p>
+          <h1 className="doctor-page-title">{isFollowUpDashboard ? 'Theo dõi tái khám' : 'Hồ sơ đã tạo'}</h1>
+          <p className="doctor-page-subtitle">
+            {isFollowUpDashboard
+              ? 'Theo dõi bệnh nhân cần tái khám, lịch đã đặt và hồ sơ tái khám đã hoàn thành.'
+              : 'Xem lại kết quả khám, chẩn đoán và đơn thuốc bạn đã cập nhật cho bệnh nhân.'}
+          </p>
         </div>
       </div>
 
       <section className="doctor-record-follow-up-summary" aria-label="Tổng quan tái khám">
-        <button className="doctor-record-follow-up-card warning" type="button" onClick={() => applyFollowUpFilter('recommended')}>
+        <button className={`doctor-record-follow-up-card warning ${filters.followUpStatus === 'recommended' ? 'active' : ''}`} type="button" onClick={() => applyFollowUpFilter('recommended')}>
           <span>Cần tái khám</span>
           <strong>{followUpSummary.needBooking || followUpSummary.recommended}</strong>
           <p>Hồ sơ có chỉ định tái khám, bệnh nhân chưa đặt lịch mới.</p>
         </button>
-        <button className="doctor-record-follow-up-card danger" type="button" onClick={() => applyFollowUpFilter('overdue')}>
-          <span>Quá hạn</span>
-          <strong>{followUpSummary.overdue}</strong>
-          <p>Đã quá ngày tái khám khuyến nghị, cần nhắc bệnh nhân.</p>
-        </button>
-        <button className="doctor-record-follow-up-card success" type="button" onClick={() => applyFollowUpFilter('scheduled')}>
+        <button className={`doctor-record-follow-up-card success ${filters.followUpStatus === 'scheduled' ? 'active' : ''}`} type="button" onClick={() => applyFollowUpFilter('scheduled')}>
           <span>Đã đặt lịch</span>
           <strong>{followUpSummary.scheduled}</strong>
           <p>Bệnh nhân đã có lịch tái khám liên kết với hồ sơ.</p>
         </button>
-        <button className="doctor-record-follow-up-card neutral" type="button" onClick={() => applyFollowUpFilter('recommended', { noDate: true })}>
-          <span>Chưa có ngày cố định</span>
-          <strong>{followUpSummary.noDate || 0}</strong>
-          <p>Bác sĩ chỉ định cần tái khám nhưng để bệnh nhân tự chọn ngày phù hợp.</p>
+        <button className={`doctor-record-follow-up-card danger ${filters.followUpStatus === 'overdue' ? 'active' : ''}`} type="button" onClick={() => applyFollowUpFilter('overdue')}>
+          <span>Quá hạn</span>
+          <strong>{followUpSummary.overdue}</strong>
+          <p>Đã quá ngày tái khám khuyến nghị, cần nhắc bệnh nhân.</p>
         </button>
-        <button className="doctor-record-follow-up-card neutral" type="button" onClick={() => applyFollowUpFilter('completed')}>
+        <button className={`doctor-record-follow-up-card neutral ${filters.followUpStatus === 'completed' ? 'active' : ''}`} type="button" onClick={() => applyFollowUpFilter('completed')}>
           <span>Đã hoàn thành</span>
           <strong>{followUpSummary.completed}</strong>
           <p>Hồ sơ đã được ghi nhận hoàn tất vòng tái khám.</p>
         </button>
+        <button className={`doctor-record-follow-up-card neutral ${filters.followUpStatus === 'none' ? 'active' : ''}`} type="button" onClick={() => applyFollowUpFilter('none')}>
+          <span>Không cần tái khám</span>
+          <strong>{followUpSummary.none || 0}</strong>
+          <p>Hồ sơ đã kết thúc, không có kế hoạch theo dõi tiếp.</p>
+        </button>
       </section>
 
-      {filters.followUpOnly === 'true' && (
+      {isFollowUpDashboard && (
         <section className="doctor-follow-up-mode-banner">
           <div>
-            <strong>Đang theo dõi hồ sơ tái khám</strong>
-            <p>Danh sách chỉ hiển thị các hồ sơ có chỉ định tái khám để bác sĩ kiểm soát bệnh nhân cần quay lại, đã đặt lịch hoặc đã quá hạn.</p>
+            <strong>Dashboard theo dõi tái khám</strong>
+            <p>Bác sĩ có thể kiểm tra hồ sơ gốc, lịch tái khám đã đặt và hồ sơ tái khám đã tạo trong cùng một dòng.</p>
           </div>
           <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => updateFilter('followUpOnly', '')}>
             Xem tất cả hồ sơ
@@ -459,6 +534,13 @@ export default function DoctorMedicalRecordsPage() {
         </div>
         <div className="doctor-follow-up-status-filter">
           <span>Trạng thái tái khám</span>
+          <button
+            className={filters.followUpOnly !== 'true' && !filters.followUpStatus ? 'active' : ''}
+            type="button"
+            onClick={() => setFilters((current) => ({ ...current, followUpOnly: '', followUpStatus: '', followUpNoDate: '' }))}
+          >
+            Tất cả hồ sơ
+          </button>
           {FOLLOW_UP_FILTERS.map((item) => (
             <button
               className={filters.followUpStatus === item.value ? 'active' : ''}
@@ -490,42 +572,124 @@ export default function DoctorMedicalRecordsPage() {
             <table className="table table-hover align-middle admin-table">
               <thead>
                 <tr>
-                  <th>Ngày khám</th>
-                  <th>Bệnh nhân</th>
-                  <th>Cơ sở</th>
-                  <th>Chuyên khoa</th>
-                  <th>Chẩn đoán</th>
-                  <th>Tái khám</th>
-                  <th className="text-end">Thao tác</th>
+                  {isFollowUpDashboard ? (
+                    <>
+                      <th>Ngày khám gốc</th>
+                      <th>Bệnh nhân</th>
+                      <th>Chẩn đoán</th>
+                      <th>Ngày tái khám khuyến nghị</th>
+                      <th>Lịch tái khám đã đặt</th>
+                      <th>Trạng thái đến khám</th>
+                      <th className="text-end">Thao tác</th>
+                    </>
+                  ) : (
+                    <>
+                      <th>Ngày khám</th>
+                      <th>Bệnh nhân</th>
+                      <th>Cơ sở</th>
+                      <th>Chuyên khoa</th>
+                      <th>Chẩn đoán</th>
+                      <th>Tái khám</th>
+                      <th className="text-end">Thao tác</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody>
                 {records.map((record) => {
                   const appointment = record.appointmentId || {};
                   const followUpStatus = doctorFollowUpStatusLabel(record);
+                  const followUpAppointment = record.followUpAppointmentId && typeof record.followUpAppointmentId === 'object'
+                    ? record.followUpAppointmentId
+                    : null;
+                  const followUpCompletedRecord = record.followUpCompletedRecordId;
+                  const followUpCompletedRecordId = getId(followUpCompletedRecord);
+                  const attendanceTone = appointmentStatusTone(followUpAppointment?.status);
                   return (
                     <tr key={record._id}>
-                      <td>{appointment.date || formatDate(record.createdAt)}</td>
-                      <td>{getName(record.patientId)}</td>
-                      <td>{getName(record.clinicId)}</td>
-                      <td>{getName(record.specialtyId)}</td>
-                      <td>{record.diagnosis}</td>
-                      <td>
-                        <div className="doctor-follow-up-table-cell">
-                          <span className={`follow-up-status-pill ${followUpStatus.tone}`}>{followUpStatus.label}</span>
-                          {record.followUpRequired && <small>{doctorFollowUpText(record)}</small>}
-                        </div>
-                      </td>
-                      <td className="text-end">
-                        <div className="d-flex flex-wrap justify-content-end gap-2">
-                          <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => setSelected(record)}>
-                            Xem chi tiết
-                          </button>
-                          <button className="btn btn-sm btn-outline-success" disabled={downloadingRecordId === record._id} type="button" onClick={() => downloadRecordPdf(record)}>
-                            {downloadingRecordId === record._id ? 'Đang tải...' : 'Tải PDF'}
-                          </button>
-                        </div>
-                      </td>
+                      {isFollowUpDashboard ? (
+                        <>
+                          <td>
+                            <div className="doctor-follow-up-table-cell">
+                              <strong>{appointment.date || formatDate(record.createdAt)}</strong>
+                              <small>{appointment.timeSlot || 'Chưa cập nhật giờ'}</small>
+                            </div>
+                          </td>
+                          <td>{getName(record.patientId)}</td>
+                          <td>
+                            <div className="doctor-follow-up-table-cell">
+                              <strong>{record.diagnosis}</strong>
+                              <small>{getName(record.specialtyId)} · {getName(record.clinicId)}</small>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="doctor-follow-up-table-cell">
+                              <span className={`follow-up-status-pill ${followUpStatus.tone}`}>{followUpStatus.label}</span>
+                              <small>{doctorFollowUpText(record)}</small>
+                            </div>
+                          </td>
+                          <td>
+                            {followUpAppointment ? (
+                              <div className="doctor-follow-up-appointment-mini">
+                                <strong>{formatDate(followUpAppointment.date)}</strong>
+                                <span>{followUpAppointment.timeSlot || 'Chưa cập nhật giờ'}</span>
+                              </div>
+                            ) : (
+                              <span className="text-secondary fw-bold">Chưa có lịch</span>
+                            )}
+                          </td>
+                          <td>
+                            {followUpAppointment ? (
+                              <span className={`follow-up-status-pill ${attendanceTone}`}>
+                                {appointmentStatusLabel(followUpAppointment.status)}
+                              </span>
+                            ) : (
+                              <span className="follow-up-status-pill neutral">Chưa đặt lịch</span>
+                            )}
+                          </td>
+                          <td className="text-end">
+                            <div className="doctor-follow-up-row-actions">
+                              <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => setSelected(record)}>
+                                Xem hồ sơ gốc
+                              </button>
+                              {linkedFollowUpAppointmentId(record) && (
+                                <button className="btn btn-sm btn-outline-info" type="button" onClick={() => openFollowUpAppointment(record)}>
+                                  Xem lịch tái khám
+                                </button>
+                              )}
+                              {followUpCompletedRecordId && (
+                                <button className="btn btn-sm btn-outline-success" type="button" onClick={() => openRecordDetail(followUpCompletedRecord)}>
+                                  Xem hồ sơ tái khám
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td>{appointment.date || formatDate(record.createdAt)}</td>
+                          <td>{getName(record.patientId)}</td>
+                          <td>{getName(record.clinicId)}</td>
+                          <td>{getName(record.specialtyId)}</td>
+                          <td>{record.diagnosis}</td>
+                          <td>
+                            <div className="doctor-follow-up-table-cell">
+                              <span className={`follow-up-status-pill ${followUpStatus.tone}`}>{followUpStatus.label}</span>
+                              {record.followUpRequired && <small>{doctorFollowUpText(record)}</small>}
+                            </div>
+                          </td>
+                          <td className="text-end">
+                            <div className="d-flex flex-wrap justify-content-end gap-2">
+                              <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => setSelected(record)}>
+                                Xem chi tiết
+                              </button>
+                              <button className="btn btn-sm btn-outline-success" disabled={downloadingRecordId === record._id} type="button" onClick={() => downloadRecordPdf(record)}>
+                                {downloadingRecordId === record._id ? 'Đang tải...' : 'Tải PDF'}
+                              </button>
+                            </div>
+                          </td>
+                        </>
+                      )}
                     </tr>
                   );
                 })}

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { APPOINTMENT_STATUS_VALUES, SLOT_HOLDING_APPOINTMENT_STATUSES } from '../constants/appointmentStatus.js';
+import { FOLLOW_UP_TYPE_VALUES } from '../constants/followUpStatus.js';
 
 const insuranceSnapshotSchema = new mongoose.Schema(
   {
@@ -83,6 +84,12 @@ const appointmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'MedicalRecord',
       default: null,
+      index: true
+    },
+    followUpType: {
+      type: String,
+      enum: ['', ...FOLLOW_UP_TYPE_VALUES],
+      default: '',
       index: true
     },
     originalAppointmentId: {

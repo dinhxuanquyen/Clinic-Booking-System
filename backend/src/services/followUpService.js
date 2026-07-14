@@ -54,6 +54,7 @@ async function emitFollowUpUpdated(record, reason = 'updated') {
     followUpStatus: record.followUpStatus,
     followUpDate: formatDate(record.followUpDate),
     followUpAppointmentId: record.followUpAppointmentId ? String(toObjectId(record.followUpAppointmentId)) : null,
+    followUpCompletedRecordId: record.followUpCompletedRecordId ? String(toObjectId(record.followUpCompletedRecordId)) : null,
     reason
   };
 
@@ -109,7 +110,10 @@ export async function syncFollowUpStatusForAppointment(appointment, now = new Da
   if (!record || !record.followUpRequired) return null;
 
   if (appointment.status === APPOINTMENT_STATUSES.COMPLETED) {
+    const completedRecord = await MedicalRecord.findOne({ appointmentId: toObjectId(appointment._id) }).select('_id');
     record.followUpStatus = FOLLOW_UP_STATUSES.COMPLETED;
+    record.followUpAppointmentId = toObjectId(appointment._id);
+    record.followUpCompletedRecordId = completedRecord?._id || record.followUpCompletedRecordId || null;
     record.followUpCompletedAt = appointment.completedAt || now;
     record.followUpOverdueAt = undefined;
     await record.save();
@@ -119,6 +123,7 @@ export async function syncFollowUpStatusForAppointment(appointment, now = new Da
 
   if ([APPOINTMENT_STATUSES.CANCELLED, APPOINTMENT_STATUSES.NO_SHOW].includes(appointment.status)) {
     record.followUpAppointmentId = null;
+    record.followUpCompletedRecordId = null;
     record.followUpCompletedAt = undefined;
     record.followUpStatus = isPastFollowUpDate(record, now) ? FOLLOW_UP_STATUSES.OVERDUE : FOLLOW_UP_STATUSES.RECOMMENDED;
     if (record.followUpStatus === FOLLOW_UP_STATUSES.OVERDUE) {
@@ -135,6 +140,9 @@ export async function syncFollowUpStatusForAppointment(appointment, now = new Da
   if (record.followUpStatus !== FOLLOW_UP_STATUSES.SCHEDULED || currentFollowUpAppointmentId !== nextFollowUpAppointmentId) {
     record.followUpStatus = FOLLOW_UP_STATUSES.SCHEDULED;
     record.followUpAppointmentId = toObjectId(appointment._id);
+    record.followUpCompletedRecordId = null;
+    record.followUpCompletedAt = undefined;
+    record.followUpOverdueAt = undefined;
     await record.save();
     await emitFollowUpUpdated(record, 'scheduled');
   }
@@ -147,7 +155,7 @@ async function syncScheduledFollowUps(now) {
     followUpRequired: true,
     followUpStatus: FOLLOW_UP_STATUSES.SCHEDULED,
     followUpAppointmentId: { $ne: null }
-  }).select('_id followUpRequired followUpStatus followUpDate followUpAppointmentId followUpCompletedAt followUpOverdueAt');
+  }).select('_id followUpRequired followUpStatus followUpDate followUpAppointmentId followUpCompletedRecordId followUpCompletedAt followUpOverdueAt');
 
   let synced = 0;
   for (const record of records) {

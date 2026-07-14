@@ -90,6 +90,11 @@ const medicalRecordSchema = new mongoose.Schema(
       ref: 'Appointment',
       default: null
     },
+    followUpCompletedRecordId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'MedicalRecord',
+      default: null
+    },
     followUpReminderSentAt: Date,
     followUpOverdueAt: Date,
     followUpCompletedAt: Date,
@@ -103,5 +108,7 @@ const medicalRecordSchema = new mongoose.Schema(
 medicalRecordSchema.index({ patientId: 1, createdAt: -1 });
 medicalRecordSchema.index({ doctorId: 1, createdAt: -1 });
 medicalRecordSchema.index({ followUpRequired: 1, followUpStatus: 1, followUpDate: 1 });
+medicalRecordSchema.index({ followUpAppointmentId: 1 });
+medicalRecordSchema.index({ followUpCompletedRecordId: 1 });
 
 export default mongoose.models.MedicalRecord || mongoose.model('MedicalRecord', medicalRecordSchema);

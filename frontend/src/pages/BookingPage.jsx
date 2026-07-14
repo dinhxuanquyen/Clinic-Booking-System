@@ -281,8 +281,9 @@ export default function BookingPage() {
       pendingDoctorIdRef.current = '';
     } else if (followUpRecord) {
       setFollowUpDoctorUnavailable(true);
+      setForm((current) => ({ ...current, doctorId: '', timeSlot: '' }));
       pendingDoctorIdRef.current = '';
-      toast.warning('Bác sĩ chỉ định tái khám hiện không còn hoạt động. Vui lòng chọn bác sĩ khác cùng chuyên khoa.');
+      toast.warning('Bác sĩ hiện không còn nhận lịch. Vui lòng chọn bác sĩ khác cùng chuyên khoa.');
     }
   }, [doctors, followUpRecord, toast]);
 
@@ -367,6 +368,17 @@ export default function BookingPage() {
   const selectedSpecialty = specialties.find((specialty) => specialty._id === form.specialtyId);
   const selectedDoctor = doctors.find((doctor) => doctor._id === form.doctorId);
   const selectedPackage = servicePackages.find((item) => item._id === form.servicePackageId);
+  const followUpOriginalDate = followUpRecord ? formatSimpleDate(followUpRecord.appointmentId?.date || followUpRecord.createdAt) : '';
+  const followUpRecommendedDate = formatSimpleDate(followUpRecord?.followUpDate);
+  const followUpDoctorLocked = Boolean(followUpRecord && getId(followUpRecord.doctorId) && !followUpDoctorUnavailable);
+  const followUpRecommendedDateNoSlots = Boolean(
+    followUpRecord &&
+    followUpRecommendedDate &&
+    form.date === followUpRecommendedDate &&
+    form.doctorId &&
+    !loading.slots &&
+    !slots.length
+  );
   const displayedPackages = showAllPackages ? servicePackages : servicePackages.slice(0, 3);
   const canSubmitMainSteps = Boolean(form.clinicId && form.specialtyId && form.doctorId && form.date && form.timeSlot);
   const showStickyAction = Boolean(form.doctorId && form.date && form.timeSlot);
@@ -496,7 +508,7 @@ export default function BookingPage() {
               </p>
               {followUpDoctorUnavailable && (
                 <p className="booking-follow-up-warning">
-                  Bác sĩ chỉ định tái khám hiện không còn hoạt động. Bạn có thể chọn bác sĩ khác cùng chuyên khoa để tiếp tục đặt lịch.
+                  Bác sĩ hiện không còn nhận lịch. Vui lòng chọn bác sĩ khác cùng chuyên khoa.
                 </p>
               )}
             </div>
@@ -516,19 +528,34 @@ export default function BookingPage() {
               <div className="booking-step-grid two-columns">
                 <label>
                   <span>Cơ sở/phòng khám</span>
-                  <select className="form-select" value={form.clinicId} onChange={(event) => updateForm('clinicId', event.target.value)}>
+                  <select
+                    className="form-select"
+                    value={form.clinicId}
+                    disabled={Boolean(followUpRecord)}
+                    onChange={(event) => updateForm('clinicId', event.target.value)}
+                  >
                     <option value="">{loading.clinics ? 'Đang tải...' : 'Chọn cơ sở'}</option>
                     {clinics.map((clinic) => <option key={clinic._id} value={clinic._id}>{clinic.name}</option>)}
                   </select>
                 </label>
                 <label>
                   <span>Chuyên khoa</span>
-                  <select className="form-select" value={form.specialtyId} disabled={!form.clinicId} onChange={(event) => updateForm('specialtyId', event.target.value)}>
+                  <select
+                    className="form-select"
+                    value={form.specialtyId}
+                    disabled={!form.clinicId || Boolean(followUpRecord)}
+                    onChange={(event) => updateForm('specialtyId', event.target.value)}
+                  >
                     <option value="">{loading.specialties ? 'Đang tải...' : 'Chọn chuyên khoa'}</option>
                     {specialties.map((specialty) => <option key={specialty._id} value={specialty._id}>{specialty.name}</option>)}
                   </select>
                 </label>
               </div>
+              {followUpRecord && (
+                <p className="booking-field-helper">
+                  Cơ sở và chuyên khoa được giữ theo hồ sơ khám gốc để lịch tái khám không bị tách khỏi quá trình điều trị.
+                </p>
+              )}
               <div className="booking-ai-row">
                 <span>🤖 Chưa biết nên chọn chuyên khoa?</span>
                 <Link to="/symptom-checker">Thử tư vấn triệu chứng AI</Link>
@@ -546,10 +573,21 @@ export default function BookingPage() {
               <div className="booking-step-grid two-columns">
                 <label>
                   <span>Bác sĩ</span>
-                  <select className="form-select" value={form.doctorId} disabled={!form.specialtyId} onChange={(event) => updateForm('doctorId', event.target.value)}>
+                  <select
+                    className="form-select"
+                    value={form.doctorId}
+                    disabled={!form.specialtyId || followUpDoctorLocked}
+                    onChange={(event) => updateForm('doctorId', event.target.value)}
+                  >
                     <option value="">{loading.doctors ? 'Đang tải...' : 'Chọn bác sĩ'}</option>
                     {doctors.map((doctor) => <option key={doctor._id} value={doctor._id}>{doctor.name} - {getName(doctor.specialtyId)}</option>)}
                   </select>
+                  {followUpDoctorLocked && (
+                    <em className="booking-field-helper">Bác sĩ tái khám được giữ theo hồ sơ gốc trong giai đoạn này.</em>
+                  )}
+                  {followUpDoctorUnavailable && (
+                    <em className="booking-field-helper warning">Bác sĩ hiện không còn nhận lịch. Vui lòng chọn bác sĩ khác cùng chuyên khoa.</em>
+                  )}
                 </label>
                 <label>
                   <span>Ngày khám</span>
@@ -613,7 +651,13 @@ export default function BookingPage() {
                     </div>
                   );
                 })}
-                {!loading.slots && form.doctorId && !slots.length && <span className="text-secondary">Không có khung giờ khám.</span>}
+                {!loading.slots && form.doctorId && !slots.length && (
+                  <span className={followUpRecommendedDateNoSlots ? 'booking-inline-warning' : 'text-secondary'}>
+                    {followUpRecommendedDateNoSlots
+                      ? 'Ngày tái khám khuyến nghị hiện chưa có khung giờ trống. Bạn có thể chọn ngày khác, hệ thống vẫn giữ bác sĩ và chuyên khoa tái khám.'
+                      : 'Không có khung giờ khám.'}
+                  </span>
+                )}
                 {!form.doctorId && <span className="text-secondary">Vui lòng chọn bác sĩ để xem khung giờ.</span>}
               </div>
             </section>
@@ -786,10 +830,10 @@ export default function BookingPage() {
                     <dt>Loại lịch</dt>
                     <dd>
                       <strong>Lịch tái khám</strong>
-                      <span>Theo hồ sơ khám ngày {formatSimpleDate(followUpRecord.appointmentId?.date || followUpRecord.createdAt)}</span>
+                      <span>Theo hồ sơ khám ngày {followUpOriginalDate || 'đã tạo'}</span>
                       <span>
-                        {followUpRecord.followUpDate
-                          ? `Ngày khuyến nghị: ${formatSimpleDate(followUpRecord.followUpDate)}`
+                        {followUpRecommendedDate
+                          ? `Ngày khuyến nghị: ${followUpRecommendedDate}`
                           : 'Bác sĩ chưa chỉ định ngày cụ thể'}
                       </span>
                     </dd>

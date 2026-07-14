@@ -45,6 +45,15 @@ function formatRecordDate(value) {
   return String(value).slice(0, 10);
 }
 
+function appointmentDateParts(appointment) {
+  const [year, month, day] = String(appointment?.date || '').split('-');
+  return {
+    dayMonth: day && month ? `${day}/${month}` : appointment?.date || 'Chưa cập nhật',
+    year: year || '',
+    time: appointment?.timeSlot || 'Chưa chọn giờ'
+  };
+}
+
 function recordFollowUpText(record) {
   if (!record?.followUpRequired) return 'Không cần tái khám';
   return record.followUpDate ? formatRecordDate(record.followUpDate) : 'Bác sĩ chưa chỉ định ngày cụ thể';
@@ -55,6 +64,7 @@ function followUpStatusLabel(record) {
   if (!record?.followUpRequired) return { label: 'Không cần tái khám', tone: 'neutral' };
   if (record.followUpStatus === 'scheduled') return { label: 'Đã đặt lịch tái khám', tone: 'success' };
   if (record.followUpStatus === 'overdue') return { label: 'Quá hạn tái khám', tone: 'danger' };
+  if (record.followUpStatus === 'cancelled') return { label: 'Đã hủy lịch tái khám', tone: 'danger' };
   return { label: 'Cần tái khám', tone: 'warning' };
 }
 
@@ -390,30 +400,50 @@ function getFollowUpRecord(appointment) {
   return record && typeof record === 'object' ? record : null;
 }
 
-function getFollowUpAppointmentHint(appointment) {
+function getFollowUpOriginalAppointment(appointment) {
   const record = getFollowUpRecord(appointment);
-  const original = record?.appointmentId && typeof record.appointmentId === 'object'
-    ? record.appointmentId
-    : appointment?.originalAppointmentId;
-
-  if (original && typeof original === 'object' && original.date) {
-    return `Theo hồ sơ ${formatRecordDate(original.date)}${original.timeSlot ? ` · ${original.timeSlot}` : ''}`;
-  }
-
-  if (record?.followUpDate) {
-    return `Ngày khuyến nghị ${formatRecordDate(record.followUpDate)}`;
-  }
-
-  return 'Theo chỉ định tái khám';
+  if (record?.appointmentId && typeof record.appointmentId === 'object') return record.appointmentId;
+  if (appointment?.originalAppointmentId && typeof appointment.originalAppointmentId === 'object') return appointment.originalAppointmentId;
+  return null;
 }
 
-function FollowUpAppointmentChip({ appointment }) {
+function getFollowUpSourceRecordId(appointment) {
+  const record = appointment?.followUpRecordId;
+  if (!record) return '';
+  return typeof record === 'object' ? record._id : record;
+}
+
+function getFollowUpSourceText(appointment) {
+  const original = getFollowUpOriginalAppointment(appointment);
+  if (original?.date) {
+    return `Tái khám từ hồ sơ ngày ${formatRecordDate(original.date)}${original.timeSlot ? ` · ${original.timeSlot}` : ''}`;
+  }
+  return 'Tái khám từ hồ sơ khám trước';
+}
+
+function FollowUpContextBlock({ appointment, onViewSourceRecord, compact = false }) {
   if (!isFollowUpAppointment(appointment)) return null;
 
+  const record = getFollowUpRecord(appointment);
+  const diagnosis = record?.diagnosis ? cleanDisplayText(record.diagnosis, '') : '';
+
   return (
-    <span className="follow-up-appointment-chip" title={getFollowUpAppointmentHint(appointment)}>
-      Tái khám
-    </span>
+    <div className={`follow-up-appointment-context ${compact ? 'compact' : ''}`}>
+      <span className="follow-up-appointment-chip is-strong">Lịch tái khám</span>
+      <div>
+        <strong>{getFollowUpSourceText(appointment)}</strong>
+        {diagnosis && <small>Chẩn đoán gốc: {diagnosis}</small>}
+      </div>
+      {getFollowUpSourceRecordId(appointment) && onViewSourceRecord && (
+        <button
+          className="btn btn-outline-primary btn-sm"
+          type="button"
+          onClick={() => onViewSourceRecord(appointment)}
+        >
+          Xem hồ sơ gốc
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -584,9 +614,9 @@ function RescheduleRequestModal({ appointment, onClose, onSubmit }) {
   );
 }
 
-function AppointmentMobileCard({ appointment, downloadingPdfKey, onCancel, onCancelReschedule, onDetail, onDownloadPdf, onReschedule, onReviewDoctor, onViewMedicalRecord }) {
+function AppointmentMobileCard({ appointment, downloadingPdfKey, onCancel, onCancelReschedule, onDetail, onDownloadPdf, onReschedule, onReviewDoctor, onViewMedicalRecord, onViewSourceRecord }) {
   return (
-    <article className="amc-card">
+    <article className={`amc-card ${isFollowUpAppointment(appointment) ? 'patient-follow-up-appointment-card' : ''}`}>
       {/* Top row: date/time + status */}
       <div className="amc-header">
         <div className="amc-datetime">
@@ -604,7 +634,7 @@ function AppointmentMobileCard({ appointment, downloadingPdfKey, onCancel, onCan
           <span className="amc-chip amc-chip-muted">{valueName(appointment.clinicId)}</span>
         </div>
         <AppointmentQueueSummary appointment={appointment} />
-        <FollowUpAppointmentChip appointment={appointment} />
+        <FollowUpContextBlock appointment={appointment} compact onViewSourceRecord={onViewSourceRecord} />
         <AppointmentServicePackageChip appointment={appointment} />
       </div>
 
@@ -879,6 +909,26 @@ export default function MyAppointments() {
     }
   }
 
+  async function openFollowUpSourceRecord(appointment) {
+    const record = getFollowUpRecord(appointment);
+    const recordId = getFollowUpSourceRecordId(appointment);
+    if (!recordId || medicalRecordLoadingId === `follow-up:${recordId}`) return;
+
+    setMedicalRecordLoadingId(`follow-up:${recordId}`);
+    try {
+      const payload = await api(`/medical-records/${recordId}`);
+      setSelectedMedicalRecord(payload.data);
+    } catch (err) {
+      if (record) {
+        setSelectedMedicalRecord(record);
+        return;
+      }
+      toast.warning(errorMessage(err) || 'Không tải được hồ sơ gốc');
+    } finally {
+      setMedicalRecordLoadingId((current) => (current === `follow-up:${recordId}` ? '' : current));
+    }
+  }
+
   async function downloadAppointmentPdf(appointment, type) {
     if (!appointment?._id) return;
     const key = `${appointment._id}:${type}`;
@@ -1134,85 +1184,108 @@ export default function MyAppointments() {
           <>
             <div className="appointment-table-card d-none d-lg-block">
               <div className="table-responsive">
-                <table className="table table-hover align-middle mb-0 appointment-table">
+                <table className="table table-hover align-middle mb-0 appointment-table patient-appointments-table">
                   <thead>
                     <tr>
-                      <th>Ngày khám</th>
-                      <th>Khung giờ</th>
-                      <th>Cơ sở</th>
-                      <th>Chuyên khoa</th>
-                      <th>Bác sĩ</th>
+                      <th>Lịch khám</th>
+                      <th>Thông tin khám</th>
+                      <th>Dịch vụ</th>
                       <th>Trạng thái</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {paginatedAppointments.map((item) => (
-                      <tr key={item._id}>
-                        <td>{item.date}</td>
-                        <td>{item.timeSlot}</td>
-                        <td>{valueName(item.clinicId)}</td>
-                        <td>{valueName(item.specialtyId)}</td>
-                        <td>{valueName(item.doctorId)}</td>
-                        <td>
-                          <div className="appointment-status-stack">
-                            <StatusBadge status={item.status} />
-                            <AppointmentQueueSummary appointment={item} />
-                            <FollowUpAppointmentChip appointment={item} />
+                    {paginatedAppointments.map((item) => {
+                      const dateParts = appointmentDateParts(item);
+                      const isFollowUp = isFollowUpAppointment(item);
+                      return (
+                        <tr className={isFollowUp ? 'patient-follow-up-appointment-row' : ''} key={item._id}>
+                          <td>
+                            <div className="patient-appointment-date">
+                              <strong>{dateParts.dayMonth}</strong>
+                              <span>{dateParts.year}</span>
+                              <em>{dateParts.time}</em>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="patient-appointment-info">
+                              <strong>{valueName(item.doctorId)}</strong>
+                              <span>{valueName(item.specialtyId)}</span>
+                              <small>{valueName(item.clinicId)}</small>
+                              <FollowUpContextBlock appointment={item} onViewSourceRecord={openFollowUpSourceRecord} />
+                            </div>
+                          </td>
+                          <td>
                             <AppointmentServicePackageChip appointment={item} />
-                          </div>
-                        </td>
-                        <td className="text-end">
-                          <div className="d-flex justify-content-end gap-2">
-                            <button className="btn btn-outline-primary btn-sm" type="button" onClick={() => setSelectedAppointment(item)}>
-                              Chi tiết
-                            </button>
-                            <button className="btn btn-outline-primary btn-sm" disabled={downloadingPdfKey === `${item._id}:appointment`} type="button" onClick={() => downloadAppointmentPdf(item, 'appointment')}>
-                              Tải phiếu đặt lịch
-                            </button>
-                            {item.queueNumber && (
-                              <button className="btn btn-outline-primary btn-sm" disabled={downloadingPdfKey === `${item._id}:queue`} type="button" onClick={() => downloadAppointmentPdf(item, 'queue')}>
-                                Tải phiếu khám
+                          </td>
+                          <td>
+                            <div className="appointment-status-stack">
+                              <StatusBadge status={item.status} />
+                              <AppointmentQueueSummary appointment={item} />
+                            </div>
+                          </td>
+                          <td className="text-end">
+                            <div className="patient-appointment-actions">
+                              <button className="btn btn-outline-primary btn-sm" type="button" onClick={() => setSelectedAppointment(item)}>
+                                Chi tiết
                               </button>
-                            )}
-                            {canViewMedicalRecord(item) && (
-                              <button className="btn btn-outline-success btn-sm" disabled={medicalRecordLoadingId === item._id} type="button" onClick={() => openMedicalRecord(item)}>
-                                Xem hồ sơ
+                              {isFollowUp && getFollowUpSourceRecordId(item) && (
+                                <button
+                                  className="btn btn-outline-primary btn-sm"
+                                  disabled={medicalRecordLoadingId === `follow-up:${getFollowUpSourceRecordId(item)}`}
+                                  type="button"
+                                  onClick={() => openFollowUpSourceRecord(item)}
+                                >
+                                  Xem hồ sơ gốc
+                                </button>
+                              )}
+                              <button className="btn btn-outline-primary btn-sm" disabled={downloadingPdfKey === `${item._id}:appointment`} type="button" onClick={() => downloadAppointmentPdf(item, 'appointment')}>
+                                Phiếu đặt lịch
                               </button>
-                            )}
-                            {canViewMedicalRecord(item) && (
-                              <button className="btn btn-outline-success btn-sm" disabled={downloadingPdfKey === `${item._id}:record`} type="button" onClick={() => downloadAppointmentPdf(item, 'record')}>
-                                Tải kết quả khám
-                              </button>
-                            )}
-                            {canReviewDoctor(item) && (
-                              <button
-                                className={item.doctorReview ? 'btn btn-outline-secondary btn-sm' : 'btn btn-warning btn-sm'}
-                                type="button"
-                                onClick={() => setReviewingAppointment(item)}
-                              >
-                                {item.doctorReview ? 'Đã đánh giá' : 'Đánh giá bác sĩ'}
-                              </button>
-                            )}
-                            {canCancelAppointment(item) && (
-                              <button className="btn btn-outline-danger btn-sm" type="button" onClick={() => setCancellingAppointment(item)}>
-                                {cancelActionLabel(item)}
-                              </button>
-                            )}
-                            {canCancelRescheduleRequest(item) && (
-                              <button className="btn btn-outline-warning btn-sm" type="button" onClick={() => setCancellingRescheduleAppointment(item)}>
-                                Hủy yêu cầu đổi lịch
-                              </button>
-                            )}
-                            {canRescheduleAppointment(item) && (
-                              <button className="btn btn-outline-info btn-sm" type="button" onClick={() => setReschedulingAppointment(item)}>
-                                Yêu cầu đổi lịch
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                              {item.queueNumber && (
+                                <button className="btn btn-outline-primary btn-sm" disabled={downloadingPdfKey === `${item._id}:queue`} type="button" onClick={() => downloadAppointmentPdf(item, 'queue')}>
+                                  Phiếu khám
+                                </button>
+                              )}
+                              {canViewMedicalRecord(item) && (
+                                <button className="btn btn-outline-success btn-sm" disabled={medicalRecordLoadingId === item._id} type="button" onClick={() => openMedicalRecord(item)}>
+                                  Xem hồ sơ
+                                </button>
+                              )}
+                              {canViewMedicalRecord(item) && (
+                                <button className="btn btn-outline-success btn-sm" disabled={downloadingPdfKey === `${item._id}:record`} type="button" onClick={() => downloadAppointmentPdf(item, 'record')}>
+                                  Kết quả PDF
+                                </button>
+                              )}
+                              {canReviewDoctor(item) && (
+                                <button
+                                  className={item.doctorReview ? 'btn btn-outline-secondary btn-sm' : 'btn btn-warning btn-sm'}
+                                  type="button"
+                                  onClick={() => setReviewingAppointment(item)}
+                                >
+                                  {item.doctorReview ? 'Đã đánh giá' : 'Đánh giá'}
+                                </button>
+                              )}
+                              {canCancelAppointment(item) && (
+                                <button className="btn btn-outline-danger btn-sm" type="button" onClick={() => setCancellingAppointment(item)}>
+                                  {cancelActionLabel(item)}
+                                </button>
+                              )}
+                              {canCancelRescheduleRequest(item) && (
+                                <button className="btn btn-outline-warning btn-sm" type="button" onClick={() => setCancellingRescheduleAppointment(item)}>
+                                  Hủy đổi lịch
+                                </button>
+                              )}
+                              {canRescheduleAppointment(item) && (
+                                <button className="btn btn-outline-info btn-sm" type="button" onClick={() => setReschedulingAppointment(item)}>
+                                  Đổi lịch
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -1230,6 +1303,7 @@ export default function MyAppointments() {
                   onDownloadPdf={downloadAppointmentPdf}
                   onReviewDoctor={setReviewingAppointment}
                   onReschedule={setReschedulingAppointment}
+                  onViewSourceRecord={openFollowUpSourceRecord}
                   onViewMedicalRecord={openMedicalRecord}
                 />
               ))}

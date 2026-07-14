@@ -35,6 +35,7 @@ function followUpStatusLabel(record) {
   if (!record?.followUpRequired) return { label: 'Không cần tái khám', tone: 'neutral' };
   if (record.followUpStatus === 'scheduled') return { label: 'Đã đặt lịch tái khám', tone: 'success' };
   if (record.followUpStatus === 'overdue') return { label: 'Quá hạn tái khám', tone: 'danger' };
+  if (record.followUpStatus === 'cancelled') return { label: 'Đã hủy lịch tái khám', tone: 'danger' };
   return { label: 'Cần tái khám', tone: 'warning' };
 }
 
@@ -66,6 +67,10 @@ function followUpDescription(record) {
     return 'Bạn đã hoàn thành lịch tái khám cho hồ sơ này.';
   }
 
+  if (record.followUpStatus === 'cancelled') {
+    return 'Lịch tái khám đã bị hủy. Bạn có thể đặt lại lịch tái khám nếu vẫn cần được theo dõi.';
+  }
+
   if (record.followUpDate) {
     return `Ngày tái khám khuyến nghị: ${formatDate(record.followUpDate)}. Vui lòng đặt lịch phù hợp để được theo dõi tiếp.`;
   }
@@ -85,6 +90,17 @@ function followUpBookingUrl(record) {
   });
 
   return `/booking?${params.toString()}`;
+}
+
+function originalAppointmentDate(record) {
+  const appointment = record?.appointmentId;
+  if (appointment && typeof appointment === 'object') return appointment.date || record.createdAt;
+  return record?.createdAt;
+}
+
+function recommendedFollowUpDate(record) {
+  if (!record?.followUpRequired) return 'Không cần tái khám';
+  return record.followUpDate ? formatDate(record.followUpDate) : 'Bệnh nhân tự chọn ngày phù hợp';
 }
 
 function getVitalItems(record) {
@@ -149,8 +165,8 @@ function FollowUpDashboard({ records, summary, onOpenRecord, forceVisible = fals
       <div className="patient-follow-up-header">
         <div>
           <span className="section-eyebrow">Tái khám</span>
-          <h2>Lịch tái khám của tôi</h2>
-          <p>Theo dõi các hồ sơ được bác sĩ chỉ định tái khám và đặt lịch theo đúng bác sĩ, chuyên khoa đã khám.</p>
+          <h2>Tái khám cần xử lý</h2>
+          <p>Theo dõi các hồ sơ được bác sĩ chỉ định tái khám, trạng thái đặt lịch và thời hạn cần xử lý.</p>
         </div>
       </div>
 
@@ -170,29 +186,34 @@ function FollowUpDashboard({ records, summary, onOpenRecord, forceVisible = fals
             <p>Khi bác sĩ chỉ định tái khám, hồ sơ sẽ xuất hiện tại đây để bạn đặt lịch và theo dõi trạng thái.</p>
           </div>
         ) : records.map((record) => {
-          const appointment = record.appointmentId || {};
           const followUpStatus = followUpStatusLabel(record);
+          const linkedAppointmentId = linkedFollowUpAppointmentId(record);
 
           return (
             <article className={`patient-follow-up-item ${followUpStatus.tone}`} key={record._id}>
               <div className="patient-follow-up-item-main">
-                <span className={`follow-up-status-pill ${followUpStatus.tone}`}>{followUpStatus.label}</span>
-                <h3>{displayName(record.specialtyId)} với {displayName(record.doctorId)}</h3>
+                <div className="patient-follow-up-title-row">
+                  <span className={`follow-up-status-pill ${followUpStatus.tone}`}>{followUpStatus.label}</span>
+                  <span className="patient-follow-up-label">Tái khám cần xử lý</span>
+                </div>
+                <h3>{displayText(record.diagnosis, 'Chưa cập nhật chẩn đoán')}</h3>
                 <p>{followUpDescription(record)}</p>
                 <div className="patient-follow-up-meta">
-                  <span>Lần khám gốc: {formatDate(appointment.date || record.createdAt)}</span>
-                  <span>Cơ sở: {displayName(record.clinicId)}</span>
+                  <span>Bác sĩ: <strong>{displayName(record.doctorId)}</strong></span>
+                  <span>Cơ sở: <strong>{displayName(record.clinicId)}</strong></span>
+                  <span>Ngày khám gốc: <strong>{formatDate(originalAppointmentDate(record))}</strong></span>
+                  <span>Ngày tái khám khuyến nghị: <strong>{recommendedFollowUpDate(record)}</strong></span>
                 </div>
               </div>
               <div className="patient-follow-up-actions">
                 <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => onOpenRecord(record)}>
-                  Xem hồ sơ
+                  Xem hồ sơ gốc
                 </button>
-                {record.followUpStatus === 'scheduled' && linkedFollowUpAppointmentId(record) && (
+                {record.followUpStatus === 'scheduled' && linkedAppointmentId && (
                   <button
                     className="btn btn-sm btn-outline-success"
                     type="button"
-                    onClick={() => navigate(`/appointments/my?appointmentId=${linkedFollowUpAppointmentId(record)}`)}
+                    onClick={() => navigate(`/appointments/my?appointmentId=${linkedAppointmentId}`)}
                   >
                     Xem lịch tái khám
                   </button>

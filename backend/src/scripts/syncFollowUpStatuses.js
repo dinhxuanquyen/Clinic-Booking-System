@@ -86,11 +86,19 @@ async function findBestFollowUpAppointment(record) {
   return direct[0] || null;
 }
 
-function desiredFollowUpState(record, appointment, now) {
+async function findCompletedFollowUpRecord(appointment) {
+  if (!appointment || appointment.status !== APPOINTMENT_STATUSES.COMPLETED) return null;
+  return MedicalRecord.findOne({ appointmentId: idOf(appointment._id) }).select('_id').lean();
+}
+
+async function desiredFollowUpState(record, appointment, now) {
+  const completedFollowUpRecord = await findCompletedFollowUpRecord(appointment);
+
   if (!record.followUpRequired) {
     return {
       followUpStatus: FOLLOW_UP_STATUSES.NONE,
       followUpAppointmentId: null,
+      followUpCompletedRecordId: null,
       followUpOverdueAt: null,
       followUpCompletedAt: null
     };
@@ -100,6 +108,7 @@ function desiredFollowUpState(record, appointment, now) {
     return {
       followUpStatus: FOLLOW_UP_STATUSES.COMPLETED,
       followUpAppointmentId: idOf(appointment._id),
+      followUpCompletedRecordId: idOf(completedFollowUpRecord?._id),
       followUpOverdueAt: null,
       followUpCompletedAt: appointment.completedAt || now
     };
@@ -109,6 +118,7 @@ function desiredFollowUpState(record, appointment, now) {
     return {
       followUpStatus: FOLLOW_UP_STATUSES.SCHEDULED,
       followUpAppointmentId: idOf(appointment._id),
+      followUpCompletedRecordId: null,
       followUpOverdueAt: null,
       followUpCompletedAt: null
     };
@@ -118,6 +128,7 @@ function desiredFollowUpState(record, appointment, now) {
     return {
       followUpStatus: FOLLOW_UP_STATUSES.OVERDUE,
       followUpAppointmentId: null,
+      followUpCompletedRecordId: null,
       followUpOverdueAt: record.followUpOverdueAt || now,
       followUpCompletedAt: null
     };
@@ -126,6 +137,7 @@ function desiredFollowUpState(record, appointment, now) {
   return {
     followUpStatus: FOLLOW_UP_STATUSES.RECOMMENDED,
     followUpAppointmentId: null,
+    followUpCompletedRecordId: null,
     followUpOverdueAt: null,
     followUpCompletedAt: null
   };
@@ -148,6 +160,11 @@ function buildUpdate(record, desired) {
   if (idString(record.followUpAppointmentId) !== idString(desired.followUpAppointmentId)) {
     if (desired.followUpAppointmentId) $set.followUpAppointmentId = desired.followUpAppointmentId;
     else $unset.followUpAppointmentId = '';
+  }
+
+  if (idString(record.followUpCompletedRecordId) !== idString(desired.followUpCompletedRecordId)) {
+    if (desired.followUpCompletedRecordId) $set.followUpCompletedRecordId = desired.followUpCompletedRecordId;
+    else $unset.followUpCompletedRecordId = '';
   }
 
   if (!sameDate(record.followUpOverdueAt, desired.followUpOverdueAt)) {
@@ -185,7 +202,7 @@ async function syncFollowUpStatuses({ dryRun = true } = {}) {
       { followUpStatus: { $ne: FOLLOW_UP_STATUSES.NONE } },
       { followUpAppointmentId: { $ne: null } }
     ]
-  }).select('_id followUpRequired followUpDate followUpStatus followUpAppointmentId followUpOverdueAt followUpCompletedAt');
+  }).select('_id followUpRequired followUpDate followUpStatus followUpAppointmentId followUpCompletedRecordId followUpOverdueAt followUpCompletedAt');
 
   const summary = {
     dryRun,
@@ -198,7 +215,7 @@ async function syncFollowUpStatuses({ dryRun = true } = {}) {
 
   for (const record of records) {
     const appointment = await findBestFollowUpAppointment(record);
-    const desired = desiredFollowUpState(record, appointment, now);
+    const desired = await desiredFollowUpState(record, appointment, now);
     const update = buildUpdate(record, desired);
     incrementStatus(summary, desired.followUpStatus);
 

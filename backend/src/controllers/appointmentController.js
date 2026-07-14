@@ -34,6 +34,7 @@ import {
   appointmentTransitionErrorMessage,
   canTransitionAppointmentStatus
 } from '../constants/appointmentStatus.js';
+import { FOLLOW_UP_TYPES } from '../constants/followUpStatus.js';
 
 const appointmentPopulate = [
   { path: 'patientId', select: 'name email phone role' },
@@ -43,7 +44,7 @@ const appointmentPopulate = [
   { path: 'servicePackageId', select: 'name code price durationMinutes description targetPatients includes doctorId' },
   {
     path: 'followUpRecordId',
-    select: 'appointmentId diagnosis conclusion followUpRequired followUpDate followUpStatus followUpAppointmentId createdAt',
+    select: 'appointmentId diagnosis conclusion followUpRequired followUpDate followUpStatus followUpAppointmentId followUpCompletedRecordId createdAt',
     populate: { path: 'appointmentId', select: 'date timeSlot status' }
   },
   { path: 'originalAppointmentId', select: 'date timeSlot status' }
@@ -486,6 +487,11 @@ async function validateFollowUpBooking({ followUpRecordId, patientId, clinicId, 
   return record;
 }
 
+function resolveFollowUpType(record) {
+  if (!record) return '';
+  return record.followUpDate ? FOLLOW_UP_TYPES.DOCTOR_RECOMMENDED : FOLLOW_UP_TYPES.PATIENT_SELECTED;
+}
+
 async function ensureRescheduleSlotAvailable({ appointmentId, clinicId, doctorId, newDate, newTimeSlot }) {
   const existingAppointment = await Appointment.exists({
     _id: { $ne: appointmentId },
@@ -619,6 +625,7 @@ async function syncClinicAppointment(appointment, patientUser) {
       paymentMethod: appointment.paymentMethod,
       isFollowUp: appointment.isFollowUp,
       followUpRecordId: appointment.followUpRecordId,
+      followUpType: appointment.followUpType,
       originalAppointmentId: appointment.originalAppointmentId,
       queueNumber: appointment.queueNumber,
       consultationStatus: appointment.consultationStatus,
@@ -697,6 +704,7 @@ export const createAppointment = asyncHandler(async (req, res) => {
       paymentMethod: servicePackageSnapshot ? 'clinic' : 'none',
       isFollowUp: Boolean(followUpRecord),
       followUpRecordId: followUpRecord?._id || null,
+      followUpType: resolveFollowUpType(followUpRecord),
       originalAppointmentId: followUpRecord?.appointmentId?._id || followUpRecord?.appointmentId || null
     });
   } catch (error) {
@@ -789,6 +797,7 @@ export const createAppointment = asyncHandler(async (req, res) => {
       servicePackageId: populatedAppointment.servicePackageId?._id || populatedAppointment.servicePackageId || null,
       followUpRecordId: populatedAppointment.followUpRecordId || null,
       isFollowUp: Boolean(populatedAppointment.isFollowUp),
+      followUpType: populatedAppointment.followUpType || null,
       status: populatedAppointment.status
     }
   });
