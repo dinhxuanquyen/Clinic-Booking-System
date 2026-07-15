@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import BaseModal from './BaseModal.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { downloadPdf } from '../utils/downloadFile.js';
@@ -41,7 +41,39 @@ function linkedFollowUpAppointmentId(record) {
 
 function canBookFollowUp(record) {
   if (!record?.followUpRequired) return false;
-  return ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended') && !record.followUpAppointmentId;
+  return ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended');
+}
+
+function entityId(value) {
+  return typeof value === 'object' ? value?._id : value;
+}
+
+function getSourceFollowUpRecord(record) {
+  const source = record?.appointmentId?.followUpRecordId;
+  return source && typeof source === 'object' ? source : null;
+}
+
+function getSourceFollowUpRecordId(record) {
+  return entityId(record?.appointmentId?.followUpRecordId);
+}
+
+function isFollowUpMedicalRecord(record) {
+  return Boolean(record?.appointmentId?.isFollowUp || record?.appointmentId?.followUpRecordId);
+}
+
+function sourceFollowUpVisitText(record) {
+  const sourceRecord = getSourceFollowUpRecord(record);
+  const sourceAppointment = sourceRecord?.appointmentId || record?.appointmentId?.originalAppointmentId;
+  if (sourceAppointment?.date) {
+    return `${formatDate(sourceAppointment.date)}${sourceAppointment.timeSlot ? ` · ${sourceAppointment.timeSlot}` : ''}`;
+  }
+  if (sourceRecord?.createdAt) return formatDate(sourceRecord.createdAt);
+  return 'lần khám trước';
+}
+
+function sourceRecordPath(recordId, pathname) {
+  if (pathname.startsWith('/doctor')) return `/doctor/medical-records?recordId=${recordId}`;
+  return `/medical-records?recordId=${recordId}`;
 }
 
 function followUpDescription(record) {
@@ -119,6 +151,7 @@ function InsuranceSnapshotCard({ insurance }) {
 
 export default function MedicalRecordDetailModal({ record, onClose }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const toast = useToast();
   const [downloading, setDownloading] = useState(false);
 
@@ -127,6 +160,9 @@ export default function MedicalRecordDetailModal({ record, onClose }) {
   const appointment = record.appointmentId || {};
   const vitalItems = getVitalItems(record);
   const followUpStatus = followUpStatusLabel(record);
+  const sourceRecord = getSourceFollowUpRecord(record);
+  const sourceRecordId = getSourceFollowUpRecordId(record);
+  const showSourceFollowUp = isFollowUpMedicalRecord(record) && sourceRecordId;
 
   async function handleDownloadPdf() {
     if (!record?._id || downloading) return;
@@ -164,6 +200,26 @@ export default function MedicalRecordDetailModal({ record, onClose }) {
       </div>
 
       <InsuranceSnapshotCard insurance={appointment.insuranceSnapshot} />
+
+      {showSourceFollowUp && (
+        <div className="medical-record-source-card">
+          <div>
+            <span>Hồ sơ tái khám</span>
+            <strong>Hồ sơ này là tái khám từ hồ sơ ngày {sourceFollowUpVisitText(record)}.</strong>
+            {sourceRecord?.diagnosis && <p>Chẩn đoán lần khám gốc: {displayText(sourceRecord.diagnosis)}</p>}
+          </div>
+          <button
+            className="btn btn-sm btn-outline-primary"
+            type="button"
+            onClick={() => {
+              onClose();
+              navigate(sourceRecordPath(sourceRecordId, location.pathname));
+            }}
+          >
+            Xem hồ sơ gốc
+          </button>
+        </div>
+      )}
 
       <div className={`medical-record-follow-up-card ${followUpStatus.tone}`}>
         <div>

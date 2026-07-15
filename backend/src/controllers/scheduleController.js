@@ -12,6 +12,7 @@ import { generateTimeSlots } from '../utils/slotUtils.js';
 import { isPastDate, isPastOrCurrentSlot } from '../utils/vietnamTime.js';
 import { createAuditLog } from '../utils/auditLogger.js';
 import { emitNotification } from '../services/socketService.js';
+import { SLOT_HOLDING_APPOINTMENT_STATUSES } from '../constants/appointmentStatus.js';
 
 const schedulePopulate = [
   { path: 'doctorId', select: 'name email phone clinicId specialtyId' },
@@ -30,6 +31,36 @@ const dayNumberToKey = {
 const dayKeyToNumber = Object.fromEntries(
   Object.entries(dayNumberToKey).map(([number, key]) => [key, Number(number)])
 );
+const slotStatusPriority = {
+  in_progress: 6,
+  confirmed: 5,
+  pending: 4,
+  cancel_requested: 3,
+  reschedule_requested: 2,
+  completed: 1
+};
+
+function resolveSlotOccupancy(appointments) {
+  const sorted = [...appointments].sort((a, b) => (
+    (slotStatusPriority[b.status] || 0) - (slotStatusPriority[a.status] || 0)
+  ));
+  const appointment = sorted[0];
+  if (!appointment) return null;
+
+  const labelByStatus = {
+    pending: 'Đang chờ bác sĩ xác nhận',
+    confirmed: 'Đã có người đặt',
+    in_progress: 'Đang khám',
+    cancel_requested: 'Đang xử lý yêu cầu hủy',
+    reschedule_requested: 'Đang xử lý yêu cầu đổi lịch',
+    completed: 'Đã có người đặt'
+  };
+
+  return {
+    status: appointment.status,
+    label: labelByStatus[appointment.status] || 'Đã có người đặt'
+  };
+}
 
 export const scheduleIdRule = [param('id').isMongoId().withMessage('Schedule id is invalid')];
 export const scheduleExceptionIdRule = [param('id').isMongoId().withMessage('Schedule exception id is invalid')];
@@ -380,17 +411,26 @@ export const getAvailableSlots = asyncHandler(async (req, res) => {
     doctorId: doctor._id,
     clinicId: doctor.clinicId,
     date: req.query.date,
-    status: { $in: ['pending', 'confirmed', 'in_progress', 'cancel_requested', 'reschedule_requested', 'completed'] }
-  }).select('timeSlot');
+    status: { $in: SLOT_HOLDING_APPOINTMENT_STATUSES }
+  }).select('timeSlot status');
 
-  const bookedSlots = new Set(appointments.map((item) => item.timeSlot));
+  const appointmentsBySlot = appointments.reduce((map, appointment) => {
+    const group = map.get(appointment.timeSlot) || [];
+    group.push(appointment);
+    map.set(appointment.timeSlot, group);
+    return map;
+  }, new Map());
   const data = slots.map((slot) => {
     const isPastSlot = isPastDate(req.query.date) || isPastOrCurrentSlot(req.query.date, slot);
-    const available = !isPastSlot && !bookedSlots.has(slot);
+    const occupancy = resolveSlotOccupancy(appointmentsBySlot.get(slot) || []);
+    const available = !isPastSlot && !occupancy;
     return {
       timeSlot: slot,
       available,
-      label: isPastSlot ? 'Đã qua' : (available ? 'Còn trống' : 'Đã có người đặt')
+      status: occupancy?.status || '',
+      occupancyStatus: occupancy?.status || '',
+      canJoinWaitingList: !isPastSlot && Boolean(occupancy),
+      label: isPastSlot ? 'Đã qua' : (available ? 'Còn trống' : occupancy.label)
     };
   });
 

@@ -28,13 +28,14 @@ import { generateAppointmentPdf, generateQueueTicketPdf } from '../services/pdfS
 import { resolveServicePackageForAppointment } from '../services/servicePackageService.js';
 import { buildInsuranceSnapshot } from '../utils/insurance.js';
 import {
+  ACTIVE_FOLLOW_UP_APPOINTMENT_STATUSES,
   APPOINTMENT_STATUS_VALUES,
   QUEUE_ELIGIBLE_APPOINTMENT_STATUSES,
   SLOT_HOLDING_APPOINTMENT_STATUSES,
   appointmentTransitionErrorMessage,
   canTransitionAppointmentStatus
 } from '../constants/appointmentStatus.js';
-import { FOLLOW_UP_TYPES } from '../constants/followUpStatus.js';
+import { FOLLOW_UP_STATUSES, FOLLOW_UP_TYPES } from '../constants/followUpStatus.js';
 
 const appointmentPopulate = [
   { path: 'patientId', select: 'name email phone role' },
@@ -200,6 +201,31 @@ async function createReviewAvailableNotification(appointment) {
   return notification;
 }
 
+async function createFollowUpScheduledNotification(appointment) {
+  if (!appointment?.isFollowUp) return null;
+
+  const notification = await Notification.create({
+    userId: appointment.patientId?._id || appointment.patientId,
+    role: 'patient',
+    appointmentId: appointment._id,
+    type: 'follow_up_scheduled',
+    title: 'Đặt lịch tái khám thành công',
+    message: 'Bạn đã đặt lịch tái khám thành công.',
+    targetUrl: `/appointments/my?appointmentId=${appointment._id}`,
+    metadata: {
+      appointmentId: appointment._id,
+      followUpRecordId: appointment.followUpRecordId?._id || appointment.followUpRecordId,
+      originalAppointmentId: appointment.originalAppointmentId?._id || appointment.originalAppointmentId,
+      doctorId: appointment.doctorId?._id || appointment.doctorId,
+      clinicId: appointment.clinicId?._id || appointment.clinicId,
+      specialtyId: appointment.specialtyId?._id || appointment.specialtyId
+    },
+    isRead: false
+  });
+  emitNotification(notification.toObject());
+  return notification;
+}
+
 async function createAdminNotification({ appointment, type, title, message }) {
   const notification = await Notification.create({
     role: 'admin',
@@ -211,7 +237,7 @@ async function createAdminNotification({ appointment, type, title, message }) {
   emitNotification(notification.toObject());
 }
 
-async function createDoctorNotification({ appointment, type, title, message }) {
+async function createDoctorNotification({ appointment, type, title, message, targetUrl, metadata = {} }) {
   const doctorId = appointment.doctorId?._id || appointment.doctorId;
   if (!doctorId) return null;
 
@@ -231,6 +257,14 @@ async function createDoctorNotification({ appointment, type, title, message }) {
     type,
     title,
     message,
+    targetUrl,
+    metadata: {
+      appointmentId: appointment._id,
+      doctorId,
+      patientId: appointment.patientId?._id || appointment.patientId,
+      followUpRecordId: appointment.followUpRecordId?._id || appointment.followUpRecordId,
+      ...metadata
+    },
     isRead: false
   });
 
@@ -450,6 +484,10 @@ async function validateFollowUpBooking({ followUpRecordId, patientId, clinicId, 
     throw new ApiError(400, 'Hồ sơ này không yêu cầu tái khám');
   }
 
+  if (record.followUpStatus === FOLLOW_UP_STATUSES.COMPLETED) {
+    throw new ApiError(409, 'Hồ sơ này đã hoàn thành tái khám');
+  }
+
   if (String(record.clinicId) !== String(clinicId) || String(record.specialtyId) !== String(specialtyId)) {
     throw new ApiError(400, 'Thông tin tái khám không khớp với cơ sở và chuyên khoa trong hồ sơ khám bệnh');
   }
@@ -474,14 +512,33 @@ async function validateFollowUpBooking({ followUpRecordId, patientId, clinicId, 
     }
   }
 
-  if (record.followUpAppointmentId) {
-    const activeFollowUp = await Appointment.exists({
-      _id: record.followUpAppointmentId,
-      status: { $nin: ['cancelled', 'no_show'] }
-    });
-    if (activeFollowUp) {
-      throw new ApiError(409, 'Bạn đã có lịch tái khám cho hồ sơ này');
+  const activeFollowUpAppointment = await Appointment.findOne({
+    followUpRecordId: record._id,
+    patientId,
+    status: { $in: ACTIVE_FOLLOW_UP_APPOINTMENT_STATUSES }
+  }).select('_id date timeSlot status');
+
+  if (activeFollowUpAppointment) {
+    if (
+      String(record.followUpAppointmentId || '') !== String(activeFollowUpAppointment._id)
+      || record.followUpStatus !== FOLLOW_UP_STATUSES.SCHEDULED
+    ) {
+      record.followUpStatus = FOLLOW_UP_STATUSES.SCHEDULED;
+      record.followUpAppointmentId = activeFollowUpAppointment._id;
+      record.followUpCompletedRecordId = null;
+      record.followUpCompletedAt = undefined;
+      record.followUpOverdueAt = undefined;
+      await record.save();
     }
+
+    const appointmentTime = [activeFollowUpAppointment.date, activeFollowUpAppointment.timeSlot]
+      .filter(Boolean)
+      .join(' - ');
+    const suffix = appointmentTime ? ` (${appointmentTime})` : '';
+    throw new ApiError(
+      409,
+      `Bạn đã có lịch tái khám đang hoạt động cho hồ sơ này${suffix}. Vui lòng hủy lịch hiện tại trước khi đặt lại.`
+    );
   }
 
   return record;
@@ -709,6 +766,22 @@ export const createAppointment = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     if (error?.code === 11000) {
+      if (error?.keyPattern?.followUpRecordId || error?.keyValue?.followUpRecordId) {
+        logBookingFail('active_follow_up_duplicate_index', {
+          patientId: req.user._id,
+          clinicId: req.body.clinicId,
+          doctorId: req.body.doctorId,
+          specialtyId: req.body.specialtyId,
+          date: req.body.date,
+          timeSlot: req.body.timeSlot,
+          servicePackageId: req.body.servicePackageId
+        });
+        throw new ApiError(
+          409,
+          'Bạn đã có lịch tái khám đang hoạt động cho hồ sơ này. Vui lòng hủy lịch hiện tại trước khi đặt lại.'
+        );
+      }
+
       logBookingFail('doctor_slot_duplicate_index', {
         patientId: req.user._id,
         clinicId: req.body.clinicId,
@@ -729,6 +802,9 @@ export const createAppointment = asyncHandler(async (req, res) => {
     await runAppointmentSideEffect('Follow-up appointment status sync', () => (
       syncFollowUpStatusForAppointment(populatedAppointment)
     ));
+    await runAppointmentSideEffect('Follow-up scheduled patient notification', () => (
+      createFollowUpScheduledNotification(populatedAppointment)
+    ));
   }
 
   await syncClinicAppointment(appointment, req.user);
@@ -743,9 +819,12 @@ export const createAppointment = asyncHandler(async (req, res) => {
 
   await createDoctorNotification({
     appointment: populatedAppointment,
-    type: 'doctor_new_appointment',
-    title: 'Có lịch khám mới',
-    message: `Bệnh nhân ${patientName} đã đặt lịch khám ngày ${populatedAppointment.date}, khung giờ ${populatedAppointment.timeSlot}.`
+    type: followUpRecord ? 'doctor_follow_up_scheduled' : 'doctor_new_appointment',
+    title: followUpRecord ? 'Bệnh nhân đã đặt lịch tái khám' : 'Có lịch khám mới',
+    message: followUpRecord
+      ? `Bệnh nhân ${patientName} đã đặt lịch tái khám ngày ${populatedAppointment.date}, khung giờ ${populatedAppointment.timeSlot}.`
+      : `Bệnh nhân ${patientName} đã đặt lịch khám ngày ${populatedAppointment.date}, khung giờ ${populatedAppointment.timeSlot}.`,
+    targetUrl: `/doctor/appointments?appointmentId=${populatedAppointment._id}`
   });
 
   try {

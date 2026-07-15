@@ -21706,6 +21706,41 @@ html, body, #root {
   background: #f8fafc;
 }
 
+.medical-record-source-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 12px;
+  padding: 18px 20px;
+  border: 1px solid #bfdbfe;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+  box-shadow: 0 14px 34px rgba(37, 99, 235, 0.08);
+}
+
+.medical-record-source-card span {
+  display: block;
+  color: #0284c7;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.medical-record-source-card strong {
+  display: block;
+  margin-top: 4px;
+  color: #0f2b5b;
+  font-weight: 900;
+}
+
+.medical-record-source-card p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-weight: 700;
+}
+
 .patient-follow-up-panel {
   margin: 0 0 28px;
   padding: 24px;
@@ -21985,6 +22020,7 @@ html, body, #root {
   }
 
   .booking-follow-up-banner,
+  .medical-record-source-card,
   .medical-record-follow-up-card {
     align-items: flex-start;
     flex-direction: column;
@@ -22184,6 +22220,10 @@ button.doctor-record-follow-up-card:focus-visible {
 }
 
 .doctor-follow-up-source-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin: 0 0 18px;
   padding: 16px 18px;
   border: 1px solid #bae6fd;
@@ -22214,6 +22254,13 @@ button.doctor-record-follow-up-card:focus-visible {
   margin: 6px 0 0;
   color: #64748b;
   font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .doctor-follow-up-source-banner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 1024px) {

@@ -63,8 +63,10 @@ const notificationSchema = new mongoose.Schema(
         'medical_record_created',
         'medical_record_updated',
         'follow_up_recommended',
+        'follow_up_scheduled',
         'follow_up_due_soon',
         'follow_up_overdue',
+        'doctor_follow_up_scheduled',
         'doctor_review_available'
       ],
       required: true,

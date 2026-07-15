@@ -2,6 +2,7 @@ import Service from '../models/central/Service.js';
 import { getClinicConnection } from '../config/db.js';
 import { getClinicModels } from '../models/clinic/models.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import { SLOT_HOLDING_APPOINTMENT_STATUSES } from '../constants/appointmentStatus.js';
 
 export const listServices = asyncHandler(async (req, res) => {
   const services = await Service.find({ isActive: true });
@@ -40,7 +41,7 @@ export const getAvailableSlots = asyncHandler(async (req, res) => {
     clinicId,
     doctorId,
     date,
-    status: { $in: ['pending', 'confirmed', 'in_progress', 'cancel_requested', 'reschedule_requested', 'completed'] }
+    status: { $in: SLOT_HOLDING_APPOINTMENT_STATUSES }
   }).select('timeSlot');
 
   const bookedSlots = new Set(booked.map((item) => item.timeSlot));

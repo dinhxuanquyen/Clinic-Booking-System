@@ -546,7 +546,9 @@ export default function DoctorDetail() {
                 {!loadingSlots &&
                   slots.map((slot) => {
                     const waitingEntry = waitingEntryForSlot(slot.timeSlot);
-                    const canJoinWaitingList = !slot.available && slot.label === 'Đã có người đặt';
+                    const canJoinWaitingList = typeof slot.canJoinWaitingList === 'boolean'
+                      ? slot.canJoinWaitingList
+                      : !slot.available && slot.label === 'Đã có người đặt';
 
                     if (slot.available) {
                       return (

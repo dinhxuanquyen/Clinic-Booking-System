@@ -194,10 +194,19 @@ function followUpStatusLabel(status) {
     recommended: 'Cần đặt lịch tái khám',
     scheduled: 'Đã đặt lịch tái khám',
     completed: 'Đã hoàn thành tái khám',
-    overdue: 'Quá hạn tái khám'
+    overdue: 'Quá hạn tái khám',
+    cancelled: 'Đã hủy lịch tái khám'
   };
 
   return labels[status] || 'Cần tái khám';
+}
+
+function followUpAppointmentText(appointment) {
+  if (!appointment || typeof appointment !== 'object') return '';
+  const parts = [];
+  if (appointment.date) parts.push(formatDateOnly(appointment.date));
+  if (appointment.timeSlot) parts.push(appointment.timeSlot);
+  return parts.join(' - ');
 }
 
 function medicalRecordFollowUpRows(record) {
@@ -205,16 +214,36 @@ function medicalRecordFollowUpRows(record) {
     return [['Kế hoạch tái khám', 'Không cần tái khám']];
   }
 
+  const status = record.followUpStatus || 'recommended';
+  const followUpAppointment = record.followUpAppointmentId;
   const rows = [
-    ['Kế hoạch tái khám', followUpStatusLabel(record.followUpStatus || 'recommended')],
+    ['Kế hoạch tái khám', followUpStatusLabel(status)],
     [
       'Ngày tái khám khuyến nghị',
       record.followUpDate ? formatDateOnly(record.followUpDate) : 'Bệnh nhân tự chọn ngày phù hợp'
     ]
   ];
 
-  if (record.followUpAppointmentId) {
-    rows.push(['Mã lịch tái khám', `AP-${idOf(record.followUpAppointmentId).slice(-8).toUpperCase()}`]);
+  if (status === 'scheduled' && followUpAppointment) {
+    const scheduleText = followUpAppointmentText(followUpAppointment);
+    rows.push([
+      'Lịch tái khám đã đặt',
+      scheduleText ? `Đã đặt lịch tái khám ngày ${scheduleText}` : `Đã đặt lịch tái khám: AP-${idOf(followUpAppointment).slice(-8).toUpperCase()}`
+    ]);
+  } else if (followUpAppointment) {
+    rows.push(['Mã lịch tái khám', `AP-${idOf(followUpAppointment).slice(-8).toUpperCase()}`]);
+  }
+
+  if (status === 'overdue') {
+    rows.push(['Tình trạng xử lý', 'Quá hạn tái khám']);
+  }
+
+  if (status === 'cancelled') {
+    rows.push(['Tình trạng xử lý', 'Lịch tái khám đã hủy, bệnh nhân cần đặt lại nếu vẫn cần theo dõi']);
+  }
+
+  if (status === 'completed' && record.followUpCompletedRecordId) {
+    rows.push(['Hồ sơ tái khám', `MR-${idOf(record.followUpCompletedRecordId).slice(-8).toUpperCase()}`]);
   }
 
   return rows;

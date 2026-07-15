@@ -64,6 +64,7 @@ function getDoctorToastMessage(notification) {
     return match?.[1] ? `Có lịch khám mới từ bệnh nhân ${match[1]}` : 'Có lịch khám mới';
   }
 
+  if (notification.type === 'doctor_follow_up_scheduled') return 'Bệnh nhân đã đặt lịch tái khám';
   if (notification.type === 'doctor_waiting_list_accepted') return 'Có lịch khám mới từ danh sách chờ';
   if (notification.type === 'doctor_cancel_request') return 'Có yêu cầu hủy lịch mới';
   if (notification.type === 'doctor_reschedule_request') return 'Có yêu cầu đổi lịch mới';
@@ -74,7 +75,7 @@ function getDoctorToastMessage(notification) {
 }
 
 function getNotificationIcon(notification) {
-  if (['follow_up_due_soon', 'follow_up_overdue'].includes(notification.type)) return '↻';
+  if (['follow_up_scheduled', 'follow_up_due_soon', 'follow_up_overdue'].includes(notification.type)) return '↻';
   if (notification.type === 'follow_up_recommended') return '↻';
   if (String(notification.type || '').startsWith('doctor_')) return '🩺';
   if (notification.type === 'waitinglist_offered') return '⏳';
@@ -88,12 +89,16 @@ function getNotificationIcon(notification) {
 }
 
 function notifyPatientToast(notification, toast) {
+  if (notification.type === 'follow_up_scheduled') {
+    toast.success('Bạn đã đặt lịch tái khám thành công.');
+    return;
+  }
   if (notification.type === 'follow_up_due_soon') {
-    toast.info('Sắp đến lịch tái khám được khuyến nghị. Bạn nên đặt lịch phù hợp.');
+    toast.info('Bạn có lịch tái khám được khuyến nghị vào ngày mai.');
     return;
   }
   if (notification.type === 'follow_up_overdue') {
-    toast.warning('Bạn đã quá hạn tái khám theo khuyến nghị của bác sĩ.');
+    toast.warning('Bạn đã quá hạn tái khám. Vui lòng đặt lịch nếu vẫn cần theo dõi.');
     return;
   }
   if (notification.type === 'follow_up_recommended') {

@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
-import { APPOINTMENT_STATUS_VALUES, SLOT_HOLDING_APPOINTMENT_STATUSES } from '../constants/appointmentStatus.js';
+import {
+  ACTIVE_FOLLOW_UP_APPOINTMENT_STATUSES,
+  APPOINTMENT_STATUS_VALUES,
+  SLOT_HOLDING_APPOINTMENT_STATUSES
+} from '../constants/appointmentStatus.js';
 import { FOLLOW_UP_TYPE_VALUES } from '../constants/followUpStatus.js';
 
 const insuranceSnapshotSchema = new mongoose.Schema(
@@ -83,8 +87,7 @@ const appointmentSchema = new mongoose.Schema(
     followUpRecordId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'MedicalRecord',
-      default: null,
-      index: true
+      default: null
     },
     followUpType: {
       type: String,
@@ -159,6 +162,19 @@ appointmentSchema.index(
     unique: true,
     partialFilterExpression: {
       status: { $in: SLOT_HOLDING_APPOINTMENT_STATUSES }
+    }
+  }
+);
+
+appointmentSchema.index(
+  { followUpRecordId: 1, isFollowUp: 1 },
+  {
+    name: 'unique_active_follow_up_record',
+    unique: true,
+    partialFilterExpression: {
+      isFollowUp: true,
+      followUpRecordId: { $type: 'objectId' },
+      status: { $in: ACTIVE_FOLLOW_UP_APPOINTMENT_STATUSES }
     }
   }
 );

@@ -393,6 +393,16 @@ export default function BookingPage() {
   }
 
   function canJoinWaitingList(slot) {
+    if (typeof slot.canJoinWaitingList === 'boolean') {
+      return (
+        slot.canJoinWaitingList &&
+        !slot.available &&
+        Boolean(form.doctorId && form.date) &&
+        !isPastDate(form.date) &&
+        !isPastOrCurrentSlot(form.date, slot.timeSlot)
+      );
+    }
+
     const label = normalizeText(slot.label);
     return (
       !slot.available &&

@@ -89,7 +89,7 @@ function buildFollowUpSummary(items) {
     summary.total += 1;
     summary[status] = (summary[status] || 0) + 1;
     if (record.followUpRequired && !record.followUpDate) summary.noDate += 1;
-    if (record.followUpRequired && ['recommended', 'overdue'].includes(status) && !record.followUpAppointmentId) {
+    if (record.followUpRequired && ['recommended', 'overdue'].includes(status)) {
       summary.needBooking += 1;
     }
     return summary;
@@ -155,6 +155,7 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
   const sourceFollowUpRecord = appointment.followUpRecordId && typeof appointment.followUpRecordId === 'object'
     ? appointment.followUpRecordId
     : null;
+  const sourceFollowUpRecordId = getId(appointment.followUpRecordId);
   const sourceAppointment = sourceFollowUpRecord?.appointmentId || appointment.originalAppointmentId;
   const isFollowUpRecord = Boolean(appointment.isFollowUp || appointment.followUpRecordId);
   const sourceDate = sourceAppointment?.date || sourceFollowUpRecord?.createdAt;
@@ -192,6 +193,18 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
             </strong>
             {sourceFollowUpRecord?.diagnosis && <p>Chẩn đoán lần khám gốc: {sourceFollowUpRecord.diagnosis}</p>}
           </div>
+          {sourceFollowUpRecordId && (
+            <button
+              className="btn btn-sm btn-outline-primary"
+              type="button"
+              onClick={() => {
+                onClose();
+                navigate(`/doctor/medical-records?recordId=${sourceFollowUpRecordId}`);
+              }}
+            >
+              Xem hồ sơ gốc
+            </button>
+          )}
         </div>
       )}
 

@@ -4,16 +4,16 @@ import User from '../models/central/User.js';
 import WaitingList from '../models/waitingListModel.js';
 import { sendWaitingListOffer } from './emailService.js';
 import { emitNotification, emitToUser } from './socketService.js';
+import { SLOT_HOLDING_APPOINTMENT_STATUSES } from '../constants/appointmentStatus.js';
 
 const OFFER_DURATION_MS = 10 * 60 * 1000;
-const SLOT_HOLDING_STATUSES = ['pending', 'confirmed', 'in_progress', 'cancel_requested', 'reschedule_requested', 'completed'];
 
 async function isSlotAvailable({ doctorId, date, timeSlot }) {
   const occupied = await Appointment.exists({
     doctorId,
     date,
     timeSlot,
-    status: { $in: SLOT_HOLDING_STATUSES }
+    status: { $in: SLOT_HOLDING_APPOINTMENT_STATUSES }
   });
   return !occupied;
 }

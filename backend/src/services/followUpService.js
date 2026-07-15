@@ -111,9 +111,29 @@ export async function syncFollowUpStatusForAppointment(appointment, now = new Da
 
   if (appointment.status === APPOINTMENT_STATUSES.COMPLETED) {
     const completedRecord = await MedicalRecord.findOne({ appointmentId: toObjectId(appointment._id) }).select('_id');
+    if (!completedRecord?._id) {
+      const currentFollowUpAppointmentId = record.followUpAppointmentId ? String(toObjectId(record.followUpAppointmentId)) : '';
+      const nextFollowUpAppointmentId = String(toObjectId(appointment._id));
+      const shouldSyncScheduledState = record.followUpStatus !== FOLLOW_UP_STATUSES.SCHEDULED
+        || currentFollowUpAppointmentId !== nextFollowUpAppointmentId
+        || Boolean(record.followUpCompletedRecordId)
+        || Boolean(record.followUpCompletedAt);
+
+      if (shouldSyncScheduledState) {
+        record.followUpStatus = FOLLOW_UP_STATUSES.SCHEDULED;
+        record.followUpAppointmentId = toObjectId(appointment._id);
+        record.followUpCompletedRecordId = null;
+        record.followUpCompletedAt = undefined;
+        record.followUpOverdueAt = undefined;
+        await record.save();
+        await emitFollowUpUpdated(record, 'completed_without_record');
+      }
+      return record;
+    }
+
     record.followUpStatus = FOLLOW_UP_STATUSES.COMPLETED;
     record.followUpAppointmentId = toObjectId(appointment._id);
-    record.followUpCompletedRecordId = completedRecord?._id || record.followUpCompletedRecordId || null;
+    record.followUpCompletedRecordId = completedRecord._id;
     record.followUpCompletedAt = appointment.completedAt || now;
     record.followUpOverdueAt = undefined;
     await record.save();
@@ -122,12 +142,14 @@ export async function syncFollowUpStatusForAppointment(appointment, now = new Da
   }
 
   if ([APPOINTMENT_STATUSES.CANCELLED, APPOINTMENT_STATUSES.NO_SHOW].includes(appointment.status)) {
-    record.followUpAppointmentId = null;
+    record.followUpAppointmentId = toObjectId(appointment._id);
     record.followUpCompletedRecordId = null;
     record.followUpCompletedAt = undefined;
     record.followUpStatus = isPastFollowUpDate(record, now) ? FOLLOW_UP_STATUSES.OVERDUE : FOLLOW_UP_STATUSES.RECOMMENDED;
     if (record.followUpStatus === FOLLOW_UP_STATUSES.OVERDUE) {
       record.followUpOverdueAt = record.followUpOverdueAt || now;
+    } else {
+      record.followUpOverdueAt = undefined;
     }
     await record.save();
     await emitFollowUpUpdated(record, appointment.status === APPOINTMENT_STATUSES.NO_SHOW ? 'no_show' : 'cancelled');
@@ -175,8 +197,7 @@ async function markOverdueFollowUps(now) {
   const records = await MedicalRecord.find({
     followUpRequired: true,
     followUpStatus: FOLLOW_UP_STATUSES.RECOMMENDED,
-    followUpDate: { $lt: todayStart },
-    followUpAppointmentId: null
+    followUpDate: { $lt: todayStart }
   }).select('_id patientId appointmentId doctorId clinicId followUpDate followUpStatus followUpOverdueAt');
 
   let updated = 0;
@@ -190,7 +211,7 @@ async function markOverdueFollowUps(now) {
       record,
       'follow_up_overdue',
       'Bạn đã quá hạn tái khám',
-      'Bạn đã quá hạn tái khám theo khuyến nghị của bác sĩ. Vui lòng đặt lịch sớm để được theo dõi tiếp.'
+      'Bạn đã quá hạn tái khám. Vui lòng đặt lịch nếu vẫn cần theo dõi.'
     ));
     await safeSideEffect('Follow-up overdue email', async () => {
       const patient = await getFollowUpPatient(record);
@@ -221,7 +242,6 @@ async function sendDueSoonFollowUpReminders(now) {
     followUpRequired: true,
     followUpStatus: FOLLOW_UP_STATUSES.RECOMMENDED,
     followUpDate: { $gte: startOfTodayInVietnam(now), $lte: maxDate },
-    followUpAppointmentId: null,
     $or: [
       { followUpReminderSentAt: { $exists: false } },
       { followUpReminderSentAt: null }
@@ -238,7 +258,7 @@ async function sendDueSoonFollowUpReminders(now) {
       record,
       'follow_up_due_soon',
       'Sắp đến lịch tái khám',
-      `Bạn có lịch tái khám được khuyến nghị vào ngày ${formatDate(record.followUpDate)}. Vui lòng đặt lịch phù hợp.`
+      'Bạn có lịch tái khám được khuyến nghị vào ngày mai.'
     ));
     await safeSideEffect('Follow-up due soon email', async () => {
       const patient = await getFollowUpPatient(record);

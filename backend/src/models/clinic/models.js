@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { SLOT_HOLDING_APPOINTMENT_STATUSES } from '../../constants/appointmentStatus.js';
 
 const doctorSchema = new mongoose.Schema(
   {
@@ -170,7 +171,7 @@ appointmentSchema.index(
   {
     unique: true,
     partialFilterExpression: {
-      status: { $in: ['pending', 'confirmed', 'in_progress', 'cancel_requested', 'reschedule_requested', 'completed'] }
+      status: { $in: SLOT_HOLDING_APPOINTMENT_STATUSES }
     }
   }
 );

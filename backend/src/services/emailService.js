@@ -53,6 +53,43 @@ function followUpRecordUrl(record) {
   return `${env.appUrl}/medical-records?recordId=${record?._id || record?.id || ''}`;
 }
 
+function followUpBookingUrl(record) {
+  return `${env.appUrl}/booking?followUpRecordId=${record?._id || record?.id || ''}`;
+}
+
+function followUpAppointmentText(appointment) {
+  if (!appointment || typeof appointment !== 'object') return '';
+  const parts = [];
+  if (appointment.date) parts.push(formatDate(appointment.date));
+  if (appointment.timeSlot) parts.push(appointment.timeSlot);
+  return parts.join(' - ');
+}
+
+function followUpPlanText(record) {
+  if (!record?.followUpRequired) return 'Không cần tái khám';
+
+  const status = record.followUpStatus || 'recommended';
+  const scheduledText = followUpAppointmentText(record.followUpAppointmentId);
+
+  if (status === 'scheduled') {
+    return scheduledText ? `Đã đặt lịch tái khám ngày ${scheduledText}` : 'Đã đặt lịch tái khám';
+  }
+
+  if (status === 'completed') return 'Đã hoàn thành tái khám';
+  if (status === 'overdue') return 'Quá hạn tái khám';
+  if (status === 'cancelled') return 'Lịch tái khám đã hủy, vui lòng đặt lại nếu vẫn cần theo dõi';
+
+  return record.followUpDate
+    ? `Khuyến nghị tái khám ngày ${formatDate(record.followUpDate)}`
+    : 'Cần tái khám - bệnh nhân chọn ngày phù hợp';
+}
+
+function shouldShowFollowUpBookingCta(record) {
+  if (!record?.followUpRequired) return false;
+  const status = record.followUpStatus || 'recommended';
+  return ['recommended', 'overdue', 'cancelled'].includes(status);
+}
+
 function renderEmailLayout({ title, children }) {
   return `
     <div style="margin: 0; padding: 24px; background: #f0f7ff; font-family: Arial, sans-serif; color: #172033;">
@@ -447,13 +484,18 @@ export async function sendMedicalRecordUpdatedEmail({ patient, doctor, appointme
           ['Ngày khám', appointment?.date],
           ['Khung giờ', appointment?.timeSlot],
           ['Chẩn đoán', record?.diagnosis],
-          ['Tái khám', followUpText(record)],
+          ['Kế hoạch tái khám', followUpPlanText(record)],
           ['Lời dặn', record?.advice]
         ])}
-        <p style="margin-top: 16px;">
+        <p style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
           <a href="${env.appUrl}/medical-records?recordId=${record?._id || record?.id || ''}" style="display: inline-block; padding: 11px 16px; border-radius: 999px; background: #0d6efd; color: #ffffff; text-decoration: none; font-weight: 700;">
             Xem hồ sơ khám bệnh
           </a>
+          ${shouldShowFollowUpBookingCta(record) ? `
+            <a href="${followUpBookingUrl(record)}" style="display: inline-block; padding: 11px 16px; border-radius: 999px; background: #0ea5e9; color: #ffffff; text-decoration: none; font-weight: 700;">
+              Đặt lịch tái khám
+            </a>
+          ` : ''}
         </p>
       `
     })
@@ -499,7 +541,7 @@ export async function sendFollowUpOverdueEmail({ patient, record }) {
           ['Trạng thái', 'Quá hạn tái khám']
         ])}
         <p style="margin-top: 16px;">
-          <a href="${followUpRecordUrl(record)}" style="display: inline-block; padding: 11px 16px; border-radius: 999px; background: #dc2626; color: #ffffff; text-decoration: none; font-weight: 700;">
+          <a href="${followUpBookingUrl(record)}" style="display: inline-block; padding: 11px 16px; border-radius: 999px; background: #dc2626; color: #ffffff; text-decoration: none; font-weight: 700;">
             Đặt lịch tái khám
           </a>
         </p>

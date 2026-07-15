@@ -55,6 +55,7 @@ function followUpStatusText(status) {
   if (status === 'scheduled') return 'Đã đặt lịch tái khám';
   if (status === 'completed') return 'Đã hoàn thành tái khám';
   if (status === 'overdue') return 'Quá hạn tái khám';
+  if (status === 'cancelled') return 'Đã hủy lịch tái khám';
   return 'Lịch tái khám';
 }
 
@@ -807,7 +808,7 @@ export default function AppointmentDetailModal({
         <div><strong>Cơ sở</strong><span>{valueName(appointment.clinicId)}</span></div>
         <div><strong>Chuyên khoa</strong><span>{valueName(appointment.specialtyId)}</span></div>
         {showFollowUpContext && (
-          <div><strong>Loại lịch</strong><span><span className="follow-up-appointment-chip">Tái khám</span></span></div>
+          <div><strong>Loại lịch</strong><span><span className="follow-up-appointment-chip">Lịch tái khám</span></span></div>
         )}
         <div><strong>Ngày đặt lịch</strong><span>{formatDateTime(appointment.createdAt)}</span></div>
         <div><strong>Người đặt</strong><span>{bookingUserValue(appointment, 'name')}</span></div>
@@ -833,7 +834,7 @@ export default function AppointmentDetailModal({
             </div>
             <dl className="follow-up-appointment-meta">
               <div>
-                <dt>Hồ sơ gốc</dt>
+                <dt>Ngày khám gốc</dt>
                 <dd>
                   {originalAppointment
                     ? `${formatSimpleDate(originalAppointment.date)}${originalAppointment.timeSlot ? ` · ${originalAppointment.timeSlot}` : ''}`

@@ -41,13 +41,40 @@ function followUpStatusLabel(record) {
 
 function canBookFollowUp(record) {
   if (!record?.followUpRequired) return false;
-  return ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended') && !record.followUpAppointmentId;
+  return ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended');
 }
 
 function linkedFollowUpAppointmentId(record) {
   const appointment = record?.followUpAppointmentId;
   if (!appointment) return '';
   return typeof appointment === 'object' ? appointment._id : appointment;
+}
+
+function entityId(value) {
+  return typeof value === 'object' ? value?._id : value;
+}
+
+function getSourceFollowUpRecord(record) {
+  const source = record?.appointmentId?.followUpRecordId;
+  return source && typeof source === 'object' ? source : null;
+}
+
+function getSourceFollowUpRecordId(record) {
+  return entityId(record?.appointmentId?.followUpRecordId);
+}
+
+function isFollowUpMedicalRecord(record) {
+  return Boolean(record?.appointmentId?.isFollowUp || record?.appointmentId?.followUpRecordId);
+}
+
+function sourceFollowUpVisitText(record) {
+  const sourceRecord = getSourceFollowUpRecord(record);
+  const sourceAppointment = sourceRecord?.appointmentId || record?.appointmentId?.originalAppointmentId;
+  if (sourceAppointment?.date) {
+    return `${formatDate(sourceAppointment.date)}${sourceAppointment.timeSlot ? ` · ${sourceAppointment.timeSlot}` : ''}`;
+  }
+  if (sourceRecord?.createdAt) return formatDate(sourceRecord.createdAt);
+  return 'lần khám trước';
 }
 
 function followUpDescription(record) {
@@ -61,6 +88,12 @@ function followUpDescription(record) {
       return 'Bạn đã đặt lịch tái khám cho hồ sơ này. Vui lòng kiểm tra trong mục Lịch hẹn của tôi.';
     }
     return `Bạn đã đặt lịch tái khám ngày ${formatDate(appointment.date)}${appointment.timeSlot ? `, khung giờ ${appointment.timeSlot}` : ''}.`;
+  }
+
+  if (['recommended', 'overdue'].includes(record.followUpStatus || 'recommended') && record.followUpAppointmentId) {
+    return record.followUpStatus === 'overdue'
+      ? 'Lịch tái khám trước đó đã bị hủy hoặc không hoàn tất. Hồ sơ đã quá hạn, vui lòng đặt lại lịch tái khám sớm.'
+      : 'Lịch tái khám trước đó đã bị hủy hoặc không hoàn tất. Bạn có thể đặt lại lịch tái khám phù hợp.';
   }
 
   if (record.followUpStatus === 'completed') {
@@ -243,6 +276,9 @@ function MedicalRecordDetailModal({ record, onClose }) {
   const vitalItems = getVitalItems(record);
   const followUpStatus = followUpStatusLabel(record);
   const attachments = record.attachments || [];
+  const sourceRecord = getSourceFollowUpRecord(record);
+  const sourceRecordId = getSourceFollowUpRecordId(record);
+  const showSourceFollowUp = isFollowUpMedicalRecord(record) && sourceRecordId;
 
   async function handleDownloadPdf() {
     if (!record?._id || downloading) return;
@@ -280,6 +316,26 @@ function MedicalRecordDetailModal({ record, onClose }) {
       </div>
 
       <InsuranceSnapshotCard insurance={appointment.insuranceSnapshot} />
+
+      {showSourceFollowUp && (
+        <div className="medical-record-source-card">
+          <div>
+            <span>Hồ sơ tái khám</span>
+            <strong>Hồ sơ này là tái khám từ hồ sơ ngày {sourceFollowUpVisitText(record)}.</strong>
+            {sourceRecord?.diagnosis && <p>Chẩn đoán lần khám gốc: {displayText(sourceRecord.diagnosis)}</p>}
+          </div>
+          <button
+            className="btn btn-sm btn-outline-primary"
+            type="button"
+            onClick={() => {
+              onClose();
+              navigate(`/medical-records?recordId=${sourceRecordId}`);
+            }}
+          >
+            Xem hồ sơ gốc
+          </button>
+        </div>
+      )}
 
       <div className={`medical-record-follow-up-card ${followUpStatus.tone}`}>
         <div>

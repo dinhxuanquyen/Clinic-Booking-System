@@ -598,7 +598,7 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
     summary.total += 1;
     summary[status] = (summary[status] || 0) + 1;
     if (record.followUpRequired && !record.followUpDate) summary.noDate += 1;
-    if (record.followUpRequired && [FOLLOW_UP_STATUSES.RECOMMENDED, FOLLOW_UP_STATUSES.OVERDUE].includes(status) && !record.followUpAppointmentId) {
+    if (record.followUpRequired && [FOLLOW_UP_STATUSES.RECOMMENDED, FOLLOW_UP_STATUSES.OVERDUE].includes(status)) {
       summary.needBooking += 1;
     }
     return summary;
