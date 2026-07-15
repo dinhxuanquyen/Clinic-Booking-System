@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-label="Mental health specialty illustration">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ede9fe"/><stop offset="1" stop-color="#fdf2f8"/></linearGradient></defs>
+  <rect width="720" height="360" rx="34" fill="url(#g)"/><circle cx="576" cy="78" r="90" fill="#c4b5fd" opacity=".42"/>
+  <circle cx="218" cy="168" r="88" fill="#fff"/><path d="M178 170c18 34 62 34 80 0" stroke="#7c3aed" stroke-width="18" stroke-linecap="round" fill="none"/><circle cx="188" cy="140" r="10" fill="#7c3aed"/><circle cx="248" cy="140" r="10" fill="#7c3aed"/><path d="M390 126h180M390 184h130M390 242h204" stroke="#8b5cf6" stroke-width="24" stroke-linecap="round"/>
+  <text x="112" y="315" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#0f3b68">TAM LY</text>
+</svg>

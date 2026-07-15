@@ -17,11 +17,14 @@ function valueName(value, fallback = 'Đang cập nhật') {
   return cleanDisplayText(typeof value === 'object' ? value.name : value, fallback);
 }
 
-function InfoList({ title, items, emptyText }) {
+function InfoList({ title, items, emptyText, variant = 'default' }) {
   const values = Array.isArray(items) ? items.filter(Boolean) : [];
   return (
-    <section className="package-detail-section">
-      <h2>{title}</h2>
+    <section className={`package-detail-section package-detail-section-${variant}`}>
+      <div className="package-detail-section-title">
+        <span>{variant === 'includes' ? '✓' : 'i'}</span>
+        <h2>{title}</h2>
+      </div>
       {values.length ? (
         <ul>
           {values.map((item) => <li key={item}>{cleanDisplayText(item)}</li>)}
@@ -76,32 +79,42 @@ export default function PackageDetailPage() {
   const bookingUrl = `/booking?packageId=${servicePackage._id}`;
 
   return (
-    <div className="public-page package-detail-page">
-      <section className="package-detail-hero">
-        <div>
+    <div className="public-page package-detail-page package-detail-page-pro">
+      <section className="package-detail-hero package-detail-hero-pro">
+        <div className="package-detail-hero-copy">
+          <Link className="package-detail-back-link" to="/packages">← Quay lại danh sách gói khám</Link>
           <span className="eyebrow">Chi tiết gói khám</span>
           <h1>{cleanDisplayText(servicePackage.name, 'Gói khám')}</h1>
           <p>{cleanDisplayText(servicePackage.description, 'Dịch vụ khám chuyên khoa tại phòng khám.')}</p>
+          <div className="package-detail-trust-row">
+            <span>Thanh toán tại phòng khám</span>
+            <span>Tư vấn trước khi thực hiện</span>
+            <span>Không bắt buộc khi đặt lịch</span>
+          </div>
         </div>
-        <aside className="package-detail-price-card">
+
+        <aside className="package-detail-price-card package-detail-price-card-pro">
           <span>Giá tham khảo</span>
           <strong>{formatCurrency(servicePackage.price)}</strong>
           <em>{servicePackage.durationMinutes || 30} phút</em>
           <Link className="btn btn-primary rounded-pill" to={bookingUrl}>
             Đặt lịch với gói này
           </Link>
-          <small>Thanh toán tại phòng khám</small>
+          <Link className="btn btn-outline-primary rounded-pill" to="/booking">
+            Để bác sĩ tư vấn
+          </Link>
+          <small>Giá có thể được phòng khám tư vấn lại theo tình trạng thực tế.</small>
         </aside>
       </section>
 
-      <section className="package-detail-info-grid">
+      <section className="package-detail-info-grid package-detail-info-grid-pro">
         <div><span>Mã gói</span><strong>{cleanDisplayText(servicePackage.code, 'STANDARD')}</strong></div>
         <div><span>Cơ sở</span><strong>{valueName(servicePackage.clinicId, 'Cơ sở')}</strong></div>
         <div><span>Chuyên khoa</span><strong>{valueName(servicePackage.specialtyId, 'Chuyên khoa')}</strong></div>
         <div><span>Bác sĩ</span><strong>{valueName(servicePackage.doctorId, 'Áp dụng chung')}</strong></div>
       </section>
 
-      <div className="package-detail-content-grid">
+      <div className="package-detail-content-grid package-detail-content-grid-pro">
         <InfoList
           title="Phù hợp với ai"
           items={servicePackage.targetPatients}
@@ -111,15 +124,20 @@ export default function PackageDetailPage() {
           title="Gói khám bao gồm"
           items={servicePackage.includes}
           emptyText="Nội dung gói sẽ được phòng khám tư vấn chi tiết khi đặt lịch."
+          variant="includes"
         />
       </div>
 
-      <section className="package-detail-note">
-        <h2>Lưu ý khi đặt lịch</h2>
-        <p>
-          Giá và thời lượng là thông tin tham khảo tại thời điểm hiển thị. Phòng khám có thể tư vấn thêm
-          nếu người bệnh cần dịch vụ ngoài phạm vi gói.
-        </p>
+      <section className="package-detail-note package-detail-note-pro">
+        <div>
+          <span className="eyebrow">Lưu ý khi đặt lịch</span>
+          <h2>Gói khám là thông tin tham khảo, không thay thế chỉ định của bác sĩ</h2>
+          <p>
+            Người bệnh có thể đặt lịch với gói này hoặc chọn khám theo tư vấn. Sau khi thăm khám, bác sĩ có thể
+            đề xuất dịch vụ phù hợp hơn dựa trên triệu chứng, tiền sử và kết quả kiểm tra thực tế.
+          </p>
+        </div>
+        <Link className="btn btn-primary rounded-pill" to={bookingUrl}>Đặt lịch ngay</Link>
       </section>
     </div>
   );

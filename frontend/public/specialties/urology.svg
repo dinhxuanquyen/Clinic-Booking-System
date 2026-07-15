@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-label="Urology specialty illustration">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#dbeafe"/><stop offset="1" stop-color="#ecfeff"/></linearGradient></defs>
+  <rect width="720" height="360" rx="34" fill="url(#g)"/><circle cx="576" cy="78" r="90" fill="#7dd3fc" opacity=".42"/>
+  <path d="M176 106c44 0 78 36 78 82v70c0 16-12 28-28 28s-28-12-28-28v-28c-52-6-88-45-88-94 0-17 29-30 66-30zM306 106c-44 0-78 36-78 82v70c0 16 12 28 28 28s28-12 28-28v-28c52-6 88-45 88-94 0-17-29-30-66-30z" fill="#fff"/><path d="M430 126h168M430 184h112M430 242h190" stroke="#0284c7" stroke-width="24" stroke-linecap="round"/>
+  <text x="112" y="315" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#0f3b68">TIET NIEU</text>
+</svg>

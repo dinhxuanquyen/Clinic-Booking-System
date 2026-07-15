@@ -8,6 +8,7 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "seed": "node src/seed/seed.js",
+    "seed:specialties": "node src/seed/seedSpecialties.js",
     "seed:service-packages": "node src/seed/seedServicePackages.js",
     "seed:articles": "node src/seed/seedArticles.js",
     "migrate:clinic-doctor-codes": "node src/scripts/fixDoctorClinicCodes.js",

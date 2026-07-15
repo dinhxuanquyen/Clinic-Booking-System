@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-label="Orthopedics specialty illustration">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e0e7ff"/><stop offset="1" stop-color="#f5f3ff"/></linearGradient></defs>
+  <rect width="720" height="360" rx="34" fill="url(#g)"/><circle cx="574" cy="78" r="90" fill="#c4b5fd" opacity=".45"/>
+  <path d="M162 122c0-25 20-45 45-45s45 20 45 45v116c0 25-20 45-45 45s-45-20-45-45z" fill="#fff"/><path d="M238 180h146M384 180c0-25 20-45 45-45s45 20 45 45-20 45-45 45-45-20-45-45z" stroke="#4f46e5" stroke-width="24" stroke-linecap="round" fill="none"/><path d="M510 126h92M510 180h60M510 234h110" stroke="#818cf8" stroke-width="22" stroke-linecap="round"/>
+  <text x="112" y="315" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#0f3b68">CXK</text>
+</svg>

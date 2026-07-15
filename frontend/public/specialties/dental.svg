@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-label="Dental specialty illustration">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fef3c7"/><stop offset="1" stop-color="#fff7ed"/></linearGradient></defs>
+  <rect width="720" height="360" rx="34" fill="url(#g)"/><circle cx="580" cy="82" r="92" fill="#fde68a" opacity=".6"/>
+  <path d="M228 74c-57 0-92 46-82 106 9 55 35 116 62 116 25 0 18-70 54-70s29 70 54 70c27 0 53-61 62-116 10-60-25-106-82-106-25 0-40 10-68 10z" fill="#fff"/><path d="M430 118h130M430 178h176M430 238h104" stroke="#d97706" stroke-width="25" stroke-linecap="round"/>
+  <text x="112" y="315" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#0f3b68">RHM</text>
+</svg>

@@ -12,24 +12,21 @@ import {
   FaUser
 } from '../components/icons/FaIcons.jsx';
 import { resolveMediaUrl, useImageFallback } from '../utils/media.js';
-
-const serviceItems = [
-  'Tư vấn và thăm khám ban đầu',
-  'Chẩn đoán và điều trị các vấn đề liên quan',
-  'Theo dõi quá trình điều trị',
-  'Tư vấn chăm sóc sức khỏe và phòng ngừa'
-];
+import { cleanDisplayText } from '../utils/textEncoding.js';
+import {
+  getSpecialtyContent,
+  hasPlaceholderSpecialtyImage,
+  normalizeSpecialtyName
+} from '../data/specialtyContent.js';
 
 const navItems = [
   { id: 'overview', icon: FaInfoCircle, label: 'Giới thiệu chung' },
+  { id: 'symptoms', icon: FaStethoscope, label: 'Khi nào nên khám' },
   { id: 'services', icon: FaCheckCircle, label: 'Dịch vụ / điều trị' },
+  { id: 'preparation', icon: FaCalendarAlt, label: 'Chuẩn bị trước khám' },
   { id: 'doctors', icon: FaUser, label: 'Đội ngũ bác sĩ' },
   { id: 'clinics', icon: FaHospital, label: 'Cơ sở liên quan' }
 ];
-
-function normalizeText(value = '') {
-  return String(value).trim().toLowerCase();
-}
 
 function getSpecialtyName(value) {
   if (!value) return '';
@@ -42,11 +39,34 @@ function getObjectId(value) {
 }
 
 export function formatSpecialtyName(name = '') {
-  return String(name)
-    .trim()
-    .split(/\s+/)
-    .map((word) => (word ? `${word.charAt(0).toUpperCase()}${word.slice(1)}` : ''))
-    .join(' ');
+  const cleaned = cleanDisplayText(name, '');
+  return getSpecialtyContent(cleaned).displayName || cleaned;
+}
+
+function SpecialtyHeroVisual({ specialty, content }) {
+  const hasImage = !hasPlaceholderSpecialtyImage(specialty.image);
+  const fallbackImage = content.image || '/placeholder-specialty.svg';
+  const imageSrc = hasImage ? resolveMediaUrl(specialty.image, fallbackImage) : fallbackImage;
+  const isPhoto = hasImage || String(imageSrc || '').includes('/specialties/photos/');
+
+  if (imageSrc) {
+    return (
+      <img
+        className={isPhoto ? 'specialty-detail-photo' : 'specialty-detail-illustration'}
+        src={imageSrc}
+        alt={content.displayName}
+        onError={(event) => useImageFallback(event, '/placeholder-specialty.svg')}
+      />
+    );
+  }
+
+  return (
+    <div className={`specialty-detail-visual specialty-visual-${content.accent || 'cyan'}`}>
+      <span>{content.iconLabel || 'CK'}</span>
+      <strong>{content.displayName}</strong>
+      <small>Clinic Booking</small>
+    </div>
+  );
 }
 
 export default function SpecialtyDetailPage() {
@@ -79,12 +99,13 @@ export default function SpecialtyDetailPage() {
       .finally(() => setLoading(false));
   }, [specialtyId]);
 
-  const specialtyKey = normalizeText(specialty?.name);
+  const content = getSpecialtyContent(specialty?.name);
+  const specialtyKey = normalizeSpecialtyName(content.displayName);
   const displayName = formatSpecialtyName(specialty?.name);
-  const description = specialty?.description || 'Thông tin chuyên khoa đang được cập nhật.';
+  const description = cleanDisplayText(specialty?.description, content.shortDescription) || content.shortDescription;
 
   const relatedDoctors = useMemo(() => doctors.filter((doctor) => (
-    normalizeText(getSpecialtyName(doctor.specialtyId)) === specialtyKey
+    normalizeSpecialtyName(getSpecialtyContent(getSpecialtyName(doctor.specialtyId)).displayName) === specialtyKey
   )), [doctors, specialtyKey]);
 
   const visibleDoctors = relatedDoctors.slice(0, 3);
@@ -92,7 +113,7 @@ export default function SpecialtyDetailPage() {
   const relatedClinics = useMemo(() => {
     const clinicIds = new Set(
       specialties
-        .filter((item) => normalizeText(item.name) === specialtyKey)
+        .filter((item) => normalizeSpecialtyName(getSpecialtyContent(item.name).displayName) === specialtyKey)
         .map((item) => getObjectId(item.clinicId))
         .filter(Boolean)
     );
@@ -121,23 +142,19 @@ export default function SpecialtyDetailPage() {
       <div className="container">
         <section className="specialty-detail-hero">
           <div className="specialty-detail-image">
-            <img
-              src={resolveMediaUrl(specialty.image, '/placeholder-specialty.svg')}
-              alt={displayName}
-              onError={(event) => useImageFallback(event, '/placeholder-specialty.svg')}
-            />
+            <SpecialtyHeroVisual specialty={specialty} content={content} />
           </div>
           <div className="specialty-detail-hero-content">
             <span className="specialty-detail-label">CHUYÊN KHOA</span>
             <h1>{displayName}</h1>
-            <p>{description}</p>
+            <p>{description || content.overview}</p>
             <div className="specialty-highlight-list">
               <span><FaCheckCircle size={15} />Bác sĩ chuyên môn</span>
               <span><FaCheckCircle size={15} />Đặt lịch nhanh chóng</span>
               <span><FaCheckCircle size={15} />Nhiều cơ sở hỗ trợ</span>
             </div>
             <div className="specialty-hero-actions">
-              <Link className="btn btn-primary specialty-detail-cta" to="/booking">
+              <Link className="btn btn-primary specialty-detail-cta" to={`/booking?specialtyId=${specialty._id}`}>
                 Đặt lịch khám
               </Link>
               <a className="btn btn-outline-primary specialty-detail-secondary" href="#doctors" onClick={() => handleNavClick('doctors')}>
@@ -168,19 +185,40 @@ export default function SpecialtyDetailPage() {
           <div className="specialty-detail-content">
             <section className="specialty-detail-section" id="overview">
               <h2><FaInfoCircle size={18} />Giới thiệu chung</h2>
-              <p>{description}</p>
+              <p>{content.overview || description}</p>
             </section>
 
-            <section className="specialty-detail-section" id="services">
-              <h2><FaCheckCircle size={18} />Dịch vụ / điều trị</h2>
+            <section className="specialty-detail-section" id="symptoms">
+              <h2><FaStethoscope size={18} />Khi nào nên khám?</h2>
               <div className="specialty-service-grid">
-                {serviceItems.map((item) => (
+                {content.symptoms.map((item) => (
                   <article className="specialty-service-card" key={item}>
                     <FaCheckCircle size={17} />
                     <span>{item}</span>
                   </article>
                 ))}
               </div>
+            </section>
+
+            <section className="specialty-detail-section" id="services">
+              <h2><FaCheckCircle size={18} />Dịch vụ / điều trị</h2>
+              <div className="specialty-service-grid">
+                {content.services.map((item) => (
+                  <article className="specialty-service-card" key={item}>
+                    <FaCheckCircle size={17} />
+                    <span>{item}</span>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="specialty-detail-section" id="preparation">
+              <h2><FaCalendarAlt size={18} />Chuẩn bị trước khi khám</h2>
+              <ul className="specialty-preparation-list">
+                {content.preparation.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </section>
 
             <section className="specialty-detail-section" id="doctors">
@@ -216,9 +254,9 @@ export default function SpecialtyDetailPage() {
                 <div className="specialty-clinic-grid">
                   {relatedClinics.map((clinic) => (
                     <article className="specialty-clinic-card" key={clinic._id}>
-                      <h3>{clinic.name}</h3>
-                      <p>{clinic.address || 'Chưa cập nhật địa chỉ'}</p>
-                      <span>{clinic.phone || 'Chưa cập nhật số điện thoại'}</span>
+                      <h3>{cleanDisplayText(clinic.name, 'Cơ sở khám')}</h3>
+                      <p>{cleanDisplayText(clinic.address, 'Chưa cập nhật địa chỉ')}</p>
+                      <span>{cleanDisplayText(clinic.phone, 'Chưa cập nhật số điện thoại')}</span>
                       <Link className="btn btn-outline-primary btn-sm" to={`/clinics/${clinic._id}`}>Xem cơ sở</Link>
                     </article>
                   ))}
@@ -234,7 +272,7 @@ export default function SpecialtyDetailPage() {
                 <h2>Bạn cần tư vấn chuyên khoa {displayName}?</h2>
                 <p>Đặt lịch khám để được hỗ trợ bởi đội ngũ bác sĩ phù hợp.</p>
               </div>
-              <Link className="btn btn-primary specialty-detail-cta" to="/booking">
+              <Link className="btn btn-primary specialty-detail-cta" to={`/booking?specialtyId=${specialty._id}`}>
                 Đặt lịch khám ngay
               </Link>
             </section>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-label="Pediatrics specialty illustration">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#dbeafe"/><stop offset="1" stop-color="#ecfeff"/></linearGradient></defs>
+  <rect width="720" height="360" rx="34" fill="url(#g)"/><circle cx="570" cy="76" r="92" fill="#bae6fd" opacity=".8"/><circle cx="124" cy="276" r="64" fill="#bfdbfe" opacity=".55"/>
+  <rect x="88" y="80" width="218" height="174" rx="28" fill="#fff" opacity=".92"/><circle cx="196" cy="132" r="44" fill="#38bdf8"/><path d="M150 214c19-34 73-34 92 0" stroke="#0f3b68" stroke-width="18" stroke-linecap="round" fill="none"/>
+  <rect x="365" y="102" width="242" height="38" rx="19" fill="#0ea5e9"/><rect x="365" y="165" width="190" height="24" rx="12" fill="#93c5fd"/><rect x="365" y="210" width="142" height="24" rx="12" fill="#bfdbfe"/><text x="112" y="310" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#0f3b68">NHI</text>
+</svg>
