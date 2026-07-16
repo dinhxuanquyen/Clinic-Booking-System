@@ -17091,13 +17091,68 @@ body.modal-open .app-navbar.fixed-top {
   transition: transform 0.22s ease, box-shadow 0.22s ease; height: 100%;
 }
 .dc-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
-.dc-photo-wrap { position: relative; height: 180px; flex-shrink: 0; overflow: hidden; }
-.dc-photo-bg { position: absolute; inset: 0; background: linear-gradient(135deg, var(--color-primary-soft) 0%, var(--color-primary-light) 100%); }
-.dc-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.dc-photo-wrap {
+  position: relative;
+  height: 220px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #F8FDFF 0%, #EAF8FF 100%);
+}
+.dc-photo-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 76% 24%, rgba(14, 165, 233, 0.18) 0 58px, transparent 59px),
+    linear-gradient(135deg, rgba(224, 247, 250, 0.95) 0%, rgba(248, 253, 255, 0.95) 56%, rgba(220, 252, 231, 0.72) 100%);
+}
+.dc-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.dc-photo:not(.dc-photo-placeholder) {
+  object-fit: contain;
+  object-position: center bottom;
+  padding: 16px 22px 0;
+  filter: drop-shadow(0 14px 18px rgba(15, 23, 42, 0.12));
+}
 .dc-photo-placeholder {
-  display: flex; align-items: center; justify-content: center;
-  font-size: 3rem; font-weight: 800; color: var(--color-primary);
-  background: linear-gradient(135deg, var(--color-primary-soft), #BAE6FD); letter-spacing: -0.02em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--color-primary);
+  background: transparent;
+  letter-spacing: -0.02em;
+}
+.dc-photo-placeholder-avatar {
+  width: 86px;
+  height: 86px;
+  border-radius: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+  font-size: 2.8rem;
+  font-weight: 800;
+}
+.dc-photo-placeholder-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--color-primary-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 .dc-rating-badge {
   position: absolute; top: 10px; right: 10px;
@@ -17108,7 +17163,7 @@ body.modal-open .app-navbar.fixed-top {
 }
 .dc-rating-badge small { font-weight: 500; color: var(--gray-500); font-size: 0.72rem; }
 .dc-accepting-pill {
-  position: absolute; bottom: 10px; left: 10px;
+  position: absolute; top: 14px; left: 14px;
   display: inline-flex; align-items: center; gap: 6px;
   background: rgba(16,185,129,0.92); backdrop-filter: blur(6px); color: #fff;
   font-size: 0.75rem; font-weight: 600; padding: 4px 10px;
@@ -17287,7 +17342,7 @@ body.modal-open .app-navbar.fixed-top {
   .sc-info-grid { grid-template-columns: 1fr 1fr; }
   .sc-booking-cta { flex-direction: column; align-items: flex-start; gap: 14px; }
   .sc-booking-cta-btn { width: 100%; text-align: center; }
-  .dc-photo-wrap { height: 160px; }
+  .dc-photo-wrap { height: 200px; }
   .hero-search-bar { flex-direction: column; align-items: stretch; }
   .hero-search-bar input, .hero-search-bar .btn { width: 100%; }
   .home-process-arrow { display: none; }
@@ -17302,7 +17357,7 @@ body.modal-open .app-navbar.fixed-top {
   .sc-empty-result { padding: 32px 20px; }
   .sc-result-card { padding: 16px; }
   .dc-card { border-radius: var(--radius-lg); }
-  .dc-photo-wrap { height: 140px; }
+  .dc-photo-wrap { height: 190px; }
   .dc-body { padding: 14px 16px 10px; }
   .dc-footer { padding: 12px 16px; }
   .hero-stats-bar { grid-template-columns: repeat(2,1fr); }
@@ -22000,7 +22055,7 @@ html, body, #root {
 
 .specialties-page .specialty-card img.specialty-card-photo,
 .specialties-page .specialty-card img.specialty-card-illustration {
-  height: 210px;
+  height: 230px;
   object-fit: cover;
   object-position: center;
   background: #f0f9ff;
@@ -22008,12 +22063,19 @@ html, body, #root {
 
 .specialties-page .specialty-card img.specialty-card-photo {
   filter: saturate(1.03) contrast(1.02);
+  transition: transform 0.24s ease, filter 0.24s ease;
+}
+
+.specialties-page .specialty-card:hover img.specialty-card-photo {
+  transform: scale(1.035);
+  filter: saturate(1.08) contrast(1.04);
 }
 
 .specialty-detail-image img.specialty-detail-photo,
 .specialty-detail-image img.specialty-detail-illustration {
   width: 100%;
-  min-height: 280px;
+  min-height: 320px;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   object-position: center;
   border-radius: 22px;
@@ -23565,5 +23627,453 @@ button.doctor-record-follow-up-card:focus-visible {
 
   .admin-specialty-modal-footer .btn {
     width: 100%;
+  }
+}
+
+/* ============================================================
+   Patient/Public Detail Pages - Professional Polish
+   ============================================================ */
+.public-main :where(.article-detail-page, .clinic-detail-page, .specialty-detail-page, .package-detail-page) {
+  color: #102a56;
+}
+
+.public-main :where(.article-detail-page, .clinic-detail-page, .specialty-detail-page, .package-detail-page) :where(h1, h2, h3) {
+  letter-spacing: 0;
+}
+
+.article-detail-page,
+.clinic-detail-page,
+.specialty-detail-page,
+.package-detail-page {
+  background:
+    radial-gradient(circle at 82% 6%, rgba(14, 165, 233, 0.16), transparent 28%),
+    linear-gradient(180deg, #f0fbff 0%, #f8fcff 46%, #ffffff 100%);
+}
+
+.article-detail-page,
+.package-detail-page {
+  width: min(100%, 1320px);
+  margin: 0 auto;
+  padding: 56px 24px 84px;
+}
+
+.article-detail-card,
+.clinic-detail-hero,
+.specialty-detail-hero,
+.package-detail-hero-pro {
+  border: 1px solid rgba(186, 230, 253, 0.95);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 252, 255, 0.92)),
+    radial-gradient(circle at 88% 12%, rgba(14, 165, 233, 0.12), transparent 30%);
+  box-shadow: 0 28px 80px rgba(15, 62, 110, 0.12);
+}
+
+.article-detail-card,
+.package-detail-hero-pro,
+.package-detail-info-grid-pro > div,
+.package-detail-section,
+.package-detail-note-pro,
+.clinic-detail-hero,
+.clinic-info-card,
+.specialty-detail-section,
+.specialty-clinic-card {
+  border-radius: 28px;
+}
+
+.article-detail-header {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 5vw, 58px);
+  background:
+    radial-gradient(circle at 82% 14%, rgba(14, 165, 233, 0.18), transparent 30%),
+    linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+}
+
+.article-detail-header::after {
+  position: absolute;
+  right: -90px;
+  bottom: -120px;
+  width: 280px;
+  height: 280px;
+  content: "";
+  border-radius: 50%;
+  background: rgba(186, 230, 253, 0.42);
+}
+
+.article-detail-header > div {
+  position: relative;
+  z-index: 1;
+}
+
+.article-detail-header h1 {
+  margin-top: 18px;
+  color: #102a56;
+  font-size: clamp(2.1rem, 5vw, 4.8rem);
+  line-height: 1.04;
+  font-weight: 950;
+}
+
+.article-detail-header p {
+  max-width: 860px;
+  color: #64748b;
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  line-height: 1.7;
+}
+
+.article-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.article-detail-meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #475569;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.article-detail-cover {
+  margin: 0;
+  border-top: 1px solid #e0f2fe;
+  border-bottom: 1px solid #e0f2fe;
+}
+
+.article-detail-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-detail-content {
+  font-size: clamp(1.02rem, 1.2vw, 1.12rem);
+}
+
+.article-detail-content h2 {
+  position: relative;
+  padding-left: 18px;
+}
+
+.article-detail-content h2::before {
+  position: absolute;
+  left: 0;
+  top: 0.18em;
+  width: 5px;
+  height: 1.1em;
+  content: "";
+  border-radius: 999px;
+  background: linear-gradient(180deg, #0ea5e9, #0d6efd);
+}
+
+.article-detail-content p:not(.article-disclaimer) {
+  color: #334155;
+}
+
+.article-disclaimer,
+.article-detail-cta {
+  border: 1px solid #bae6fd;
+  background: linear-gradient(135deg, #f0f9ff, #ffffff);
+  box-shadow: 0 16px 36px rgba(14, 165, 233, 0.08);
+}
+
+.article-detail-cta {
+  align-items: center;
+}
+
+.article-related-card {
+  border: 1px solid #dbeafe;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(15, 62, 110, 0.08);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.article-related-card:hover {
+  border-color: #7dd3fc;
+  box-shadow: 0 22px 54px rgba(15, 62, 110, 0.14);
+  transform: translateY(-3px);
+}
+
+.clinic-detail-page .container,
+.specialty-detail-page .container {
+  max-width: 1320px;
+}
+
+.clinic-detail-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.clinic-detail-hero::before {
+  position: absolute;
+  right: -80px;
+  top: -90px;
+  width: 260px;
+  height: 260px;
+  content: "";
+  border-radius: 50%;
+  background: rgba(125, 211, 252, 0.22);
+}
+
+.clinic-detail-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.clinic-hero-image,
+.specialty-detail-photo,
+.specialty-detail-illustration {
+  border: 1px solid rgba(186, 230, 253, 0.9);
+  box-shadow: 0 24px 58px rgba(15, 62, 110, 0.16);
+}
+
+.clinic-title {
+  font-size: clamp(2.1rem, 4vw, 4.2rem);
+  line-height: 1.05;
+  font-weight: 950;
+}
+
+.clinic-description {
+  color: #64748b;
+  font-size: 1.05rem;
+}
+
+.clinic-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.clinic-info-card {
+  min-height: 108px;
+  padding: 18px;
+  border: 1px solid #dbeafe;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 14px 34px rgba(15, 62, 110, 0.06);
+}
+
+.clinic-info-card strong {
+  color: #102a56;
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.clinic-info-card span,
+.clinic-hours-row {
+  color: #64748b;
+}
+
+.specialty-pill {
+  border: 1px solid #bae6fd;
+  background: #f0f9ff;
+  color: #0369a1;
+  box-shadow: 0 10px 22px rgba(14, 165, 233, 0.08);
+}
+
+.doctor-directory-section,
+.specialty-detail-layout,
+.package-detail-content-grid-pro {
+  margin-top: 26px;
+}
+
+.specialty-detail-hero {
+  overflow: hidden;
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.specialty-detail-hero-content h1 {
+  color: #102a56;
+  font-size: clamp(2.2rem, 4vw, 4.6rem);
+  line-height: 1.04;
+  font-weight: 950;
+}
+
+.specialty-detail-hero-content p {
+  color: #64748b;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.specialty-detail-section {
+  border: 1px solid #dbeafe;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 48px rgba(15, 62, 110, 0.08);
+}
+
+.specialty-detail-section h2 {
+  color: #102a56;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  font-weight: 950;
+}
+
+.specialty-service-card,
+.specialty-preparation-list li {
+  border-color: #dbeafe;
+  background: linear-gradient(135deg, #ffffff, #f8fcff);
+}
+
+.package-detail-page-pro {
+  max-width: 1320px;
+}
+
+.package-detail-hero-pro {
+  position: relative;
+  overflow: hidden;
+  gap: 28px;
+  padding: clamp(24px, 4vw, 44px);
+}
+
+.package-detail-hero-pro::after {
+  position: absolute;
+  right: -72px;
+  bottom: -98px;
+  width: 260px;
+  height: 260px;
+  content: "";
+  border-radius: 50%;
+  background: rgba(14, 165, 233, 0.12);
+}
+
+.package-detail-hero-copy,
+.package-detail-price-card-pro {
+  position: relative;
+  z-index: 1;
+}
+
+.package-detail-hero-copy h1 {
+  color: #102a56;
+  font-size: clamp(2.25rem, 5vw, 4.9rem);
+  line-height: 1.04;
+  font-weight: 950;
+}
+
+.package-detail-hero-copy p {
+  color: #64748b;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+.package-detail-price-card-pro {
+  border: 1px solid #dbeafe;
+  box-shadow: 0 24px 60px rgba(15, 62, 110, 0.12);
+}
+
+.package-detail-price-card-pro strong {
+  color: #0d6efd;
+  font-size: clamp(2rem, 3vw, 2.65rem);
+}
+
+.package-detail-info-grid-pro > div,
+.package-detail-section,
+.package-detail-note-pro {
+  border: 1px solid #dbeafe;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 44px rgba(15, 62, 110, 0.08);
+}
+
+.package-detail-section-title {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.package-detail-section-title span {
+  display: inline-grid;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 12px;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 950;
+}
+
+.package-detail-section-title h2 {
+  margin: 0;
+}
+
+.package-detail-note-pro {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 992px) {
+  .article-detail-page,
+  .package-detail-page {
+    padding: 34px 16px 64px;
+  }
+
+  .clinic-info-grid,
+  .package-detail-info-grid,
+  .package-detail-content-grid,
+  .package-detail-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .package-detail-note-pro {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .package-detail-note-pro .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .article-detail-card,
+  .clinic-detail-hero,
+  .specialty-detail-hero,
+  .package-detail-hero-pro,
+  .package-detail-info-grid-pro > div,
+  .package-detail-section,
+  .package-detail-note-pro,
+  .specialty-detail-section {
+    border-radius: 22px;
+  }
+
+  .article-detail-content {
+    padding: 28px 20px 16px;
+    line-height: 1.78;
+  }
+
+  .article-detail-footer {
+    padding: 0 20px 28px;
+  }
+
+  .article-detail-cta {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .article-detail-cta .btn {
+    width: 100%;
+  }
+
+  .clinic-hero-image {
+    height: 240px;
+  }
+
+  .clinic-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .specialty-detail-hero-content h1,
+  .clinic-title,
+  .article-detail-header h1,
+  .package-detail-hero-copy h1 {
+    font-size: clamp(2rem, 11vw, 2.85rem);
   }
 }

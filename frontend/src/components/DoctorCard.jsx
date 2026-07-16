@@ -1,6 +1,7 @@
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaMapMarkerAlt, FaStar, FaStethoscope } from './icons/FaIcons.jsx';
-import { resolveMediaUrl, useImageFallback } from '../utils/media.js';
+import { resolveMediaUrl } from '../utils/media.js';
 
 function getSpecialtyName(doctor) {
   if (!doctor?.specialtyId) return 'Đang cập nhật';
@@ -25,27 +26,37 @@ function getInitial(name = '') {
 }
 
 export default function DoctorCard({ doctor, to }) {
+  const [avatarFailed, setAvatarFailed] = useState(false);
   const rating = getRating(doctor);
   const specialtyName = getSpecialtyName(doctor);
   const accepting = hasActiveSchedule(doctor);
   const initial = getInitial(doctor.name || '');
+  const avatarUrl = useMemo(() => {
+    if (!doctor.avatar || avatarFailed) return '';
+    return resolveMediaUrl(doctor.avatar, '');
+  }, [doctor.avatar, avatarFailed]);
+
+  useEffect(() => {
+    setAvatarFailed(false);
+  }, [doctor.avatar]);
 
   return (
     <article className="dc-card">
       {/* Photo */}
       <div className="dc-photo-wrap">
         <div className="dc-photo-bg" />
-        {doctor.avatar ? (
+        {avatarUrl ? (
           <img
             className="dc-photo"
-            src={resolveMediaUrl(doctor.avatar, null)}
+            src={avatarUrl}
             alt={doctor.name}
             loading="lazy"
-            onError={(event) => useImageFallback(event, null)}
+            onError={() => setAvatarFailed(true)}
           />
         ) : (
           <div className="dc-photo dc-photo-placeholder">
-            {initial}
+            <span className="dc-photo-placeholder-avatar">{initial}</span>
+            <span className="dc-photo-placeholder-label">Bác sĩ</span>
           </div>
         )}
         {accepting && (

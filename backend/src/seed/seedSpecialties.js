@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import { connectCentralDb } from '../config/db.js';
 import Clinic from '../models/clinicModel.js';
 import Specialty from '../models/specialtyModel.js';
@@ -7,8 +7,8 @@ function normalizeText(value = '') {
   return String(value || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D')
+    .replace(/Ä‘/g, 'd')
+    .replace(/Ä/g, 'D')
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
@@ -19,126 +19,126 @@ const SPECIALTY_SEEDS = [
   {
     name: 'Nhi khoa',
     aliases: ['nhi', 'nhi khoa', 'pediatrics'],
-    description: 'Khám và tư vấn sức khỏe trẻ em, theo dõi tăng trưởng, sốt, ho, tiêu hóa và các vấn đề thường gặp ở trẻ.'
+    description: 'KhÃ¡m vÃ  tÆ° váº¥n sá»©c khá»e tráº» em, theo dÃµi tÄƒng trÆ°á»Ÿng, sá»‘t, ho, tiÃªu hÃ³a vÃ  cÃ¡c váº¥n Ä‘á» thÆ°á»ng gáº·p á»Ÿ tráº».'
   },
   {
-    name: 'Tai Mũi Họng',
-    aliases: ['tai mui hong', 'tai mũi họng', 'tmh', 'ent'],
-    description: 'Khám đau họng, nghẹt mũi, ho kéo dài, viêm xoang, ù tai, đau tai và các bệnh lý tai mũi họng thường gặp.'
+    name: 'Tai MÅ©i Há»ng',
+    aliases: ['tai mui hong', 'tai mÅ©i há»ng', 'tmh', 'ent'],
+    description: 'KhÃ¡m Ä‘au há»ng, ngháº¹t mÅ©i, ho kÃ©o dÃ i, viÃªm xoang, Ã¹ tai, Ä‘au tai vÃ  cÃ¡c bá»‡nh lÃ½ tai mÅ©i há»ng thÆ°á»ng gáº·p.'
   },
   {
-    name: 'Da liễu',
-    aliases: ['da lieu', 'da liễu', 'dermatology'],
-    description: 'Khám mụn, dị ứng, phát ban, ngứa, viêm da và tư vấn chăm sóc da an toàn.'
+    name: 'Da liá»…u',
+    aliases: ['da lieu', 'da liá»…u', 'dermatology'],
+    description: 'KhÃ¡m má»¥n, dá»‹ á»©ng, phÃ¡t ban, ngá»©a, viÃªm da vÃ  tÆ° váº¥n chÄƒm sÃ³c da an toÃ n.'
   },
   {
-    name: 'Tim mạch',
-    aliases: ['tim mach', 'tim mạch', 'cardiology'],
-    description: 'Khám đau ngực, hồi hộp, khó thở, tăng huyết áp và theo dõi các yếu tố nguy cơ tim mạch.'
+    name: 'Tim máº¡ch',
+    aliases: ['tim mach', 'tim máº¡ch', 'cardiology'],
+    description: 'KhÃ¡m Ä‘au ngá»±c, há»“i há»™p, khÃ³ thá»Ÿ, tÄƒng huyáº¿t Ã¡p vÃ  theo dÃµi cÃ¡c yáº¿u tá»‘ nguy cÆ¡ tim máº¡ch.'
   },
   {
-    name: 'Răng Hàm Mặt',
-    aliases: ['rang ham mat', 'răng hàm mặt', 'nha khoa', 'dental'],
-    description: 'Khám đau răng, sâu răng, ê buốt, viêm lợi và tư vấn chăm sóc răng miệng.'
+    name: 'RÄƒng HÃ m Máº·t',
+    aliases: ['rang ham mat', 'rÄƒng hÃ m máº·t', 'nha khoa', 'dental'],
+    description: 'KhÃ¡m Ä‘au rÄƒng, sÃ¢u rÄƒng, Ãª buá»‘t, viÃªm lá»£i vÃ  tÆ° váº¥n chÄƒm sÃ³c rÄƒng miá»‡ng.'
   },
   {
-    name: 'Cơ xương khớp',
-    aliases: ['co xuong khop', 'cơ xương khớp', 'musculoskeletal'],
-    description: 'Khám đau khớp, đau lưng, đau cổ vai gáy, hạn chế vận động và các vấn đề cơ xương khớp thường gặp.'
+    name: 'CÆ¡ xÆ°Æ¡ng khá»›p',
+    aliases: ['co xuong khop', 'cÆ¡ xÆ°Æ¡ng khá»›p', 'musculoskeletal'],
+    description: 'KhÃ¡m Ä‘au khá»›p, Ä‘au lÆ°ng, Ä‘au cá»• vai gÃ¡y, háº¡n cháº¿ váº­n Ä‘á»™ng vÃ  cÃ¡c váº¥n Ä‘á» cÆ¡ xÆ°Æ¡ng khá»›p thÆ°á»ng gáº·p.'
   },
   {
-    name: 'Chấn thương chỉnh hình',
-    aliases: ['chan thuong chinh hinh', 'chấn thương chỉnh hình', 'chan thuong', 'orthopedics', 'trauma'],
-    description: 'Khám sau ngã xe, bong gân, trật khớp, đau sau va đập và chấn thương phần mềm.'
+    name: 'Cháº¥n thÆ°Æ¡ng chá»‰nh hÃ¬nh',
+    aliases: ['chan thuong chinh hinh', 'cháº¥n thÆ°Æ¡ng chá»‰nh hÃ¬nh', 'chan thuong', 'orthopedics', 'trauma'],
+    description: 'KhÃ¡m sau ngÃ£ xe, bong gÃ¢n, tráº­t khá»›p, Ä‘au sau va Ä‘áº­p vÃ  cháº¥n thÆ°Æ¡ng pháº§n má»m.'
   },
   {
-    name: 'Nội tổng quát',
-    aliases: ['noi tong quat', 'nội tổng quát', 'noi khoa', 'internal medicine'],
-    description: 'Khám các triệu chứng toàn thân, mệt mỏi, sốt, đau bụng, rối loạn tiêu hóa và tư vấn sức khỏe tổng quát.'
+    name: 'Ná»™i tá»•ng quÃ¡t',
+    aliases: ['noi tong quat', 'ná»™i tá»•ng quÃ¡t', 'noi khoa', 'internal medicine'],
+    description: 'KhÃ¡m cÃ¡c triá»‡u chá»©ng toÃ n thÃ¢n, má»‡t má»i, sá»‘t, Ä‘au bá»¥ng, rá»‘i loáº¡n tiÃªu hÃ³a vÃ  tÆ° váº¥n sá»©c khá»e tá»•ng quÃ¡t.'
   },
   {
-    name: 'Tiêu hóa',
-    aliases: ['tieu hoa', 'tiêu hóa', 'gastroenterology'],
-    description: 'Khám đau bụng, đầy hơi, tiêu chảy, táo bón, buồn nôn và các rối loạn tiêu hóa thường gặp.'
+    name: 'TiÃªu hÃ³a',
+    aliases: ['tieu hoa', 'tiÃªu hÃ³a', 'gastroenterology'],
+    description: 'KhÃ¡m Ä‘au bá»¥ng, Ä‘áº§y hÆ¡i, tiÃªu cháº£y, tÃ¡o bÃ³n, buá»“n nÃ´n vÃ  cÃ¡c rá»‘i loáº¡n tiÃªu hÃ³a thÆ°á»ng gáº·p.'
   },
   {
-    name: 'Sản phụ khoa',
-    aliases: ['san phu khoa', 'sản phụ khoa', 'phu khoa', 'obstetrics gynecology'],
-    description: 'Tư vấn sức khỏe phụ nữ, rối loạn kinh nguyệt, viêm nhiễm phụ khoa và theo dõi thai kỳ cơ bản.'
+    name: 'Sáº£n phá»¥ khoa',
+    aliases: ['san phu khoa', 'sáº£n phá»¥ khoa', 'phu khoa', 'obstetrics gynecology'],
+    description: 'TÆ° váº¥n sá»©c khá»e phá»¥ ná»¯, rá»‘i loáº¡n kinh nguyá»‡t, viÃªm nhiá»…m phá»¥ khoa vÃ  theo dÃµi thai ká»³ cÆ¡ báº£n.'
   },
   {
-    name: 'Mắt',
-    aliases: ['mat', 'mắt', 'ophthalmology'],
-    description: 'Khám nhìn mờ, đau mắt, đỏ mắt, khô mắt và tư vấn chăm sóc thị lực.'
+    name: 'Máº¯t',
+    aliases: ['mat', 'máº¯t', 'ophthalmology'],
+    description: 'KhÃ¡m nhÃ¬n má», Ä‘au máº¯t, Ä‘á» máº¯t, khÃ´ máº¯t vÃ  tÆ° váº¥n chÄƒm sÃ³c thá»‹ lá»±c.'
   },
   {
-    name: 'Thần kinh',
-    aliases: ['than kinh', 'thần kinh', 'neurology'],
-    description: 'Khám đau đầu, chóng mặt, tê bì, rối loạn giấc ngủ và các triệu chứng thần kinh thường gặp.'
+    name: 'Tháº§n kinh',
+    aliases: ['than kinh', 'tháº§n kinh', 'neurology'],
+    description: 'KhÃ¡m Ä‘au Ä‘áº§u, chÃ³ng máº·t, tÃª bÃ¬, rá»‘i loáº¡n giáº¥c ngá»§ vÃ  cÃ¡c triá»‡u chá»©ng tháº§n kinh thÆ°á»ng gáº·p.'
   },
   {
-    name: 'Hô hấp',
-    aliases: ['ho hap', 'hô hấp', 'respiratory', 'pulmonology'],
-    description: 'Khám ho kéo dài, khó thở, khò khè, hen phế quản và các vấn đề đường hô hấp dưới.'
+    name: 'HÃ´ háº¥p',
+    aliases: ['ho hap', 'hÃ´ háº¥p', 'respiratory', 'pulmonology'],
+    description: 'KhÃ¡m ho kÃ©o dÃ i, khÃ³ thá»Ÿ, khÃ² khÃ¨, hen pháº¿ quáº£n vÃ  cÃ¡c váº¥n Ä‘á» Ä‘Æ°á»ng hÃ´ háº¥p dÆ°á»›i.'
   },
   {
-    name: 'Nội tiết',
-    aliases: ['noi tiet', 'nội tiết', 'endocrinology'],
-    description: 'Tư vấn đái tháo đường, rối loạn tuyến giáp, rối loạn chuyển hóa và theo dõi nội tiết.'
+    name: 'Ná»™i tiáº¿t',
+    aliases: ['noi tiet', 'ná»™i tiáº¿t', 'endocrinology'],
+    description: 'TÆ° váº¥n Ä‘Ã¡i thÃ¡o Ä‘Æ°á»ng, rá»‘i loáº¡n tuyáº¿n giÃ¡p, rá»‘i loáº¡n chuyá»ƒn hÃ³a vÃ  theo dÃµi ná»™i tiáº¿t.'
   },
   {
-    name: 'Tiết niệu',
-    aliases: ['tiet nieu', 'tiết niệu', 'urology'],
-    description: 'Khám tiểu buốt, tiểu rắt, đau hông lưng, sỏi tiết niệu và các vấn đề đường tiểu.'
+    name: 'Tiáº¿t niá»‡u',
+    aliases: ['tiet nieu', 'tiáº¿t niá»‡u', 'urology'],
+    description: 'KhÃ¡m tiá»ƒu buá»‘t, tiá»ƒu ráº¯t, Ä‘au hÃ´ng lÆ°ng, sá»i tiáº¿t niá»‡u vÃ  cÃ¡c váº¥n Ä‘á» Ä‘Æ°á»ng tiá»ƒu.'
   },
   {
-    name: 'Tâm lý - Sức khỏe tâm thần',
-    aliases: ['tam ly', 'tâm lý', 'tam than', 'suc khoe tam than', 'mental health', 'psychiatry'],
-    description: 'Tư vấn căng thẳng, mất ngủ, lo âu, trầm buồn và các vấn đề sức khỏe tinh thần.'
+    name: 'TÃ¢m lÃ½ - Sá»©c khá»e tÃ¢m tháº§n',
+    aliases: ['tam ly', 'tÃ¢m lÃ½', 'tam than', 'suc khoe tam than', 'mental health', 'psychiatry'],
+    description: 'TÆ° váº¥n cÄƒng tháº³ng, máº¥t ngá»§, lo Ã¢u, tráº§m buá»“n vÃ  cÃ¡c váº¥n Ä‘á» sá»©c khá»e tinh tháº§n.'
   },
   {
-    name: 'Phục hồi chức năng',
-    aliases: ['phuc hoi chuc nang', 'phục hồi chức năng', 'rehabilitation', 'rehab'],
-    description: 'Tư vấn phục hồi vận động sau chấn thương, đau cơ xương khớp, tai biến hoặc phẫu thuật.'
+    name: 'Phá»¥c há»“i chá»©c nÄƒng',
+    aliases: ['phuc hoi chuc nang', 'phá»¥c há»“i chá»©c nÄƒng', 'rehabilitation', 'rehab'],
+    description: 'TÆ° váº¥n phá»¥c há»“i váº­n Ä‘á»™ng sau cháº¥n thÆ°Æ¡ng, Ä‘au cÆ¡ xÆ°Æ¡ng khá»›p, tai biáº¿n hoáº·c pháº«u thuáº­t.'
   },
   {
-    name: 'Dinh dưỡng',
-    aliases: ['dinh duong', 'dinh dưỡng', 'nutrition'],
-    description: 'Tư vấn dinh dưỡng cho trẻ em, người lớn, bệnh mạn tính, kiểm soát cân nặng và phục hồi sức khỏe.'
+    name: 'Dinh dÆ°á»¡ng',
+    aliases: ['dinh duong', 'dinh dÆ°á»¡ng', 'nutrition'],
+    description: 'TÆ° váº¥n dinh dÆ°á»¡ng cho tráº» em, ngÆ°á»i lá»›n, bá»‡nh máº¡n tÃ­nh, kiá»ƒm soÃ¡t cÃ¢n náº·ng vÃ  phá»¥c há»“i sá»©c khá»e.'
   },
   {
-    name: 'Ung bướu',
-    aliases: ['ung buou', 'ung bướu', 'oncology'],
-    description: 'Tư vấn tầm soát, theo dõi khối u, bất thường hạch và định hướng khám chuyên sâu khi nghi ngờ ung bướu.'
+    name: 'Ung bÆ°á»›u',
+    aliases: ['ung buou', 'ung bÆ°á»›u', 'oncology'],
+    description: 'TÆ° váº¥n táº§m soÃ¡t, theo dÃµi khá»‘i u, báº¥t thÆ°á»ng háº¡ch vÃ  Ä‘á»‹nh hÆ°á»›ng khÃ¡m chuyÃªn sÃ¢u khi nghi ngá» ung bÆ°á»›u.'
   },
   {
-    name: 'Thận học',
-    aliases: ['than hoc', 'thận học', 'nephrology'],
-    description: 'Khám phù, tiểu bất thường, suy thận, bệnh thận mạn và theo dõi chức năng thận.'
+    name: 'Tháº­n há»c',
+    aliases: ['than hoc', 'tháº­n há»c', 'nephrology'],
+    description: 'KhÃ¡m phÃ¹, tiá»ƒu báº¥t thÆ°á»ng, suy tháº­n, bá»‡nh tháº­n máº¡n vÃ  theo dÃµi chá»©c nÄƒng tháº­n.'
   }
 ];
 
 const SPECIALTY_IMAGES = {
-  [normalizeText('Nhi khoa')]: '/specialties/photos/pediatrics-care.jpg',
-  [normalizeText('Tai Mũi Họng')]: '/specialties/photos/medical-general.png',
-  [normalizeText('Da liễu')]: '/specialties/photos/doctor-female.jpg',
-  [normalizeText('Tim mạch')]: '/specialties/photos/medical-general.png',
-  [normalizeText('Răng Hàm Mặt')]: '/specialties/photos/dental-clinic.jpg',
-  [normalizeText('Cơ xương khớp')]: '/specialties/photos/orthopedics-xray.jpg',
-  [normalizeText('Chấn thương chỉnh hình')]: '/specialties/photos/orthopedics-xray.jpg',
-  [normalizeText('Nội tổng quát')]: '/specialties/photos/medical-general.png',
-  [normalizeText('Tiêu hóa')]: '/specialties/photos/medical-general.png',
-  [normalizeText('Sản phụ khoa')]: '/specialties/photos/doctor-female.jpg',
-  [normalizeText('Mắt')]: '/specialties/photos/doctor-female.jpg',
-  [normalizeText('Thần kinh')]: '/specialties/photos/hospital-building.jpg',
-  [normalizeText('Hô hấp')]: '/specialties/photos/orthopedics-xray.jpg',
-  [normalizeText('Nội tiết')]: '/specialties/photos/medical-general.png',
-  [normalizeText('Tiết niệu')]: '/specialties/photos/hospital-campus.jpg',
-  [normalizeText('Tâm lý - Sức khỏe tâm thần')]: '/specialties/photos/doctor-female.jpg',
-  [normalizeText('Phục hồi chức năng')]: '/specialties/photos/orthopedics-xray.jpg',
-  [normalizeText('Dinh dưỡng')]: '/specialties/photos/medical-general.png',
-  [normalizeText('Ung bướu')]: '/specialties/photos/hospital-building.jpg',
-  [normalizeText('Thận học')]: '/specialties/photos/hospital-campus.jpg'
+  [normalizeText('Nhi khoa')]: '/specialties/photos/specialty-pediatrics.jpg',
+  [normalizeText('Tai MÅ©i Há»ng')]: '/specialties/photos/specialty-ent.jpg',
+  [normalizeText('Da liá»…u')]: '/specialties/photos/specialty-dermatology.jpg',
+  [normalizeText('Tim máº¡ch')]: '/specialties/photos/specialty-cardiology.jpg',
+  [normalizeText('RÄƒng HÃ m Máº·t')]: '/specialties/photos/specialty-dental.jpg',
+  [normalizeText('CÆ¡ xÆ°Æ¡ng khá»›p')]: '/specialties/photos/specialty-musculoskeletal.jpg',
+  [normalizeText('Cháº¥n thÆ°Æ¡ng chá»‰nh hÃ¬nh')]: '/specialties/photos/specialty-orthopedics.jpg',
+  [normalizeText('Ná»™i tá»•ng quÃ¡t')]: '/specialties/photos/specialty-internal.jpg',
+  [normalizeText('TiÃªu hÃ³a')]: '/specialties/photos/specialty-gastroenterology.jpg',
+  [normalizeText('Sáº£n phá»¥ khoa')]: '/specialties/photos/specialty-obgyn.jpg',
+  [normalizeText('Máº¯t')]: '/specialties/photos/specialty-ophthalmology.jpg',
+  [normalizeText('Tháº§n kinh')]: '/specialties/photos/specialty-neurology.jpg',
+  [normalizeText('HÃ´ háº¥p')]: '/specialties/photos/specialty-respiratory.jpg',
+  [normalizeText('Ná»™i tiáº¿t')]: '/specialties/photos/specialty-endocrinology.jpg',
+  [normalizeText('Tiáº¿t niá»‡u')]: '/specialties/photos/specialty-urology.jpg',
+  [normalizeText('TÃ¢m lÃ½ - Sá»©c khá»e tÃ¢m tháº§n')]: '/specialties/photos/specialty-mental-health.jpg',
+  [normalizeText('Phá»¥c há»“i chá»©c nÄƒng')]: '/specialties/photos/specialty-rehabilitation.jpg',
+  [normalizeText('Dinh dÆ°á»¡ng')]: '/specialties/photos/specialty-nutrition.jpg',
+  [normalizeText('Ung bÆ°á»›u')]: '/specialties/photos/specialty-oncology.jpg',
+  [normalizeText('Tháº­n há»c')]: '/specialties/photos/specialty-nephrology.jpg'
 };
 
 function hasEquivalentSpecialty(existingSpecialties, seed) {

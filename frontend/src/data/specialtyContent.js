@@ -20,7 +20,7 @@ const DEFAULT_CONTENT = {
   ],
   iconLabel: 'CK',
   accent: 'cyan',
-  image: '/specialties/photos/medical-general.png'
+  image: '/specialties/photos/specialty-general.jpg'
 };
 
 const CONTENT_BY_KEY = {
@@ -33,7 +33,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại nhiệt độ, thời gian sốt và thuốc đã dùng', 'Mang sổ tiêm chủng hoặc đơn thuốc cũ nếu có', 'Chuẩn bị thông tin ăn uống, ngủ nghỉ và triệu chứng trong ngày'],
     iconLabel: 'NHI',
     accent: 'blue',
-    image: '/specialties/photos/pediatrics-care.jpg'
+    image: '/specialties/photos/specialty-pediatrics.jpg'
   },
   'tai mui hong': {
     displayName: 'Tai Mũi Họng',
@@ -44,7 +44,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Không tự dùng kháng sinh khi chưa có chỉ định', 'Ghi lại thời gian ho, nghẹt mũi hoặc đau họng', 'Mang kết quả nội soi, xét nghiệm hoặc đơn thuốc cũ nếu có'],
     iconLabel: 'TMH',
     accent: 'cyan',
-    image: '/specialties/photos/medical-general.png'
+    image: '/specialties/photos/specialty-ent.jpg'
   },
   'da lieu': {
     displayName: 'Da liễu',
@@ -55,7 +55,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Mang theo danh sách mỹ phẩm hoặc thuốc bôi đang dùng', 'Không tự nặn mụn hoặc bôi thuốc lạ trước khi khám', 'Chụp lại hình ảnh vùng da khi triệu chứng bùng phát nếu có'],
     iconLabel: 'DA',
     accent: 'green',
-    image: '/specialties/photos/doctor-female.jpg'
+    image: '/specialties/photos/specialty-dermatology.jpg'
   },
   'tim mach': {
     displayName: 'Tim mạch',
@@ -66,7 +66,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại chỉ số huyết áp tại nhà nếu có', 'Mang kết quả điện tim, siêu âm tim hoặc xét nghiệm cũ', 'Chuẩn bị danh sách thuốc tim mạch đang sử dụng'],
     iconLabel: 'TM',
     accent: 'red',
-    image: '/specialties/photos/medical-general.png'
+    image: '/specialties/photos/specialty-cardiology.jpg'
   },
   'rang ham mat': {
     displayName: 'Răng Hàm Mặt',
@@ -77,7 +77,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Vệ sinh răng miệng trước khi khám', 'Ghi lại vị trí đau và thời điểm đau tăng', 'Mang phim chụp hoặc hồ sơ nha khoa cũ nếu có'],
     iconLabel: 'RHM',
     accent: 'amber',
-    image: '/specialties/photos/dental-clinic.jpg'
+    image: '/specialties/photos/specialty-dental.jpg'
   },
   'co xuong khop': {
     displayName: 'Cơ xương khớp',
@@ -88,7 +88,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Mô tả vị trí đau, mức độ đau và động tác làm đau tăng', 'Mang phim X-quang, MRI hoặc kết quả xét nghiệm nếu có', 'Không cố vận động mạnh vùng đau trước khi khám'],
     iconLabel: 'CXK',
     accent: 'indigo',
-    image: '/specialties/photos/orthopedics-xray.jpg'
+    image: '/specialties/photos/specialty-musculoskeletal.jpg'
   },
   'chan thuong chinh hinh': {
     displayName: 'Chấn thương chỉnh hình',
@@ -99,7 +99,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Cố định vùng đau nếu nghi chấn thương', 'Mang phim chụp hoặc giấy ra viện nếu đã khám trước đó', 'Ghi lại thời điểm và cơ chế chấn thương'],
     iconLabel: 'CT',
     accent: 'orange',
-    image: '/specialties/photos/orthopedics-xray.jpg'
+    image: '/specialties/photos/specialty-orthopedics.jpg'
   },
   'noi tong quat': {
     displayName: 'Nội tổng quát',
@@ -110,7 +110,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại triệu chứng chính và thời gian xuất hiện', 'Mang kết quả xét nghiệm hoặc toa thuốc cũ', 'Thông báo bệnh nền và thuốc đang dùng'],
     iconLabel: 'NTQ',
     accent: 'blue',
-    image: '/specialties/photos/medical-general.png'
+    image: '/specialties/photos/specialty-internal.jpg'
   },
   'tieu hoa': {
     displayName: 'Tiêu hóa',
@@ -121,7 +121,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại chế độ ăn và thời điểm đau bụng', 'Mang kết quả xét nghiệm, siêu âm hoặc nội soi cũ nếu có', 'Thông báo thuốc dạ dày hoặc kháng sinh đã dùng'],
     iconLabel: 'TH',
     accent: 'green',
-    image: '/specialties/photos/medical-general.png'
+    image: '/specialties/photos/specialty-gastroenterology.jpg'
   },
   'san phu khoa': {
     displayName: 'Sản phụ khoa',
@@ -132,7 +132,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại ngày kinh gần nhất và triệu chứng kèm theo', 'Mang kết quả siêu âm hoặc xét nghiệm cũ nếu có', 'Thông báo tiền sử dị ứng thuốc hoặc bệnh nền'],
     iconLabel: 'SPK',
     accent: 'pink',
-    image: '/specialties/photos/doctor-female.jpg'
+    image: '/specialties/photos/specialty-obgyn.jpg'
   },
   mat: {
     displayName: 'Mắt',
@@ -143,7 +143,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Mang kính đang dùng hoặc toa kính cũ', 'Không tự nhỏ thuốc kéo dài khi chưa có chỉ định', 'Ghi lại thời gian nhìn mờ hoặc đau mắt'],
     iconLabel: 'MẮT',
     accent: 'cyan',
-    image: '/specialties/photos/doctor-female.jpg'
+    image: '/specialties/photos/specialty-ophthalmology.jpg'
   },
   'than kinh': {
     displayName: 'Thần kinh',
@@ -154,7 +154,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại tần suất đau đầu hoặc chóng mặt', 'Mang kết quả chụp chiếu, xét nghiệm hoặc đơn thuốc cũ', 'Thông báo bệnh nền và thuốc đang sử dụng'],
     iconLabel: 'TK',
     accent: 'indigo',
-    image: '/specialties/photos/hospital-building.jpg'
+    image: '/specialties/photos/specialty-neurology.jpg'
   },
   'ho hap': {
     displayName: 'Hô hấp',
@@ -165,7 +165,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại thời điểm ho, yếu tố kích phát và thuốc đã dùng', 'Mang phim X-quang hoặc CT phổi nếu có', 'Thông báo tiền sử hút thuốc hoặc dị ứng'],
     iconLabel: 'HH',
     accent: 'cyan',
-    image: '/specialties/photos/orthopedics-xray.jpg'
+    image: '/specialties/photos/specialty-respiratory.jpg'
   },
   'noi tiet': {
     displayName: 'Nội tiết',
@@ -176,7 +176,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Mang kết quả đường huyết, HbA1c hoặc hormon tuyến giáp', 'Ghi lại thuốc đang dùng và chỉ số theo dõi tại nhà', 'Hỏi trước nếu cần nhịn ăn khi làm xét nghiệm'],
     iconLabel: 'NT',
     accent: 'blue',
-    image: '/specialties/photos/medical-general.png'
+    image: '/specialties/photos/specialty-endocrinology.jpg'
   },
   'tiet nieu': {
     displayName: 'Tiết niệu',
@@ -187,7 +187,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại tần suất đi tiểu và triệu chứng kèm theo', 'Mang kết quả siêu âm hoặc xét nghiệm nước tiểu nếu có', 'Uống nước vừa đủ trước khi khám nếu cần xét nghiệm'],
     iconLabel: 'TN',
     accent: 'cyan',
-    image: '/specialties/photos/hospital-campus.jpg'
+    image: '/specialties/photos/specialty-urology.jpg'
   },
   'tam ly': {
     displayName: 'Tâm lý - Sức khỏe tâm thần',
@@ -198,7 +198,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại thay đổi giấc ngủ, cảm xúc và sinh hoạt', 'Chia sẻ thuốc hoặc chất kích thích đang dùng nếu có', 'Có thể đi cùng người thân nếu cần hỗ trợ thông tin'],
     iconLabel: 'TL',
     accent: 'purple',
-    image: '/specialties/photos/doctor-female.jpg'
+    image: '/specialties/photos/specialty-mental-health.jpg'
   },
   'phuc hoi chuc nang': {
     displayName: 'Phục hồi chức năng',
@@ -209,7 +209,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Mang hồ sơ phẫu thuật hoặc kết quả chẩn đoán hình ảnh', 'Mặc trang phục dễ vận động', 'Mô tả hoạt động gây đau hoặc hạn chế'],
     iconLabel: 'PHCN',
     accent: 'green',
-    image: '/specialties/photos/orthopedics-xray.jpg'
+    image: '/specialties/photos/specialty-rehabilitation.jpg'
   },
   'dinh duong': {
     displayName: 'Dinh dưỡng',
@@ -220,7 +220,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Ghi lại khẩu phần ăn trong 2-3 ngày gần nhất', 'Mang kết quả xét nghiệm liên quan nếu có', 'Chuẩn bị thông tin chiều cao, cân nặng và bệnh nền'],
     iconLabel: 'DD',
     accent: 'amber',
-    image: '/specialties/photos/medical-general.png'
+    image: '/specialties/photos/specialty-nutrition.jpg'
   },
   'ung buou': {
     displayName: 'Ung bướu',
@@ -231,7 +231,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Mang toàn bộ kết quả xét nghiệm, sinh thiết hoặc phim chụp', 'Ghi lại thời điểm phát hiện khối bất thường', 'Chuẩn bị thông tin tiền sử gia đình nếu có'],
     iconLabel: 'UB',
     accent: 'pink',
-    image: '/specialties/photos/hospital-building.jpg'
+    image: '/specialties/photos/specialty-oncology.jpg'
   },
   'than hoc': {
     displayName: 'Thận học',
@@ -242,7 +242,7 @@ const CONTENT_BY_KEY = {
     preparation: ['Mang kết quả creatinine, eGFR, nước tiểu hoặc siêu âm thận', 'Ghi lại thuốc huyết áp hoặc thuốc đang dùng', 'Theo dõi huyết áp tại nhà nếu có'],
     iconLabel: 'THẬN',
     accent: 'blue',
-    image: '/specialties/photos/hospital-campus.jpg'
+    image: '/specialties/photos/specialty-nephrology.jpg'
   }
 };
 
@@ -255,6 +255,43 @@ CONTENT_BY_KEY['noi khoa'] = CONTENT_BY_KEY['noi tong quat'];
 CONTENT_BY_KEY['phu khoa'] = CONTENT_BY_KEY['san phu khoa'];
 CONTENT_BY_KEY['tam than'] = CONTENT_BY_KEY['tam ly'];
 CONTENT_BY_KEY['suc khoe tam than'] = CONTENT_BY_KEY['tam ly'];
+
+const LEGACY_SPECIALTY_IMAGE_PATHS = new Set([
+  '/specialties/photos/medical-general.png',
+  '/specialties/photos/doctor-female.jpg',
+  '/specialties/photos/hospital-building.jpg',
+  '/specialties/photos/hospital-campus.jpg',
+  '/specialties/photos/orthopedics-xray.jpg',
+  '/specialties/photos/dental-clinic.jpg',
+  '/specialties/photos/pediatrics-care.jpg',
+  '/specialties/cardiology.svg',
+  '/specialties/dental.svg',
+  '/specialties/dermatology.svg',
+  '/specialties/endocrine.svg',
+  '/specialties/ent.svg',
+  '/specialties/eye.svg',
+  '/specialties/gastro.svg',
+  '/specialties/internal.svg',
+  '/specialties/mental-health.svg',
+  '/specialties/nephrology.svg',
+  '/specialties/neurology.svg',
+  '/specialties/nutrition.svg',
+  '/specialties/oncology.svg',
+  '/specialties/orthopedics.svg',
+  '/specialties/pediatrics.svg',
+  '/specialties/rehab.svg',
+  '/specialties/respiratory.svg',
+  '/specialties/trauma.svg',
+  '/specialties/urology.svg',
+  '/specialties/women.svg'
+]);
+
+const LEGACY_SPECIALTY_IMAGE_PATTERNS = [
+  '/specialties/abstract/',
+  '/specialties/illustrations/',
+  '/specialties/icons/',
+  'data:image/svg'
+];
 
 export function normalizeSpecialtyName(value = '') {
   return String(value || '')
@@ -278,5 +315,15 @@ export function getSpecialtyContent(name = '') {
 }
 
 export function hasPlaceholderSpecialtyImage(image = '') {
-  return !image || String(image).includes('placeholder-specialty');
+  const value = String(image || '').trim();
+  const lowerValue = value.toLowerCase();
+  return (
+    !value ||
+    lowerValue.includes('placeholder-specialty') ||
+    lowerValue.startsWith('data:image/svg') ||
+    LEGACY_SPECIALTY_IMAGE_PATHS.has(value) ||
+    LEGACY_SPECIALTY_IMAGE_PATHS.has(lowerValue) ||
+    (lowerValue.includes('/specialties/') && lowerValue.endsWith('.svg')) ||
+    LEGACY_SPECIALTY_IMAGE_PATTERNS.some((pattern) => lowerValue.includes(pattern))
+  );
 }
