@@ -83,7 +83,7 @@ export default function BaseModal({
 
   return createPortal(
     <div className={backdropClassName} onClick={closeFromBackdrop}>
-      <div className={className} data-modal-size={size} onClick={(event) => event.stopPropagation()}>
+      <div className={className} data-modal-size={size} role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
         {children}
       </div>
     </div>,

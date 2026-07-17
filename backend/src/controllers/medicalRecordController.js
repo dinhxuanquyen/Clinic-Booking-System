@@ -13,6 +13,7 @@ import { sendMedicalRecordUpdatedEmail } from '../services/emailService.js';
 import { generateMedicalRecordPdf } from '../services/pdfService.js';
 import { FOLLOW_UP_STATUSES } from '../constants/followUpStatus.js';
 import { syncFollowUpStatusForAppointment } from '../services/followUpService.js';
+import { medicalRecordPdfFilename } from '../utils/pdfFilename.js';
 
 const medicalRecordPopulate = [
   {
@@ -27,9 +28,9 @@ const medicalRecordPopulate = [
       { path: 'originalAppointmentId', select: 'date timeSlot status' }
     ]
   },
-  { path: 'patientId', select: 'name email phone' },
-  { path: 'doctorId', select: 'name degree avatar personalEmail email' },
-  { path: 'clinicId', select: 'name address phone' },
+  { path: 'patientId', select: 'name email phone patientCode code medicalCode dateOfBirth gender' },
+  { path: 'doctorId', select: 'name degree avatar personalEmail email doctorCode code' },
+  { path: 'clinicId', select: 'name address phone email' },
   { path: 'specialtyId', select: 'name' },
   { path: 'createdBy', select: 'name role' },
   { path: 'updatedBy', select: 'name role' }
@@ -135,7 +136,7 @@ function assertRecordAccess(user, record) {
 }
 function streamPdf(res, doc, filename) {
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"; filename*=UTF-8''${encodeURIComponent(filename)}`);
   doc.pipe(res);
   doc.end();
 }
@@ -465,15 +466,16 @@ export const exportMedicalRecordPdf = asyncHandler(async (req, res) => {
     action: 'EXPORT_MEDICAL_RECORD_PDF',
     entityType: 'MedicalRecord',
     entityId: record._id,
-    entityName: `${record.patientId?.name || 'Bệnh nhân'} - ${record.doctorId?.name || 'bác sĩ'}`,
-    description: 'Xuất PDF kết quả khám / hồ sơ khám bệnh',
+    entityName: `MedicalRecord ${record._id}`,
+    description: 'Xuất PDF kết quả khám',
     metadata: {
-      medicalRecordId: String(record._id),
-      appointmentId: String(record.appointmentId?._id || record.appointmentId)
+      resourceId: String(record._id),
+      exportType: 'medical_record_pdf',
+      timestamp: new Date().toISOString()
     }
   });
 
-  streamPdf(res, generateMedicalRecordPdf(record), `ket-qua-kham-${record._id}.pdf`);
+  streamPdf(res, generateMedicalRecordPdf(record), medicalRecordPdfFilename(record));
 });
 
 export const getMedicalRecordByAppointment = asyncHandler(async (req, res) => {

@@ -630,12 +630,12 @@ export default function DoctorAppointmentsPage() {
     setDownloadingPdfKey(key);
     try {
       if (type === 'appointment') {
-        await downloadPdf(`/appointments/${appointment._id}/pdf`, `phieu-dat-lich-${appointment._id}.pdf`);
+        await downloadPdf(`/appointments/${appointment._id}/pdf`);
       } else if (type === 'queue') {
-        await downloadPdf(`/appointments/${appointment._id}/queue-ticket/pdf`, `phieu-kham-${appointment._id}.pdf`);
+        await downloadPdf(`/appointments/${appointment._id}/queue-ticket/pdf`);
       } else if (type === 'record') {
         const payload = await api(`/appointments/${appointment._id}/medical-record`);
-        await downloadPdf(`/medical-records/${payload.data._id}/pdf`, `ket-qua-kham-${payload.data._id}.pdf`);
+        await downloadPdf(`/medical-records/${payload.data._id}/pdf`);
       }
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF');
@@ -888,63 +888,65 @@ export default function DoctorAppointmentsPage() {
         </article>
       </div>
 
-      <section className="doctor-filter-card">
-        <div className="doctor-filter-card-header">
-          <div>
-            <h2>Thời gian</h2>
-            <p>Chọn nhanh khoảng thời gian cần theo dõi.</p>
+      <div className="doctor-appointments-controls">
+        <section className="doctor-filter-card doctor-time-filter-card">
+          <div className="doctor-filter-card-header">
+            <div>
+              <h2>Thời gian</h2>
+              <p>Chọn nhanh khoảng thời gian cần theo dõi.</p>
+            </div>
+            {dateFilter && <span className="doctor-filter-active-date">Ngày chọn: {dateFilter}</span>}
           </div>
-          {dateFilter && <span className="doctor-filter-active-date">Ngày chọn: {dateFilter}</span>}
-        </div>
-        <div className="doctor-filter-card-body">
-          <div className="doctor-quick-filter-group">
-            {quickDateFilters.map((filter) => (
+          <div className="doctor-filter-card-body">
+            <div className="doctor-quick-filter-group">
+              {quickDateFilters.map((filter) => (
+                <button
+                  className={`doctor-quick-filter ${dateRange === filter.key && !dateFilter ? 'active' : ''}`}
+                  key={filter.key}
+                  type="button"
+                  onClick={() => applyQuickDateFilter(filter.key)}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+            {dateFilter && (
               <button
-                className={`doctor-quick-filter ${dateRange === filter.key && !dateFilter ? 'active' : ''}`}
-                key={filter.key}
+                className="doctor-clear-filter"
                 type="button"
-                onClick={() => applyQuickDateFilter(filter.key)}
+                onClick={() => {
+                  setDateFilter('');
+                  setDateRange('all');
+                }}
               >
-                {filter.label}
+                Xóa ngày lọc
+              </button>
+            )}
+          </div>
+        </section>
+
+        <section className="doctor-filter-card doctor-status-filter-card">
+          <div className="doctor-filter-card-header">
+            <div>
+              <h2>Trạng thái lịch hẹn</h2>
+              <p>Lọc nhanh các nhóm lịch cần xử lý hoặc theo dõi.</p>
+            </div>
+          </div>
+          <div className="doctor-status-tabs" role="tablist" aria-label="Lọc lịch hẹn theo trạng thái">
+            {statusTabs.map((tab) => (
+              <button
+                className={`doctor-status-tab ${activeStatusTab === tab.key ? 'active' : ''}`}
+                key={tab.key}
+                type="button"
+                onClick={() => changeStatusTab(tab.key)}
+              >
+                <span>{tab.label}</span>
+                <strong>{tabCounts[tab.key] || 0}</strong>
               </button>
             ))}
           </div>
-          {dateFilter && (
-            <button
-              className="doctor-clear-filter"
-              type="button"
-              onClick={() => {
-                setDateFilter('');
-                setDateRange('all');
-              }}
-            >
-              Xóa ngày lọc
-            </button>
-          )}
-        </div>
-      </section>
-
-      <section className="doctor-filter-card doctor-status-filter-card">
-        <div className="doctor-filter-card-header">
-          <div>
-            <h2>Trạng thái lịch hẹn</h2>
-            <p>Lọc nhanh các nhóm lịch cần xử lý hoặc theo dõi.</p>
-          </div>
-        </div>
-        <div className="doctor-status-tabs" role="tablist" aria-label="Lọc lịch hẹn theo trạng thái">
-          {statusTabs.map((tab) => (
-            <button
-              className={`doctor-status-tab ${activeStatusTab === tab.key ? 'active' : ''}`}
-              key={tab.key}
-              type="button"
-              onClick={() => changeStatusTab(tab.key)}
-            >
-              <span>{tab.label}</span>
-              <strong>{tabCounts[tab.key] || 0}</strong>
-            </button>
-          ))}
-        </div>
-      </section>
+        </section>
+      </div>
 
       <section className="doctor-appointments-table-card">
         <div className="doctor-table-card-header">

@@ -1,152 +1,74 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import BaseModal from './BaseModal.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { downloadPdf } from '../utils/downloadFile.js';
-import { cleanDisplayText } from '../utils/textEncoding.js';
-
-function displayName(value, fallback = 'Đang cập nhật') {
-  if (!value) return fallback;
-  const raw = typeof value === 'object' ? value.name : value;
-  return cleanDisplayText(raw, fallback);
-}
-
-function displayText(value, fallback = 'Chưa cập nhật') {
-  return cleanDisplayText(value, fallback);
-}
-
-function formatDate(value) {
-  if (!value) return 'Chưa cập nhật';
-  return String(value).slice(0, 10);
-}
-
-function followUpText(record) {
-  if (!record?.followUpRequired) return 'Không cần tái khám';
-  return record.followUpDate ? formatDate(record.followUpDate) : 'Bác sĩ chưa chỉ định ngày cụ thể';
-}
-
-function followUpStatusLabel(record) {
-  if (record?.followUpStatus === 'completed') return { label: 'Đã hoàn thành tái khám', tone: 'success' };
-  if (!record?.followUpRequired) return { label: 'Không cần tái khám', tone: 'neutral' };
-  if (record.followUpStatus === 'scheduled') return { label: 'Đã đặt lịch tái khám', tone: 'success' };
-  if (record.followUpStatus === 'overdue') return { label: 'Quá hạn tái khám', tone: 'danger' };
-  return { label: 'Cần tái khám', tone: 'warning' };
-}
-
-function linkedFollowUpAppointmentId(record) {
-  const appointment = record?.followUpAppointmentId;
-  if (!appointment) return '';
-  return typeof appointment === 'object' ? appointment._id : appointment;
-}
-
-function canBookFollowUp(record) {
-  if (!record?.followUpRequired) return false;
-  return ['recommended', 'overdue'].includes(record.followUpStatus || 'recommended');
-}
-
-function entityId(value) {
-  return typeof value === 'object' ? value?._id : value;
-}
-
-function getSourceFollowUpRecord(record) {
-  const source = record?.appointmentId?.followUpRecordId;
-  return source && typeof source === 'object' ? source : null;
-}
-
-function getSourceFollowUpRecordId(record) {
-  return entityId(record?.appointmentId?.followUpRecordId);
-}
-
-function isFollowUpMedicalRecord(record) {
-  return Boolean(record?.appointmentId?.isFollowUp || record?.appointmentId?.followUpRecordId);
-}
-
-function sourceFollowUpVisitText(record) {
-  const sourceRecord = getSourceFollowUpRecord(record);
-  const sourceAppointment = sourceRecord?.appointmentId || record?.appointmentId?.originalAppointmentId;
-  if (sourceAppointment?.date) {
-    return `${formatDate(sourceAppointment.date)}${sourceAppointment.timeSlot ? ` · ${sourceAppointment.timeSlot}` : ''}`;
-  }
-  if (sourceRecord?.createdAt) return formatDate(sourceRecord.createdAt);
-  return 'lần khám trước';
-}
+import {
+  appointmentStatusLabel,
+  appointmentTypeLabel,
+  canBookFollowUp,
+  displayName,
+  displayText,
+  examDate,
+  followUpBookingUrl,
+  followUpDescription,
+  followUpStatusInfo,
+  formatDateVN,
+  formatSlot,
+  getInsuranceSnapshot,
+  getSourceFollowUpRecord,
+  getSourceFollowUpRecordId,
+  getVitalItems,
+  hasValue,
+  isFollowUpMedicalRecord,
+  linkedFollowUpAppointmentId,
+  maskInsuranceNumber,
+  recordCode,
+  servicePackageName,
+  sourceFollowUpVisitText
+} from '../utils/medicalRecordView.js';
 
 function sourceRecordPath(recordId, pathname) {
   if (pathname.startsWith('/doctor')) return `/doctor/medical-records?recordId=${recordId}`;
   return `/medical-records?recordId=${recordId}`;
 }
 
-function followUpDescription(record) {
-  if (!record?.followUpRequired) {
-    return 'Bác sĩ chưa yêu cầu tái khám. Nếu có triệu chứng bất thường, bạn nên đặt lịch kiểm tra lại.';
-  }
-
-  if (record.followUpStatus === 'scheduled' && record.followUpAppointmentId) {
-    const appointment = record.followUpAppointmentId;
-    if (!appointment.date) return 'Bạn đã đặt lịch tái khám cho hồ sơ này. Vui lòng kiểm tra trong mục Lịch hẹn của tôi.';
-    return `Bạn đã đặt lịch tái khám ngày ${formatDate(appointment.date)}${appointment.timeSlot ? `, khung giờ ${appointment.timeSlot}` : ''}.`;
-  }
-
-  if (record.followUpStatus === 'completed') {
-    return 'Bạn đã hoàn thành lịch tái khám cho hồ sơ này.';
-  }
-
-  if (record.followUpDate) {
-    return `Ngày tái khám khuyến nghị: ${formatDate(record.followUpDate)}. Vui lòng đặt lịch phù hợp để được theo dõi tiếp.`;
-  }
-
-  return 'Bác sĩ chưa chỉ định ngày cụ thể. Bạn có thể chọn ngày phù hợp khi đặt lịch tái khám.';
-}
-
-function followUpBookingUrl(record) {
-  const clinicId = record?.clinicId?._id || record?.clinicId || '';
-  const specialtyId = record?.specialtyId?._id || record?.specialtyId || '';
-  const doctorId = record?.doctorId?._id || record?.doctorId || '';
-  const params = new URLSearchParams({
-    followUpRecordId: record._id,
-    clinicId,
-    specialtyId,
-    doctorId
-  });
-
-  return `/booking?${params.toString()}`;
-}
-
-function getVitalItems(record) {
-  const vitals = record?.vitals || {};
-  return [
-    ['Huyết áp', vitals.bloodPressure, 'mmHg'],
-    ['Nhịp tim', vitals.heartRate, 'bpm'],
-    ['Nhiệt độ', vitals.temperature, '°C'],
-    ['SpO2', vitals.spo2, '%'],
-    ['Nhịp thở', vitals.respiratoryRate, 'lần/phút'],
-    ['Chiều cao', vitals.height, 'cm'],
-    ['Cân nặng', vitals.weight, 'kg'],
-    ['BMI', vitals.bmi, '']
-  ].filter(([, value]) => value !== undefined && value !== null && value !== '');
-}
-
-function InsuranceSnapshotCard({ insurance }) {
-  const hasInsurance = Boolean(insurance?.enabled && insurance?.insuranceNumber);
-
+function Section({ id, title, children, className = '' }) {
   return (
-    <div className={`insurance-snapshot-card medical-record-insurance-card ${hasInsurance ? 'active' : 'inactive'}`}>
-      <div className="insurance-snapshot-heading">
-        <div>
-          <strong>Thông tin BHYT</strong>
-          <span>Dữ liệu được ghi nhận tại thời điểm đặt lịch.</span>
+    <section className={`phr-detail-section ${className}`} id={id}>
+      <h3>{title}</h3>
+      {children}
+    </section>
+  );
+}
+
+function OverviewGrid({ rows }) {
+  return (
+    <div className="phr-overview-grid">
+      {rows.filter(([, value]) => hasValue(value)).map(([label, value]) => (
+        <div key={label}>
+          <span>{label}</span>
+          <strong>{value}</strong>
         </div>
-        <em>{hasInsurance ? 'Có BHYT' : 'Không sử dụng BHYT'}</em>
-      </div>
-      {hasInsurance && (
-        <div className="insurance-snapshot-grid">
-          <div><span>Mã BHYT</span><strong>{insurance.insuranceNumber}</strong></div>
-          <div><span>Ngày hết hạn</span><strong>{formatDate(insurance.insuranceExpiryDate)}</strong></div>
-          <div><span>Nơi đăng ký KCB ban đầu</span><strong>{insurance.insuranceRegisteredHospital || 'Chưa cập nhật'}</strong></div>
-        </div>
-      )}
+      ))}
     </div>
   );
+}
+
+function ResultBlock({ label, value, tone = 'neutral' }) {
+  if (!hasValue(value)) return null;
+  return (
+    <div className={`phr-result-block ${tone}`}>
+      <span>{label}</span>
+      <p>{displayText(value)}</p>
+    </div>
+  );
+}
+
+function AttachmentType({ type }) {
+  if (type === 'pdf') return 'PDF';
+  if (type === 'image') return 'Ảnh';
+  return 'Tệp';
 }
 
 export default function MedicalRecordDetailModal({ record, onClose }) {
@@ -155,20 +77,37 @@ export default function MedicalRecordDetailModal({ record, onClose }) {
   const toast = useToast();
   const [downloading, setDownloading] = useState(false);
 
-  if (!record) return null;
-
-  const appointment = record.appointmentId || {};
-  const vitalItems = getVitalItems(record);
-  const followUpStatus = followUpStatusLabel(record);
+  const appointment = record?.appointmentId || {};
+  const vitals = getVitalItems(record);
+  const prescription = Array.isArray(record?.prescription) ? record.prescription : [];
+  const attachments = Array.isArray(record?.attachments) ? record.attachments : [];
+  const insurance = getInsuranceSnapshot(record);
+  const followUpStatus = followUpStatusInfo(record);
   const sourceRecord = getSourceFollowUpRecord(record);
   const sourceRecordId = getSourceFollowUpRecordId(record);
   const showSourceFollowUp = isFollowUpMedicalRecord(record) && sourceRecordId;
+  const linkedAppointmentId = linkedFollowUpAppointmentId(record);
+
+  const sections = useMemo(() => {
+    if (!record) return [];
+    return [
+      { id: 'overview', label: 'Tổng quan', visible: true },
+      { id: 'source', label: 'Hồ sơ tái khám', visible: showSourceFollowUp },
+      { id: 'results', label: 'Kết quả khám', visible: ['symptoms', 'allergies', 'allergyHistory', 'icd10Code', 'diagnosis', 'conclusion', 'advice', 'doctorAdvice'].some((field) => hasValue(record[field])) },
+      { id: 'vitals', label: 'Chỉ số sinh tồn', visible: vitals.length > 0 },
+      { id: 'prescription', label: 'Đơn thuốc', visible: true },
+      { id: 'attachments', label: 'Cận lâm sàng', visible: attachments.length > 0 },
+      { id: 'follow-up', label: 'Tái khám', visible: true }
+    ].filter((item) => item.visible);
+  }, [attachments.length, record, showSourceFollowUp, vitals.length]);
+
+  if (!record) return null;
 
   async function handleDownloadPdf() {
     if (!record?._id || downloading) return;
     setDownloading(true);
     try {
-      await downloadPdf(`/medical-records/${record._id}/pdf`, `ket-qua-kham-${record._id}.pdf`);
+      await downloadPdf(`/medical-records/${record._id}/pdf`);
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF kết quả khám');
     } finally {
@@ -176,153 +115,217 @@ export default function MedicalRecordDetailModal({ record, onClose }) {
     }
   }
 
+  function scrollToSection(sectionId) {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   return (
-    <BaseModal className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
-      <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
+    <BaseModal className="admin-modal phr-detail-modal" onClose={onClose} size="xl">
+      <header className="phr-detail-header">
         <div>
-          <span className="eyebrow">Hồ sơ khám bệnh</span>
-          <h2 className="h4 mt-2 mb-1">{formatDate(appointment.date || record.createdAt)} - {appointment.timeSlot || ''}</h2>
-          <p className="text-secondary mb-0">{displayName(record.doctorId)} · {displayName(record.specialtyId)}</p>
+          <span className="phr-eyebrow">Hồ sơ khám bệnh</span>
+          <h2>{recordCode(record)}</h2>
+          <p>
+            {formatDateVN(examDate(record))}
+            {appointment.timeSlot ? ` · ${formatSlot(appointment.timeSlot)}` : ''}
+            {' · '}
+            {appointmentTypeLabel(record)}
+            {' · '}
+            {appointmentStatusLabel(appointment.status || 'completed')}
+          </p>
+          <p className="phr-detail-doctor">{displayName(record.doctorId)} · {displayName(record.specialtyId)}</p>
         </div>
-        <div className="d-flex flex-wrap justify-content-end gap-2">
-          <button className="btn btn-sm btn-outline-success" disabled={downloading} type="button" onClick={handleDownloadPdf}>
-            {downloading ? 'Đang tải...' : 'Tải PDF kết quả khám'}
+        <div className="phr-detail-header-actions">
+          <button className="btn btn-outline-primary btn-sm" disabled={downloading} type="button" onClick={handleDownloadPdf}>
+            {downloading ? 'Đang tải...' : 'Tải PDF'}
           </button>
-          <button className="btn btn-sm btn-outline-secondary" type="button" onClick={onClose}>Đóng</button>
-        </div>
-      </div>
-
-      <div className="medical-record-detail-grid">
-        <div><span>Bác sĩ</span><strong>{displayName(record.doctorId)}</strong></div>
-        <div><span>Cơ sở</span><strong>{displayName(record.clinicId)}</strong></div>
-        <div><span>Chuyên khoa</span><strong>{displayName(record.specialtyId)}</strong></div>
-        <div><span>Tái khám</span><strong>{followUpText(record)}</strong></div>
-      </div>
-
-      <InsuranceSnapshotCard insurance={appointment.insuranceSnapshot} />
-
-      {showSourceFollowUp && (
-        <div className="medical-record-source-card">
-          <div>
-            <span>Hồ sơ tái khám</span>
-            <strong>Hồ sơ này là tái khám từ hồ sơ ngày {sourceFollowUpVisitText(record)}.</strong>
-            {sourceRecord?.diagnosis && <p>Chẩn đoán lần khám gốc: {displayText(sourceRecord.diagnosis)}</p>}
-          </div>
-          <button
-            className="btn btn-sm btn-outline-primary"
-            type="button"
-            onClick={() => {
-              onClose();
-              navigate(sourceRecordPath(sourceRecordId, location.pathname));
-            }}
-          >
-            Xem hồ sơ gốc
+          <button className="phr-modal-close" type="button" aria-label="Đóng hồ sơ khám" onClick={onClose}>
+            ×
           </button>
         </div>
-      )}
+      </header>
 
-      <div className={`medical-record-follow-up-card ${followUpStatus.tone}`}>
-        <div>
-          <span>Kế hoạch tái khám</span>
-          <strong>{followUpStatus.label}</strong>
-          <p>{followUpDescription(record)}</p>
-        </div>
-        {canBookFollowUp(record) && (
-          <button
-            className="btn btn-sm btn-primary"
-            type="button"
-            onClick={() => {
-              onClose();
-              navigate(followUpBookingUrl(record));
-            }}
-          >
-            Đặt lịch tái khám
-          </button>
-        )}
-        {record.followUpStatus === 'scheduled' && linkedFollowUpAppointmentId(record) && (
-          <button
-            className="btn btn-sm btn-outline-primary"
-            type="button"
-            onClick={() => {
-              onClose();
-              navigate(`/appointments/my?appointmentId=${linkedFollowUpAppointmentId(record)}`);
-            }}
-          >
-            Xem lịch tái khám
-          </button>
-        )}
-      </div>
+      <div className="phr-detail-shell">
+        <nav className="phr-detail-nav" aria-label="Điều hướng hồ sơ">
+          {sections.map((section) => (
+            <button key={section.id} type="button" onClick={() => scrollToSection(section.id)}>
+              {section.label}
+            </button>
+          ))}
+        </nav>
 
-      {vitalItems.length > 0 && (
-        <div className="medical-record-detail-section">
-          <h3>Chỉ số sinh tồn</h3>
-          <div className="medical-record-vitals-list">
-            {vitalItems.map(([label, value, unit]) => (
-              <div className="medical-record-vital-item" key={label}>
-                <span>{label}</span>
-                <strong>{value}{unit ? ` ${unit}` : ''}</strong>
-              </div>
+        <div className="phr-detail-content">
+          <div className="phr-anchor-chips" aria-label="Điều hướng hồ sơ trên di động">
+            {sections.map((section) => (
+              <button key={section.id} type="button" onClick={() => scrollToSection(section.id)}>
+                {section.label}
+              </button>
             ))}
           </div>
-        </div>
-      )}
 
-      <div className="medical-record-detail-section">
-        <h3>Triệu chứng & Bệnh sử</h3>
-        <p>{displayText(record.symptoms)}</p>
-        {record.allergies && (
-          <div className="alert alert-warning mt-2 mb-0 py-2">
-            <strong>Tiền sử dị ứng:</strong> {displayText(record.allergies)}
-          </div>
-        )}
-      </div>
+          <Section id="overview" title="Tổng quan">
+            <OverviewGrid rows={[
+              ['Bác sĩ', displayName(record.doctorId)],
+              ['Chuyên khoa', displayName(record.specialtyId)],
+              ['Cơ sở', displayName(record.clinicId)],
+              ['Dịch vụ', servicePackageName(record)],
+              ['Ngày khám', formatDateVN(examDate(record))],
+              ['Khung giờ', formatSlot(appointment.timeSlot)],
+              ['Số thứ tự', appointment.queueNumber ? String(appointment.queueNumber).padStart(2, '0') : 'Chưa cấp'],
+              ['Loại lịch', appointmentTypeLabel(record)]
+            ]} />
 
-      <div className="medical-record-detail-section">
-        <h3>Chẩn đoán</h3>
-        {record.icd10Code && <span className="icd10-badge mb-2 d-inline-block">ICD-10: {record.icd10Code}</span>}
-        <p className="fw-medium text-dark">{displayText(record.diagnosis)}</p>
-      </div>
+            {insurance?.enabled && insurance?.insuranceNumber ? (
+              <div className="phr-insurance-card">
+                <span>BHYT</span>
+                <strong>{maskInsuranceNumber(insurance.insuranceNumber)}</strong>
+                <p>Hết hạn: {formatDateVN(insurance.insuranceExpiryDate)} · Nơi KCB ban đầu: {displayText(insurance.insuranceRegisteredHospital)}</p>
+              </div>
+            ) : (
+              <span className="phr-inline-badge">Không sử dụng BHYT</span>
+            )}
+          </Section>
 
-      <div className="medical-record-detail-section">
-        <h3>Kết luận & Hướng điều trị</h3>
-        <p>{displayText(record.conclusion)}</p>
-      </div>
+          {showSourceFollowUp && (
+            <Section id="source" title="Hồ sơ tái khám">
+              <div className="phr-source-card">
+                <div>
+                  <span>Hồ sơ gốc</span>
+                  <strong>Ngày {sourceFollowUpVisitText(record)}</strong>
+                  {sourceRecord?.diagnosis && <p>Chẩn đoán lần trước: {displayText(sourceRecord.diagnosis)}</p>}
+                  {sourceRecord?.doctorId && <p>Bác sĩ: {displayName(sourceRecord.doctorId)}</p>}
+                </div>
+                <button
+                  className="btn btn-outline-primary btn-sm"
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    navigate(sourceRecordPath(sourceRecordId, location.pathname));
+                  }}
+                >
+                  Xem hồ sơ gốc
+                </button>
+              </div>
+            </Section>
+          )}
 
-      <div className="medical-record-detail-section">
-        <h3>Đơn thuốc</h3>
-        {record.prescription?.length ? (
-          <div className="table-responsive">
-            <table className="table table-sm align-middle">
-              <thead>
-                <tr>
-                  <th>Tên thuốc</th>
-                  <th>Liều dùng</th>
-                  <th>Số lần/ngày</th>
-                  <th>Thời gian</th>
-                  <th>Ghi chú</th>
-                </tr>
-              </thead>
-              <tbody>
-                {record.prescription.map((item, index) => (
-                  <tr key={`${item.medicineName}-${index}`}>
-                    <td>{displayText(item.medicineName)}</td>
-                    <td>{displayText(item.dosage, '-')}</td>
-                    <td>{displayText(item.frequency, '-')}</td>
-                    <td>{displayText(item.duration, '-')}</td>
-                    <td>{displayText(item.note, '-')}</td>
-                  </tr>
+          <Section id="results" title="Kết quả khám" className="phr-results-section">
+            <ResultBlock label="Triệu chứng và bệnh sử" value={record.symptoms} />
+            <ResultBlock label="Tiền sử dị ứng" value={record.allergyHistory || record.allergies} tone="warning" />
+            <ResultBlock label="Mã ICD-10" value={record.icd10Code} />
+            <ResultBlock label="Chẩn đoán" value={record.diagnosis} tone="primary" />
+            <ResultBlock label="Kết luận và hướng điều trị" value={record.conclusion} tone="success" />
+            <ResultBlock label="Lời dặn" value={record.doctorAdvice || record.advice} />
+          </Section>
+
+          {vitals.length > 0 && (
+            <Section id="vitals" title="Chỉ số sinh tồn">
+              <div className="phr-vitals-grid">
+                {vitals.map(([label, value, unit]) => (
+                  <div key={label}>
+                    <span>{label}</span>
+                    <strong>{value}{unit ? ` ${unit}` : ''}</strong>
+                  </div>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p>Không có đơn thuốc.</p>
-        )}
-      </div>
+              </div>
+            </Section>
+          )}
 
-      <div className="medical-record-detail-section">
-        <h3>Lời dặn của bác sĩ</h3>
-        <p>{displayText(record.advice, 'Không có lời dặn thêm.')}</p>
+          <Section id="prescription" title="Đơn thuốc">
+            {prescription.length ? (
+              <>
+                <div className="phr-prescription-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Tên thuốc</th>
+                        <th>Liều dùng</th>
+                        <th>Số lần/ngày</th>
+                        <th>Thời gian</th>
+                        <th>Ghi chú</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {prescription.map((item, index) => (
+                        <tr key={`${item.medicineName}-${index}`}>
+                          <td>{displayText(item.medicineName)}</td>
+                          <td>{displayText(item.dosage, '-')}</td>
+                          <td>{displayText(item.frequency, '-')}</td>
+                          <td>{displayText(item.duration, '-')}</td>
+                          <td>{displayText(item.note, '-')}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="phr-medicine-cards">
+                  {prescription.map((item, index) => (
+                    <article key={`${item.medicineName}-${index}`}>
+                      <strong>{displayText(item.medicineName)}</strong>
+                      <span>Liều dùng: {displayText(item.dosage, '-')}</span>
+                      <span>Số lần/ngày: {displayText(item.frequency, '-')}</span>
+                      <span>Thời gian: {displayText(item.duration, '-')}</span>
+                      {hasValue(item.note) && <span>Ghi chú: {displayText(item.note)}</span>}
+                    </article>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p className="phr-compact-empty">Không kê đơn thuốc trong lần khám này.</p>
+            )}
+          </Section>
+
+          {attachments.length > 0 && (
+            <Section id="attachments" title="Cận lâm sàng">
+              <div className="phr-attachments-list">
+                {attachments.map((attachment, index) => (
+                  <a href={attachment.url} target="_blank" rel="noreferrer" key={`${attachment.url}-${index}`}>
+                    <span className="phr-file-icon"><AttachmentType type={attachment.type} /></span>
+                    <div>
+                      <strong>{displayText(attachment.name, 'Tệp đính kèm')}</strong>
+                      <small>{displayText(attachment.type, 'Tài liệu')}</small>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          <Section id="follow-up" title="Kế hoạch tái khám">
+            <div className={`phr-follow-up-callout ${followUpStatus.tone}`}>
+              <div>
+                <span>{followUpStatus.label}</span>
+                <p>{followUpDescription(record)}</p>
+              </div>
+              <div className="phr-callout-actions">
+                {canBookFollowUp(record) && (
+                  <button
+                    className="btn btn-primary btn-sm"
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      navigate(followUpBookingUrl(record));
+                    }}
+                  >
+                    Đặt lịch tái khám
+                  </button>
+                )}
+                {followUpStatus.key === 'scheduled' && linkedAppointmentId && (
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      navigate(`/appointments/my?appointmentId=${linkedAppointmentId}`);
+                    }}
+                  >
+                    Xem lịch tái khám
+                  </button>
+                )}
+              </div>
+            </div>
+          </Section>
+        </div>
       </div>
     </BaseModal>
   );

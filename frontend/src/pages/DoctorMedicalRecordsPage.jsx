@@ -456,7 +456,7 @@ export default function DoctorMedicalRecordsPage() {
     if (!record?._id || downloadingRecordId) return;
     setDownloadingRecordId(record._id);
     try {
-      await downloadPdf(`/medical-records/${record._id}/pdf`, `ket-qua-kham-${record._id}.pdf`);
+      await downloadPdf(`/medical-records/${record._id}/pdf`);
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF');
     } finally {

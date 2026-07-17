@@ -2,8 +2,17 @@ import { axiosClient } from '../api/client.js';
 
 function resolveFilename(response, fallback) {
   const disposition = response.headers?.['content-disposition'] || '';
-  const match = disposition.match(/filename="?([^"]+)"?/i);
-  return match?.[1] || fallback;
+  const utf8Match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+  if (utf8Match?.[1]) {
+    try {
+      return decodeURIComponent(utf8Match[1].trim());
+    } catch {
+      return utf8Match[1].trim();
+    }
+  }
+
+  const asciiMatch = disposition.match(/filename="([^"]+)"|filename=([^;]+)/i);
+  return (asciiMatch?.[1] || asciiMatch?.[2] || '').trim() || fallback;
 }
 
 export async function downloadPdf(url, filename = 'clinic-booking.pdf') {

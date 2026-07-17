@@ -140,12 +140,12 @@ export default function AdminAppointmentsPage() {
     setDownloadingPdfKey(key);
     try {
       if (type === 'appointment') {
-        await downloadPdf(`/appointments/${appointment._id}/pdf`, `phieu-dat-lich-${appointment._id}.pdf`);
+        await downloadPdf(`/appointments/${appointment._id}/pdf`);
       } else if (type === 'queue') {
-        await downloadPdf(`/appointments/${appointment._id}/queue-ticket/pdf`, `phieu-kham-${appointment._id}.pdf`);
+        await downloadPdf(`/appointments/${appointment._id}/queue-ticket/pdf`);
       } else if (type === 'record') {
         const payload = await api(`/appointments/${appointment._id}/medical-record`);
-        await downloadPdf(`/medical-records/${payload.data._id}/pdf`, `ket-qua-kham-${payload.data._id}.pdf`);
+        await downloadPdf(`/medical-records/${payload.data._id}/pdf`);
       }
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF');

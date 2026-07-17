@@ -27,6 +27,7 @@ import { createAuditLog } from '../utils/auditLogger.js';
 import { generateAppointmentPdf, generateQueueTicketPdf } from '../services/pdfService.js';
 import { resolveServicePackageForAppointment } from '../services/servicePackageService.js';
 import { buildInsuranceSnapshot } from '../utils/insurance.js';
+import { appointmentPdfFilename, queueTicketPdfFilename } from '../utils/pdfFilename.js';
 import {
   ACTIVE_FOLLOW_UP_APPOINTMENT_STATUSES,
   APPOINTMENT_STATUS_VALUES,
@@ -339,7 +340,7 @@ function assertAppointmentPdfAccess(user, appointment) {
 
 function streamPdf(res, doc, filename) {
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"; filename*=UTF-8''${encodeURIComponent(filename)}`);
   doc.pipe(res);
   doc.end();
 }
@@ -928,7 +929,7 @@ export const exportAppointmentPdf = asyncHandler(async (req, res) => {
     }
   });
 
-  streamPdf(res, generateAppointmentPdf(appointment), `phieu-dat-lich-${appointment._id}.pdf`);
+  streamPdf(res, generateAppointmentPdf(appointment), appointmentPdfFilename(appointment));
 });
 
 export const exportQueueTicketPdf = asyncHandler(async (req, res) => {
@@ -952,7 +953,7 @@ export const exportQueueTicketPdf = asyncHandler(async (req, res) => {
     }
   });
 
-  streamPdf(res, generateQueueTicketPdf(appointment), `phieu-kham-${appointment._id}.pdf`);
+  streamPdf(res, generateQueueTicketPdf(appointment), queueTicketPdfFilename(appointment));
 });
 
 export const getAppointments = asyncHandler(async (req, res) => {

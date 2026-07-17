@@ -170,7 +170,6 @@ export const register = asyncHandler(async (req, res) => {
     await sendEmailVerificationOtp({ to: user.email, otp });
   } catch (error) {
     console.error('Send email verification OTP failed:', error);
-    console.log(`Email verification OTP for ${user.email}: ${otp}`);
   }
 
   res.status(201).json({
@@ -311,7 +310,6 @@ export const resendVerificationOtp = asyncHandler(async (req, res) => {
     await sendEmailVerificationOtp({ to: user.email, otp });
   } catch (error) {
     console.error('Resend email verification OTP failed:', error);
-    console.log(`Email verification OTP for ${user.email}: ${otp}`);
   }
 
   res.json(otpSuccessPayload('Mã OTP đã được gửi'));
@@ -342,7 +340,6 @@ export const forgotPassword = asyncHandler(async (req, res) => {
       await sendResetPasswordOtp({ to: recipientEmail, otp });
     } catch (error) {
       console.error('Send reset password OTP email failed:', error);
-      console.log(`Reset password OTP for ${recipientEmail}: ${otp}`);
     }
   }
 

@@ -28,6 +28,11 @@ export const env = {
     secure: process.env.SMTP_SECURE === 'true',
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
-    from: process.env.EMAIL_FROM || 'Clinic Booking <no-reply@example.com>'
+    from: process.env.EMAIL_FROM || `${process.env.EMAIL_FROM_NAME || 'BookingCare Mini'} <no-reply@example.com>`
+  },
+  email: {
+    fromName: process.env.EMAIL_FROM_NAME || 'BookingCare Mini',
+    support: process.env.EMAIL_SUPPORT || 'support@clinicbooking.vn',
+    replyTo: process.env.EMAIL_REPLY_TO || process.env.EMAIL_SUPPORT || ''
   }
 };

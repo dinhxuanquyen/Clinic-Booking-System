@@ -363,7 +363,7 @@ export default function DoctorSchedulesPage() {
   const exceptionByDate = new Map(exceptions.map((item) => [item.date, item]));
 
   return (
-    <div className="doctor-page">
+    <div className="doctor-page doctor-schedules-page">
       <div className="doctor-page-header">
         <div className="doctor-page-header-main">
           <span className="eyebrow">Lịch làm việc của tôi</span>
