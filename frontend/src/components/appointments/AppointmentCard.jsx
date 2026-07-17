@@ -16,9 +16,10 @@ import {
 export default function AppointmentCard({ appointment, sourceRecordId, ...actionProps }) {
   const formattedDate = formatDateVN(appointment.date);
   const hasFormattedDate = formattedDate !== 'Chưa cập nhật';
+  const cardLabel = `Lịch hẹn ${formattedDate}, ${formatTimeSlot(appointment.timeSlot)}, ${getAppointmentCode(appointment)}`;
 
   return (
-    <article className={`pa-card ${isFollowUpAppointment(appointment) ? 'follow-up' : ''}`}>
+    <article className={`pa-card ${isFollowUpAppointment(appointment) ? 'follow-up' : ''}`} aria-label={cardLabel}>
       <div className="pa-card-date">
         {isTodayAppointment(appointment) && <span>Hôm nay</span>}
         <strong>{hasFormattedDate ? formattedDate.slice(0, 5) : formattedDate}</strong>

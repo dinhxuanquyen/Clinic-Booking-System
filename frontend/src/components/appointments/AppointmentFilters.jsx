@@ -26,6 +26,7 @@ export default function AppointmentFilters({
       <div className="pa-status-filters" role="tablist" aria-label="Lọc trạng thái lịch hẹn">
         {STATUS_FILTERS.map((item) => (
           <button
+            aria-controls="appointment-results"
             aria-selected={statusFilter === item.key}
             className={statusFilter === item.key ? 'active' : ''}
             key={item.key}
@@ -43,6 +44,7 @@ export default function AppointmentFilters({
         <label>
           <span>Tìm kiếm</span>
           <input
+            aria-label="Tìm kiếm lịch hẹn"
             className="form-control"
             placeholder="Bác sĩ, chuyên khoa, cơ sở..."
             type="search"
@@ -52,14 +54,14 @@ export default function AppointmentFilters({
         </label>
         <label>
           <span>Năm</span>
-          <select className="form-select" value={year} onChange={(event) => onYearChange(event.target.value)}>
+          <select aria-label="Lọc theo năm" className="form-select" value={year} onChange={(event) => onYearChange(event.target.value)}>
             <option value="all">Tất cả năm</option>
             {years.map((item) => <option key={item} value={item}>{item}</option>)}
           </select>
         </label>
         <label>
           <span>Sắp xếp</span>
-          <select className="form-select" value={sortOrder} onChange={(event) => onSortChange(event.target.value)}>
+          <select aria-label="Sắp xếp lịch hẹn" className="form-select" value={sortOrder} onChange={(event) => onSortChange(event.target.value)}>
             <option value="newest">Mới nhất trước</option>
             <option value="oldest">Cũ nhất trước</option>
           </select>

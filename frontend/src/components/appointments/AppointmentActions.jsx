@@ -12,6 +12,10 @@ function actionKey(appointment, type) {
   return `${appointment?._id}:${type}`;
 }
 
+function appointmentActionContext(appointment) {
+  return appointment?.appointmentCode || appointment?.code || appointment?.date || 'lịch hẹn';
+}
+
 export default function AppointmentActions({
   appointment,
   downloadingPdfKey,
@@ -26,6 +30,7 @@ export default function AppointmentActions({
   onViewSourceRecord,
   sourceRecordId
 }) {
+  const actionContext = appointmentActionContext(appointment);
   const isRecordLoading = medicalRecordLoadingId === appointment._id;
   const isSourceLoading = sourceRecordId && medicalRecordLoadingId === `follow-up:${sourceRecordId}`;
   const secondaryAction = canViewMedicalRecord(appointment)
@@ -89,13 +94,14 @@ export default function AppointmentActions({
 
   return (
     <div className="pa-actions">
-      <button className="btn btn-primary btn-sm" type="button" onClick={() => onDetail(appointment)}>
+      <button aria-label={`Xem chi tiết ${actionContext}`} className="btn btn-primary btn-sm" type="button" onClick={() => onDetail(appointment)}>
         Xem chi tiết
       </button>
       {secondaryAction && (
         <button
           className="btn btn-outline-primary btn-sm"
           disabled={secondaryAction.disabled}
+          aria-label={`${secondaryAction.label} cho ${actionContext}`}
           type="button"
           onClick={secondaryAction.onClick}
         >
@@ -104,10 +110,11 @@ export default function AppointmentActions({
       )}
       {overflowActions.length > 0 && (
         <details className="pa-more-actions">
-          <summary>Thao tác khác</summary>
+          <summary aria-label={`Mở thao tác khác cho ${actionContext}`}>Thao tác khác</summary>
           <div>
             {overflowActions.map((action) => (
               <button
+                aria-label={`${action.label} cho ${actionContext}`}
                 className={action.tone === 'danger' ? 'danger' : ''}
                 disabled={action.disabled}
                 key={action.key}

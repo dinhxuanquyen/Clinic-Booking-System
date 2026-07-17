@@ -4,5 +4,5 @@ export default function AppointmentStatusBadge({ status, type = 'appointment' })
   const label = type === 'waiting' ? getWaitingStatusLabel(status) : getAppointmentStatusLabel(status);
   const tone = type === 'waiting' ? getWaitingStatusTone(status) : getAppointmentStatusTone(status);
 
-  return <span className={`pa-status-badge ${tone}`}>{label}</span>;
+  return <span className={`pa-status-badge ${tone}`} aria-label={`Trạng thái: ${label}`}>{label}</span>;
 }

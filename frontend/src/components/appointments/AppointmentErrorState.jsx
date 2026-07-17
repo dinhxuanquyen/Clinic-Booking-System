@@ -6,7 +6,7 @@ export default function AppointmentErrorState({ message, onRetry }) {
         <h2>Không thể tải lịch hẹn</h2>
         <p>{message || 'Hệ thống chưa lấy được dữ liệu lịch hẹn. Vui lòng thử lại.'}</p>
       </div>
-      <button className="btn btn-primary" type="button" onClick={onRetry}>
+      <button className="btn btn-primary" type="button" aria-label="Thử tải lại danh sách lịch hẹn" onClick={onRetry}>
         Thử lại
       </button>
     </div>

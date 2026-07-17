@@ -1082,17 +1082,18 @@ export default function DoctorAppointmentsPage() {
       )}
 
       {reasonAction && (
-        <BaseModal className="admin-modal" disableClose={actionLoadingId === reasonAction.appointment?._id} onClose={() => setReasonAction(null)} size="sm">
-          <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
-            <div>
+        <BaseModal className="admin-modal doctor-action-modal" disableClose={actionLoadingId === reasonAction.appointment?._id} onClose={() => setReasonAction(null)} size="sm">
+          <div className="doctor-action-modal-header">
+            <div className="doctor-action-modal-title">
               <span className="eyebrow">Xử lý lịch hẹn</span>
-              <h2 className="h5 mt-2 mb-0">{reasonAction.title}</h2>
+              <h2>{reasonAction.title}</h2>
+              <p>Ghi rõ lý do để bệnh nhân và phòng khám nắm được quyết định xử lý.</p>
             </div>
-            <button className="btn btn-sm btn-outline-secondary" disabled={actionLoadingId === reasonAction.appointment?._id} type="button" onClick={() => setReasonAction(null)}>
+            <button className="btn btn-sm btn-outline-secondary doctor-action-modal-close" disabled={actionLoadingId === reasonAction.appointment?._id} type="button" onClick={() => setReasonAction(null)}>
               Đóng
             </button>
           </div>
-          <form onSubmit={submitReasonAction}>
+          <form className="doctor-action-modal-form" onSubmit={submitReasonAction}>
             <label className="form-label">Lý do / ghi chú phản hồi</label>
             <textarea
               className="form-control"
@@ -1102,7 +1103,7 @@ export default function DoctorAppointmentsPage() {
               onChange={(event) => setReasonAction((current) => ({ ...current, reason: event.target.value }))}
               placeholder="Nhập lý do để bệnh nhân/phòng khám nắm được thông tin"
             />
-            <div className="d-flex justify-content-end gap-2 mt-3">
+            <div className="doctor-action-modal-footer">
               <button className="btn btn-outline-secondary" disabled={actionLoadingId === reasonAction.appointment?._id} type="button" onClick={() => setReasonAction(null)}>
                 Hủy
               </button>

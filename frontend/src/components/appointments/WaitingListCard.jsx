@@ -2,8 +2,10 @@ import AppointmentStatusBadge from './AppointmentStatusBadge.jsx';
 import { displayName, formatDateVN, formatTimeSlot } from '../../utils/appointmentView.js';
 
 export default function WaitingListCard({ entry, onCancel }) {
+  const cardLabel = `Đăng ký danh sách chờ vị trí ${entry.position || 'chưa cập nhật'}, ${formatDateVN(entry.date)}, ${formatTimeSlot(entry.timeSlot)}`;
+
   return (
-    <article className="pa-waiting-card">
+    <article className="pa-waiting-card" aria-label={cardLabel} role="listitem">
       <div className="pa-waiting-position">
         <span>Vị trí</span>
         <strong>#{entry.position || '-'}</strong>
@@ -22,7 +24,7 @@ export default function WaitingListCard({ entry, onCancel }) {
         </dl>
       </div>
       {['waiting', 'offered'].includes(entry.status) && (
-        <button className="btn btn-outline-danger btn-sm" type="button" onClick={() => onCancel(entry)}>
+        <button className="btn btn-outline-danger btn-sm" type="button" aria-label={`Hủy đăng ký danh sách chờ vị trí ${entry.position || ''}`} onClick={() => onCancel(entry)}>
           Hủy đăng ký
         </button>
       )}

@@ -16,9 +16,9 @@ export default function AppointmentGroup({ appointments, getSourceRecordId, tota
   }, new Map());
 
   return (
-    <div className="pa-groups">
+    <div className="pa-groups" id="appointment-results" role="list">
       {Array.from(groups.entries()).map(([label, items]) => (
-        <section className="pa-group" key={label}>
+        <section className="pa-group" key={label} role="listitem">
           <div className="pa-group-heading">
             <h2>{label}</h2>
             <span>{items.length} lịch</span>

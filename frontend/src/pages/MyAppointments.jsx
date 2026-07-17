@@ -559,24 +559,25 @@ function RescheduleRequestModal({ appointment, onClose, onSubmit }) {
   }
 
   return (
-    <BaseModal className="admin-modal appointment-detail-modal" disableClose={submitting} onClose={onClose} size="lg">
-      <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
-        <div>
+    <BaseModal className="admin-modal appointment-detail-modal appointment-reschedule-modal" disableClose={submitting} onClose={onClose} size="lg">
+      <div className="appointment-reschedule-header">
+        <div className="appointment-reschedule-title">
           <span className="eyebrow">Yêu cầu đổi lịch</span>
           <h2 className="h4 mt-2 mb-0">Chọn thời gian khám mới</h2>
+          <p>Chọn ngày, khung giờ còn trống và cho phòng khám biết lý do cần đổi lịch.</p>
         </div>
-        <button className="btn btn-outline-primary btn-sm" disabled={submitting} type="button" onClick={onClose}>
+        <button className="btn btn-outline-primary btn-sm appointment-reschedule-close" disabled={submitting} type="button" onClick={onClose}>
           Đóng
         </button>
       </div>
 
-      <div className="appointment-detail-grid mb-3">
+      <div className="appointment-reschedule-current">
         <div><strong>Ngày hiện tại</strong><span>{appointment.date}</span></div>
         <div><strong>Khung giờ hiện tại</strong><span>{appointment.timeSlot}</span></div>
       </div>
 
-      <div className="row g-3 mb-3">
-        <div className="col-md-6">
+      <div className="appointment-reschedule-form">
+        <div className="appointment-reschedule-date-field">
           <label className="form-label">Ngày mới</label>
           <input
             className="form-control"
@@ -586,10 +587,10 @@ function RescheduleRequestModal({ appointment, onClose, onSubmit }) {
             onChange={(event) => updateField('newDate', event.target.value)}
           />
         </div>
-        <div className="col-12">
+        <div className="appointment-reschedule-slot-field">
           <label className="form-label">Khung giờ mới</label>
-          <div className="slot-grid">
-            {loadingSlots && <span className="text-secondary">Đang tải khung giờ...</span>}
+          <div className="slot-grid appointment-reschedule-slots">
+            {loadingSlots && <span className="text-secondary appointment-reschedule-slot-empty">Đang tải khung giờ...</span>}
             {!loadingSlots && form.newDate && slots.map((slot) => (
               <button
                 className={`slot-button ${slot.available ? 'slot-available' : 'slot-booked'} ${form.newTimeSlot === slot.timeSlot ? 'slot-selected' : ''}`}
@@ -602,11 +603,11 @@ function RescheduleRequestModal({ appointment, onClose, onSubmit }) {
                 <span>{slot.available ? 'Còn trống' : 'Đã có người đặt'}</span>
               </button>
             ))}
-            {!loadingSlots && form.newDate && !slots.length && <span className="text-secondary">Không có khung giờ khám.</span>}
-            {!form.newDate && <span className="text-secondary">Vui lòng chọn ngày mới để xem khung giờ.</span>}
+            {!loadingSlots && form.newDate && !slots.length && <span className="text-secondary appointment-reschedule-slot-empty">Không có khung giờ khám.</span>}
+            {!form.newDate && <span className="text-secondary appointment-reschedule-slot-empty">Vui lòng chọn ngày mới để xem khung giờ.</span>}
           </div>
         </div>
-        <div className="col-12">
+        <div className="appointment-reschedule-reason-field">
           <label className="form-label">Lý do đổi lịch</label>
           <textarea
             className="form-control"
@@ -617,7 +618,7 @@ function RescheduleRequestModal({ appointment, onClose, onSubmit }) {
         </div>
       </div>
 
-      <div className="d-flex justify-content-end gap-2">
+      <div className="appointment-reschedule-footer">
         <button className="btn btn-outline-secondary" disabled={submitting} type="button" onClick={onClose}>
           Hủy
         </button>
@@ -1230,7 +1231,7 @@ export default function MyAppointments() {
         )}
 
         {activeView === 'waiting-list' && (
-          <section className="pa-waiting-section">
+          <section className="pa-waiting-section" id="waiting-list-panel" role="tabpanel" aria-labelledby="appointment-tab-waiting-list">
             <div className="pa-section-heading">
               <div>
                 <span className="pa-eyebrow">Danh sách chờ</span>
@@ -1247,7 +1248,7 @@ export default function MyAppointments() {
             ) : !waitingEntries.length ? (
               <AppointmentEmptyState type="waiting" />
             ) : (
-              <div className="pa-waiting-list">
+              <div className="pa-waiting-list" role="list">
                 {waitingEntries.map((entry) => (
                   <WaitingListCard entry={entry} key={entry._id} onCancel={cancelWaitingEntry} />
                 ))}

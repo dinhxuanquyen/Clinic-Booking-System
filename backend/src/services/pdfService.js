@@ -1,11 +1,19 @@
 ﻿import fs from 'fs';
 import PDFDocument from 'pdfkit';
-import { buildMedicalRecordCode } from '../utils/pdfFilename.js';
+import { buildAppointmentCode, buildMedicalRecordCode } from '../utils/pdfFilename.js';
 
 const fontCandidates = [
   'C:/Windows/Fonts/arial.ttf',
   'C:/Windows/Fonts/Arial.ttf',
   '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+  '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf'
+];
+
+const appointmentFontCandidates = [
+  'C:/Users/DELL/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/Library/share/fonts/DejaVuSans.ttf',
+  '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+  'C:/Windows/Fonts/arial.ttf',
+  'C:/Windows/Fonts/Arial.ttf',
   '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf'
 ];
 
@@ -102,8 +110,9 @@ function codeOf(value, keys = []) {
 }
 
 function createDocument(title) {
-  const doc = new PDFDocument({ size: 'A4', margin: 48, bufferPages: true });
-  const fontPath = fontCandidates.find((candidate) => fs.existsSync(candidate));
+  const doc = new PDFDocument({ size: 'A4', margin: title === 'Phiếu đặt lịch' ? 38 : 48, bufferPages: true });
+  const candidates = title === 'Phiếu đặt lịch' ? appointmentFontCandidates : fontCandidates;
+  const fontPath = candidates.find((candidate) => fs.existsSync(candidate));
   if (fontPath) {
     doc.registerFont('Regular', fontPath);
     doc.registerFont('Bold', fontPath);
@@ -169,7 +178,7 @@ function ensureSpace(doc, requiredHeight = 80, sectionName = '') {
 }
 
 function drawHeader(doc, title, clinic = '', metaRows = []) {
-  const compact = Boolean(doc._compactMedicalRecord);
+  const compact = Boolean(doc._compactMedicalRecord || doc._compactAppointmentTicket);
   const clinicObject = clinic && typeof clinic === 'object' ? clinic : {};
   const clinicName = nameOf(clinic, 'Clinic Booking');
   const clinicAddress = clinicObject.address || '';
@@ -307,12 +316,12 @@ function drawInfoGrid(doc, rows, options = {}) {
   const left = doc.page.margins.left;
   const totalWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
   const cellWidth = (totalWidth - gap * (columns - 1)) / columns;
-  const minHeight = options.compact ? 32 : 40;
-  const labelSize = options.compact ? 7.6 : 8;
-  const valueSize = options.compact ? 9.2 : 9.8;
-  const horizontalPad = 7;
-  const topPad = options.compact ? 5 : 6;
-  const valueTop = options.compact ? 17 : 19;
+  const minHeight = options.dense ? 28 : options.compact ? 32 : 40;
+  const labelSize = options.dense ? 7.2 : options.compact ? 7.6 : 8;
+  const valueSize = options.dense ? 8.8 : options.compact ? 9.2 : 9.8;
+  const horizontalPad = options.dense ? 6 : 7;
+  const topPad = options.dense ? 4 : options.compact ? 5 : 6;
+  const valueTop = options.dense ? 15 : options.compact ? 17 : 19;
 
   for (let index = 0; index < filteredRows.length; index += columns) {
     const cells = filteredRows.slice(index, index + columns);
@@ -340,7 +349,7 @@ function drawInfoGrid(doc, rows, options = {}) {
         .text(text, x + horizontalPad, y + valueTop, { width: cellWidth - horizontalPad * 2 });
     });
 
-    doc.y = y + rowHeight + 5;
+    doc.y = y + rowHeight + (options.dense ? 3 : 5);
   }
 }
 
@@ -765,28 +774,221 @@ function drawDoctorConfirmation(doc, record, title, options = {}) {
   doc.y = y + blockHeight;
 }
 
+function patientNameOfAppointment(appointment) {
+  return appointment?.patientInfo?.name || appointment?.patientId?.name || appointment?.patientSnapshot?.name || 'Đang cập nhật';
+}
+
+function patientPhoneOfAppointment(appointment) {
+  return appointment?.patientInfo?.phone || appointment?.patientId?.phone || appointment?.patientSnapshot?.phone || '-';
+}
+
+function patientEmailOfAppointment(appointment) {
+  return appointment?.patientInfo?.email || appointment?.patientId?.email || appointment?.patientSnapshot?.email || '-';
+}
+
+function appointmentQueueText(appointment) {
+  return appointment?.queueNumber ? String(appointment.queueNumber).padStart(2, '0') : 'Chưa cấp';
+}
+
+function appointmentInsuranceText(appointment) {
+  const insurance = getInsuranceSnapshot(appointment);
+  if (!insurance?.enabled || !insurance?.insuranceNumber) return 'Không sử dụng BHYT';
+  const expiry = formatDateVN(insurance.insuranceExpiryDate);
+  return expiry !== '-'
+    ? `${maskInsuranceNumber(insurance.insuranceNumber)} - Hạn ${expiry}`
+    : maskInsuranceNumber(insurance.insuranceNumber);
+}
+
+function drawAppointmentFooter(doc) {
+  const pages = doc.bufferedPageRange();
+  for (let i = 0; i < pages.count; i += 1) {
+    doc.switchToPage(i);
+    const y = doc.page.height - doc.page.margins.bottom - 18;
+    const width = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+    doc
+      .fontSize(8.8)
+      .fillColor(TEXT_MUTED)
+      .text('Đây là phiếu điện tử được tạo từ hệ thống Clinic Booking.', doc.page.margins.left, y, { width, align: 'left', lineBreak: false })
+      .text(`Trang ${i + 1}/${pages.count}`, doc.page.margins.left, y, { width, align: 'right', lineBreak: false });
+  }
+}
+
+function drawAppointmentStatusBadge(doc, label, tone, x, y, width = 118) {
+  const colors = {
+    warning: ['#fffbeb', '#fde68a', '#b45309'],
+    success: ['#f0fdf4', '#bbf7d0', '#15803d'],
+    info: ['#eff6ff', '#bfdbfe', '#1d4ed8'],
+    primary: ['#f0f9ff', '#bae6fd', '#0369a1'],
+    danger: ['#fff7f7', '#fecaca', '#b91c1c'],
+    neutral: ['#f8fafc', '#e2e8f0', '#475569']
+  };
+  const [fill, stroke, textColor] = colors[tone] || colors.neutral;
+
+  doc
+    .roundedRect(x, y, width, 28, 14)
+    .fillAndStroke(fill, stroke)
+    .fontSize(9.4)
+    .fillColor(textColor)
+    .text(label, x + 10, y + 8, { width: width - 20, align: 'center' });
+}
+
+function drawAppointmentHeroCard(doc, appointment, appointmentCode) {
+  drawSectionTitle(doc, 'A. THÔNG TIN LỊCH KHÁM', { firstContentHeight: 88, tight: true });
+  ensureSpace(doc, 96, 'appointment-hero');
+
+  const left = doc.page.margins.left;
+  const width = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+  const y = doc.y;
+  const dateWidth = 150;
+  const statusTones = {
+    pending: 'warning',
+    confirmed: 'success',
+    in_progress: 'info',
+    completed: 'primary',
+    cancelled: 'neutral',
+    no_show: 'danger',
+    cancel_requested: 'danger',
+    reschedule_requested: 'warning',
+    reschedule_rejected: 'danger'
+  };
+  const statusLabel = appointmentStatusLabel(appointment.status);
+  const statusTone = statusTones[appointment.status] || 'neutral';
+
+  doc
+    .roundedRect(left, y, width, 88, 8)
+    .fillAndStroke('#f8fbff', '#bae6fd')
+    .roundedRect(left, y, dateWidth, 88, 8)
+    .fillAndStroke(SOFT_BLUE, '#bae6fd');
+
+  doc
+    .fontSize(8.5)
+    .fillColor('#0369a1')
+    .text('NGÀY KHÁM', left + 14, y + 12, { width: dateWidth - 28 })
+    .fontSize(18)
+    .fillColor(PRIMARY_BLUE)
+    .text(formatDateVN(appointment.date), left + 14, y + 26, { width: dateWidth - 28 })
+    .fontSize(9.5)
+    .fillColor('#0369a1')
+    .text(formatSlot(appointment.timeSlot), left + 14, y + 52, { width: dateWidth - 28 })
+    .fontSize(8.4)
+    .fillColor(TEXT_MUTED)
+    .text(`Mã phiếu: ${appointmentCode}`, left + 14, y + 68, { width: dateWidth - 28 });
+
+  const contentX = left + dateWidth + 18;
+  const contentWidth = width - dateWidth - 36;
+  drawAppointmentStatusBadge(doc, statusLabel, statusTone, left + width - 142, y + 12, 126);
+
+  doc
+    .fontSize(8.5)
+    .fillColor('#0369a1')
+    .text('BÁC SĨ PHỤ TRÁCH', contentX, y + 12, { width: contentWidth - 148 })
+    .fontSize(12.5)
+    .fillColor(PRIMARY_BLUE)
+    .text(nameOf(appointment.doctorId), contentX, y + 30, { width: contentWidth - 148 })
+    .fontSize(9.5)
+    .fillColor('#334155')
+    .text(`Chuyên khoa: ${nameOf(appointment.specialtyId)}`, contentX, y + 49, { width: contentWidth })
+    .text(`Cơ sở: ${nameOf(appointment.clinicId)}`, contentX, y + 63, { width: contentWidth })
+    .fontSize(9.2)
+    .fillColor(TEXT_MUTED)
+    .text(`Số thứ tự khám: ${appointmentQueueText(appointment)}`, contentX, y + 75, { width: contentWidth });
+
+  doc.y = y + 96;
+}
+
+function drawAppointmentReasonCard(doc, reason) {
+  drawSectionTitle(doc, 'D. LÝ DO KHÁM', { firstContentHeight: 46, tight: true });
+  const left = doc.page.margins.left;
+  const width = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+  const text = hasValue(reason) ? String(reason) : 'Không có lý do khám được ghi nhận.';
+  const height = Math.max(36, doc.fontSize(9.3).heightOfString(text, { width: width - 24 }) + 23);
+  ensureSpace(doc, height + 6, 'appointment-reason');
+  const y = doc.y;
+
+  doc
+    .roundedRect(left, y, width, height, 6)
+    .fillAndStroke('#fbfdff', '#e5f2ff')
+    .fontSize(8.5)
+    .fillColor(TEXT_MUTED)
+    .text('Lý do khám', left + 12, y + 8, { width: width - 24 })
+    .fontSize(9.3)
+    .fillColor('#0f172a')
+    .text(text, left + 12, y + 20, { width: width - 24 });
+
+  doc.y = y + height + 8;
+}
+
+function drawAppointmentGuidance(doc) {
+  drawSectionTitle(doc, 'E. HƯỚNG DẪN BỆNH NHÂN', { firstContentHeight: 50, tight: true });
+  const items = [
+    'Đến trước giờ khám khoảng 15 phút.',
+    'Mang CCCD hoặc giấy tờ tùy thân.',
+    'Mang thẻ BHYT nếu sử dụng.',
+    'Mang hồ sơ khám cũ nếu có.'
+  ];
+  const left = doc.page.margins.left;
+  const width = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+  const height = 50;
+  ensureSpace(doc, height + 6, 'appointment-guidance');
+  const y = doc.y;
+
+  doc.roundedRect(left, y, width, height, 6).fillAndStroke('#f8fbff', '#e5f2ff');
+  items.forEach((item, index) => {
+    const rowY = y + 6 + index * 11;
+    doc
+      .circle(left + 14, rowY + 4, 2.4)
+      .fill(ACCENT_BLUE)
+      .fontSize(8.8)
+      .fillColor('#334155')
+      .text(item, left + 24, rowY, { width: width - 36 });
+  });
+  doc.y = y + height + 8;
+}
+
 export function generateAppointmentPdf(appointment) {
   const doc = createDocument('Phiếu đặt lịch');
-  drawHeader(doc, 'PHIẾU ĐẶT LỊCH', nameOf(appointment.clinicId, 'Clinic Booking'));
-  drawMeta(doc, `AP-${idOf(appointment).slice(-8).toUpperCase()}`);
-  drawRows(doc, [
-    ['Mã lịch hẹn', idOf(appointment)],
-    ['Bệnh nhân', appointment.patientInfo?.name || nameOf(appointment.patientId)],
-    ['Số điện thoại', appointment.patientInfo?.phone || appointment.patientId?.phone],
-    ['Email', appointment.patientInfo?.email || appointment.patientId?.email],
+  const appointmentCode = buildAppointmentCode(appointment);
+  const exportedAt = formatDateTimeVN(new Date());
+  doc._compactAppointmentTicket = true;
+
+  drawHeader(doc, 'PHIẾU ĐẶT LỊCH KHÁM', appointment.clinicId || 'Clinic Booking', [
+    ['Mã phiếu', appointmentCode],
+    ['Ngày xuất phiếu', exportedAt]
+  ]);
+
+  drawAppointmentHeroCard(doc, appointment, appointmentCode);
+
+  drawSectionTitle(doc, 'B. THÔNG TIN BỆNH NHÂN', { firstContentHeight: 42, tight: true });
+  drawInfoGrid(doc, [
+    ['Họ tên', patientNameOfAppointment(appointment)],
+    ['Số điện thoại', patientPhoneOfAppointment(appointment)],
+    ['Email', patientEmailOfAppointment(appointment)],
+    ['BHYT', appointmentInsuranceText(appointment)]
+  ], { columns: 2, compact: true, dense: true, sectionName: 'appointment-patient' });
+
+  drawSectionTitle(doc, 'C. THÔNG TIN BUỔI KHÁM', { firstContentHeight: 72, tight: true });
+  drawInfoGrid(doc, [
     ['Bác sĩ', nameOf(appointment.doctorId)],
     ['Chuyên khoa', nameOf(appointment.specialtyId)],
     ['Cơ sở', nameOf(appointment.clinicId)],
-    ['Ngày khám', appointment.date],
-    ['Khung giờ', appointment.timeSlot],
+    ['Dịch vụ', servicePackageName(appointment)],
     ['Loại lịch', appointmentTypeLabel(appointment)],
-    ['Dịch vụ khám', servicePackageName(appointment)],
     ['Trạng thái', appointmentStatusLabel(appointment.status)],
-    ['Lý do khám', appointment.reason],
-    ['Số thứ tự khám', appointment.queueNumber ? String(appointment.queueNumber).padStart(2, '0') : '-']
-  ]);
-  drawInsuranceSection(doc, appointment);
-  drawFooter(doc);
+    ['Số thứ tự khám', appointmentQueueText(appointment)],
+    ['Khung giờ', formatSlot(appointment.timeSlot)]
+  ], { columns: 2, compact: true, dense: true, sectionName: 'appointment-session' });
+
+  drawAppointmentReasonCard(doc, appointment.reason);
+  drawAppointmentGuidance(doc);
+
+  drawSectionTitle(doc, 'F. THÔNG TIN TRA CỨU', { firstContentHeight: 42, tight: true });
+  drawInfoGrid(doc, [
+    ['Mã lịch hẹn', appointmentCode],
+    ['Ngày tạo lịch', formatDateTimeVN(appointment.createdAt)],
+    ['Ngày xuất phiếu', exportedAt]
+  ], { columns: 3, compact: true, dense: true, sectionName: 'appointment-lookup' });
+
+  drawAppointmentFooter(doc);
   return doc;
 }
 

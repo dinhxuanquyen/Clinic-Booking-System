@@ -5,6 +5,7 @@ let activeBodyLocks = 0;
 let previousBodyOverflow = '';
 let previousBodyPaddingRight = '';
 let previousScrollbarCompensation = '';
+let previousScrollbarGutter = '';
 
 const FOCUSABLE_SELECTOR = [
   'a[href]',
@@ -30,16 +31,22 @@ function lockBodyScroll() {
 
   if (activeBodyLocks === 0) {
     const scrollbarWidth = Math.max(window.innerWidth - document.documentElement.clientWidth, 0);
+    const supportsStableGutter = window.CSS?.supports?.('scrollbar-gutter', 'stable');
 
     previousBodyOverflow = document.body.style.overflow;
     previousBodyPaddingRight = document.body.style.paddingRight;
     previousScrollbarCompensation = document.documentElement.style.getPropertyValue('--scrollbar-compensation');
+    previousScrollbarGutter = document.documentElement.style.scrollbarGutter;
 
     document.documentElement.style.setProperty('--scrollbar-compensation', `${scrollbarWidth}px`);
     document.body.classList.add('modal-open');
     document.body.style.overflow = 'hidden';
 
-    if (scrollbarWidth > 0) {
+    if (supportsStableGutter) {
+      document.documentElement.style.scrollbarGutter = 'stable';
+      document.body.classList.remove('modal-scrollbar-padding');
+    } else if (scrollbarWidth > 0) {
+      document.body.classList.add('modal-scrollbar-padding');
       document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
   }
@@ -51,8 +58,10 @@ function lockBodyScroll() {
 
     if (activeBodyLocks === 0) {
       document.body.classList.remove('modal-open');
+      document.body.classList.remove('modal-scrollbar-padding');
       document.body.style.overflow = previousBodyOverflow;
       document.body.style.paddingRight = previousBodyPaddingRight;
+      document.documentElement.style.scrollbarGutter = previousScrollbarGutter;
 
       if (previousScrollbarCompensation) {
         document.documentElement.style.setProperty('--scrollbar-compensation', previousScrollbarCompensation);
