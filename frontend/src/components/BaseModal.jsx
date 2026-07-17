@@ -1,10 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 let activeBodyLocks = 0;
 let previousBodyOverflow = '';
 let previousBodyPaddingRight = '';
 let previousScrollbarCompensation = '';
+
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'button:not([disabled])',
+  'textarea:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])'
+].join(',');
+
+function getFocusableElements(container) {
+  if (!container) return [];
+  return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter((element) => {
+    const style = window.getComputedStyle(element);
+    return style.visibility !== 'hidden' && style.display !== 'none';
+  });
+}
 
 function lockBodyScroll() {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
@@ -47,6 +64,8 @@ function lockBodyScroll() {
 }
 
 export default function BaseModal({
+  ariaLabel,
+  ariaLabelledBy,
   backdropClassName = 'admin-modal-backdrop',
   children,
   className = 'admin-modal',
@@ -55,23 +74,69 @@ export default function BaseModal({
   show = true,
   size = 'md'
 }) {
+  const modalRef = useRef(null);
+  const previousFocusRef = useRef(null);
+
   useEffect(() => {
     if (!show) return undefined;
     return lockBodyScroll();
   }, [show]);
 
   useEffect(() => {
-    if (!show || disableClose) return undefined;
+    if (!show) return undefined;
 
     function handleKeyDown(event) {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && !disableClose) {
         onClose?.();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const focusable = getFocusableElements(modalRef.current);
+      if (!focusable.length) {
+        event.preventDefault();
+        modalRef.current?.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
       }
     }
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [disableClose, onClose, show]);
+
+  useEffect(() => {
+    if (!show) return undefined;
+
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    const focusTimer = window.setTimeout(() => {
+      const modal = modalRef.current;
+      const target = modal?.querySelector('[data-autofocus]') || getFocusableElements(modal)[0] || modal;
+      target?.focus?.();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(focusTimer);
+      try {
+        previousFocusRef.current?.focus?.();
+      } catch {
+        // Focus target may be removed by navigation or state updates.
+      }
+    };
+  }, [show]);
 
   if (!show) return null;
 
@@ -83,7 +148,17 @@ export default function BaseModal({
 
   return createPortal(
     <div className={backdropClassName} onClick={closeFromBackdrop}>
-      <div className={className} data-modal-size={size} role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+      <div
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        aria-modal="true"
+        className={className}
+        data-modal-size={size}
+        ref={modalRef}
+        role="dialog"
+        tabIndex={-1}
+        onClick={(event) => event.stopPropagation()}
+      >
         {children}
       </div>
     </div>,

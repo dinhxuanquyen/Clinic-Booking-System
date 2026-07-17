@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { displayName } from '../../utils/medicalRecordView.js';
+import { getClinicDisplayName, getDoctorDisplayName, getSpecialtyDisplayName } from '../../utils/appointmentView.js';
 import { resolveMediaUrl } from '../../utils/media.js';
 
 function initialsFromName(name) {
@@ -12,9 +12,10 @@ function initialsFromName(name) {
     .join('') || 'BS';
 }
 
-export default function RecordDoctorInfo({ doctor, specialty, clinic }) {
+export default function AppointmentDoctorInfo({ appointment }) {
   const [avatarFailed, setAvatarFailed] = useState(false);
-  const doctorName = displayName(doctor);
+  const doctor = appointment?.doctorId;
+  const doctorName = getDoctorDisplayName(appointment);
   const avatar = doctor?.avatar || doctor?.image || doctor?.photoUrl;
   const avatarUrl = useMemo(() => {
     if (!avatar || avatarFailed) return '';
@@ -26,23 +27,21 @@ export default function RecordDoctorInfo({ doctor, specialty, clinic }) {
   }, [avatar]);
 
   return (
-    <div className="phr-doctor-info">
+    <div className="pa-doctor-info">
       {avatarUrl ? (
         <img
-          className="phr-doctor-avatar"
-          src={avatarUrl}
           alt={doctorName}
+          className="pa-doctor-avatar"
           loading="lazy"
+          src={avatarUrl}
           onError={() => setAvatarFailed(true)}
         />
       ) : (
-        <span className="phr-doctor-avatar fallback" aria-hidden="true">
-          {initialsFromName(doctorName)}
-        </span>
+        <span className="pa-doctor-avatar fallback" aria-hidden="true">{initialsFromName(doctorName)}</span>
       )}
       <div>
-        <strong>{doctorName}</strong>
-        <span>{displayName(specialty)} · {displayName(clinic)}</span>
+        <strong>{doctor?.degree ? `${doctor.degree} ${doctorName}` : doctorName}</strong>
+        <span>{getSpecialtyDisplayName(appointment)} · {getClinicDisplayName(appointment)}</span>
       </div>
     </div>
   );

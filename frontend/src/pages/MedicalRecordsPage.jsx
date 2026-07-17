@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import MedicalRecordDetailModal from '../components/MedicalRecordDetailModal.jsx';
-import { SkeletonList } from '../components/SkeletonCard.jsx';
 import FollowUpAlert from '../components/medical-records/FollowUpAlert.jsx';
 import HealthRecordPageHeader from '../components/medical-records/HealthRecordPageHeader.jsx';
 import HealthSummaryBar from '../components/medical-records/HealthSummaryBar.jsx';
 import MedicalRecordFilters from '../components/medical-records/MedicalRecordFilters.jsx';
+import MedicalRecordsErrorState from '../components/medical-records/MedicalRecordsErrorState.jsx';
+import MedicalRecordsLoadingState from '../components/medical-records/MedicalRecordsLoadingState.jsx';
 import MedicalRecordGroup from '../components/medical-records/MedicalRecordGroup.jsx';
 import RecordEmptyState from '../components/medical-records/RecordEmptyState.jsx';
 import { api } from '../api/client.js';
@@ -63,6 +64,7 @@ export default function MedicalRecordsPage() {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
   const [recordsLoaded, setRecordsLoaded] = useState(false);
+  const [loadError, setLoadError] = useState('');
   const [queryHandled, setQueryHandled] = useState('');
   const [activeTab, setActiveTab] = useState('all');
   const [search, setSearch] = useState('');
@@ -74,6 +76,7 @@ export default function MedicalRecordsPage() {
   const loadRecords = useCallback(() => {
     setLoading(true);
     setRecordsLoaded(false);
+    setLoadError('');
     return Promise.all([
       api('/medical-records/my'),
       api('/medical-records/follow-ups/my')
@@ -81,8 +84,12 @@ export default function MedicalRecordsPage() {
       .then(([recordsPayload, followUpPayload]) => {
         setRecords(recordsPayload.data || []);
         setFollowUpRecords(followUpPayload.data || []);
+        setLoadError('');
       })
-      .catch((error) => toast.error(error.message || 'Không tải được lịch sử khám'))
+      .catch(() => {
+        setLoadError('Không thể tải hồ sơ khám bệnh. Vui lòng thử lại.');
+        toast.error('Không thể tải hồ sơ khám bệnh. Vui lòng thử lại.');
+      })
       .finally(() => {
         setLoading(false);
         setRecordsLoaded(true);
@@ -158,6 +165,8 @@ export default function MedicalRecordsPage() {
   );
 
   const filterActive = Boolean(search.trim() || specialty !== 'all' || year !== 'all');
+  const initialLoading = loading && !recordsLoaded && records.length === 0;
+  const showLoadError = Boolean(loadError && !loading && records.length === 0);
 
   const filteredRecords = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -196,47 +205,63 @@ export default function MedicalRecordsPage() {
 
   return (
     <div className="public-page patient-health-record-page">
-      <HealthRecordPageHeader patientName={user?.name} latestDate={latestExamDate(records)} />
+      {initialLoading ? (
+        <MedicalRecordsLoadingState />
+      ) : (
+        <>
+          <HealthRecordPageHeader patientName={user?.name} latestDate={latestExamDate(records)} />
 
-      <HealthSummaryBar metrics={metrics} />
+          <HealthSummaryBar metrics={metrics} />
 
-      {!loading && (
-        <FollowUpAlert
-          records={followUpRecords}
-          onBook={(record) => navigate(followUpBookingUrl(record))}
-          onOpenRecord={setSelected}
-          onViewAll={showFollowUps}
-        />
+          {!loading && !showLoadError && (
+            <FollowUpAlert
+              records={followUpRecords}
+              onBook={(record) => navigate(followUpBookingUrl(record))}
+              onOpenRecord={setSelected}
+              onViewAll={showFollowUps}
+            />
+          )}
+        </>
       )}
 
-      <section className="phr-workspace" ref={recordsTopRef}>
-        <MedicalRecordFilters
-          activeTab={activeTab}
-          filterActive={filterActive}
-          onReset={resetFilters}
-          onSearchChange={setSearch}
-          onSortChange={setSortOrder}
-          onSpecialtyChange={setSpecialty}
-          onTabChange={setActiveTab}
-          onYearChange={setYear}
-          search={search}
-          sortOrder={sortOrder}
-          specialties={specialties}
-          specialty={specialty}
-          tabCounts={tabCounts}
-          tabs={FILTER_TABS}
-          year={year}
-          years={years}
-        />
+      {!initialLoading && (
+        <section className="phr-workspace" ref={recordsTopRef}>
+          {showLoadError ? (
+            <MedicalRecordsErrorState onRetry={loadRecords} />
+          ) : (
+            <MedicalRecordFilters
+              activeTab={activeTab}
+              filterActive={filterActive}
+              onReset={resetFilters}
+              onSearchChange={setSearch}
+              onSortChange={setSortOrder}
+              onSpecialtyChange={setSpecialty}
+              onTabChange={setActiveTab}
+              onYearChange={setYear}
+              search={search}
+              sortOrder={sortOrder}
+              specialties={specialties}
+              specialty={specialty}
+              tabCounts={tabCounts}
+              tabs={FILTER_TABS}
+              year={year}
+              years={years}
+            />
+          )}
 
-        {loading ? (
-          <SkeletonList count={3} height={112} />
-        ) : filteredRecords.length ? (
-          <MedicalRecordGroup records={filteredRecords} onOpen={setSelected} onDownload={handleDownloadPdf} />
-        ) : (
-          <RecordEmptyState filtered={filterActive || activeTab !== 'all'} onReset={resetFilters} />
-        )}
-      </section>
+          {showLoadError ? null : loading && !records.length ? (
+            <MedicalRecordsLoadingState />
+          ) : filteredRecords.length ? (
+            <MedicalRecordGroup records={filteredRecords} onOpen={setSelected} onDownload={handleDownloadPdf} />
+          ) : (
+            <RecordEmptyState
+              filtered={filterActive || activeTab !== 'all'}
+              onBook={() => navigate('/booking')}
+              onReset={resetFilters}
+            />
+          )}
+        </section>
+      )}
 
       <MedicalRecordDetailModal record={selected} onClose={() => setSelected(null)} />
     </div>

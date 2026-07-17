@@ -1,13 +1,28 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../api/client.js';
 import AppointmentDetailModal from '../components/AppointmentDetailModal.jsx';
 import BaseModal from '../components/BaseModal.jsx';
 import SharedMedicalRecordDetailModal from '../components/MedicalRecordDetailModal.jsx';
 import ReviewDoctorModal from '../components/ReviewDoctorModal.jsx';
+import AppointmentEmptyState from '../components/appointments/AppointmentEmptyState.jsx';
+import AppointmentErrorState from '../components/appointments/AppointmentErrorState.jsx';
+import AppointmentFilters from '../components/appointments/AppointmentFilters.jsx';
+import AppointmentGroup from '../components/appointments/AppointmentGroup.jsx';
+import AppointmentLoadingState from '../components/appointments/AppointmentLoadingState.jsx';
+import AppointmentPageHeader from '../components/appointments/AppointmentPageHeader.jsx';
+import AppointmentSummaryBar from '../components/appointments/AppointmentSummaryBar.jsx';
+import AppointmentTabs from '../components/appointments/AppointmentTabs.jsx';
+import UpcomingAppointmentHero from '../components/appointments/UpcomingAppointmentHero.jsx';
+import WaitingListCard from '../components/appointments/WaitingListCard.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { connectSocket, joinSocketRoom } from '../services/socket.js';
 import { getToken, getUser } from '../utils/auth.js';
+import {
+  appointmentSearchText,
+  appointmentYear,
+  isUpcomingAppointment
+} from '../utils/appointmentView.js';
 import { downloadPdf } from '../utils/downloadFile.js';
 import { getConsultationStatusBadge, getStatusBadge } from '../utils/status.js';
 import { cleanDisplayText } from '../utils/textEncoding.js';
@@ -716,6 +731,9 @@ export default function MyAppointments() {
   const [medicalRecordLoadingId, setMedicalRecordLoadingId] = useState('');
   const [downloadingPdfKey, setDownloadingPdfKey] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
+  const [search, setSearch] = useState('');
+  const [year, setYear] = useState('all');
+  const [sortOrder, setSortOrder] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -845,18 +863,53 @@ export default function MyAppointments() {
 
   const stats = useMemo(() => ({
     total: appointments.length,
+    upcoming: appointments.filter(isUpcomingAppointment).length,
     pending: appointments.filter((item) => item.status === 'pending').length,
     confirmed: appointments.filter((item) => item.status === 'confirmed').length,
     completed: appointments.filter((item) => item.status === 'completed').length,
     cancelled: appointments.filter((item) => item.status === 'cancelled').length,
     noShow: appointments.filter((item) => item.status === 'no_show').length,
+    attention: appointments.filter((item) => ['no_show', 'cancel_requested', 'reschedule_requested', 'reschedule_rejected'].includes(item.status)).length,
     cancelRequested: appointments.filter((item) => item.status === 'cancel_requested').length
   }), [appointments]);
 
+  const statusCounts = useMemo(() => ({
+    all: appointments.length,
+    upcoming: appointments.filter(isUpcomingAppointment).length,
+    pending: appointments.filter((item) => item.status === 'pending').length,
+    completed: appointments.filter((item) => item.status === 'completed').length,
+    cancelled: appointments.filter((item) => item.status === 'cancelled').length,
+    no_show: appointments.filter((item) => item.status === 'no_show').length
+  }), [appointments]);
+
+  const years = useMemo(
+    () => Array.from(new Set(appointments.map(appointmentYear).filter(Boolean))).sort((a, b) => Number(b) - Number(a)),
+    [appointments]
+  );
+
+  const nextAppointment = useMemo(() => {
+    const upcoming = appointments
+      .filter(isUpcomingAppointment)
+      .sort((a, b) => new Date(`${a.date || ''} ${String(a.timeSlot || '').split('-')[0] || ''}`).getTime() - new Date(`${b.date || ''} ${String(b.timeSlot || '').split('-')[0] || ''}`).getTime());
+    return upcoming[0] || null;
+  }, [appointments]);
+
   const filteredAppointments = useMemo(() => {
-    if (activeFilter === 'all') return appointments;
-    return appointments.filter((item) => item.status === activeFilter);
-  }, [activeFilter, appointments]);
+    const query = search.trim().toLowerCase();
+    return appointments
+      .filter((item) => {
+        if (activeFilter === 'all') return true;
+        if (activeFilter === 'upcoming') return isUpcomingAppointment(item);
+        return item.status === activeFilter;
+      })
+      .filter((item) => (query ? appointmentSearchText(item).includes(query) : true))
+      .filter((item) => (year === 'all' ? true : appointmentYear(item) === year))
+      .sort((a, b) => {
+        const left = new Date(`${a.date || ''} ${String(a.timeSlot || '').split('-')[0] || ''}`).getTime() || 0;
+        const right = new Date(`${b.date || ''} ${String(b.timeSlot || '').split('-')[0] || ''}`).getTime() || 0;
+        return sortOrder === 'oldest' ? left - right : right - left;
+      });
+  }, [activeFilter, appointments, search, sortOrder, year]);
 
   const totalPages = Math.max(1, Math.ceil(filteredAppointments.length / pageSize));
   const paginatedAppointments = useMemo(() => {
@@ -883,6 +936,14 @@ export default function MyAppointments() {
 
   function selectFilter(filter) {
     setActiveFilter(filter);
+    setCurrentPage(1);
+  }
+
+  function resetFilters() {
+    setActiveFilter('all');
+    setSearch('');
+    setYear('all');
+    setSortOrder('newest');
     setCurrentPage(1);
   }
 
@@ -1061,285 +1122,118 @@ export default function MyAppointments() {
     }
   }
 
-  return (
-    <main className="section-band my-appointments-page">
-      <div className="container">
-        <div className="page-heading appointment-heading">
-          <div>
-            <span className="eyebrow">Tài khoản bệnh nhân</span>
-            <h1 className="h2 mt-2 mb-2">Lịch hẹn của tôi</h1>
-            <p className="text-secondary mb-0">
-              Theo dõi lịch khám, bác sĩ phụ trách và trạng thái xác nhận trong một nơi.
-            </p>
-          </div>
-        </div>
+  const actionProps = {
+    downloadingPdfKey,
+    medicalRecordLoadingId,
+    onCancel: setCancellingAppointment,
+    onCancelReschedule: setCancellingRescheduleAppointment,
+    onDetail: setSelectedAppointment,
+    onDownloadPdf: downloadAppointmentPdf,
+    onReschedule: setReschedulingAppointment,
+    onReviewDoctor: setReviewingAppointment,
+    onViewMedicalRecord: openMedicalRecord,
+    onViewSourceRecord: openFollowUpSourceRecord
+  };
+  const filterActive = Boolean(search.trim() || year !== 'all' || activeFilter !== 'all' || sortOrder !== 'newest');
+  const activeWaitingCount = waitingEntries.filter((item) => ['waiting', 'offered'].includes(item.status)).length;
 
-        <div className="patient-appointment-tabs" role="tablist" aria-label="Quản lý lịch khám">
-          <button
-            className={activeView === 'appointments' ? 'active' : ''}
-            role="tab"
-            type="button"
-            onClick={() => setActiveView('appointments')}
-          >
-            Lịch hẹn <span>{appointments.length}</span>
-          </button>
-          <button
-            className={activeView === 'waiting-list' ? 'active' : ''}
-            role="tab"
-            type="button"
-            onClick={() => setActiveView('waiting-list')}
-          >
-            Danh sách chờ <span>{waitingEntries.filter((item) => ['waiting', 'offered'].includes(item.status)).length}</span>
-          </button>
-        </div>
+  return (
+    <main className="section-band my-appointments-page pa-page">
+      <div className="container pa-container">
+        <AppointmentPageHeader latestAppointment={nextAppointment || appointments[0]} />
+        <AppointmentTabs
+          activeView={activeView}
+          appointmentCount={appointments.length}
+          onChange={setActiveView}
+          waitingCount={activeWaitingCount}
+        />
 
         {activeView === 'appointments' && (
           <>
-
-        {appointments.length > 0 && (
-          <>
-            <div className="appointment-stats-grid mb-3">
-              <button className={`appointment-stat-card ${activeFilter === 'all' ? 'active' : ''}`} type="button" onClick={() => selectFilter('all')}>
-                <span>Tổng lịch hẹn</span>
-                <strong>{stats.total}</strong>
-              </button>
-              <button className={`appointment-stat-card warning ${activeFilter === 'pending' ? 'active' : ''}`} type="button" onClick={() => selectFilter('pending')}>
-                <span>Chờ xác nhận</span>
-                <strong>{stats.pending}</strong>
-              </button>
-              <button className={`appointment-stat-card success ${activeFilter === 'confirmed' ? 'active' : ''}`} type="button" onClick={() => selectFilter('confirmed')}>
-                <span>Đã xác nhận</span>
-                <strong>{stats.confirmed}</strong>
-              </button>
-              <button className={`appointment-stat-card primary ${activeFilter === 'completed' ? 'active' : ''}`} type="button" onClick={() => selectFilter('completed')}>
-                <span>Hoàn thành</span>
-                <strong>{stats.completed}</strong>
-              </button>
-              <button className={`appointment-stat-card danger ${activeFilter === 'cancelled' ? 'active' : ''}`} type="button" onClick={() => selectFilter('cancelled')}>
-                <span>Đã hủy</span>
-                <strong>{stats.cancelled}</strong>
-              </button>
-              <button className={`appointment-stat-card danger ${activeFilter === 'no_show' ? 'active' : ''}`} type="button" onClick={() => selectFilter('no_show')}>
-                <span>Không đến khám</span>
-                <strong>{stats.noShow}</strong>
-              </button>
-            </div>
-
-            {stats.cancelRequested > 0 && (
-              <div className="cancel-request-notice mb-3">
-                Có {stats.cancelRequested} yêu cầu hủy đang xử lý
-              </div>
-            )}
-          </>
-        )}
-
-        {appointments.length > 0 && (
-          <div className="appointment-filter-bar mb-3">
-            <span>Đang xem: <strong>{filterLabels[activeFilter]}</strong></span>
-            {activeFilter !== 'all' && (
-              <button className="btn btn-outline-primary btn-sm" type="button" onClick={() => selectFilter('all')}>
-                Xem tất cả
-              </button>
-            )}
-          </div>
-        )}
-
-        {loading && (
-          <div className="row g-3 mt-1">
-            {Array.from({ length: 4 }, (_, i) => (
-              <div className="col-12" key={i}>
-                <div style={{ padding: '20px', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-xl)', background: '#fff' }}>
-                  <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
-                    <div className="skeleton-line" style={{ width: 80, height: 20, borderRadius: 6 }} />
-                    <div className="skeleton-line" style={{ width: 60, height: 20, borderRadius: 6 }} />
-                    <div className="skeleton-line" style={{ flex: 1, height: 20, borderRadius: 6 }} />
-                    <div className="skeleton-line" style={{ width: 90, height: 28, borderRadius: 14 }} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-        {error && <div className="alert alert-danger mt-3">{error}</div>}
-
-        {!loading && !error && !appointments.length && (
-          <div className="empty-state">
-            <div className="empty-state-icon">📅</div>
-            <h3 className="empty-state-title">Bạn chưa có lịch khám nào</h3>
-            <p className="empty-state-desc">Hãy đặt lịch khám đầu tiên để được bác sĩ hỗ trợ.</p>
-            <Link className="btn btn-primary" to="/booking">Đặt lịch khám</Link>
-          </div>
-        )}
-
-        {!loading && !error && appointments.length > 0 && !filteredAppointments.length && (
-          <div className="empty-state">
-            <div className="empty-state-icon">🔍</div>
-            <h3 className="empty-state-title">Không có lịch hẹn nào trong mục này</h3>
-            <p className="empty-state-desc">Chọn bộ lọc khác hoặc xem tất cả lịch hẹn của bạn.</p>
-            <button className="btn btn-primary" type="button" onClick={() => selectFilter('all')}>Xem tất cả</button>
-          </div>
-        )}
-
-        {!loading && !error && filteredAppointments.length > 0 && (
-          <>
-            <div className="appointment-table-card d-none d-lg-block">
-              <div className="table-responsive">
-                <table className="table table-hover align-middle mb-0 appointment-table patient-appointments-table">
-                  <thead>
-                    <tr>
-                      <th>Lịch khám</th>
-                      <th>Thông tin khám</th>
-                      <th>Dịch vụ</th>
-                      <th>Trạng thái</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginatedAppointments.map((item) => {
-                      const dateParts = appointmentDateParts(item);
-                      const isFollowUp = isFollowUpAppointment(item);
-                      return (
-                        <tr className={isFollowUp ? 'patient-follow-up-appointment-row' : ''} key={item._id}>
-                          <td>
-                            <div className="patient-appointment-date">
-                              <strong>{dateParts.dayMonth}</strong>
-                              <span>{dateParts.year}</span>
-                              <em>{dateParts.time}</em>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="patient-appointment-info">
-                              <strong>{valueName(item.doctorId)}</strong>
-                              <span>{valueName(item.specialtyId)}</span>
-                              <small>{valueName(item.clinicId)}</small>
-                              <FollowUpContextBlock appointment={item} onViewSourceRecord={openFollowUpSourceRecord} />
-                            </div>
-                          </td>
-                          <td>
-                            <AppointmentServicePackageChip appointment={item} />
-                          </td>
-                          <td>
-                            <div className="appointment-status-stack">
-                              <StatusBadge status={item.status} />
-                              <AppointmentQueueSummary appointment={item} />
-                            </div>
-                          </td>
-                          <td className="text-end">
-                            <div className="patient-appointment-actions">
-                              <button className="btn btn-outline-primary btn-sm" type="button" onClick={() => setSelectedAppointment(item)}>
-                                Chi tiết
-                              </button>
-                              {isFollowUp && getFollowUpSourceRecordId(item) && (
-                                <button
-                                  className="btn btn-outline-primary btn-sm"
-                                  disabled={medicalRecordLoadingId === `follow-up:${getFollowUpSourceRecordId(item)}`}
-                                  type="button"
-                                  onClick={() => openFollowUpSourceRecord(item)}
-                                >
-                                  Xem hồ sơ gốc
-                                </button>
-                              )}
-                              <button className="btn btn-outline-primary btn-sm" disabled={downloadingPdfKey === `${item._id}:appointment`} type="button" onClick={() => downloadAppointmentPdf(item, 'appointment')}>
-                                Phiếu đặt lịch
-                              </button>
-                              {item.queueNumber && (
-                                <button className="btn btn-outline-primary btn-sm" disabled={downloadingPdfKey === `${item._id}:queue`} type="button" onClick={() => downloadAppointmentPdf(item, 'queue')}>
-                                  Phiếu khám
-                                </button>
-                              )}
-                              {canViewMedicalRecord(item) && (
-                                <button className="btn btn-outline-success btn-sm" disabled={medicalRecordLoadingId === item._id} type="button" onClick={() => openMedicalRecord(item)}>
-                                  Xem hồ sơ
-                                </button>
-                              )}
-                              {canViewMedicalRecord(item) && (
-                                <button className="btn btn-outline-success btn-sm" disabled={downloadingPdfKey === `${item._id}:record`} type="button" onClick={() => downloadAppointmentPdf(item, 'record')}>
-                                  Kết quả PDF
-                                </button>
-                              )}
-                              {canReviewDoctor(item) && (
-                                <button
-                                  className={item.doctorReview ? 'btn btn-outline-secondary btn-sm' : 'btn btn-warning btn-sm'}
-                                  type="button"
-                                  onClick={() => setReviewingAppointment(item)}
-                                >
-                                  {item.doctorReview ? 'Đã đánh giá' : 'Đánh giá'}
-                                </button>
-                              )}
-                              {canCancelAppointment(item) && (
-                                <button className="btn btn-outline-danger btn-sm" type="button" onClick={() => setCancellingAppointment(item)}>
-                                  {cancelActionLabel(item)}
-                                </button>
-                              )}
-                              {canCancelRescheduleRequest(item) && (
-                                <button className="btn btn-outline-warning btn-sm" type="button" onClick={() => setCancellingRescheduleAppointment(item)}>
-                                  Hủy đổi lịch
-                                </button>
-                              )}
-                              {canRescheduleAppointment(item) && (
-                                <button className="btn btn-outline-info btn-sm" type="button" onClick={() => setReschedulingAppointment(item)}>
-                                  Đổi lịch
-                                </button>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="appointment-mobile-list d-lg-none">
-              {paginatedAppointments.map((item) => (
-                <AppointmentMobileCard
-                  appointment={{ ...item, medicalRecordLoading: medicalRecordLoadingId === item._id }}
-                  downloadingPdfKey={downloadingPdfKey}
-                  key={item._id}
-                  onCancel={setCancellingAppointment}
-                  onCancelReschedule={setCancellingRescheduleAppointment}
-                  onDetail={setSelectedAppointment}
-                  onDownloadPdf={downloadAppointmentPdf}
-                  onReviewDoctor={setReviewingAppointment}
-                  onReschedule={setReschedulingAppointment}
-                  onViewSourceRecord={openFollowUpSourceRecord}
-                  onViewMedicalRecord={openMedicalRecord}
+            {loading ? (
+              <AppointmentLoadingState />
+            ) : (
+              <>
+                <UpcomingAppointmentHero
+                  appointment={nextAppointment}
+                  getSourceRecordId={getFollowUpSourceRecordId}
+                  {...actionProps}
                 />
-              ))}
-            </div>
+                <AppointmentSummaryBar metrics={stats} />
 
-            <div className="appointment-pagination">
-              <button
-                className="btn btn-secondary btn-sm"
-                disabled={currentPage === 1}
-                type="button"
-                onClick={() => changePage(currentPage - 1)}
-              >
-                ← Trước
-              </button>
-              <span style={{ fontSize: '0.87rem', color: 'var(--gray-500)', fontWeight: 500 }}>
-                Trang {currentPage} / {totalPages} · {filteredAppointments.length} lịch hẹn
-              </span>
-              <button
-                className="btn btn-secondary btn-sm"
-                disabled={currentPage === totalPages}
-                type="button"
-                onClick={() => changePage(currentPage + 1)}
-              >
-                Sau →
-              </button>
-            </div>
+                {error ? (
+                  <AppointmentErrorState message={error} onRetry={loadAppointments} />
+                ) : (
+                  <section className="pa-workspace">
+                    <AppointmentFilters
+                      counts={statusCounts}
+                      filterActive={filterActive}
+                      onReset={resetFilters}
+                      onSearchChange={(value) => {
+                        setSearch(value);
+                        setCurrentPage(1);
+                      }}
+                      onSortChange={(value) => {
+                        setSortOrder(value);
+                        setCurrentPage(1);
+                      }}
+                      onStatusChange={selectFilter}
+                      onYearChange={(value) => {
+                        setYear(value);
+                        setCurrentPage(1);
+                      }}
+                      search={search}
+                      sortOrder={sortOrder}
+                      statusFilter={activeFilter}
+                      year={year}
+                      years={years}
+                    />
+
+                    {!appointments.length ? (
+                      <AppointmentEmptyState />
+                    ) : !filteredAppointments.length ? (
+                      <AppointmentEmptyState filtered onReset={resetFilters} />
+                    ) : (
+                      <>
+                        <AppointmentGroup
+                          appointments={paginatedAppointments}
+                          getSourceRecordId={getFollowUpSourceRecordId}
+                          totalCount={filteredAppointments.length}
+                          {...actionProps}
+                        />
+                        <div className="pa-pagination">
+                          <button
+                            className="btn btn-secondary btn-sm"
+                            disabled={currentPage === 1}
+                            type="button"
+                            onClick={() => changePage(currentPage - 1)}
+                          >
+                            Trước
+                          </button>
+                          <span>Trang {currentPage} / {totalPages} · {filteredAppointments.length} lịch hẹn</span>
+                          <button
+                            className="btn btn-secondary btn-sm"
+                            disabled={currentPage === totalPages}
+                            type="button"
+                            onClick={() => changePage(currentPage + 1)}
+                          >
+                            Sau
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </section>
+                )}
+              </>
+            )}
           </>
         )}
-      </>
-    )}
 
         {activeView === 'waiting-list' && (
-          <section className="waiting-list-section">
-            <div className="waiting-list-heading">
+          <section className="pa-waiting-section">
+            <div className="pa-section-heading">
               <div>
-                <span className="eyebrow">Danh sách chờ</span>
+                <span className="pa-eyebrow">Danh sách chờ</span>
                 <h2>Theo dõi vị trí đang chờ</h2>
                 <p>Hệ thống sẽ cập nhật khi phòng khám có khung giờ phù hợp dành cho bạn.</p>
               </div>
@@ -1348,81 +1242,16 @@ export default function MyAppointments() {
               </button>
             </div>
 
-            {waitingLoading && (
-              <div className="row g-3">
-                {Array.from({ length: 3 }, (_, i) => (
-                  <div className="col-12" key={i}>
-                    <div style={{ padding: '18px', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-xl)', background: '#fff' }}>
-                      <div className="skeleton-line" style={{ height: 18, marginBottom: 10 }} />
-                      <div className="skeleton-line" style={{ height: 14, width: '60%' }} />
-                    </div>
-                  </div>
+            {waitingLoading ? (
+              <AppointmentLoadingState />
+            ) : !waitingEntries.length ? (
+              <AppointmentEmptyState type="waiting" />
+            ) : (
+              <div className="pa-waiting-list">
+                {waitingEntries.map((entry) => (
+                  <WaitingListCard entry={entry} key={entry._id} onCancel={cancelWaitingEntry} />
                 ))}
               </div>
-            )}
-
-            {!waitingLoading && !waitingEntries.length && (
-              <div className="empty-state">
-                <div className="empty-state-icon">⌛</div>
-                <h3 className="empty-state-title">Bạn chưa tham gia danh sách chờ nào</h3>
-                <p className="empty-state-desc">Khi khung giờ mong muốn đã đầy, bạn có thể đăng ký chờ ngay tại trang bác sĩ.</p>
-                <Link className="btn btn-primary" to="/doctors">Tìm bác sĩ</Link>
-              </div>
-            )}
-
-            {!waitingLoading && waitingEntries.length > 0 && (
-              <>
-                <div className="appointment-table-card d-none d-lg-block">
-                  <div className="table-responsive">
-                    <table className="table table-hover align-middle mb-0 appointment-table waiting-list-table">
-                      <thead>
-                        <tr><th>Bác sĩ</th><th>Cơ sở</th><th>Ngày</th><th>Khung giờ</th><th>Vị trí</th><th>Trạng thái</th><th /></tr>
-                      </thead>
-                      <tbody>
-                        {waitingEntries.map((entry) => (
-                          <tr key={entry._id}>
-                            <td className="fw-semibold">{valueName(entry.doctorId)}</td>
-                            <td>{valueName(entry.clinicId)}</td>
-                            <td>{entry.date}</td>
-                            <td>{entry.timeSlot}</td>
-                            <td><span className="waiting-position-badge">#{entry.position}</span></td>
-                            <td><WaitingStatusBadge status={entry.status} /></td>
-                            <td className="text-end">
-                              {['waiting', 'offered'].includes(entry.status) && (
-                                <button className="btn btn-sm btn-outline-danger" type="button" onClick={() => cancelWaitingEntry(entry)}>
-                                  Hủy đăng ký
-                                </button>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <div className="waiting-list-mobile d-lg-none">
-                  {waitingEntries.map((entry) => (
-                    <article className="waiting-list-mobile-card" key={entry._id}>
-                      <div className="d-flex justify-content-between align-items-start gap-3">
-                        <div><span>Vị trí</span><strong>#{entry.position}</strong></div>
-                        <WaitingStatusBadge status={entry.status} />
-                      </div>
-                      <h3>{valueName(entry.doctorId)}</h3>
-                      <dl>
-                        <div><dt>Cơ sở</dt><dd>{valueName(entry.clinicId)}</dd></div>
-                        <div><dt>Ngày</dt><dd>{entry.date}</dd></div>
-                        <div><dt>Khung giờ</dt><dd>{entry.timeSlot}</dd></div>
-                      </dl>
-                      {['waiting', 'offered'].includes(entry.status) && (
-                        <button className="btn btn-outline-danger btn-sm w-100" type="button" onClick={() => cancelWaitingEntry(entry)}>
-                          Hủy đăng ký
-                        </button>
-                      )}
-                    </article>
-                  ))}
-                </div>
-              </>
             )}
           </section>
         )}
@@ -1465,4 +1294,5 @@ export default function MyAppointments() {
       </div>
     </main>
   );
-}
+
+  }

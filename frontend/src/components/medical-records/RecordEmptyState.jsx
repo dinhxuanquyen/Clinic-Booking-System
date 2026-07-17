@@ -1,6 +1,6 @@
 import EmptyState from '../EmptyState.jsx';
 
-export default function RecordEmptyState({ filtered, onReset }) {
+export default function RecordEmptyState({ filtered, onBook, onReset }) {
   if (filtered) {
     return (
       <div className="phr-empty-with-action">
@@ -17,10 +17,17 @@ export default function RecordEmptyState({ filtered, onReset }) {
   }
 
   return (
-    <EmptyState
-      variant="record"
-      title="Chưa có hồ sơ khám bệnh"
-      description="Sau khi buổi khám hoàn tất, kết quả khám và kế hoạch điều trị sẽ được lưu tại đây."
-    />
+    <div className="phr-empty-with-action">
+      <EmptyState
+        variant="record"
+        title="Chưa có hồ sơ khám bệnh"
+        description="Sau khi buổi khám hoàn tất, kết quả khám và kế hoạch điều trị sẽ được lưu tại đây."
+      />
+      {onBook && (
+        <button className="btn btn-primary" type="button" onClick={onBook}>
+          Đặt lịch khám
+        </button>
+      )}
+    </div>
   );
 }

@@ -12,7 +12,7 @@ function initialsFromName(name) {
     .join('') || 'BS';
 }
 
-export default function RecordDoctorInfo({ doctor, specialty, clinic }) {
+export default function DoctorProfileBlock({ clinic, doctor, specialty }) {
   const [avatarFailed, setAvatarFailed] = useState(false);
   const doctorName = displayName(doctor);
   const avatar = doctor?.avatar || doctor?.image || doctor?.photoUrl;
@@ -20,29 +20,33 @@ export default function RecordDoctorInfo({ doctor, specialty, clinic }) {
     if (!avatar || avatarFailed) return '';
     return resolveMediaUrl(avatar, '');
   }, [avatar, avatarFailed]);
+  const degree = doctor?.degree || doctor?.title || doctor?.academicTitle || '';
+  const doctorCode = doctor?.doctorCode || doctor?.code || '';
 
   useEffect(() => {
     setAvatarFailed(false);
   }, [avatar]);
 
   return (
-    <div className="phr-doctor-info">
+    <div className="phr-doctor-profile">
       {avatarUrl ? (
         <img
-          className="phr-doctor-avatar"
+          className="phr-doctor-profile-avatar"
           src={avatarUrl}
           alt={doctorName}
           loading="lazy"
           onError={() => setAvatarFailed(true)}
         />
       ) : (
-        <span className="phr-doctor-avatar fallback" aria-hidden="true">
+        <span className="phr-doctor-profile-avatar fallback" aria-hidden="true">
           {initialsFromName(doctorName)}
         </span>
       )}
       <div>
-        <strong>{doctorName}</strong>
-        <span>{displayName(specialty)} · {displayName(clinic)}</span>
+        <span>Bác sĩ phụ trách</span>
+        <strong>{degree ? `${degree} ${doctorName}` : doctorName}</strong>
+        <p>{displayName(specialty)} · {displayName(clinic)}</p>
+        {doctorCode && <small>Mã bác sĩ: {doctorCode}</small>}
       </div>
     </div>
   );

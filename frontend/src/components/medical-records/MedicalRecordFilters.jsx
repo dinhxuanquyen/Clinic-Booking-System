@@ -23,17 +23,34 @@ export default function MedicalRecordFilters({
   years,
   specialty
 }) {
+  function handleTabKeyDown(event, index) {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+
+    event.preventDefault();
+    let nextIndex = index;
+    if (event.key === 'ArrowLeft') nextIndex = index === 0 ? tabs.length - 1 : index - 1;
+    if (event.key === 'ArrowRight') nextIndex = index === tabs.length - 1 ? 0 : index + 1;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = tabs.length - 1;
+    onTabChange(tabs[nextIndex].key);
+    window.requestAnimationFrame(() => {
+      event.currentTarget.parentElement?.querySelectorAll('[role="tab"]')[nextIndex]?.focus();
+    });
+  }
+
   return (
     <>
       <div className="phr-tabs phr-premium-tabs" role="tablist" aria-label="Lọc hồ sơ khám">
-        {tabs.map((tab) => (
+        {tabs.map((tab, index) => (
           <button
             className={activeTab === tab.key ? 'active' : ''}
             key={tab.key}
             type="button"
             role="tab"
             aria-selected={activeTab === tab.key}
+            tabIndex={activeTab === tab.key ? 0 : -1}
             onClick={() => onTabChange(tab.key)}
+            onKeyDown={(event) => handleTabKeyDown(event, index)}
           >
             <span className={`phr-icon phr-icon-${TAB_ICONS[tab.key] || 'records'}`} aria-hidden="true" />
             <span>{tab.label}</span>
