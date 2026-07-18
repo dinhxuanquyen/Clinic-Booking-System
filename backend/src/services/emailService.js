@@ -24,6 +24,7 @@ import {
 let transporter;
 
 function isSmtpConfigured() {
+  if (env.nodeEnv === 'test') return false;
   return Boolean(env.smtp.host && env.smtp.user && env.smtp.pass);
 }
 
