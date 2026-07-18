@@ -1,27 +1,10 @@
+import {
+  getAppointmentStatusPresentation,
+  getWaitingListStatusPresentation
+} from './status.js';
 import { cleanDisplayText } from './textEncoding.js';
 
 const TERMINAL_STATUSES = ['completed', 'cancelled', 'no_show'];
-
-const STATUS_META = {
-  pending: { label: 'Chờ xác nhận', tone: 'warning' },
-  confirmed: { label: 'Đã xác nhận', tone: 'success' },
-  in_progress: { label: 'Đang khám', tone: 'info' },
-  completed: { label: 'Hoàn thành', tone: 'primary' },
-  cancelled: { label: 'Đã hủy', tone: 'neutral' },
-  cancel_requested: { label: 'Đang chờ duyệt hủy', tone: 'danger' },
-  reschedule_requested: { label: 'Đang chờ duyệt đổi lịch', tone: 'warning' },
-  reschedule_rejected: { label: 'Yêu cầu đổi lịch bị từ chối', tone: 'danger' },
-  no_show: { label: 'Không đến khám', tone: 'danger' }
-};
-
-const WAITING_STATUS_META = {
-  waiting: { label: 'Đang chờ', tone: 'warning' },
-  offered: { label: 'Đã đề nghị', tone: 'info' },
-  accepted: { label: 'Đã chấp nhận', tone: 'success' },
-  declined: { label: 'Đã từ chối', tone: 'danger' },
-  expired: { label: 'Đã hết hạn', tone: 'neutral' },
-  cancelled: { label: 'Đã hủy', tone: 'neutral' }
-};
 
 export function displayName(value, fallback = 'Đang cập nhật') {
   if (!value) return fallback;
@@ -75,19 +58,19 @@ export function isFollowUpAppointment(appointment) {
 }
 
 export function getAppointmentStatusLabel(status) {
-  return STATUS_META[status]?.label || 'Không xác định';
+  return getAppointmentStatusPresentation(status, { context: 'patient' }).label;
 }
 
 export function getAppointmentStatusTone(status) {
-  return STATUS_META[status]?.tone || 'neutral';
+  return getAppointmentStatusPresentation(status, { context: 'patient' }).tone;
 }
 
 export function getWaitingStatusLabel(status) {
-  return WAITING_STATUS_META[status]?.label || 'Không xác định';
+  return getWaitingListStatusPresentation(status).label;
 }
 
 export function getWaitingStatusTone(status) {
-  return WAITING_STATUS_META[status]?.tone || 'neutral';
+  return getWaitingListStatusPresentation(status).tone;
 }
 
 export function getAppointmentCode(appointment) {

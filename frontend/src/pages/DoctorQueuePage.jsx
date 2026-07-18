@@ -4,12 +4,14 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { connectSocket, getSocket } from '../services/socket.js';
 import { getToken } from '../utils/auth.js';
+import { getConsultationStatusPresentation } from '../utils/status.js';
 
-const consultationStatusMap = {
-  waiting: { label: 'Chờ khám', className: 'bg-warning text-dark' },
-  in_progress: { label: 'Đang khám', className: 'bg-primary' },
-  completed: { label: 'Hoàn thành', className: 'bg-success' },
-  skipped: { label: 'Bỏ qua', className: 'bg-secondary' }
+const consultationToneClassMap = {
+  danger: 'bg-danger',
+  info: 'bg-primary',
+  neutral: 'bg-secondary',
+  success: 'bg-success',
+  warning: 'bg-warning text-dark'
 };
 
 function todayString() {
@@ -26,7 +28,11 @@ function patientName(appointment) {
 }
 
 function consultationBadge(status) {
-  return consultationStatusMap[status] || consultationStatusMap.waiting;
+  const presentation = getConsultationStatusPresentation(status || 'waiting');
+  return {
+    label: presentation.label,
+    className: consultationToneClassMap[presentation.tone] || consultationToneClassMap.neutral
+  };
 }
 
 export default function DoctorQueuePage() {

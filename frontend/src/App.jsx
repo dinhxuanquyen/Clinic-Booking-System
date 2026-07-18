@@ -43,6 +43,7 @@ const AdminSpecialtiesPage = lazy(() => import('./pages/admin/AdminSpecialtiesPa
 // Doctor Pages
 const DoctorAppointmentsPage = lazy(() => import('./pages/DoctorAppointmentsPage.jsx'));
 const DoctorArticlesPage = lazy(() => import('./pages/DoctorArticlesPage.jsx'));
+const DoctorDashboardPage = lazy(() => import('./pages/DoctorDashboardPage.jsx'));
 const DoctorMedicalRecordsPage = lazy(() => import('./pages/DoctorMedicalRecordsPage.jsx'));
 const DoctorProfilePage = lazy(() => import('./pages/DoctorProfilePage.jsx'));
 const DoctorQueuePage = lazy(() => import('./pages/DoctorQueuePage.jsx'));
@@ -148,7 +149,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="/doctor/queue" replace />} />
+            <Route index element={<DoctorDashboardPage />} />
             <Route path="queue" element={<DoctorQueuePage />} />
             <Route path="schedules" element={<DoctorSchedulesPage />} />
             <Route path="appointments" element={<DoctorAppointmentsPage />} />

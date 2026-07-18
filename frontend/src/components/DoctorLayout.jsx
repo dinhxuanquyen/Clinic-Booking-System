@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 
 const links = [
+  { to: '/doctor', label: 'Tổng quan', end: true },
   { to: '/doctor/queue', label: 'Hàng đợi khám' },
   { to: '/doctor/schedules', label: 'Lịch làm việc của tôi' },
   { to: '/doctor/appointments', label: 'Lịch hẹn của tôi' },
@@ -48,9 +49,14 @@ export default function DoctorLayout() {
                 return location.pathname === '/doctor/medical-records' && !isFollowUpMode ? 'active' : undefined;
               }
 
+              if (item.end) {
+                return location.pathname === item.to ? 'active' : undefined;
+              }
+
               return isActive ? 'active' : undefined;
             }}
             key={item.to}
+            end={item.end}
             to={item.to}
           >
             {item.label}
