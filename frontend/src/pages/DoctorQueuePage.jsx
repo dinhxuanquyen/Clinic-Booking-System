@@ -6,14 +6,6 @@ import { connectSocket, getSocket } from '../services/socket.js';
 import { getToken } from '../utils/auth.js';
 import { getConsultationStatusPresentation } from '../utils/status.js';
 
-const consultationToneClassMap = {
-  danger: 'bg-danger',
-  info: 'bg-primary',
-  neutral: 'bg-secondary',
-  success: 'bg-success',
-  warning: 'bg-warning text-dark'
-};
-
 function todayString() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -31,7 +23,8 @@ function consultationBadge(status) {
   const presentation = getConsultationStatusPresentation(status || 'waiting');
   return {
     label: presentation.label,
-    className: consultationToneClassMap[presentation.tone] || consultationToneClassMap.neutral
+    className: presentation.badgeClass,
+    tone: presentation.tone
   };
 }
 
@@ -44,6 +37,7 @@ export default function DoctorQueuePage() {
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState('');
   const [updatingId, setUpdatingId] = useState('');
   const updatingRef = useRef('');
 
@@ -58,6 +52,7 @@ export default function DoctorQueuePage() {
 
   async function loadQueue(nextDate = date, nextDoctorId = doctorId) {
     setLoading(true);
+    setLoadError('');
     try {
       const params = new URLSearchParams();
       if (nextDate) params.set('date', nextDate);
@@ -65,7 +60,9 @@ export default function DoctorQueuePage() {
       const payload = await api(`/doctor/queue/today${params.toString() ? `?${params.toString()}` : ''}`);
       setAppointments(payload.data || []);
     } catch (error) {
-      toast.error(error.message || 'Không tải được hàng đợi khám');
+      const message = error.message || 'Không tải được hàng đợi khám';
+      setLoadError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -154,18 +151,18 @@ export default function DoctorQueuePage() {
   }
 
   return (
-    <div className="doctor-page">
+    <div className="doctor-page doctor-queue-page">
       <div className="doctor-page-header">
         <div className="doctor-page-header-main">
-          <p className="doctor-page-eyebrow">Queue & Consultation</p>
-          <h1 className="doctor-page-title">{isAdmin ? 'Hàng đợi khám' : 'Hàng đợi khám của tôi'}</h1>
+          <p className="doctor-page-eyebrow">Hàng đợi khám</p>
+          <h1 className="doctor-page-title">{isAdmin ? 'Hàng đợi hôm nay' : 'Hàng đợi của tôi'}</h1>
           <p className="doctor-page-subtitle">
-            Quản lý quá trình khám trong ngày: chờ khám, đang khám, hoàn thành hoặc bỏ qua.
+            Theo dõi bệnh nhân đang khám và các lượt đang chờ trong ngày.
           </p>
         </div>
         <div className="doctor-page-actions">
           <div className="queue-today-card">
-            <span>Ngày hôm nay</span>
+            <span>Ngày đang xem</span>
             <strong>{date}</strong>
           </div>
         </div>
@@ -213,12 +210,23 @@ export default function DoctorQueuePage() {
 
         {loading ? (
           <div className="doctor-loading-card">Đang tải hàng đợi khám...</div>
+        ) : loadError ? (
+          <div className="queue-inline-error" role="status">
+            <div>
+              <strong>Không tải được hàng đợi</strong>
+              <p>{loadError}</p>
+            </div>
+            <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => loadQueue()}>
+              Thử lại
+            </button>
+          </div>
         ) : appointments.length ? (
           <div className="queue-items">
             {appointments.map((item) => {
-              const badge = consultationBadge(item.consultationStatus || 'waiting');
+              const consultationStatus = item.consultationStatus || 'waiting';
+              const badge = consultationBadge(consultationStatus);
               return (
-                <article className="queue-item" key={item._id}>
+                <article className={`queue-item queue-item-${consultationStatus}`} key={item._id}>
                   <div className="queue-number">
                     <span>STT</span>
                     <strong>{item.queueNumber || '-'}</strong>
@@ -231,7 +239,7 @@ export default function DoctorQueuePage() {
                     <div className="queue-meta">
                       <span>Giờ khám: {item.timeSlot}</span>
                       {isAdmin && <span>Bác sĩ: {getName(item.doctorId)}</span>}
-                      <span>Lý do: {item.reason || 'Không có ghi chú'}</span>
+                      <span className="queue-reason">Lý do: {item.reason || 'Không có ghi chú'}</span>
                     </div>
                   </div>
                   {renderActions(item)}
@@ -240,7 +248,7 @@ export default function DoctorQueuePage() {
             })}
           </div>
         ) : (
-          <div className="queue-empty-state">Không có bệnh nhân trong hàng đợi ngày này.</div>
+          <div className="queue-empty-state">Không có bệnh nhân trong hàng đợi ngày {date}.</div>
         )}
       </section>
     </div>

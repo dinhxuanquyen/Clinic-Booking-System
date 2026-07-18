@@ -28,6 +28,7 @@ export default function ReviewDoctorModal({ appointment, existingReview, onClose
 
   return (
     <BaseModal
+      ariaLabel={readOnly ? 'Đánh giá của bạn' : 'Đánh giá bác sĩ'}
       backdropClassName="review-doctor-overlay"
       className="review-doctor-dialog"
       disableClose={submitting}

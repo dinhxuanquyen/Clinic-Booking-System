@@ -6,6 +6,7 @@ let previousBodyOverflow = '';
 let previousBodyPaddingRight = '';
 let previousScrollbarCompensation = '';
 let previousScrollbarGutter = '';
+let bodyLockReconcileTimer = null;
 
 const FOCUSABLE_SELECTOR = [
   'a[href]',
@@ -24,16 +25,54 @@ function getFocusableElements(container) {
   });
 }
 
+function hasActiveModalElement() {
+  return Boolean(document.querySelector('[data-cb-modal="true"]'));
+}
+
+function restoreBodyScroll({ forceClear = false } = {}) {
+  document.body.classList.remove('modal-open');
+  document.body.classList.remove('modal-scrollbar-padding');
+  document.body.style.overflow = forceClear ? '' : previousBodyOverflow;
+  document.body.style.paddingRight = forceClear ? '' : previousBodyPaddingRight;
+  document.documentElement.style.scrollbarGutter = forceClear ? '' : previousScrollbarGutter;
+
+  if (!forceClear && previousScrollbarCompensation) {
+    document.documentElement.style.setProperty('--scrollbar-compensation', previousScrollbarCompensation);
+  } else {
+    document.documentElement.style.removeProperty('--scrollbar-compensation');
+  }
+}
+
+function scheduleBodyLockReconcile() {
+  if (bodyLockReconcileTimer) {
+    window.clearTimeout(bodyLockReconcileTimer);
+  }
+
+  bodyLockReconcileTimer = window.setTimeout(() => {
+    bodyLockReconcileTimer = null;
+
+    if (!hasActiveModalElement()) {
+      activeBodyLocks = 0;
+      restoreBodyScroll({ forceClear: true });
+    }
+  }, 0);
+}
+
 function lockBodyScroll() {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
     return () => {};
+  }
+
+  if (activeBodyLocks > 0 && !hasActiveModalElement()) {
+    activeBodyLocks = 0;
+    restoreBodyScroll({ forceClear: true });
   }
 
   if (activeBodyLocks === 0) {
     const scrollbarWidth = Math.max(window.innerWidth - document.documentElement.clientWidth, 0);
     const supportsStableGutter = window.CSS?.supports?.('scrollbar-gutter', 'stable');
 
-    previousBodyOverflow = document.body.style.overflow;
+    previousBodyOverflow = document.body.classList.contains('modal-open') ? '' : document.body.style.overflow;
     previousBodyPaddingRight = document.body.style.paddingRight;
     previousScrollbarCompensation = document.documentElement.style.getPropertyValue('--scrollbar-compensation');
     previousScrollbarGutter = document.documentElement.style.scrollbarGutter;
@@ -57,18 +96,10 @@ function lockBodyScroll() {
     activeBodyLocks = Math.max(activeBodyLocks - 1, 0);
 
     if (activeBodyLocks === 0) {
-      document.body.classList.remove('modal-open');
-      document.body.classList.remove('modal-scrollbar-padding');
-      document.body.style.overflow = previousBodyOverflow;
-      document.body.style.paddingRight = previousBodyPaddingRight;
-      document.documentElement.style.scrollbarGutter = previousScrollbarGutter;
-
-      if (previousScrollbarCompensation) {
-        document.documentElement.style.setProperty('--scrollbar-compensation', previousScrollbarCompensation);
-      } else {
-        document.documentElement.style.removeProperty('--scrollbar-compensation');
-      }
+      restoreBodyScroll();
     }
+
+    scheduleBodyLockReconcile();
   };
 }
 
@@ -85,6 +116,7 @@ export default function BaseModal({
 }) {
   const modalRef = useRef(null);
   const previousFocusRef = useRef(null);
+  const resolvedAriaLabel = ariaLabel || (ariaLabelledBy ? undefined : 'Hộp thoại');
 
   useEffect(() => {
     if (!show) return undefined;
@@ -158,10 +190,11 @@ export default function BaseModal({
   return createPortal(
     <div className={backdropClassName} onClick={closeFromBackdrop}>
       <div
-        aria-label={ariaLabel}
+        aria-label={resolvedAriaLabel}
         aria-labelledby={ariaLabelledBy}
         aria-modal="true"
         className={className}
+        data-cb-modal="true"
         data-modal-size={size}
         ref={modalRef}
         role="dialog"

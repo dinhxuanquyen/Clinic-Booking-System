@@ -258,7 +258,7 @@ export default function AdminClinicsPage() {
       </div>
 
       {modalOpen && (
-        <BaseModal className="admin-modal admin-clinic-modal" disableClose={saving || uploading} onClose={closeModal} size="lg">
+        <BaseModal ariaLabel={editing ? 'Cập nhật cơ sở' : 'Thêm cơ sở'} className="admin-modal admin-clinic-modal" disableClose={saving || uploading} onClose={closeModal} size="lg">
           <div className="admin-clinic-modal-header">
             <div>
               <span className="eyebrow">QUẢN LÝ CƠ SỞ</span>

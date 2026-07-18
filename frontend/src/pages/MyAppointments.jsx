@@ -187,7 +187,7 @@ function MedicalRecordDetailModal({ record, onClose }) {
   }
 
   return (
-    <BaseModal className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
+    <BaseModal ariaLabel="Chi tiết hồ sơ khám" className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
       <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
         <div>
           <span className="eyebrow">Hồ sơ khám bệnh</span>
@@ -471,7 +471,7 @@ function CancelConfirmDialog({ appointment, onCancel, onConfirm }) {
   const requiresReason = appointment.status === 'confirmed';
 
   return (
-    <BaseModal className="admin-confirm-dialog" onClose={onCancel} size="sm">
+    <BaseModal ariaLabel="Hủy lịch khám" className="admin-confirm-dialog" onClose={onCancel} size="sm">
       <h2 className="h5 mb-2">Hủy lịch khám</h2>
       <p className="text-secondary mb-4">Bạn có chắc muốn hủy lịch khám này?</p>
       <label className="form-label">{requiresReason ? 'Lý do hủy lịch' : 'Lý do hủy lịch (không bắt buộc)'}</label>
@@ -495,7 +495,7 @@ function CancelConfirmDialog({ appointment, onCancel, onConfirm }) {
 
 function CancelRescheduleRequestDialog({ onCancel, onConfirm }) {
   return (
-    <BaseModal className="admin-confirm-dialog" onClose={onCancel} size="sm">
+    <BaseModal ariaLabel="Hủy yêu cầu đổi lịch" className="admin-confirm-dialog" onClose={onCancel} size="sm">
       <h2 className="h5 mb-2">Hủy yêu cầu đổi lịch</h2>
       <p className="text-secondary mb-4">
         Bạn có chắc muốn hủy yêu cầu đổi lịch và giữ nguyên lịch khám hiện tại?
@@ -559,7 +559,7 @@ function RescheduleRequestModal({ appointment, onClose, onSubmit }) {
   }
 
   return (
-    <BaseModal className="admin-modal appointment-detail-modal appointment-reschedule-modal" disableClose={submitting} onClose={onClose} size="lg">
+    <BaseModal ariaLabel="Yêu cầu đổi lịch" className="admin-modal appointment-detail-modal appointment-reschedule-modal" disableClose={submitting} onClose={onClose} size="lg">
       <div className="appointment-reschedule-header">
         <div className="appointment-reschedule-title">
           <span className="eyebrow">Yêu cầu đổi lịch</span>

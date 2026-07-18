@@ -180,7 +180,7 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
   }
 
   return (
-    <BaseModal className="admin-modal medical-record-modal" disableClose={submitting} onClose={onClose} size="lg">
+    <BaseModal ariaLabel="Tạo hồ sơ khám" className="admin-modal medical-record-modal" disableClose={submitting} onClose={onClose} size="lg">
       <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
         <div>
           <span className="eyebrow">Hồ sơ khám bệnh</span>

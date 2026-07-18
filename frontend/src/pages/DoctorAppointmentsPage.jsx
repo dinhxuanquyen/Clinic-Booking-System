@@ -222,7 +222,7 @@ function MedicalRecordDetailModal({ record, onClose }) {
   const showSourceFollowUp = isFollowUpMedicalRecord(record) && sourceRecordId;
 
   return (
-    <BaseModal className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
+    <BaseModal ariaLabel="Chi tiết hồ sơ khám" className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
       <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
         <div>
           <span className="eyebrow">Hồ sơ khám bệnh</span>
@@ -1082,7 +1082,7 @@ export default function DoctorAppointmentsPage() {
       )}
 
       {reasonAction && (
-        <BaseModal className="admin-modal doctor-action-modal" disableClose={actionLoadingId === reasonAction.appointment?._id} onClose={() => setReasonAction(null)} size="sm">
+        <BaseModal ariaLabel={reasonAction.title || 'Xử lý lịch hẹn'} className="admin-modal doctor-action-modal" disableClose={actionLoadingId === reasonAction.appointment?._id} onClose={() => setReasonAction(null)} size="sm">
           <div className="doctor-action-modal-header">
             <div className="doctor-action-modal-title">
               <span className="eyebrow">Xử lý lịch hẹn</span>

@@ -242,7 +242,7 @@ export default function AdminSpecialtiesPage() {
       </div>
 
       {modalOpen && (
-        <BaseModal className="admin-modal admin-specialty-modal" disableClose={saving || uploading} onClose={() => setModalOpen(false)} size="lg">
+        <BaseModal ariaLabel={editing ? 'Cập nhật chuyên khoa' : 'Thêm chuyên khoa'} className="admin-modal admin-specialty-modal" disableClose={saving || uploading} onClose={() => setModalOpen(false)} size="lg">
           <div className="admin-specialty-modal-header">
             <div>
               <span className="eyebrow">QUẢN LÝ CHUYÊN KHOA</span>

@@ -58,7 +58,7 @@ export function getName(value) {
 
 export function Modal({ title, children, onClose, onSubmit, submitText = 'Lưu' }) {
   return (
-    <BaseModal className="admin-modal" onClose={onClose}>
+    <BaseModal ariaLabel={title} className="admin-modal" onClose={onClose}>
       <div className="d-flex align-items-center justify-content-between mb-3">
         <h2 className="h5 mb-0">{title}</h2>
         <button className="btn btn-sm btn-outline-secondary" type="button" onClick={onClose}>
@@ -89,7 +89,7 @@ export function AdminAlert({ message, type = 'success' }) {
 
 export function ConfirmDialog({ title = 'Xác nhận', message, confirmText = 'Xóa', cancelText = 'Hủy', onConfirm, onCancel }) {
   return (
-    <BaseModal className="admin-confirm-dialog" onClose={onCancel} size="sm">
+    <BaseModal ariaLabel={title} className="admin-confirm-dialog" onClose={onCancel} size="sm">
       <h2 className="h5 mb-2">{title}</h2>
       <p className="text-secondary mb-4">{message}</p>
       <div className="d-flex justify-content-end gap-2">

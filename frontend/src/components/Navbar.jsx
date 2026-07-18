@@ -267,7 +267,7 @@ export default function Navbar() {
     setMobileDrawerOpen(true);
   }, [closeDropdowns]);
 
-  const handlePublicLogout = useCallback(() => {
+  const handleLogout = useCallback(() => {
     logout();
     closeDropdowns();
     setMobileDrawerOpen(false);
@@ -340,7 +340,7 @@ export default function Navbar() {
           homePath={isAdmin ? '/admin' : '/doctor/queue'}
           subtitle={isAdmin ? 'Admin Portal' : 'Doctor Portal'}
           user={user}
-          onLogout={logout}
+          onLogout={handleLogout}
           activeDropdown={activeDropdown}
           onToggleDropdown={toggleDropdown}
           onCloseDropdowns={closeDropdowns}
@@ -354,7 +354,7 @@ export default function Navbar() {
     <header className="app-navbar public-navbar">
       <PublicNavbarContent
         user={user}
-        onLogout={handlePublicLogout}
+        onLogout={handleLogout}
         isPatient={isPatient}
         activeDropdown={activeDropdown}
         onToggleDropdown={toggleDropdown}

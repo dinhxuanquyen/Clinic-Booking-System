@@ -1064,6 +1064,47 @@ p {
   overflow: hidden;
 }
 
+[data-cb-modal="true"],
+[data-cb-modal="true"] * {
+  box-sizing: border-box;
+}
+
+[data-cb-modal="true"] {
+  min-width: 0;
+  max-width: min(var(--cb-modal-max-width, 100%), calc(100vw - 32px));
+}
+
+[data-cb-modal="true"] :where(form, section, article, header, footer, main, aside, div, label, input, select, textarea) {
+  min-width: 0;
+}
+
+[data-cb-modal="true"] :where(input, select, textarea, .form-control, .form-select) {
+  max-width: 100%;
+}
+
+[data-cb-modal="true"] :where(p, span, strong, dd, dt, label, button, a) {
+  overflow-wrap: anywhere;
+}
+
+[data-cb-modal="true"] :where(.modal-footer-ds, .change-password-footer, .review-modal-footer, .admin-clinic-modal-footer, .admin-specialty-modal-footer, .admin-doctor-modal-footer, .appointment-reschedule-footer, .doctor-action-modal-footer) {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 560px) {
+  [data-cb-modal="true"] {
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
+  }
+
+  [data-cb-modal="true"] :where(.btn) {
+    min-height: 42px;
+  }
+
+  [data-cb-modal="true"] :where(.modal-footer-ds, .change-password-footer, .review-modal-footer, .admin-clinic-modal-footer, .admin-specialty-modal-footer, .admin-doctor-modal-footer, .appointment-reschedule-footer, .doctor-action-modal-footer) > :where(.btn, button, a) {
+    flex: 1 1 160px;
+  }
+}
+
 .admin-modal[data-modal-size="sm"]  { max-width: 400px; }
 .admin-modal[data-modal-size="md"]  { max-width: 560px; }
 .admin-modal[data-modal-size="lg"]  { max-width: 740px; }
@@ -2856,9 +2897,10 @@ select:focus {
 
 .dash-ranking-item {
   display: grid;
-  grid-template-columns: 30px 1fr auto;
+  grid-template-columns: 30px 46px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  min-height: 68px;
   padding: 10px 12px;
   border-radius: var(--radius-md);
   background: var(--gray-50);
@@ -2892,6 +2934,40 @@ select:focus {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.dash-ranking-photo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eef8ff, #f8fafc);
+  color: var(--color-primary-dark);
+  flex-shrink: 0;
+}
+
+.dash-ranking-photo-doctor {
+  border-radius: 50%;
+}
+
+.dash-ranking-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dash-ranking-photo-fallback {
+  color: inherit;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0;
 }
 
 .dash-ranking-count {
@@ -3245,6 +3321,538 @@ select:focus {
   .dash-kpi-grid       { grid-template-columns: 1fr; }
   .dash-system-grid    { grid-template-columns: repeat(2, 1fr); }
   .dash-quick-actions-grid { grid-template-columns: 1fr; }
+}
+
+/* Admin Dashboard - Sprint 8 business operations hierarchy */
+.admin-dashboard-page {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.admin-dashboard-page *,
+.admin-dashboard-page *::before,
+.admin-dashboard-page *::after {
+  box-sizing: border-box;
+}
+
+.dash-section-block {
+  margin-bottom: 18px;
+}
+
+.dash-section-head-compact {
+  margin-bottom: 12px;
+}
+
+.dash-section-head .eyebrow,
+.dash-filter-bar .eyebrow {
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.dash-kpi-grid-five {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  max-width: 100%;
+}
+
+.dash-kpi-card {
+  min-width: 0;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.dash-kpi-card.accent-primary { --dash-kpi-accent: var(--color-primary); }
+.dash-kpi-card.accent-success { --dash-kpi-accent: var(--color-success); }
+.dash-kpi-card.accent-info    { --dash-kpi-accent: var(--color-info); }
+.dash-kpi-card.accent-warning { --dash-kpi-accent: var(--color-warning); }
+.dash-kpi-card.accent-danger  { --dash-kpi-accent: var(--color-danger); }
+
+.dash-kpi-icon.primary { background: var(--color-primary-light); color: var(--color-primary-dark); }
+.dash-kpi-icon.success { background: var(--color-success-light); color: #065F46; }
+.dash-kpi-icon.info    { background: var(--color-info-light); color: #155E75; }
+.dash-kpi-icon.warning { background: var(--color-warning-light); color: #92400E; }
+.dash-kpi-icon.danger  { background: var(--color-danger-light); color: #991B1B; }
+
+.dash-kpi-content {
+  flex: 1;
+  min-width: 0;
+  padding-right: 38px;
+}
+
+.dash-kpi-marker {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.dash-kpi-marker::before,
+.dash-kpi-marker::after {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+.dash-kpi-marker-calendar {
+  border: 2px solid currentColor;
+  border-radius: 7px;
+}
+
+.dash-kpi-marker-calendar::before {
+  inset: 6px 3px auto;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.dash-kpi-marker-calendar::after {
+  width: 4px;
+  height: 4px;
+  left: 6px;
+  bottom: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 7px 0 0 currentColor;
+}
+
+.dash-kpi-marker-pending {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.dash-kpi-marker-pending::before {
+  width: 2px;
+  height: 8px;
+  left: 10px;
+  top: 5px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.dash-kpi-marker-pending::after {
+  width: 7px;
+  height: 2px;
+  left: 10px;
+  top: 12px;
+  border-radius: 2px;
+  background: currentColor;
+  transform: rotate(28deg);
+  transform-origin: left center;
+}
+
+.dash-kpi-marker-reschedule::before,
+.dash-kpi-marker-cancel::before,
+.dash-kpi-marker-progress::before {
+  inset: 3px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.dash-kpi-marker-reschedule::after {
+  width: 8px;
+  height: 8px;
+  right: 0;
+  top: 2px;
+  border-top: 3px solid currentColor;
+  border-right: 3px solid currentColor;
+  transform: rotate(35deg);
+}
+
+.dash-kpi-marker-cancel::after {
+  width: 14px;
+  height: 3px;
+  left: 5px;
+  top: 10px;
+  border-radius: 3px;
+  background: currentColor;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 0 currentColor;
+}
+
+.dash-kpi-marker-cancel {
+  transform: rotate(90deg);
+}
+
+.dash-kpi-marker-progress::after {
+  inset: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.dash-kpi-content p {
+  margin: 6px 0 0;
+  color: var(--gray-500);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.dash-kpi-badge-primary { background: var(--color-primary-light); color: var(--color-primary-dark); }
+.dash-kpi-badge-success { background: var(--color-success-light); color: #065F46; }
+.dash-kpi-badge-info    { background: var(--color-info-light); color: #155E75; }
+.dash-kpi-badge-warning { background: var(--color-warning-light); color: #92400E; }
+.dash-kpi-badge-danger  { background: var(--color-danger-light); color: #991B1B; }
+
+.dash-task-center {
+  border-color: var(--color-primary-light);
+  box-shadow: var(--shadow-md);
+}
+
+.dash-success-note {
+  padding: 14px 16px;
+  border: 1px solid var(--color-success-light);
+  border-radius: var(--radius-lg);
+  background: var(--color-success-light);
+  color: #065F46;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.dash-immediate-card.warning-card { border-color: var(--color-warning-light); }
+.dash-immediate-card.info-card { border-color: var(--color-info-light); }
+.dash-immediate-card.danger-card { border-color: var(--color-danger-light); }
+
+.dash-immediate-body {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dash-immediate-body strong {
+  color: var(--gray-900);
+  font-size: 0.94rem;
+  line-height: 1.2;
+}
+
+.dash-immediate-body small {
+  color: var(--gray-500);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.dash-attention-chip {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  background: var(--color-danger-light);
+  color: #991B1B;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.dash-ranking-grid-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dash-lower-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+  gap: 16px;
+  margin-bottom: 16px;
+  min-width: 0;
+}
+
+.dash-secondary-card {
+  box-shadow: none;
+}
+
+.dash-secondary-card .dash-system-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dash-secondary-card .dash-system-stat {
+  position: relative;
+  align-items: flex-start;
+  min-height: 94px;
+  padding: 15px 16px 15px 18px;
+  text-align: left;
+  background: #fbfdff;
+}
+
+.dash-secondary-card .dash-system-stat::before {
+  content: "";
+  position: absolute;
+  inset: 14px auto 14px 0;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--dash-system-accent, var(--color-primary));
+}
+
+.dash-secondary-card .dash-system-stat-value {
+  margin-top: 8px;
+  font-size: 1.55rem;
+}
+
+.dash-secondary-card .dash-system-stat-label {
+  margin-top: 6px;
+  color: var(--gray-600);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.dash-system-stat.tone-primary { --dash-system-accent: var(--color-primary); }
+.dash-system-stat.tone-info { --dash-system-accent: var(--color-info); }
+.dash-system-stat.tone-cyan { --dash-system-accent: var(--color-info); }
+.dash-system-stat.tone-success { --dash-system-accent: var(--color-success); }
+.dash-system-stat.tone-neutral { --dash-system-accent: var(--gray-300); }
+.dash-system-stat.tone-danger { --dash-system-accent: var(--color-danger); }
+
+.dash-system-stat-marker {
+  width: 26px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--dash-system-accent, var(--color-primary));
+}
+
+.dash-secondary-card .dash-quick-actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dash-secondary-card .dash-quick-action {
+  min-height: 74px;
+  padding: 14px 16px;
+  border-width: 1px;
+  border-radius: var(--radius-lg);
+  background: #fbfdff;
+}
+
+.dash-secondary-card .dash-quick-action:hover {
+  transform: translateY(-1px);
+}
+
+.dash-secondary-card .dash-quick-action-icon {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+}
+
+.dash-secondary-card .dash-quick-action-icon::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.dash-secondary-card .dash-quick-action-icon::after {
+  content: "";
+  position: absolute;
+  right: 9px;
+  top: 17px;
+  width: 9px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.dash-secondary-card .dash-quick-action > span:last-child {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.dash-secondary-card .dash-quick-action strong {
+  color: var(--gray-900);
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+.dash-secondary-card .dash-quick-action small {
+  color: var(--gray-500);
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.dash-secondary-card .dash-quick-action.primary .dash-quick-action-icon { color: var(--color-primary-dark); background: var(--color-primary-light); }
+.dash-secondary-card .dash-quick-action.info .dash-quick-action-icon { color: #155E75; background: var(--color-info-light); }
+.dash-secondary-card .dash-quick-action.warning .dash-quick-action-icon { color: #92400E; background: var(--color-warning-light); }
+.dash-secondary-card .dash-quick-action.success .dash-quick-action-icon { color: #065F46; background: var(--color-success-light); }
+
+.dash-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.dash-mini-table td:first-child {
+  font-weight: 700;
+  color: var(--gray-800);
+}
+
+.dash-mini-table td:nth-child(2) {
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.dash-table-action {
+  text-align: right;
+}
+
+.dash-activity-item {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dash-loading-state {
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.dash-loading-state h2 {
+  margin: 0;
+  color: var(--gray-900);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.dash-loading-state p {
+  margin: 8px 0 0;
+  color: var(--gray-500);
+}
+
+.dash-loading-bar {
+  height: 4px;
+  width: 180px;
+  margin-bottom: 18px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--color-primary-light), var(--color-primary), var(--color-primary-light));
+  animation: dashLoadingPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes dashLoadingPulse {
+  0%, 100% { opacity: 0.45; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(18px); }
+}
+
+@media (max-width: 1280px) {
+  .dash-kpi-grid-five {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .dash-kpi-grid-five,
+  .dash-ranking-grid-two,
+  .dash-lower-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dash-filter-controls,
+  .dash-filter-label,
+  .dash-filter-label .form-select {
+    width: 100%;
+  }
+
+  .dash-section-head,
+  .dash-chart-card-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dash-system-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dash-secondary-card .dash-system-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .dash-section-card,
+  .dash-chart-card,
+  .dash-ranking-card {
+    padding: 18px;
+    border-radius: var(--radius-lg);
+  }
+
+  .dash-kpi-grid-five {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-kpi-card {
+    padding: 16px;
+  }
+
+  .dash-kpi-content {
+    padding-right: 0;
+  }
+
+  .dash-kpi-badge {
+    position: static;
+    align-self: flex-start;
+    margin-left: auto;
+  }
+
+  .dash-immediate-grid,
+  .dash-quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-mini-table thead {
+    display: none;
+  }
+
+  .dash-mini-table,
+  .dash-mini-table tbody,
+  .dash-mini-table tr,
+  .dash-mini-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .dash-mini-table tr {
+    padding: 12px;
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius-md);
+    background: #fff;
+    margin-bottom: 10px;
+  }
+
+  .dash-mini-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 0;
+    text-align: right;
+  }
+
+  .dash-mini-table td::before {
+    content: attr(data-label);
+    color: var(--gray-500);
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .dash-table-action {
+    justify-content: flex-end;
+  }
+
+  .dash-activity-item {
+    flex-wrap: wrap;
+  }
+
+  .dash-activity-time {
+    width: 100%;
+    padding-left: 46px;
+    white-space: normal;
+  }
 }
 
 
@@ -10935,17 +11543,27 @@ a {
 }
 
 .doctor-schedule-stats article {
-  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  padding: 16px 18px;
   background: #fff;
   border: 1px solid #e0eef8;
-  border-radius: 18px;
-  box-shadow: 0 14px 34px rgba(15, 43, 91, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(15, 43, 91, 0.06);
+}
+
+.doctor-schedule-stats article::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: #bae6fd;
 }
 
 .doctor-schedule-stats strong {
   display: block;
   color: #0756b8;
-  font-size: 1.8rem;
+  font-size: 1.65rem;
   font-weight: 950;
 }
 
@@ -10977,6 +11595,17 @@ a {
   align-items: center;
 }
 
+.doctor-schedules-page .doctor-schedule-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.doctor-schedules-page .doctor-schedule-tabs .admin-tab {
+  min-height: 42px;
+  border-radius: 999px;
+}
+
 .doctor-template-header {
   display: flex;
   align-items: flex-start;
@@ -11003,10 +11632,10 @@ a {
 }
 
 .doctor-day-template-card {
-  padding: 16px;
-  background: #f8fcff;
+  padding: 14px;
+  background: #fbfdff;
   border: 1px solid #e0eef8;
-  border-radius: 18px;
+  border-radius: 16px;
 }
 
 .doctor-day-template-title {
@@ -11018,8 +11647,28 @@ a {
 }
 
 .doctor-day-template-title strong {
+  display: block;
   color: #0f2b5b;
   font-size: 1.05rem;
+}
+
+.doctor-day-template-state {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 24px;
+  margin-top: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.doctor-day-template-state.working {
+  background: #ecfdf5;
+  color: #047857;
 }
 
 .doctor-day-template-actions {
@@ -11031,10 +11680,10 @@ a {
 
 .doctor-shift-row {
   display: grid;
-  grid-template-columns: minmax(130px, 1.15fr) 64px repeat(3, minmax(0, 1fr)) auto;
+  grid-template-columns: minmax(130px, 1.1fr) 58px repeat(3, minmax(96px, 1fr)) auto;
   gap: 10px;
   align-items: center;
-  padding: 10px;
+  padding: 10px 12px;
   background: #fff;
   border: 1px solid #dbeafe;
   border-radius: 14px;
@@ -11063,10 +11712,64 @@ a {
 }
 
 .doctor-shift-row input {
+  width: 100%;
+  min-width: 0;
   min-height: 42px;
   padding: 0 12px;
   border: 1px solid #dbeafe;
   border-radius: 12px;
+}
+
+.doctor-shift-field {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+}
+
+.doctor-shift-field span {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.doctor-shift-switch {
+  justify-self: center;
+}
+
+.doctor-schedule-exception-table {
+  border: 1px solid #e0eef8;
+  border-radius: 16px;
+}
+
+.doctor-schedule-exception-table .admin-table {
+  margin-bottom: 0;
+}
+
+.doctor-schedule-inline-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #fecaca;
+  border-radius: 16px;
+  background: #fff7f7;
+  color: #7f1d1d;
+}
+
+.doctor-schedule-inline-error strong {
+  display: block;
+  color: #991b1b;
+  font-weight: 950;
+}
+
+.doctor-schedule-inline-error p {
+  margin: 4px 0 0;
+  color: #b91c1c;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .admin-schedule-switch.compact {
@@ -11124,8 +11827,8 @@ a {
 }
 
 .doctor-calendar-day {
-  min-height: 96px;
-  padding: 12px;
+  min-height: 86px;
+  padding: 10px 12px;
   text-align: left;
   background: #f8fcff;
   border: 1px solid #e0eef8;
@@ -11177,11 +11880,21 @@ a {
   }
 
   .doctor-shift-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .doctor-shift-field:last-of-type,
+  .doctor-shift-row .btn {
+    grid-column: span 2;
   }
 
   .doctor-calendar-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .doctor-schedule-inline-error {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
@@ -11199,6 +11912,19 @@ a {
 
   .doctor-shift-row {
     grid-template-columns: 1fr;
+  }
+
+  .doctor-shift-field:last-of-type,
+  .doctor-shift-row .btn {
+    grid-column: auto;
+  }
+
+  .doctor-shift-switch {
+    justify-self: start;
+  }
+
+  .doctor-schedule-inline-error .btn {
+    width: 100%;
   }
 }
 
@@ -13909,8 +14635,18 @@ a {
 }
 
 .queue-summary-grid article {
+  position: relative;
+  overflow: hidden;
   padding: 18px;
   border-radius: 18px;
+}
+
+.doctor-queue-page .queue-summary-grid article::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: #bae6fd;
 }
 
 .queue-summary-grid strong {
@@ -13989,6 +14725,26 @@ a {
   transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
 
+.queue-item-in_progress {
+  border-color: #7dd3fc;
+  background: linear-gradient(135deg, #effaff 0%, #ffffff 78%);
+  box-shadow: 0 18px 42px rgba(14, 165, 233, 0.14);
+}
+
+.queue-item-in_progress .queue-number {
+  background: #e0f7ff;
+}
+
+.queue-item-completed,
+.queue-item-skipped {
+  background: #fbfdff;
+}
+
+.queue-item-completed .queue-number,
+.queue-item-skipped .queue-number {
+  background: #f1f5f9;
+}
+
 .queue-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 18px 42px rgba(15, 62, 110, 0.12);
@@ -14041,6 +14797,11 @@ a {
   font-weight: 750;
 }
 
+.queue-reason {
+  min-width: min(100%, 280px);
+  overflow-wrap: anywhere;
+}
+
 .queue-actions {
   display: flex;
   justify-content: flex-end;
@@ -14051,6 +14812,11 @@ a {
 .queue-actions .btn {
   border-radius: 999px;
   font-weight: 850;
+}
+
+.doctor-queue-page .queue-actions .btn-outline-secondary {
+  border-color: #cbd5e1;
+  color: #64748b;
 }
 
 .queue-action-hint {
@@ -14073,6 +14839,31 @@ a {
   color: #64748b;
   text-align: center;
   font-weight: 850;
+}
+
+.queue-inline-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #fecaca;
+  border-radius: 18px;
+  background: #fff7f7;
+  color: #7f1d1d;
+}
+
+.queue-inline-error strong {
+  display: block;
+  color: #991b1b;
+  font-weight: 950;
+}
+
+.queue-inline-error p {
+  margin: 4px 0 0;
+  color: #b91c1c;
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .appointment-status-stack {
@@ -14289,6 +15080,11 @@ a {
     grid-column: 1 / -1;
     justify-content: flex-start;
   }
+
+  .queue-inline-error {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 576px) {
@@ -14320,6 +15116,12 @@ a {
 
   .queue-actions .btn {
     width: 100%;
+  }
+
+  .queue-action-hint,
+  .queue-inline-error .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .consultation-status-grid {
@@ -19886,13 +20688,12 @@ html, body, #root {
   }
 
   .doctor-specialty-sidebar {
-    display: flex !important;
-    flex-direction: row !important;
-    overflow-x: auto !important;
-    padding-bottom: 8px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    overflow-x: visible !important;
+    padding: 12px !important;
     gap: 8px !important;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .doctor-specialty-sidebar h2 {
@@ -19900,9 +20701,11 @@ html, body, #root {
   }
 
   .doctor-specialty-filter {
-    flex-shrink: 0;
-    padding: 6px 14px !important;
-    border-radius: 999px !important;
+    width: 100%;
+    min-width: 0;
+    flex-shrink: 1;
+    padding: 10px 12px !important;
+    border-radius: 14px !important;
     font-size: 0.82rem !important;
   }
 
@@ -28388,7 +29191,7 @@ button.doctor-record-follow-up-card:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(230px, 360px);
   gap: 18px;
-  align-items: stretch;
+  align-items: start;
   padding: clamp(18px, 3vw, 26px);
 }
 
@@ -28428,14 +29231,19 @@ button.doctor-record-follow-up-card:focus-visible {
 }
 
 .pa-upcoming-side {
+  align-self: start;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 14px;
   padding: 16px;
   border: 1px solid #e5eef7;
   border-radius: 16px;
   background: #fbfdff;
+}
+
+.pa-upcoming-side .pa-actions {
+  margin-top: 4px;
 }
 
 .pa-summary-bar {
@@ -28462,6 +29270,14 @@ button.doctor-record-follow-up-card:focus-visible {
 }
 
 .pa-icon {
+  align-items: center;
+  color: #0284c7;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  isolation: isolate;
+  min-width: 42px;
+  overflow: hidden;
   position: relative;
   width: 42px;
   height: 42px;
@@ -28470,11 +29286,95 @@ button.doctor-record-follow-up-card:focus-visible {
 }
 
 .pa-icon::before {
-  position: absolute;
-  inset: 12px;
-  border: 2px solid #0284c7;
-  border-radius: 50%;
   content: '';
+  display: block;
+}
+
+.pa-icon::after {
+  display: block;
+}
+
+.pa-icon-calendar::before {
+  border: 2px solid currentColor;
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 17px;
+  left: 13px;
+  position: absolute;
+  top: 14px;
+  width: 16px;
+}
+
+.pa-icon-calendar::after {
+  background: currentColor;
+  content: '';
+  height: 2px;
+  left: 13px;
+  position: absolute;
+  top: 19px;
+  width: 16px;
+}
+
+.pa-icon-pending::before {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  box-sizing: border-box;
+  height: 18px;
+  left: 12px;
+  position: absolute;
+  top: 12px;
+  width: 18px;
+}
+
+.pa-icon-pending::after {
+  background: currentColor;
+  border-radius: 999px;
+  content: '';
+  height: 6px;
+  left: 23px;
+  position: absolute;
+  top: 14px;
+  transform: rotate(42deg);
+  transform-origin: bottom center;
+  width: 2px;
+}
+
+.pa-icon-done::before {
+  border-bottom: 3px solid currentColor;
+  border-left: 3px solid currentColor;
+  box-sizing: border-box;
+  height: 9px;
+  left: 12px;
+  position: absolute;
+  top: 14px;
+  transform: rotate(-45deg);
+  width: 18px;
+}
+
+.pa-icon-alert::before {
+  background: currentColor;
+  border-radius: 999px;
+  height: 16px;
+  left: 20px;
+  position: absolute;
+  top: 10px;
+  width: 3px;
+}
+
+.pa-icon-alert::after {
+  background: currentColor;
+  border-radius: 999px;
+  bottom: 10px;
+  content: '';
+  height: 3px;
+  left: 20px;
+  position: absolute;
+  width: 3px;
+}
+
+.pa-summary-card.attention.has-value .pa-icon {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .pa-summary-card strong {
@@ -29037,6 +29937,24 @@ button.doctor-record-follow-up-card:focus-visible {
   }
 }
 
+@media (max-width: 900px) {
+  .pa-status-filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+    overflow-x: visible;
+    overflow-y: visible;
+    padding-bottom: 0;
+  }
+
+  .pa-status-filters button {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+    white-space: normal;
+  }
+}
+
 @media (max-width: 560px) {
   .pa-container {
     gap: 14px;
@@ -29119,12 +30037,17 @@ button.doctor-record-follow-up-card:focus-visible {
   }
 
   .pa-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow-x: visible;
     width: 100%;
   }
 
   .pa-tabs button {
     flex: 1 1 0;
     justify-content: center;
+    min-width: 0;
+    white-space: normal;
   }
 
   .pa-loading-state,
@@ -30338,5 +31261,246 @@ button.doctor-record-follow-up-card:focus-visible {
 
   .apd-live-status-heading {
     gap: 10px;
+  }
+}
+/* Sprint 9 Admin Appointments and Schedules polish */
+.admin-appointments-page,
+.admin-schedules-page {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.admin-appointments-heading,
+.admin-schedules-heading {
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.admin-appointments-heading p,
+.admin-schedules-heading p {
+  color: var(--gray-500);
+  margin: 0.45rem 0 0;
+  max-width: 720px;
+}
+
+.admin-appointments-card,
+.admin-schedules-list-card {
+  overflow: hidden;
+}
+
+.admin-appointments-filter-panel,
+.admin-schedules-filter-panel {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.75fr) minmax(220px, 1fr) minmax(220px, 1fr) auto auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.admin-schedules-filter-panel {
+  grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) minmax(160px, 0.75fr);
+}
+
+.admin-appointments-filter-panel label,
+.admin-schedules-filter-panel label {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.admin-appointments-filter-panel label span,
+.admin-schedules-filter-panel label span,
+.admin-appointments-status-control span {
+  color: var(--gray-500);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.admin-appointments-filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-appointments-result-bar,
+.admin-schedules-result-bar {
+  align-items: center;
+  border-top: 1px solid var(--gray-100);
+  color: var(--gray-500);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+}
+
+.admin-appointments-result-bar strong,
+.admin-schedules-result-bar strong {
+  color: var(--color-text);
+  font-size: 1.1rem;
+}
+
+.admin-appointments-result-bar em,
+.admin-schedules-result-bar em {
+  background: var(--color-primary-light);
+  border-radius: 999px;
+  color: var(--color-primary-dark);
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 800;
+  padding: 0.2rem 0.65rem;
+}
+
+.admin-appointments-alert {
+  margin-top: 1rem;
+}
+
+.admin-appointments-loading,
+.admin-schedules-loading {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.admin-appointments-loading span,
+.admin-schedules-loading span {
+  animation: adminSkeletonPulse 1.2s ease-in-out infinite;
+  background: linear-gradient(90deg, #eef6fb, #f8fbfd, #eef6fb);
+  border-radius: 12px;
+  display: block;
+  height: 58px;
+}
+
+@keyframes adminSkeletonPulse {
+  0%,
+  100% {
+    opacity: 0.62;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.admin-appointments-table {
+  min-width: 980px;
+}
+
+.admin-appointments-time-chip {
+  background: var(--color-primary-light);
+  border-radius: 999px;
+  color: var(--color-primary-dark);
+  display: inline-flex;
+  font-weight: 800;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+}
+
+.admin-appointments-name-cell {
+  max-width: 190px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.admin-appointments-status-badge {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.35rem;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+.admin-appointments-request-actions,
+.admin-appointments-utility-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.admin-appointments-request-actions {
+  min-width: 210px;
+}
+
+.admin-appointments-status-control {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  min-width: 170px;
+}
+
+.admin-appointments-utility-actions {
+  justify-content: flex-end;
+  min-width: 220px;
+}
+
+.admin-schedules-heading .btn {
+  flex: 0 0 auto;
+}
+
+.admin-schedules-result-bar {
+  margin-bottom: 0.25rem;
+}
+
+.admin-schedules-page .admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.admin-schedules-page .admin-tab {
+  min-height: 42px;
+}
+
+.admin-schedules-page .admin-schedule-slot-view {
+  overflow-x: clip;
+}
+
+@media (max-width: 1024px) {
+  .admin-appointments-filter-panel,
+  .admin-schedules-filter-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-appointments-filter-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-appointments-heading,
+  .admin-schedules-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-appointments-filter-panel,
+  .admin-schedules-filter-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-appointments-filter-actions,
+  .admin-appointments-filter-actions .btn,
+  .admin-schedules-heading .btn {
+    width: 100%;
+  }
+
+  .admin-appointments-request-actions,
+  .admin-appointments-utility-actions {
+    justify-content: flex-start;
+    min-width: 0;
+  }
+
+  .admin-appointments-request-actions .btn,
+  .admin-appointments-utility-actions .btn {
+    flex: 1 1 140px;
+  }
+
+  .admin-schedules-page .admin-tab {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  .doctors-page .doctor-specialty-sidebar {
+    grid-template-columns: 1fr !important;
   }
 }

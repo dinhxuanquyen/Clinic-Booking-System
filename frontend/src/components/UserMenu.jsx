@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import { useToast } from '../context/ToastContext.jsx';
 import { resolveMediaUrl } from '../utils/media.js';
 import ChangePasswordModal from './ChangePasswordModal.jsx';
 import { FaCalendarCheck, FaSignOutAlt, FaUser } from './icons/FaIcons.jsx';
@@ -14,8 +13,6 @@ function getFallbackInitial(name = '') {
 }
 
 export default function UserMenu({ user, onLogout, isOpen: controlledOpen, onToggle, onClose }) {
-  const navigate = useNavigate();
-  const toast = useToast();
   const { updateUser } = useAuth();
   const menuRef = useRef(null);
   const [internalOpen, setInternalOpen] = useState(false);
@@ -79,10 +76,8 @@ export default function UserMenu({ user, onLogout, isOpen: controlledOpen, onTog
   }, [isControlled, isOpen]);
 
   function handleLogout() {
-    onLogout();
+    onLogout?.();
     closeMenu();
-    toast.info('Đăng xuất thành công');
-    navigate('/');
   }
 
   function openChangePassword() {

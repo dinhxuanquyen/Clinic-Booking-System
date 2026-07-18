@@ -7,11 +7,12 @@ import { useToast } from '../../context/ToastContext.jsx';
 import { AdminEmptyState, AdminPagination, getName, paginate } from './adminUtils.jsx';
 import { downloadPdf } from '../../utils/downloadFile.js';
 import { getStatusBadge } from '../../utils/status.js';
+import { getVietnamToday } from '../../utils/dateTime.js';
 
 const statuses = ['pending', 'confirmed', 'in_progress', 'cancel_requested', 'reschedule_requested', 'completed', 'cancelled', 'no_show'];
 
 function todayString() {
-  return new Date().toISOString().slice(0, 10);
+  return getVietnamToday();
 }
 
 function normalizeFiltersFromSearch(searchParams) {
@@ -45,6 +46,8 @@ export default function AdminAppointmentsPage() {
   const [handlingCancel, setHandlingCancel] = useState(null);
   const [handlingReschedule, setHandlingReschedule] = useState(null);
   const [downloadingPdfKey, setDownloadingPdfKey] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   const { currentPage: safePage, pageItems, totalPages } = useMemo(() => paginate(appointments, currentPage), [appointments, currentPage]);
@@ -54,12 +57,18 @@ export default function AdminAppointmentsPage() {
   }, [filters.date, filters.doctorId, filters.status]);
 
   function load(nextFilters = filters) {
+    setLoading(true);
+    setLoadError('');
     Promise.all([api('/doctors'), api(`/appointments${buildQueryString(nextFilters)}`)])
       .then(([doctorPayload, appointmentPayload]) => {
         setDoctors(doctorPayload.data || []);
         setAppointments(appointmentPayload.data || []);
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err) => {
+        setLoadError(err.message);
+        toast.error(err.message);
+      })
+      .finally(() => setLoading(false));
   }
 
   useEffect(() => {
@@ -155,14 +164,14 @@ export default function AdminAppointmentsPage() {
   }
 
   return (
-    <>
-      <div className="page-heading admin-page-heading">
+    <div className="admin-appointments-page">
+      <div className="page-heading admin-page-heading admin-appointments-heading">
         <span className="eyebrow">Quản lý</span>
         <h1 className="h3 mt-2 mb-0">Lịch hẹn</h1>
       </div>
 
-      <div className="management-panel admin-table-card mb-3">
-        <div className="admin-table-toolbar">
+      <div className="management-panel admin-table-card mb-3 admin-appointments-card">
+        <div className="admin-table-toolbar admin-appointments-filter-panel">
           <input type="date" className="form-control" value={filters.date} onChange={(event) => setFilters({ ...filters, date: event.target.value })} />
           <select className="form-select" value={filters.doctorId} onChange={(event) => setFilters({ ...filters, doctorId: event.target.value })}>
             <option value="">Tất cả bác sĩ</option>
@@ -176,25 +185,41 @@ export default function AdminAppointmentsPage() {
           <button className="btn btn-outline-secondary" type="button" onClick={resetFilters}>Xem tất cả</button>
         </div>
 
-        {appointments.length ? (
+        {!loading && !loadError && (
+          <div className="admin-appointments-result-bar">
+            <strong>{appointments.length}</strong>
+            <span>lịch hẹn phù hợp</span>
+            {(filters.date || filters.doctorId || filters.status) && <em>Đang áp dụng bộ lọc</em>}
+          </div>
+        )}
+
+        {loadError && (
+          <div className="alert alert-danger admin-appointments-alert" role="alert">{loadError}</div>
+        )}
+
+        {loading ? (
+          <div className="admin-appointments-loading" aria-live="polite">
+            {Array.from({ length: 4 }, (_, index) => <span key={index} />)}
+          </div>
+        ) : appointments.length ? (
           <>
             <div className="table-responsive">
-              <table className="table table-hover align-middle admin-table">
+              <table className="table table-hover align-middle admin-table admin-appointments-table">
                 <thead><tr><th>Ngày</th><th>Giờ</th><th>Bệnh nhân</th><th>Bác sĩ</th><th>Cơ sở</th><th>Trạng thái</th><th>Cập nhật</th><th></th></tr></thead>
                 <tbody>
                   {pageItems.map((item) => {
                     const badge = getStatusBadge(item.status);
                     return (
                       <tr key={item._id}>
-                        <td>{item.date}</td>
-                        <td>{item.timeSlot}</td>
-                        <td>{getName(item.patientId)}</td>
-                        <td>{getName(item.doctorId)}</td>
-                        <td>{getName(item.clinicId)}</td>
-                        <td><span className={`badge ${badge.className}`}>{badge.label}</span></td>
+                        <td><strong>{item.date}</strong></td>
+                        <td><span className="admin-appointments-time-chip">{item.timeSlot}</span></td>
+                        <td className="admin-appointments-name-cell">{getName(item.patientId)}</td>
+                        <td className="admin-appointments-name-cell">{getName(item.doctorId)}</td>
+                        <td className="admin-appointments-name-cell">{getName(item.clinicId)}</td>
+                        <td><span className={`badge ${badge.className} admin-appointments-status-badge`}>{badge.label}</span></td>
                         <td>
                           {item.status === 'cancel_requested' ? (
-                            <div className="d-flex flex-wrap gap-2">
+                            <div className="admin-appointments-request-actions danger">
                               <button className="btn btn-sm btn-danger" type="button" onClick={() => setHandlingCancel({ appointment: item, status: 'cancelled' })}>
                                 Xác nhận hủy
                               </button>
@@ -203,7 +228,7 @@ export default function AdminAppointmentsPage() {
                               </button>
                             </div>
                           ) : item.status === 'reschedule_requested' ? (
-                            <div className="d-flex flex-wrap gap-2">
+                            <div className="admin-appointments-request-actions">
                               <button className="btn btn-sm btn-primary" type="button" onClick={() => setHandlingReschedule({ appointment: item, status: 'confirmed' })}>
                                 Xác nhận đổi lịch
                               </button>
@@ -212,13 +237,16 @@ export default function AdminAppointmentsPage() {
                               </button>
                             </div>
                           ) : (
-                            <select className="form-select form-select-sm" value={item.status} onChange={(event) => updateStatus(item._id, event.target.value)}>
-                              {statuses.map((status) => <option key={status} value={status}>{getStatusBadge(status).label}</option>)}
-                            </select>
+                            <label className="admin-appointments-status-control">
+                              <span>Cập nhật</span>
+                              <select className="form-select form-select-sm" value={item.status} onChange={(event) => updateStatus(item._id, event.target.value)}>
+                                {statuses.map((status) => <option key={status} value={status}>{getStatusBadge(status).label}</option>)}
+                              </select>
+                            </label>
                           )}
                         </td>
                         <td className="text-end">
-                          <div className="d-flex flex-wrap justify-content-end gap-2">
+                          <div className="admin-appointments-utility-actions">
                             <button className="btn btn-outline-primary btn-sm" type="button" onClick={() => setSelectedAppointment(item)}>
                               Chi tiết
                             </button>
@@ -273,7 +301,7 @@ export default function AdminAppointmentsPage() {
           onSubmit={(adminNote) => updateStatus(handlingReschedule.appointment._id, handlingReschedule.status, adminNote, 'reschedule_request')}
         />
       )}
-    </>
+    </div>
   );
 }
 
@@ -282,7 +310,7 @@ function CancelHandleModal({ actionStatus, appointment, onClose, onSubmit }) {
   const isApprove = actionStatus === 'cancelled';
 
   return (
-    <BaseModal className="admin-modal" onClose={onClose}>
+    <BaseModal ariaLabel={isApprove ? 'Xác nhận hủy lịch' : 'Từ chối yêu cầu hủy'} className="admin-modal" onClose={onClose}>
       <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
         <div>
           <span className="eyebrow">Xử lý yêu cầu hủy</span>
@@ -312,7 +340,7 @@ function RescheduleHandleModal({ actionStatus, appointment, onClose, onSubmit })
   const request = appointment.rescheduleRequest || {};
 
   return (
-    <BaseModal className="admin-modal" onClose={onClose}>
+    <BaseModal ariaLabel={isApprove ? 'Xác nhận đổi lịch' : 'Từ chối yêu cầu đổi lịch'} className="admin-modal" onClose={onClose}>
       <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
         <div>
           <span className="eyebrow">Xử lý yêu cầu đổi lịch</span>

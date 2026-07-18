@@ -472,7 +472,7 @@ export default function AdminDoctorsPage() {
       </div>
 
       {modalOpen && (
-        <BaseModal className="admin-modal admin-doctor-modal" disableClose={saving || uploading} onClose={() => setModalOpen(false)} size="lg">
+        <BaseModal ariaLabel={editing ? 'Cập nhật thông tin bác sĩ' : 'Thêm bác sĩ'} className="admin-modal admin-doctor-modal" disableClose={saving || uploading} onClose={() => setModalOpen(false)} size="lg">
           <div className="admin-doctor-modal-header">
             <div>
               <span className="eyebrow">Quản lý bác sĩ</span>
@@ -649,7 +649,7 @@ export default function AdminDoctorsPage() {
       )}
 
       {(detailDoctor || detailLoading) && (
-        <BaseModal className="admin-modal doctor-detail-admin-modal" onClose={() => setDetailDoctor(null)} size="lg">
+        <BaseModal ariaLabel="Chi tiết bác sĩ" className="admin-modal doctor-detail-admin-modal" onClose={() => setDetailDoctor(null)} size="lg">
           {detailLoading ? (
             <div className="admin-empty-state">
               <p>Đang tải chi tiết bác sĩ...</p>
@@ -753,7 +753,7 @@ export default function AdminDoctorsPage() {
       )}
 
       {resetTarget && (
-        <BaseModal className="admin-confirm-dialog" disableClose={saving} onClose={() => setResetTarget(null)} size="sm">
+        <BaseModal ariaLabel="Cấp lại mật khẩu" className="admin-confirm-dialog" disableClose={saving} onClose={() => setResetTarget(null)} size="sm">
           <h2 className="h5 mb-2">Cấp lại mật khẩu</h2>
           <p className="text-secondary mb-3">
             Chọn cách cấp lại mật khẩu cho {resetTarget.doctor?.name}.

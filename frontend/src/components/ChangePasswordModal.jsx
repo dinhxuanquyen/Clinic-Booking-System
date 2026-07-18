@@ -67,6 +67,7 @@ export default function ChangePasswordModal({ user, onClose, onSuccess }) {
 
   return (
     <BaseModal
+      ariaLabel="Đổi mật khẩu"
       backdropClassName="change-password-overlay"
       className="change-password-dialog"
       disableClose={submitting}

@@ -161,7 +161,7 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
   const sourceDate = sourceAppointment?.date || sourceFollowUpRecord?.createdAt;
 
   return (
-    <BaseModal className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
+    <BaseModal ariaLabel="Chi tiết hồ sơ khám" className="admin-modal medical-record-detail-modal" onClose={onClose} size="lg">
       <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
         <div>
           <span className="eyebrow">Hồ sơ đã tạo</span>

@@ -3,16 +3,19 @@ import { Link } from 'react-router-dom';
 import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { api } from '../../api/client.js';
 import { getStatusBadge } from '../../utils/status.js';
+import { resolveMediaUrl } from '../../utils/media.js';
 import { AdminEmptyState, getName } from './adminUtils.jsx';
 
 const statusChartConfig = {
   pending: { label: 'Chờ xác nhận', color: '#f59e0b' },
   confirmed: { label: 'Đã xác nhận', color: '#22c55e' },
-  completed: { label: 'Hoàn thành', color: '#2563eb' },
+  in_progress: { label: 'Đang khám', color: '#2563eb' },
+  completed: { label: 'Hoàn thành', color: '#0ea5e9' },
   cancelled: { label: 'Đã hủy', color: '#ef4444' },
   no_show: { label: 'Không đến khám', color: '#9f1239' },
   cancel_requested: { label: 'Yêu cầu hủy', color: '#eab308' },
-  reschedule_requested: { label: 'Yêu cầu đổi lịch', color: '#06b6d4' }
+  reschedule_requested: { label: 'Yêu cầu đổi lịch', color: '#06b6d4' },
+  reschedule_rejected: { label: 'Từ chối đổi lịch', color: '#f97316' }
 };
 
 const timeFilterOptions = [
@@ -25,6 +28,18 @@ const timeFilterOptions = [
 ];
 
 const monthLabels = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'];
+const taskStatuses = ['pending', 'cancel_requested', 'reschedule_requested'];
+
+function getVietnamToday() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
 
 function parseAppointmentDate(value) {
   if (!value) return null;
@@ -33,13 +48,16 @@ function parseAppointmentDate(value) {
 }
 
 function toDateKey(date) {
-  return date.toISOString().slice(0, 10);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 function startOfToday() {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
-  return date;
+  const today = parseAppointmentDate(getVietnamToday()) || new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
 }
 
 function startOfMonth(date) {
@@ -138,7 +156,7 @@ function getTimeChartConfig(range, appointments) {
       const bucket = bucketMap.get(key);
       if (bucket) bucket.total += 1;
     });
-    return { type: 'bar', title: 'Lịch hẹn theo tháng trong năm', data: buckets };
+    return { type: 'bar', title: 'Số lịch theo từng tháng trong năm', data: buckets };
   }
 
   if (range === 'this_quarter') {
@@ -153,7 +171,7 @@ function getTimeChartConfig(range, appointments) {
       const bucket = bucketMap.get(key);
       if (bucket) bucket.total += 1;
     });
-    return { type: 'bar', title: 'Lịch hẹn theo tháng trong quý', data: buckets };
+    return { type: 'bar', title: 'Số lịch theo từng tháng trong quý', data: buckets };
   }
 
   if (range === 'all') {
@@ -169,7 +187,7 @@ function getTimeChartConfig(range, appointments) {
     });
     return {
       type: 'bar',
-      title: 'Lịch hẹn theo tháng',
+      title: 'Số lịch theo từng tháng',
       data: Array.from(byMonth.values()).sort((a, b) => a.key.localeCompare(b.key))
     };
   }
@@ -184,27 +202,35 @@ function getTimeChartConfig(range, appointments) {
 
   return {
     type: 'line',
-    title: range === 'this_month' ? 'Lịch hẹn theo ngày trong tháng' : 'Lịch hẹn theo ngày',
+    title: range === 'this_month' ? 'Số lịch theo từng ngày trong tháng' : 'Số lịch theo từng ngày',
     data: buckets
   };
-}
-
-function isToday(date) {
-  return date === new Date().toISOString().slice(0, 10);
 }
 
 function statCount(appointments, status) {
   return appointments.filter((item) => item.status === status).length;
 }
 
-function percentage(part, total) {
-  if (!total) return '0%';
-  return `${Math.round((part / total) * 100)}%`;
-}
-
 function entityKey(value, fallback) {
   if (!value) return fallback;
   return typeof value === 'object' ? value._id || fallback : value;
+}
+
+function initialsFromName(name) {
+  const parts = String(name || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!parts.length) return 'CB';
+  const first = parts[0]?.[0] || '';
+  const last = parts.length > 1 ? parts[parts.length - 1]?.[0] : parts[0]?.[1] || '';
+  return `${first}${last}`.toUpperCase();
+}
+
+function entityImage(value, type) {
+  if (!value || typeof value !== 'object') return '';
+  if (type === 'doctor') return value.avatar || value.image || value.photoUrl || value.photo || value.profileImage || '';
+  return value.image || value.photo || value.logo || value.coverImage || '';
 }
 
 function buildRanking(appointments, field, fallbackName) {
@@ -213,7 +239,7 @@ function buildRanking(appointments, field, fallbackName) {
     const value = appointment[field];
     const key = entityKey(value, fallbackName);
     const name = getName(value);
-    const current = map.get(key) || { key, name, count: 0 };
+    const current = map.get(key) || { key, name, entity: typeof value === 'object' ? value : null, count: 0 };
     current.count += 1;
     map.set(key, current);
   });
@@ -241,75 +267,103 @@ function formatActivityTime(value) {
   });
 }
 
+function fallbackAppointmentTimestamp(appointment) {
+  const dateTime = `${appointment.date || ''}T${(appointment.timeSlot || '00:00').split('-')[0] || '00:00'}:00`;
+  const parsed = new Date(dateTime);
+  return Number.isNaN(parsed.getTime()) ? appointment.date : parsed.toISOString();
+}
+
 function activityMeta(appointment) {
   const patientName = getName(appointment.patientId);
   const doctorName = getName(appointment.doctorId);
 
   if (appointment.status === 'confirmed') {
     return {
-      icon: '✓',
+      icon: 'OK',
       tone: 'success',
       action: `${patientName} có lịch đã được xác nhận với ${doctorName}`,
-      time: appointment.updatedAt || appointment.createdAt
+      time: appointment.updatedAt || appointment.createdAt || fallbackAppointmentTimestamp(appointment)
     };
   }
 
   if (appointment.status === 'cancelled') {
     return {
-      icon: '×',
+      icon: 'HU',
       tone: 'danger',
       action: `${patientName} có lịch đã hủy với ${doctorName}`,
-      time: appointment.cancelRequest?.handledAt || appointment.updatedAt || appointment.createdAt
+      time: appointment.cancelRequest?.handledAt || appointment.updatedAt || appointment.createdAt || fallbackAppointmentTimestamp(appointment)
     };
   }
 
   if (appointment.status === 'cancel_requested') {
     return {
-      icon: '↩',
+      icon: 'YC',
       tone: 'warning',
       action: `${patientName} đã gửi yêu cầu hủy lịch với ${doctorName}`,
-      time: appointment.cancelRequest?.requestedAt || appointment.updatedAt || appointment.createdAt
+      time: appointment.cancelRequest?.requestedAt || appointment.updatedAt || appointment.createdAt || fallbackAppointmentTimestamp(appointment)
     };
   }
 
   if (appointment.status === 'reschedule_requested') {
     return {
-      icon: '↻',
+      icon: 'DL',
       tone: 'info',
       action: `${patientName} đã gửi yêu cầu đổi lịch với ${doctorName}`,
-      time: appointment.rescheduleRequest?.requestedAt || appointment.updatedAt || appointment.createdAt
+      time: appointment.rescheduleRequest?.requestedAt || appointment.updatedAt || appointment.createdAt || fallbackAppointmentTimestamp(appointment)
+    };
+  }
+
+  if (appointment.status === 'in_progress') {
+    return {
+      icon: 'KH',
+      tone: 'primary',
+      action: `${patientName} đang trong quy trình khám với ${doctorName}`,
+      time: appointment.updatedAt || appointment.createdAt || fallbackAppointmentTimestamp(appointment)
     };
   }
 
   if (appointment.status === 'completed') {
     return {
-      icon: '✓',
+      icon: 'HT',
       tone: 'primary',
       action: `${patientName} đã hoàn thành lịch khám với ${doctorName}`,
-      time: appointment.updatedAt || appointment.createdAt
+      time: appointment.updatedAt || appointment.createdAt || fallbackAppointmentTimestamp(appointment)
     };
   }
 
   return {
-    icon: '+',
+    icon: 'MO',
     tone: 'neutral',
     action: `${patientName} đã đặt lịch với ${doctorName}`,
-    time: appointment.createdAt || appointment.updatedAt
+    time: appointment.createdAt || appointment.updatedAt || fallbackAppointmentTimestamp(appointment)
   };
 }
 
-function AppointmentMiniTable({ appointments, compactEmpty = false, emptyMessage, showAction = false }) {
+function scopeLabel(timeRange, clinicFilter, clinics) {
+  const timeLabel = timeFilterOptions.find((item) => item.value === timeRange)?.label || 'Khoảng thời gian đã chọn';
+  const clinicLabel = clinicFilter === 'all'
+    ? 'tất cả cơ sở'
+    : clinics.find((clinic) => clinic._id === clinicFilter)?.name || 'cơ sở đã chọn';
+  return `${timeLabel}, ${clinicLabel}`;
+}
+
+function DashboardLoading() {
+  return (
+    <div className="dash-loading-state" role="status" aria-live="polite">
+      <div className="dash-loading-bar" />
+      <h2>Đang tải Dashboard vận hành</h2>
+      <p>Hệ thống đang tổng hợp lịch hẹn, bác sĩ, cơ sở và tài khoản quản trị.</p>
+    </div>
+  );
+}
+
+function AppointmentMiniTable({ appointments, emptyMessage, showAction = false }) {
   if (!appointments.length) {
-    return (
-      <div className="empty-state empty-state-compact">
-        <div className="empty-state-icon">📅</div>
-        <h3 className="empty-state-title">{emptyMessage || 'Không có dữ liệu'}</h3>
-      </div>
-    );
+    return <AdminEmptyState message={emptyMessage || 'Không có dữ liệu phù hợp'} />;
   }
 
   return (
-    <div className="table-responsive">
+    <div className="dash-table-wrap">
       <table className="dash-mini-table">
         <thead>
           <tr>
@@ -319,7 +373,7 @@ function AppointmentMiniTable({ appointments, compactEmpty = false, emptyMessage
             <th>Bác sĩ</th>
             <th>Cơ sở</th>
             <th>Trạng thái</th>
-            {showAction && <th></th>}
+            {showAction && <th aria-label="Thao tác"></th>}
           </tr>
         </thead>
         <tbody>
@@ -327,14 +381,14 @@ function AppointmentMiniTable({ appointments, compactEmpty = false, emptyMessage
             const badge = getStatusBadge(item.status);
             return (
               <tr key={item._id}>
-                <td style={{ fontWeight: 600, color: 'var(--gray-700)' }}>{item.date}</td>
-                <td style={{ color: 'var(--color-primary-dark)', fontWeight: 600 }}>{item.timeSlot}</td>
-                <td>{getName(item.patientId)}</td>
-                <td>{getName(item.doctorId)}</td>
-                <td style={{ color: 'var(--gray-500)', fontSize: '0.85rem' }}>{getName(item.clinicId)}</td>
-                <td><span className={badge.className}>{badge.label}</span></td>
+                <td data-label="Ngày">{item.date}</td>
+                <td data-label="Giờ">{item.timeSlot}</td>
+                <td data-label="Bệnh nhân">{getName(item.patientId)}</td>
+                <td data-label="Bác sĩ">{getName(item.doctorId)}</td>
+                <td data-label="Cơ sở">{getName(item.clinicId)}</td>
+                <td data-label="Trạng thái"><span className={badge.className}>{badge.label}</span></td>
                 {showAction && (
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="Thao tác" className="dash-table-action">
                     <Link className="btn btn-xs btn-outline-primary" to={`/admin/appointments?appointmentId=${item._id}`}>
                       Xem
                     </Link>
@@ -349,27 +403,22 @@ function AppointmentMiniTable({ appointments, compactEmpty = false, emptyMessage
   );
 }
 
-function ActivityFeed({ activities }) {
-  if (!activities.length) {
-    return (
-      <div className="empty-state empty-state-compact">
-        <div className="empty-state-icon">📊</div>
-        <h3 className="empty-state-title">Chưa có hoạt động gần đây</h3>
-      </div>
-    );
+function AppointmentUpdatesList({ updates }) {
+  if (!updates.length) {
+    return <AdminEmptyState message="Chưa có cập nhật lịch hẹn trong phạm vi đã chọn" />;
   }
 
   return (
     <div className="dash-activity-feed">
-      {activities.map((item) => (
-        <div className="dash-activity-item" key={`${item.appointmentId}-${item.time}-${item.action}`}>
+      {updates.map((item) => (
+        <Link className="dash-activity-item" key={`${item.appointmentId}-${item.time}-${item.status}`} to={`/admin/appointments?appointmentId=${item.appointmentId}`}>
           <div className={`dash-activity-icon ${item.tone}`}>{item.icon}</div>
           <div className="dash-activity-content">
             <p className="dash-activity-action">{item.action}</p>
             <p className="dash-activity-meta">{item.patientName} · {item.doctorName}</p>
           </div>
           <span className="dash-activity-time">{formatActivityTime(item.time)}</span>
-        </div>
+        </Link>
       ))}
     </div>
   );
@@ -379,19 +428,14 @@ function StatusDonutChart({ data }) {
   const total = data.reduce((sum, item) => sum + item.value, 0);
 
   if (!total) {
-    return (
-      <div className="empty-state empty-state-compact">
-        <div className="empty-state-icon">📊</div>
-        <h3 className="empty-state-title">Chưa có dữ liệu trạng thái</h3>
-      </div>
-    );
+    return <AdminEmptyState message="Chưa có dữ liệu trạng thái trong phạm vi đã chọn" />;
   }
 
   return (
     <div>
       <ResponsiveContainer height={220} width="100%">
         <PieChart>
-          <Pie data={data} dataKey="value" innerRadius={60} outerRadius={90} paddingAngle={3}>
+          <Pie data={data} dataKey="value" innerRadius={58} outerRadius={88} paddingAngle={3}>
             {data.map((item) => <Cell fill={item.color} key={item.status} />)}
           </Pie>
           <Tooltip
@@ -416,12 +460,7 @@ function TimeAppointmentsChart({ data, type }) {
   const total = data.reduce((sum, item) => sum + item.total, 0);
 
   if (!total) {
-    return (
-      <div className="empty-state empty-state-compact">
-        <div className="empty-state-icon">📈</div>
-        <h3 className="empty-state-title">Chưa có lịch hẹn trong khoảng thời gian này</h3>
-      </div>
-    );
+    return <AdminEmptyState message="Chưa có lịch hẹn trong khoảng thời gian này" />;
   }
 
   return (
@@ -429,8 +468,8 @@ function TimeAppointmentsChart({ data, type }) {
       {type === 'bar' ? (
         <BarChart data={data}>
           <CartesianGrid stroke="var(--gray-100)" vertical={false} />
-          <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'var(--gray-400)' }} />
-          <YAxis allowDecimals={false} tickLine={false} width={32} tick={{ fontSize: 12, fill: 'var(--gray-400)' }} />
+          <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
+          <YAxis allowDecimals={false} tickLine={false} width={32} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
           <Tooltip
             formatter={(value) => [value, 'Lịch hẹn']}
             contentStyle={{ borderRadius: 10, border: '1px solid var(--gray-200)', boxShadow: 'var(--shadow-md)', fontSize: '0.85rem' }}
@@ -440,8 +479,8 @@ function TimeAppointmentsChart({ data, type }) {
       ) : (
         <LineChart data={data}>
           <CartesianGrid stroke="var(--gray-100)" vertical={false} />
-          <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'var(--gray-400)' }} />
-          <YAxis allowDecimals={false} tickLine={false} width={32} tick={{ fontSize: 12, fill: 'var(--gray-400)' }} />
+          <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
+          <YAxis allowDecimals={false} tickLine={false} width={32} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
           <Tooltip
             formatter={(value) => [value, 'Lịch hẹn']}
             contentStyle={{ borderRadius: 10, border: '1px solid var(--gray-200)', boxShadow: 'var(--shadow-md)', fontSize: '0.85rem' }}
@@ -453,32 +492,49 @@ function TimeAppointmentsChart({ data, type }) {
   );
 }
 
-function RankingCard({ title, items, emptyMessage }) {
+function RankingCard({ title, items, emptyMessage, type }) {
   const rankClass = (index) => {
     if (index === 0) return 'r1';
     if (index === 1) return 'r2';
     if (index === 2) return 'r3';
     return 'rn';
   };
+  const placeholder = type === 'doctor'
+    ? '/placeholder-doctor.svg'
+    : type === 'clinic'
+      ? '/placeholder-clinic.svg'
+      : '/placeholder-specialty.svg';
 
   return (
     <div className="dash-ranking-card">
       <h2>{title}</h2>
       {items.length ? (
         <ul className="dash-ranking-list">
-          {items.map((item, index) => (
-            <li key={item.key} className="dash-ranking-item">
-              <span className={`dash-ranking-num ${rankClass(index)}`}>{index + 1}</span>
-              <span className="dash-ranking-name" title={item.name}>{item.name}</span>
-              <span className="dash-ranking-count">{item.count}</span>
-            </li>
-          ))}
+          {items.map((item, index) => {
+            const image = entityImage(item.entity, type);
+            const imageSrc = resolveMediaUrl(image, placeholder);
+            return (
+              <li key={item.key} className="dash-ranking-item">
+                <span className={`dash-ranking-num ${rankClass(index)}`}>{index + 1}</span>
+                <span className={`dash-ranking-photo dash-ranking-photo-${type}`}>
+                  <span className="dash-ranking-photo-fallback">{initialsFromName(item.name)}</span>
+                  <img
+                    alt={item.name}
+                    loading="lazy"
+                    src={imageSrc}
+                    onError={(event) => {
+                      event.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </span>
+                <span className="dash-ranking-name" title={item.name}>{item.name}</span>
+                <span className="dash-ranking-count">{item.count} lịch</span>
+              </li>
+            );
+          })}
         </ul>
       ) : (
-        <div className="empty-state empty-state-compact">
-          <div className="empty-state-icon">📊</div>
-          <h3 className="empty-state-title">{emptyMessage}</h3>
-        </div>
+        <AdminEmptyState message={emptyMessage} />
       )}
     </div>
   );
@@ -493,338 +549,401 @@ export default function AdminDashboardPage() {
   const [timeRange, setTimeRange] = useState('30d');
   const [clinicFilter, setClinicFilter] = useState('all');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let alive = true;
+    setIsLoading(true);
+    setError('');
+
     Promise.all([api('/clinics'), api('/specialties'), api('/doctors'), api('/appointments'), api('/admin/doctor-users')])
       .then(([clinicPayload, specialtyPayload, doctorPayload, appointmentPayload, doctorUserPayload]) => {
+        if (!alive) return;
         setClinics(clinicPayload.data || []);
         setSpecialties(specialtyPayload.data || []);
         setDoctors(doctorPayload.data || []);
         setAppointments(appointmentPayload.data || []);
         setDoctorUsers(doctorUserPayload.data || []);
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => {
+        if (!alive) return;
+        setError(err.message || 'Không tải được dữ liệu dashboard');
+      })
+      .finally(() => {
+        if (alive) setIsLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
   }, []);
 
-  const filteredAppointments = useMemo(() => appointments.filter((item) => {
-    const matchesTime = isInDateRange(item, timeRange);
-    const matchesClinic = clinicFilter === 'all' || entityKey(item.clinicId, '') === clinicFilter;
-    return matchesTime && matchesClinic;
-  }), [appointments, clinicFilter, timeRange]);
+  const todayKey = useMemo(() => getVietnamToday(), []);
 
-  const actionAppointments = useMemo(
-    () => filteredAppointments.filter((item) => ['pending', 'cancel_requested', 'reschedule_requested'].includes(item.status)).slice(0, 8),
-    [filteredAppointments]
+  const clinicScopedAppointments = useMemo(() => appointments.filter((item) => {
+    return clinicFilter === 'all' || entityKey(item.clinicId, '') === clinicFilter;
+  }), [appointments, clinicFilter]);
+
+  const todayAppointments = useMemo(
+    () => clinicScopedAppointments.filter((item) => item.date === todayKey),
+    [clinicScopedAppointments, todayKey]
   );
 
-  const recentAppointments = useMemo(() => filteredAppointments.slice(0, 8), [filteredAppointments]);
+  const currentTaskAppointments = useMemo(
+    () => clinicScopedAppointments.filter((item) => taskStatuses.includes(item.status)),
+    [clinicScopedAppointments]
+  );
 
-  const activities = useMemo(() => filteredAppointments
+  const analyticsAppointments = useMemo(
+    () => clinicScopedAppointments.filter((item) => isInDateRange(item, timeRange)),
+    [clinicScopedAppointments, timeRange]
+  );
+
+  const statusChartData = useMemo(() => Object.entries(statusChartConfig).map(([status, config]) => ({
+    status,
+    ...config,
+    value: statCount(analyticsAppointments, status)
+  })), [analyticsAppointments]);
+
+  const timeChart = useMemo(() => getTimeChartConfig(timeRange, analyticsAppointments), [analyticsAppointments, timeRange]);
+  const topDoctors = useMemo(() => buildRanking(analyticsAppointments, 'doctorId', 'unknown-doctor'), [analyticsAppointments]);
+  const topSpecialties = useMemo(() => buildRanking(analyticsAppointments, 'specialtyId', 'unknown-specialty'), [analyticsAppointments]);
+  const topClinics = useMemo(() => buildRanking(analyticsAppointments, 'clinicId', 'unknown-clinic'), [analyticsAppointments]);
+
+  const pendingCount = statCount(currentTaskAppointments, 'pending');
+  const rescheduleRequestCount = statCount(currentTaskAppointments, 'reschedule_requested');
+  const cancelRequestCount = statCount(currentTaskAppointments, 'cancel_requested');
+  const inProgressTodayCount = statCount(todayAppointments, 'in_progress');
+  const noShowCount = statCount(analyticsAppointments, 'no_show');
+
+  const actionAppointments = useMemo(
+    () => currentTaskAppointments
+      .slice()
+      .sort((a, b) => new Date(b.updatedAt || b.createdAt || fallbackAppointmentTimestamp(b) || 0) - new Date(a.updatedAt || a.createdAt || fallbackAppointmentTimestamp(a) || 0))
+      .slice(0, 8),
+    [currentTaskAppointments]
+  );
+
+  const recentUpdates = useMemo(() => analyticsAppointments
     .map((appointment) => {
       const meta = activityMeta(appointment);
       return {
         appointmentId: appointment._id,
+        status: appointment.status,
         patientName: getName(appointment.patientId),
         doctorName: getName(appointment.doctorId),
         ...meta
       };
     })
     .sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0))
-    .slice(0, 10), [filteredAppointments]);
+    .slice(0, 10), [analyticsAppointments]);
 
-  const statusChartData = useMemo(() => Object.entries(statusChartConfig).map(([status, config]) => ({
-    status,
-    ...config,
-    value: statCount(filteredAppointments, status)
-  })), [filteredAppointments]);
-
-  const timeChart = useMemo(() => getTimeChartConfig(timeRange, filteredAppointments), [filteredAppointments, timeRange]);
-
-  const topDoctors = useMemo(() => buildRanking(filteredAppointments, 'doctorId', 'unknown-doctor'), [filteredAppointments]);
-  const topSpecialties = useMemo(() => buildRanking(filteredAppointments, 'specialtyId', 'unknown-specialty'), [filteredAppointments]);
-  const topClinics = useMemo(() => buildRanking(filteredAppointments, 'clinicId', 'unknown-clinic'), [filteredAppointments]);
-
-  const clinicScopedAppointments = useMemo(() => appointments.filter((item) => {
-    return clinicFilter === 'all' || entityKey(item.clinicId, '') === clinicFilter;
-  }), [appointments, clinicFilter]);
-
-  const thisMonthAppointments = useMemo(
-    () => clinicScopedAppointments.filter((item) => isInDateRange(item, 'this_month')),
-    [clinicScopedAppointments]
-  );
-
-  const pendingCount = statCount(filteredAppointments, 'pending');
-  const rescheduleRequestCount = statCount(filteredAppointments, 'reschedule_requested');
-  const cancelRequestCount = statCount(filteredAppointments, 'cancel_requested');
-  const completedCount = statCount(filteredAppointments, 'completed');
-  const cancelledCount = statCount(filteredAppointments, 'cancelled');
-  const noShowCount = statCount(filteredAppointments, 'no_show');
   const doctorAccountStats = useMemo(() => {
     const linkedAccounts = doctorUsers.filter((item) => item.doctorId);
     return {
       issued: linkedAccounts.length,
       unissued: Math.max(doctors.length - linkedAccounts.length, 0),
-      temporary: linkedAccounts.filter((item) => item.mustChangePassword && item.isActive !== false).length,
       locked: linkedAccounts.filter((item) => item.isActive === false).length
     };
   }, [doctorUsers, doctors.length]);
 
-  const priorityStats = [
+  const selectedScopeLabel = scopeLabel(timeRange, clinicFilter, clinics);
+  const selectedClinicLabel = clinicFilter === 'all'
+    ? 'toàn hệ thống'
+    : clinics.find((clinic) => clinic._id === clinicFilter)?.name || 'cơ sở đã chọn';
+
+  const todayStats = [
     {
-      label: 'Lịch hôm nay',
-      description: 'Các lịch khám cần theo dõi trong ngày',
-      value: filteredAppointments.filter((item) => isToday(item.date)).length,
-      icon: '📅',
-      tone: 'cyan',
+      label: 'Tổng lịch hôm nay',
+      description: `Ngày ${formatDateLabel(todayKey)} · ${selectedClinicLabel}`,
+      value: todayAppointments.length,
+      badge: 'Hôm nay',
+      tone: 'primary',
+      marker: 'calendar',
       to: '/admin/appointments?date=today'
     },
     {
       label: 'Chờ xác nhận',
       description: 'Lịch mới cần phòng khám xác nhận',
       value: pendingCount,
-      icon: '⌛',
+      badge: pendingCount ? 'Cần xử lý' : 'Ổn định',
       tone: 'warning',
+      marker: 'pending',
       to: '/admin/appointments?status=pending'
     },
     {
       label: 'Yêu cầu đổi lịch',
       description: 'Bệnh nhân đang chờ phản hồi đổi lịch',
       value: rescheduleRequestCount,
-      icon: '↻',
+      badge: rescheduleRequestCount ? 'Cần xử lý' : 'Ổn định',
       tone: 'info',
+      marker: 'reschedule',
       to: '/admin/appointments?status=reschedule_requested'
     },
     {
       label: 'Yêu cầu hủy',
       description: 'Yêu cầu hủy cần được xử lý',
       value: cancelRequestCount,
-      icon: '↩',
+      badge: cancelRequestCount ? 'Cần xử lý' : 'Ổn định',
       tone: 'danger',
+      marker: 'cancel',
       to: '/admin/appointments?status=cancel_requested'
+    },
+    {
+      label: 'Đang khám',
+      description: 'Lịch hôm nay đang trong quy trình khám',
+      value: inProgressTodayCount,
+      badge: 'Theo dõi',
+      tone: 'success',
+      marker: 'progress',
+      to: '/admin/appointments?status=in_progress'
     }
   ];
 
   const immediateTasks = [
-    { label: 'lịch chờ xác nhận', value: pendingCount, to: '/admin/appointments?status=pending', tone: 'warning' },
-    { label: 'yêu cầu đổi lịch', value: rescheduleRequestCount, to: '/admin/appointments?status=reschedule_requested', tone: 'info' },
-    { label: 'yêu cầu hủy', value: cancelRequestCount, to: '/admin/appointments?status=cancel_requested', tone: 'danger' }
+    {
+      label: 'Lịch chờ xác nhận',
+      value: pendingCount,
+      description: 'Kiểm tra lịch mới và xác nhận để bệnh nhân nhận phiếu khám.',
+      to: '/admin/appointments?status=pending',
+      tone: 'warning'
+    },
+    {
+      label: 'Yêu cầu đổi lịch',
+      value: rescheduleRequestCount,
+      description: 'Phản hồi yêu cầu đổi ngày hoặc khung giờ khám.',
+      to: '/admin/appointments?status=reschedule_requested',
+      tone: 'info'
+    },
+    {
+      label: 'Yêu cầu hủy',
+      value: cancelRequestCount,
+      description: 'Xử lý yêu cầu hủy và cập nhật trạng thái lịch hẹn.',
+      to: '/admin/appointments?status=cancel_requested',
+      tone: 'danger'
+    }
   ];
 
-  const systemOverviewStats = [
-    { label: 'Lịch tháng này', value: thisMonthAppointments.length, icon: 'TH', tone: 'neutral' },
-    { label: 'Tỷ lệ hoàn thành', value: percentage(completedCount, filteredAppointments.length), icon: '✓', tone: 'primary' },
-    { label: 'Tỷ lệ hủy', value: percentage(cancelledCount, filteredAppointments.length), icon: '×', tone: 'danger' },
-    { label: 'Không đến khám', value: noShowCount, icon: '!', tone: 'danger' },
-    { label: 'Tổng bác sĩ', value: doctors.length, icon: 'BS', tone: 'primary' },
-    { label: 'Đã cấp tài khoản', value: doctorAccountStats.issued, icon: 'TK', tone: 'info' },
-    { label: 'Chưa cấp tài khoản', value: doctorAccountStats.unissued, icon: '—', tone: 'neutral' },
-    { label: 'Chưa đổi mật khẩu lần đầu', value: doctorAccountStats.temporary, icon: 'MK', tone: 'warning' },
-    { label: 'Đang bị khóa', value: doctorAccountStats.locked, icon: 'K', tone: 'danger' },
-    { label: 'Tổng chuyên khoa', value: specialties.length, icon: 'CK', tone: 'cyan' },
-    { label: 'Tổng cơ sở', value: clinics.length, icon: 'CS', tone: 'info' }
+  const systemInventoryStats = [
+    { label: 'Tổng cơ sở', value: clinics.length, tone: 'info' },
+    { label: 'Tổng bác sĩ', value: doctors.length, tone: 'primary' },
+    { label: 'Tổng chuyên khoa', value: specialties.length, tone: 'cyan' },
+    { label: 'Đã cấp tài khoản', value: doctorAccountStats.issued, tone: 'success' },
+    { label: 'Chưa cấp tài khoản', value: doctorAccountStats.unissued, tone: 'neutral' },
+    { label: 'Tài khoản bị khóa', value: doctorAccountStats.locked, tone: 'danger' }
   ];
 
   const quickActions = [
-    { label: 'Thêm bác sĩ', to: '/admin/doctors', icon: '+' },
-    { label: 'Thêm chuyên khoa', to: '/admin/specialties', icon: '+' },
-    { label: 'Thêm lịch làm việc', to: '/admin/schedules', icon: '+' },
-    { label: 'Xem lịch hẹn', to: '/admin/appointments', icon: '→' }
+    { label: 'Quản lý lịch hẹn', description: 'Xem, lọc và xử lý trạng thái lịch', to: '/admin/appointments', tone: 'primary' },
+    { label: 'Quản lý bác sĩ', description: 'Thông tin bác sĩ và tài khoản liên kết', to: '/admin/doctors', tone: 'info' },
+    { label: 'Quản lý lịch làm việc', description: 'Ca khám, ngày nghỉ và ngoại lệ', to: '/admin/schedules', tone: 'warning' },
+    { label: 'Quản lý cơ sở', description: 'Danh sách phòng khám trong hệ thống', to: '/admin/clinics', tone: 'success' }
   ];
+
+  if (isLoading) {
+    return (
+      <>
+        <div className="page-heading admin-page-heading">
+          <div>
+            <span className="eyebrow">Tổng quan</span>
+            <h1 className="h3 mt-2 mb-0">Dashboard vận hành</h1>
+          </div>
+        </div>
+        <DashboardLoading />
+      </>
+    );
+  }
 
   return (
     <>
-      {/* ── Page Header ── */}
       <div className="page-heading admin-page-heading">
         <div>
           <span className="eyebrow">Tổng quan</span>
           <h1 className="h3 mt-2 mb-0">Dashboard vận hành</h1>
-          <p className="text-secondary mt-1 mb-0">Theo dõi và vận hành hệ thống đặt lịch khám.</p>
+          <p className="text-secondary mt-1 mb-0">Theo dõi vận hành lịch khám, yêu cầu cần xử lý và dữ liệu quản trị cốt lõi.</p>
         </div>
       </div>
 
-      {error && <div className="alert alert-danger mb-3">{error}</div>}
+      {error && (
+        <div className="alert alert-danger mb-3" role="alert">
+          Không tải được dữ liệu dashboard: {error}
+        </div>
+      )}
 
-      {/* ── KPI Cards ── */}
-      <div className="dash-kpi-grid">
-        {priorityStats.map((item) => (
-          <Link
-            className={`dash-kpi-card accent-${item.tone === 'warning' ? 'amber' : item.tone === 'info' ? 'cyan' : item.tone === 'danger' ? 'red' : 'violet'}`}
-            key={item.label}
-            to={item.to}
-          >
-            <div className={`dash-kpi-icon ${item.tone === 'warning' ? 'amber' : item.tone === 'info' ? 'cyan' : item.tone === 'danger' ? 'red' : 'violet'}`}>
-              {item.icon}
+      {!error && (
+        <div className="admin-dashboard-page">
+          <section className="dash-section-block" aria-labelledby="today-operations-heading">
+            <div className="dash-section-head dash-section-head-compact">
+              <div>
+                <span className="eyebrow">Today Operations</span>
+                <h2 id="today-operations-heading">Vận hành hôm nay</h2>
+                <p>Không phụ thuộc bộ lọc thời gian analytics. Phạm vi cơ sở: {selectedClinicLabel}.</p>
+              </div>
             </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div className="dash-kpi-value">{item.value}</div>
-              <div className="dash-kpi-label">{item.label}</div>
-            </div>
-            {item.value > 0 && <span className="dash-kpi-badge">Mới</span>}
-          </Link>
-        ))}
-      </div>
-
-      {/* ── Immediate Tasks + Quick Actions ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-        <div className="dash-section-card">
-          <div className="dash-section-head">
-            <div>
-              <h2>Cần xử lý ngay</h2>
-              <p>Các công việc vận hành cần ưu tiên.</p>
-            </div>
-          </div>
-          {immediateTasks.every((item) => item.value === 0) ? (
-            <div style={{ padding: '12px 0', color: 'var(--color-success)', fontSize: '0.9rem', fontWeight: 600 }}>
-              ✓ Không có công việc cần xử lý ngay
-            </div>
-          ) : (
-            <div className="dash-immediate-grid">
-              {immediateTasks.map((item) => (
-                <Link
-                  className={`dash-immediate-card ${item.tone === 'warning' ? 'amber-card' : item.tone === 'info' ? 'info-card' : 'red-card'}`}
-                  key={item.label}
-                  to={item.to}
-                >
-                  <span className="dash-immediate-count">{item.value}</span>
-                  <span className="dash-immediate-label">{item.label}</span>
-                  <span className="dash-immediate-arrow">→</span>
+            <div className="dash-kpi-grid dash-kpi-grid-five">
+              {todayStats.map((item) => (
+                <Link className={`dash-kpi-card accent-${item.tone}`} key={item.label} to={item.to}>
+                  <div className={`dash-kpi-icon ${item.tone}`} aria-hidden="true">
+                    <span className={`dash-kpi-marker dash-kpi-marker-${item.marker}`} />
+                  </div>
+                  <div className="dash-kpi-content">
+                    <div className="dash-kpi-value">{item.value}</div>
+                    <div className="dash-kpi-label">{item.label}</div>
+                    <p>{item.description}</p>
+                  </div>
+                  <span className={`dash-kpi-badge dash-kpi-badge-${item.tone}`}>{item.badge}</span>
                 </Link>
               ))}
             </div>
-          )}
-        </div>
+          </section>
 
-        <div className="dash-section-card">
-          <div className="dash-section-head">
-            <div>
-              <h2>Thao tác nhanh</h2>
-              <p>Đi tới các luồng quản trị thường dùng.</p>
-            </div>
-          </div>
-          <div className="dash-quick-actions-grid">
-            {quickActions.map((item) => (
-              <Link className="dash-quick-action" key={item.label} to={item.to}>
-                <span className="dash-quick-action-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Analytics Filter ── */}
-      <div className="dash-filter-bar">
-        <div>
-          <h2>Analytics</h2>
-          <p>KPI, biểu đồ và xếp hạng theo bộ lọc bên dưới.</p>
-        </div>
-        <div className="dash-filter-controls">
-          <label className="dash-filter-label">
-            <span>Thời gian</span>
-            <select className="form-select form-select-sm" value={timeRange} onChange={(event) => setTimeRange(event.target.value)}>
-              {timeFilterOptions.map((option) => (
-                <option key={option.value} value={option.value}>{option.label}</option>
-              ))}
-            </select>
-          </label>
-          <label className="dash-filter-label">
-            <span>Cơ sở</span>
-            <select className="form-select form-select-sm" value={clinicFilter} onChange={(event) => setClinicFilter(event.target.value)}>
-              <option value="all">Tất cả cơ sở</option>
-              {clinics.map((clinic) => (
-                <option key={clinic._id} value={clinic._id}>{clinic.name}</option>
-              ))}
-            </select>
-          </label>
-        </div>
-      </div>
-
-      {/* ── Charts ── */}
-      <div className="dash-charts-grid">
-        <div className="dash-chart-card">
-          <div className="dash-chart-card-head">
-            <div>
-              <h2>Trạng thái lịch hẹn</h2>
-              <p>Tỷ lệ phân bổ theo trạng thái vận hành.</p>
-            </div>
-          </div>
-          <StatusDonutChart data={statusChartData} />
-        </div>
-
-        <div className="dash-chart-card">
-          <div className="dash-chart-card-head">
-            <div>
-              <h2>Lịch hẹn theo thời gian</h2>
-              <p>{timeChart.title}</p>
-            </div>
-          </div>
-          <TimeAppointmentsChart data={timeChart.data} type={timeChart.type} />
-        </div>
-      </div>
-
-      {/* ── Rankings ── */}
-      <div className="dash-ranking-grid">
-        <RankingCard title="Top bác sĩ" items={topDoctors} emptyMessage="Chưa có dữ liệu" />
-        <RankingCard title="Top chuyên khoa" items={topSpecialties} emptyMessage="Chưa có dữ liệu" />
-        <RankingCard title="Top cơ sở" items={topClinics} emptyMessage="Chưa có dữ liệu" />
-      </div>
-
-      {/* ── System Overview ── */}
-      <div className="dash-section-card">
-        <div className="dash-section-head">
-          <div>
-            <h2>Tổng quan hệ thống</h2>
-            <p>Các chỉ số vận hành và tài khoản bác sĩ.</p>
-          </div>
-        </div>
-        <div className="dash-system-grid">
-          {systemOverviewStats.map((item) => (
-            <div className="dash-system-stat" key={item.label}>
-              <div className={`dash-system-stat-icon ds-stat-icon ${item.tone === 'primary' ? 'sky' : item.tone === 'info' ? 'cyan' : item.tone === 'warning' ? 'amber' : item.tone === 'danger' ? 'red' : 'gray'}`}>
-                {item.icon}
+          <section className="dash-section-card dash-task-center" aria-labelledby="task-center-heading">
+            <div className="dash-section-head">
+              <div>
+                <span className="eyebrow">Task Center</span>
+                <h2 id="task-center-heading">Việc cần xử lý hiện tại</h2>
+                <p>3 nhóm tác vụ thật từ lịch hẹn, theo phạm vi cơ sở đang chọn và không phụ thuộc analytics time range.</p>
               </div>
-              <div className="dash-system-stat-value">{item.value}</div>
-              <div className="dash-system-stat-label">{item.label}</div>
             </div>
-          ))}
-        </div>
-      </div>
+            {immediateTasks.every((item) => item.value === 0) ? (
+              <div className="dash-success-note">Không có yêu cầu cần xử lý ngay trong phạm vi hiện tại.</div>
+            ) : (
+              <div className="dash-immediate-grid">
+                {immediateTasks.map((item) => (
+                  <Link className={`dash-immediate-card ${item.tone}-card`} key={item.label} to={item.to}>
+                    <span className="dash-immediate-count">{item.value}</span>
+                    <span className="dash-immediate-body">
+                      <strong>{item.label}</strong>
+                      <small>{item.description}</small>
+                    </span>
+                    <span className="dash-immediate-arrow">Xử lý</span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </section>
 
-      {/* ── Action Appointments ── */}
-      <div className="dash-section-card">
-        <div className="dash-section-head">
-          <div>
-            <h2>Lịch hẹn cần xử lý</h2>
-            <p>Ưu tiên các lịch chờ xác nhận, yêu cầu hủy và đổi lịch.</p>
-          </div>
-          <Link className="btn btn-sm btn-outline-primary" to="/admin/appointments">Xem tất cả</Link>
-        </div>
-        <AppointmentMiniTable appointments={actionAppointments} compactEmpty emptyMessage="Không có lịch hẹn cần xử lý" showAction />
-      </div>
-
-      {/* ── Activity Feed + Recent Appointments ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-        <div className="dash-section-card" style={{ margin: 0 }}>
-          <div className="dash-section-head">
+          <section className="dash-filter-bar" aria-labelledby="analytics-filter-heading">
             <div>
-              <h2>Hoạt động gần đây</h2>
-              <p>Theo dõi các thay đổi mới nhất.</p>
+              <span className="eyebrow">Analytics</span>
+              <h2 id="analytics-filter-heading">Phân tích lịch hẹn</h2>
+              <p>Bộ lọc thời gian chỉ áp dụng cho biểu đồ, xếp hạng và cập nhật gần đây.</p>
             </div>
-          </div>
-          <ActivityFeed activities={activities} />
-        </div>
+            <div className="dash-filter-controls">
+              <label className="dash-filter-label">
+                <span>Phân tích theo khoảng thời gian</span>
+                <select className="form-select form-select-sm" value={timeRange} onChange={(event) => setTimeRange(event.target.value)}>
+                  {timeFilterOptions.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="dash-filter-label">
+                <span>Phạm vi cơ sở</span>
+                <select className="form-select form-select-sm" value={clinicFilter} onChange={(event) => setClinicFilter(event.target.value)}>
+                  <option value="all">Tất cả cơ sở</option>
+                  {clinics.map((clinic) => (
+                    <option key={clinic._id} value={clinic._id}>{clinic.name}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </section>
 
-        <div className="dash-section-card" style={{ margin: 0 }}>
-          <div className="dash-section-head">
-            <div>
-              <h2>Lịch hẹn gần đây</h2>
-              <p>8 lịch mới nhất trong hệ thống.</p>
-            </div>
-            <Link className="btn btn-sm btn-primary" to="/admin/appointments">Xem tất cả</Link>
+          <div className="dash-charts-grid">
+            <section className="dash-chart-card" aria-labelledby="status-overview-heading">
+              <div className="dash-chart-card-head">
+                <div>
+                  <h2 id="status-overview-heading">Trạng thái lịch hẹn</h2>
+                  <p>Phân bổ trạng thái theo {selectedScopeLabel}. Không gộp yêu cầu với kết quả xử lý.</p>
+                </div>
+                {noShowCount > 0 && <span className="dash-attention-chip">{noShowCount} không đến khám</span>}
+              </div>
+              <StatusDonutChart data={statusChartData} />
+            </section>
+
+            <section className="dash-chart-card" aria-labelledby="time-trend-heading">
+              <div className="dash-chart-card-head">
+                <div>
+                  <h2 id="time-trend-heading">Xu hướng số lịch hẹn</h2>
+                  <p>{timeChart.title} · {selectedScopeLabel}</p>
+                </div>
+              </div>
+              <TimeAppointmentsChart data={timeChart.data} type={timeChart.type} />
+            </section>
           </div>
-          <AppointmentMiniTable appointments={recentAppointments} emptyMessage="Chưa có lịch hẹn nào" />
+
+          <section className={`dash-ranking-grid ${clinicFilter !== 'all' ? 'dash-ranking-grid-two' : ''}`} aria-label="Xếp hạng theo số lịch hẹn">
+            <RankingCard title="Bác sĩ có nhiều lịch nhất" type="doctor" items={topDoctors} emptyMessage="Chưa có dữ liệu bác sĩ trong phạm vi này" />
+            <RankingCard title="Chuyên khoa có nhiều lịch nhất" type="specialty" items={topSpecialties} emptyMessage="Chưa có dữ liệu chuyên khoa trong phạm vi này" />
+            {clinicFilter === 'all' && (
+              <RankingCard title="Cơ sở có nhiều lịch nhất" type="clinic" items={topClinics} emptyMessage="Chưa có dữ liệu cơ sở trong phạm vi này" />
+            )}
+          </section>
+
+          <section className="dash-section-card" aria-labelledby="action-appointments-heading">
+            <div className="dash-section-head">
+              <div>
+                <h2 id="action-appointments-heading">Lịch hẹn cần xử lý</h2>
+                <p>Danh sách ưu tiên từ Task Center, sắp theo cập nhật gần nhất.</p>
+              </div>
+              <Link className="btn btn-sm btn-outline-primary" to="/admin/appointments">Xem tất cả</Link>
+            </div>
+            <AppointmentMiniTable appointments={actionAppointments} emptyMessage="Không có lịch hẹn cần xử lý" showAction />
+          </section>
+
+          <section className="dash-section-card" aria-labelledby="recent-updates-heading">
+            <div className="dash-section-head">
+              <div>
+                <h2 id="recent-updates-heading">Cập nhật lịch hẹn gần đây</h2>
+                <p>Dữ liệu được suy ra từ lịch hẹn, không phải audit log hệ thống.</p>
+              </div>
+              <Link className="btn btn-sm btn-primary" to="/admin/appointments">Mở trang lịch hẹn</Link>
+            </div>
+            <AppointmentUpdatesList updates={recentUpdates} />
+          </section>
+
+          <div className="dash-lower-grid">
+            <section className="dash-section-card dash-secondary-card" aria-labelledby="inventory-heading">
+              <div className="dash-section-head">
+                <div>
+                  <h2 id="inventory-heading">System Inventory</h2>
+                  <p>Thông tin cấu hình hệ thống, đặt ở mức ưu tiên phụ.</p>
+                </div>
+              </div>
+              <div className="dash-system-grid">
+                {systemInventoryStats.map((item) => (
+                  <div className={`dash-system-stat tone-${item.tone}`} key={item.label}>
+                    <span className={`dash-system-stat-marker ${item.tone}`} aria-hidden="true" />
+                    <div className="dash-system-stat-value">{item.value}</div>
+                    <div className="dash-system-stat-label">{item.label}</div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="dash-section-card dash-secondary-card" aria-labelledby="quick-actions-heading">
+              <div className="dash-section-head">
+                <div>
+                  <h2 id="quick-actions-heading">Thao tác nhanh</h2>
+                  <p>Các luồng quản trị thường dùng.</p>
+                </div>
+              </div>
+              <div className="dash-quick-actions-grid">
+                {quickActions.map((item) => (
+                  <Link className={`dash-quick-action ${item.tone}`} key={item.label} to={item.to}>
+                    <span className="dash-quick-action-icon" aria-hidden="true" />
+                    <span>
+                      <strong>{item.label}</strong>
+                      <small>{item.description}</small>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

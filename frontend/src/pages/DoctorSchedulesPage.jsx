@@ -173,6 +173,7 @@ export default function DoctorSchedulesPage() {
   const [exceptions, setExceptions] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState('');
   const [savingTemplate, setSavingTemplate] = useState(false);
   const [exceptionModalOpen, setExceptionModalOpen] = useState(false);
   const [exceptionForm, setExceptionForm] = useState(defaultExceptionForm);
@@ -207,6 +208,7 @@ export default function DoctorSchedulesPage() {
   async function loadData() {
     if (!user?.doctorId) return;
     setLoading(true);
+    setLoadError('');
     try {
       const [templatePayload, exceptionPayload, appointmentPayload] = await Promise.all([
         api('/doctor/schedule-template'),
@@ -217,7 +219,9 @@ export default function DoctorSchedulesPage() {
       setExceptions(exceptionPayload.data || []);
       setAppointments(appointmentPayload.data || []);
     } catch (error) {
-      toast.error(error.message || 'Không tải được lịch làm việc');
+      const message = error.message || 'Không tải được lịch làm việc';
+      setLoadError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -366,13 +370,15 @@ export default function DoctorSchedulesPage() {
     <div className="doctor-page doctor-schedules-page">
       <div className="doctor-page-header">
         <div className="doctor-page-header-main">
-          <span className="eyebrow">Lịch làm việc của tôi</span>
-          <h1 className="h3 mt-2 mb-1">Quản lý lịch khám theo tuần</h1>
-          <p className="text-secondary mb-0">Cấu hình lịch mặc định một lần, chỉ tạo ngoại lệ khi nghỉ, đổi ca hoặc tăng ca.</p>
+          <p className="doctor-page-eyebrow">Lịch làm việc</p>
+          <h1 className="doctor-page-title">Quản lý lịch khám</h1>
+          <p className="doctor-page-subtitle">Cấu hình lịch mặc định, ngày nghỉ và các thay đổi lịch trong một nơi.</p>
         </div>
-        <button className="btn btn-primary" disabled={!user?.doctorId} type="button" onClick={() => openCreateException()}>
-          Tạo ngoại lệ
-        </button>
+        <div className="doctor-page-actions">
+          <button className="btn btn-primary" disabled={!user?.doctorId} type="button" onClick={() => openCreateException()}>
+            Tạo ngoại lệ
+          </button>
+        </div>
       </div>
 
       <section className="doctor-schedule-stats">
@@ -382,7 +388,7 @@ export default function DoctorSchedulesPage() {
         <article><strong>{stats.fillRate}%</strong><span>Tỷ lệ lấp đầy lịch</span></article>
       </section>
 
-      <div className="admin-tabs mb-3">
+      <div className="admin-tabs doctor-schedule-tabs mb-3">
         <button className={`admin-tab ${activeTab === 'template' ? 'active' : ''}`} type="button" onClick={() => setActiveTab('template')}>
           Lịch làm việc mặc định
         </button>
@@ -390,15 +396,27 @@ export default function DoctorSchedulesPage() {
           Ngày nghỉ & thay đổi lịch
         </button>
         <button className={`admin-tab ${activeTab === 'calendar' ? 'active' : ''}`} type="button" onClick={() => setActiveTab('calendar')}>
-          Calendar view
+          Lịch tháng
         </button>
       </div>
 
       {loading ? (
         <section className="management-panel admin-table-card"><AdminEmptyState message="Đang tải lịch làm việc..." /></section>
+      ) : loadError ? (
+        <section className="management-panel admin-table-card">
+          <div className="doctor-schedule-inline-error" role="status">
+            <div>
+              <strong>Không tải được lịch làm việc</strong>
+              <p>{loadError}</p>
+            </div>
+            <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => loadData()}>
+              Thử lại
+            </button>
+          </div>
+        </section>
       ) : null}
 
-      {!loading && activeTab === 'template' && (
+      {!loading && !loadError && activeTab === 'template' && (
         <section className="management-panel admin-table-card">
           <div className="doctor-template-header">
             <div>
@@ -423,7 +441,12 @@ export default function DoctorSchedulesPage() {
               return (
                 <article className="doctor-day-template-card" key={day}>
                   <div className="doctor-day-template-title">
-                    <strong>{label}</strong>
+                    <div>
+                      <strong>{label}</strong>
+                      <span className={`doctor-day-template-state ${rows.length ? 'working' : 'off'}`}>
+                        {rows.length ? `${rows.length} ca làm việc` : 'Chưa cấu hình ca'}
+                      </span>
+                    </div>
                     <div className="doctor-day-template-actions">
                       <button className="btn btn-sm btn-outline-primary" disabled={!canAddMorning} title={!canAddMorning ? morningTitle : undefined} type="button" onClick={() => addTemplateShift(day, morningShift)}>
                         Thêm ca sáng
@@ -445,13 +468,22 @@ export default function DoctorSchedulesPage() {
                           <strong>{getShiftLabel(item)}</strong>
                           <span>{item.startTime} - {item.endTime}</span>
                         </div>
-                        <label className="admin-schedule-switch compact">
+                        <label className="admin-schedule-switch compact doctor-shift-switch" title={item.isWorking ? 'Đang làm việc' : 'Tạm nghỉ'}>
                           <input type="checkbox" checked={item.isWorking} onChange={(event) => updateTemplate(index, 'isWorking', event.target.checked)} />
                           <span />
                         </label>
-                        <input type="time" value={item.startTime} onChange={(event) => updateTemplate(index, 'startTime', event.target.value)} />
-                        <input type="time" value={item.endTime} onChange={(event) => updateTemplate(index, 'endTime', event.target.value)} />
-                        <input min="5" step="5" type="number" value={item.slotDuration} onChange={(event) => updateTemplate(index, 'slotDuration', event.target.value)} />
+                        <label className="doctor-shift-field">
+                          <span>Bắt đầu</span>
+                          <input type="time" value={item.startTime} onChange={(event) => updateTemplate(index, 'startTime', event.target.value)} />
+                        </label>
+                        <label className="doctor-shift-field">
+                          <span>Kết thúc</span>
+                          <input type="time" value={item.endTime} onChange={(event) => updateTemplate(index, 'endTime', event.target.value)} />
+                        </label>
+                        <label className="doctor-shift-field">
+                          <span>Slot</span>
+                          <input min="5" step="5" type="number" value={item.slotDuration} onChange={(event) => updateTemplate(index, 'slotDuration', event.target.value)} />
+                        </label>
                         <button className="btn btn-sm btn-outline-danger" type="button" onClick={() => removeTemplate(index)}>Xóa</button>
                       </div>
                     );
@@ -465,7 +497,7 @@ export default function DoctorSchedulesPage() {
         </section>
       )}
 
-      {!loading && activeTab === 'exceptions' && (
+      {!loading && !loadError && activeTab === 'exceptions' && (
         <section className="management-panel admin-table-card">
           <div className="doctor-template-header">
             <div>
@@ -476,7 +508,7 @@ export default function DoctorSchedulesPage() {
           </div>
 
           {exceptions.length ? (
-            <div className="table-responsive">
+            <div className="table-responsive doctor-schedule-exception-table">
               <table className="table table-hover align-middle admin-table">
                 <thead>
                   <tr><th>Ngày</th><th>Loại</th><th>Giờ</th><th>Lý do</th><th /></tr>
@@ -503,11 +535,11 @@ export default function DoctorSchedulesPage() {
         </section>
       )}
 
-      {!loading && activeTab === 'calendar' && (
+      {!loading && !loadError && activeTab === 'calendar' && (
         <section className="management-panel admin-table-card">
           <div className="doctor-template-header">
             <div>
-              <h2>Calendar view</h2>
+              <h2>Lịch tháng</h2>
               <p>Xanh: có lịch mặc định. Đỏ: nghỉ. Cam: ngoại lệ/đổi ca.</p>
             </div>
             <input className="form-control doctor-month-picker" type="month" value={month} onChange={(event) => setMonth(event.target.value)} />
@@ -533,7 +565,7 @@ export default function DoctorSchedulesPage() {
       )}
 
       {exceptionModalOpen && (
-        <BaseModal className="admin-modal" onClose={() => setExceptionModalOpen(false)}>
+        <BaseModal ariaLabel={editingException ? 'Cập nhật ngoại lệ lịch làm việc' : 'Tạo ngoại lệ lịch làm việc'} className="admin-modal" onClose={() => setExceptionModalOpen(false)}>
           <div className="d-flex align-items-center justify-content-between mb-3">
             <div>
               <span className="eyebrow">Ngoại lệ lịch</span>

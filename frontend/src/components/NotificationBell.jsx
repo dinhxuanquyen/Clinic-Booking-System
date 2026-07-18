@@ -487,6 +487,7 @@ export default function NotificationBell({ isOpen: controlledOpen, onToggle, onC
       </div>
 
       <BaseModal
+        ariaLabel="Lịch khám trống từ danh sách chờ"
         show={Boolean(waitingOffer)}
         onClose={() => setWaitingOffer(null)}
         disableClose={offerActionLoading}

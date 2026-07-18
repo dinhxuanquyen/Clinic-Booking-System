@@ -275,7 +275,7 @@ export default function AdminServicePackagesPage() {
       </section>
 
       {modalOpen && (
-        <BaseModal className="admin-modal service-package-modal" onClose={() => !saving && setModalOpen(false)} size="lg">
+        <BaseModal ariaLabel={editing ? 'Cập nhật gói khám' : 'Thêm gói khám'} className="admin-modal service-package-modal" onClose={() => !saving && setModalOpen(false)} size="lg">
           <form onSubmit={submit}>
             <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
               <div>

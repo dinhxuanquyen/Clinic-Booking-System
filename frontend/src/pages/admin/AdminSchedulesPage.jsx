@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { api } from '../../api/client.js';
 import { useToast } from '../../context/ToastContext.jsx';
 import { AdminAlert, AdminEmptyState, AdminPagination, getId, getName, Modal, paginate } from './adminUtils.jsx';
+import { getVietnamToday } from '../../utils/dateTime.js';
 
 const defaultForm = {
   doctorId: '',
   clinicId: '',
-  date: '2026-06-01',
+  date: todayString(),
   workingHoursStart: '08:00',
   workingHoursEnd: '11:00',
   slotDuration: 30,
@@ -15,7 +16,7 @@ const defaultForm = {
 };
 
 function todayString() {
-  return new Date().toISOString().slice(0, 10);
+  return getVietnamToday();
 }
 
 function parseWorkingHours(value, fallbackStart = '08:00', fallbackEnd = '11:00') {
@@ -38,8 +39,10 @@ export default function AdminSchedulesPage() {
   const [slotFilters, setSlotFilters] = useState({ clinicId: '', doctorId: '', date: todayString() });
   const [slotLoading, setSlotLoading] = useState(false);
   const [slotMessage, setSlotMessage] = useState('');
+  const [slotError, setSlotError] = useState('');
   const [slotData, setSlotData] = useState([]);
   const [slotViewed, setSlotViewed] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const filterDoctors = doctors.filter((item) => !filters.clinicId || getId(item.clinicId) === filters.clinicId);
@@ -78,6 +81,8 @@ export default function AdminSchedulesPage() {
   }, [filters.clinicId, filters.doctorId, filters.date]);
 
   function load() {
+    setLoading(true);
+    setError('');
     Promise.all([api('/doctors'), api('/schedules')])
       .then(([doctorPayload, schedulePayload]) => {
         setDoctors(doctorPayload.data || []);
@@ -86,7 +91,8 @@ export default function AdminSchedulesPage() {
       .catch((err) => {
         setError(err.message);
         toast.error(err.message);
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   useEffect(load, []);
@@ -94,7 +100,7 @@ export default function AdminSchedulesPage() {
   function openCreate() {
     setEditing(null);
     setError('');
-    setForm({ ...defaultForm, doctorId: '', clinicId: '' });
+    setForm({ ...defaultForm, date: todayString(), doctorId: '', clinicId: '' });
     setModalOpen(true);
   }
 
@@ -134,6 +140,7 @@ export default function AdminSchedulesPage() {
     setSlotFilters({ ...slotFilters, clinicId, doctorId: '' });
     setSlotData([]);
     setSlotMessage('');
+    setSlotError('');
     setSlotViewed(false);
   }
 
@@ -146,6 +153,7 @@ export default function AdminSchedulesPage() {
     setSlotLoading(true);
     setSlotViewed(true);
     setSlotMessage('');
+    setSlotError('');
     try {
       const payload = await api(`/doctors/${slotFilters.doctorId}/available-slots?date=${slotFilters.date}`);
       setSlotData(payload.data || []);
@@ -153,6 +161,7 @@ export default function AdminSchedulesPage() {
     } catch (err) {
       setSlotData([]);
       setSlotMessage('');
+      setSlotError(err.message);
       toast.error(err.message);
     } finally {
       setSlotLoading(false);
@@ -203,8 +212,8 @@ export default function AdminSchedulesPage() {
   }
 
   return (
-    <>
-      <div className="d-flex justify-content-between align-items-center page-heading admin-page-heading">
+    <div className="admin-schedules-page">
+      <div className="d-flex justify-content-between align-items-center page-heading admin-page-heading admin-schedules-heading">
         <div><span className="eyebrow">Quản lý</span><h1 className="h3 mt-2 mb-0">Lịch làm việc</h1></div>
         <button className="btn btn-primary" onClick={openCreate}>Thêm lịch</button>
       </div>
@@ -219,8 +228,8 @@ export default function AdminSchedulesPage() {
       </div>
 
       {activeTab === 'list' && (
-      <div className="management-panel admin-table-card">
-        <div className="admin-table-toolbar">
+      <div className="management-panel admin-table-card admin-schedules-list-card">
+        <div className="admin-table-toolbar admin-schedules-filter-panel">
           <select className="form-select" value={filters.clinicId} onChange={(event) => updateFilterClinic(event.target.value)}>
             <option value="">Tất cả cơ sở</option>
             {clinics.map((item) => <option key={getId(item)} value={getId(item)}>{getName(item)}</option>)}
@@ -232,7 +241,21 @@ export default function AdminSchedulesPage() {
           <input className="form-control" type="date" value={filters.date} onChange={(event) => setFilters({ ...filters, date: event.target.value })} />
         </div>
 
-        {filteredSchedules.length ? (
+        {!loading && !error && (
+          <div className="admin-schedules-result-bar">
+            <strong>{filteredSchedules.length}</strong>
+            <span>lịch làm việc phù hợp</span>
+            {(filters.clinicId || filters.doctorId || filters.date) && <em>Đang áp dụng bộ lọc</em>}
+          </div>
+        )}
+
+        {error && <AdminAlert message={error} type="danger" />}
+
+        {loading ? (
+          <div className="admin-schedules-loading" aria-live="polite">
+            {Array.from({ length: 4 }, (_, index) => <span key={index} />)}
+          </div>
+        ) : filteredSchedules.length ? (
           <>
             <div className="table-responsive">
               <table className="table table-hover align-middle admin-table">
@@ -288,6 +311,7 @@ export default function AdminSchedulesPage() {
                     setSlotFilters({ ...slotFilters, doctorId: event.target.value });
                     setSlotData([]);
                     setSlotMessage('');
+                    setSlotError('');
                     setSlotViewed(false);
                   }}
                 >
@@ -305,6 +329,7 @@ export default function AdminSchedulesPage() {
                     setSlotFilters({ ...slotFilters, date: event.target.value });
                     setSlotData([]);
                     setSlotMessage('');
+                    setSlotError('');
                     setSlotViewed(false);
                   }}
                 />
@@ -321,23 +346,35 @@ export default function AdminSchedulesPage() {
 
           {slotViewed && (
             <div className="admin-schedule-slot-view">
-              <div className="admin-schedule-summary">
-                <div><span>Cơ sở</span><strong>{getName(selectedSlotClinic)}</strong></div>
-                <div><span>Bác sĩ</span><strong>{getName(selectedSlotDoctor)}</strong></div>
-                <div><span>Ngày</span><strong>{slotFilters.date}</strong></div>
-                <div><span>Tổng slot</span><strong>{slotSummary.total}</strong></div>
-                <div className="success"><span>Trống</span><strong>{slotSummary.available}</strong></div>
-                <div className="info"><span>Đã đặt</span><strong>{slotSummary.booked}</strong></div>
-                <div className={slotSummary.working ? 'success' : 'danger'}><span>Trạng thái ngày</span><strong>{slotSummary.working ? 'Làm việc' : 'Nghỉ'}</strong></div>
-              </div>
+              {slotLoading && (
+                <div className="admin-schedules-loading" aria-live="polite">
+                  {Array.from({ length: 3 }, (_, index) => <span key={index} />)}
+                </div>
+              )}
+              {!slotLoading && !slotError && (
+                <>
+                  <div className="admin-schedule-summary">
+                    <div><span>Cơ sở</span><strong>{getName(selectedSlotClinic)}</strong></div>
+                    <div><span>Bác sĩ</span><strong>{getName(selectedSlotDoctor)}</strong></div>
+                    <div><span>Ngày</span><strong>{slotFilters.date}</strong></div>
+                    <div><span>Tổng slot</span><strong>{slotSummary.total}</strong></div>
+                    <div className="success"><span>Trống</span><strong>{slotSummary.available}</strong></div>
+                    <div className="info"><span>Đã đặt</span><strong>{slotSummary.booked}</strong></div>
+                    <div className={slotSummary.working ? 'success' : 'info'}><span>Trạng thái ngày</span><strong>{slotSummary.working ? 'Có lịch' : 'Chưa có slot'}</strong></div>
+                  </div>
 
-              <div className="admin-schedule-legend">
-                <span><i className="available" /> Trống</span>
-                <span><i className="booked" /> Đã đặt</span>
-                <span><i className="off" /> Nghỉ</span>
-              </div>
+                  <div className="admin-schedule-legend">
+                    <span><i className="available" /> Trống</span>
+                    <span><i className="booked" /> Đã đặt</span>
+                  </div>
+                </>
+              )}
 
-              {!slotLoading && slotData.length > 0 && (
+              {!slotLoading && slotError && (
+                <AdminAlert message={slotError} type="danger" />
+              )}
+
+              {!slotLoading && !slotError && slotData.length > 0 && (
                 <div className="admin-schedule-slot-grid">
                   {slotData.map((slot) => (
                     <div className={`admin-schedule-slot ${slot.available ? 'available' : 'booked'}`} key={slot.timeSlot}>
@@ -349,10 +386,10 @@ export default function AdminSchedulesPage() {
                 </div>
               )}
 
-              {!slotLoading && slotData.length === 0 && (
+              {!slotLoading && !slotError && slotData.length === 0 && (
                 <div className="admin-schedule-off-empty">
                   <span aria-hidden="true">📅</span>
-                  <strong>Nghỉ</strong>
+                  <strong>Chưa có slot</strong>
                   <p>{slotMessage || 'Bác sĩ không có lịch làm việc trong ngày này'}</p>
                 </div>
               )}
@@ -423,6 +460,6 @@ export default function AdminSchedulesPage() {
           </div>
         </Modal>
       )}
-    </>
+    </div>
   );
 }

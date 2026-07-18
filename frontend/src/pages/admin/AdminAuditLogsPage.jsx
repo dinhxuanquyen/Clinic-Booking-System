@@ -329,7 +329,7 @@ export default function AdminAuditLogsPage() {
 
       {/* ── Detail Modal ── */}
       {selectedLog && (
-        <BaseModal className="admin-modal" onClose={() => setSelectedLog(null)} size="lg">
+        <BaseModal ariaLabel="Chi tiết nhật ký hệ thống" className="admin-modal" onClose={() => setSelectedLog(null)} size="lg">
           <div className="modal-header-ds">
             <div>
               <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: 'var(--gray-400)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
