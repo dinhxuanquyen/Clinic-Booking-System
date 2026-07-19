@@ -9,10 +9,11 @@
     "start": "node src/server.js",
     "test:e2e": "set NODE_ENV=test&& node src/scripts/e2eSmokeTest.js",
     "seed": "node src/seed/seed.js",
-    "seed:demo": "node src/seed/seedDemoData.js",
+    "seed:sample": "node src/seed/seedSampleData.js",
     "seed:specialties": "node src/seed/seedSpecialties.js",
     "seed:service-packages": "node src/seed/seedServicePackages.js",
     "seed:articles": "node src/seed/seedArticles.js",
+    "cleanup:sample-labels": "node src/scripts/cleanupSampleLabels.js",
     "migrate:clinic-doctor-codes": "node src/scripts/fixDoctorClinicCodes.js",
     "fix:doctor-clinic-codes": "node src/scripts/fixDoctorClinicCodes.js",
     "sync:follow-ups": "node src/scripts/syncFollowUpStatuses.js"

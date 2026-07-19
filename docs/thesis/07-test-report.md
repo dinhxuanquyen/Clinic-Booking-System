@@ -47,7 +47,7 @@ Ket qua gan nhat:
 
 ### Patient
 
-- Login patient demo.
+- Login patient sample account.
 - Xem MyAppointments.
 - Xem chi tiet lich hen.
 - Tai phieu dat lich.
@@ -59,7 +59,7 @@ Ket qua gan nhat:
 
 ### Doctor
 
-- Login doctor demo.
+- Login doctor sample account.
 - Xem dashboard.
 - Xem hang doi.
 - Xu ly appointment.

@@ -4,7 +4,7 @@ Date: 19/07/2026
 
 ## Scope
 
-Final QA focuses on core Clinic Booking flows after the Patient, Doctor, Admin, PDF, demo data and modal/form polish sprints.
+Final QA focuses on core Clinic Booking flows after the Patient, Doctor, Admin, PDF, sample data and modal/form polish sprints.
 
 Covered by automated smoke test:
 
@@ -44,7 +44,7 @@ Commands:
 
 ```powershell
 node --check backend/src/services/emailService.js
-node --check backend/src/seed/seedDemoData.js
+node --check backend/src/seed/seedSampleData.js
 node --check backend/src/scripts/e2eSmokeTest.js
 ```
 
@@ -52,9 +52,9 @@ Result:
 
 - All checked files passed JavaScript syntax validation.
 
-## Demo Dataset
+## Sample Dataset
 
-The demo dataset script was run successfully before QA.
+The sample dataset script was run successfully before QA.
 
 Generated data:
 
@@ -66,11 +66,11 @@ Generated data:
 - Appointments: 129
 - Medical records: 30
 
-Demo accounts:
+Sample accounts:
 
 - `admin@example.com / 123456`
-- `demo.doctor01@clinic.test / 123456`
-- `demo.patient01@clinic.test / 123456`
+- `doctor01@clinic.test / 123456`
+- `patient01@clinic.test / 123456`
 
 ## Environment Notes
 

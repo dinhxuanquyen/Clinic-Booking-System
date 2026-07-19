@@ -78,11 +78,11 @@ Trinh bay ERD trong `02-database-diagram.md`.
 
 - Backend smoke test 24/24 passed.
 - Manual responsive checklist.
-- Demo dataset.
+- Sample dataset.
 
-## Slide 14 - Demo
+## Slide 14 - Product Walkthrough
 
-Chay theo `08-demo-script.md`.
+Chay theo `08-presentation-script.md`.
 
 ## Slide 15 - Conclusion
 

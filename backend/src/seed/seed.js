@@ -195,7 +195,7 @@ async function seed() {
       clinicId: clinic._id
     },
     {
-      name: 'Benh nhan Demo',
+      name: 'Nguyen Van An',
       email: 'patient@example.com',
       password: '123456',
       role: 'patient',

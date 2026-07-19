@@ -24,7 +24,7 @@ cd backend
 npm install
 copy .env.example .env
 npm run seed
-npm run seed:demo
+npm run seed:sample
 npm run dev
 ```
 
@@ -71,13 +71,13 @@ SMTP_PASS=
 SMTP_FROM=
 ```
 
-## Tai Khoan Demo
+## Tai Khoan Mau
 
-Sau khi chay `npm run seed:demo`:
+Sau khi chay `npm run seed:sample`:
 
 - Admin: `admin@example.com / 123456`
-- Doctor: `demo.doctor01@clinic.test / 123456`
-- Patient: `demo.patient01@clinic.test / 123456`
+- Doctor: `doctor01@clinic.test / 123456`
+- Patient: `patient01@clinic.test / 123456`
 
 ## Len Production
 
@@ -89,7 +89,7 @@ Checklist:
 - Cau hinh reverse proxy HTTPS.
 - Gan `FRONTEND_URL` dung domain.
 - Bao ve thu muc uploads.
-- Chay seed co kiem soat, khong chay demo seed tren production that.
+- Chay seed co kiem soat, khong chay sample seed tren production that.
 
 ## Backup
 

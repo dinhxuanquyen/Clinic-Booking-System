@@ -1,6 +1,6 @@
 # Follow-up Management - Phase 1 to Phase 9
 
-Tài liệu này ghi lại phạm vi đã hoàn thiện cho module tái khám trong Clinic Booking. Mục tiêu là giúp demo, kiểm thử và bảo trì nghiệp vụ tái khám mà không làm thay đổi luồng đặt lịch thường.
+Tài liệu này ghi lại phạm vi đã hoàn thiện cho module tái khám trong Clinic Booking. Mục tiêu là giúp trình bày, kiểm thử và bảo trì nghiệp vụ tái khám mà không làm thay đổi luồng đặt lịch thường.
 
 ## 1. Mục tiêu nghiệp vụ
 
@@ -151,7 +151,7 @@ Script sửa dữ liệu cũ:
   - đã hoàn thành
 - Realtime cập nhật khi patient đặt/hủy/no-show lịch tái khám.
 
-## 9. Checklist kiểm thử demo
+## 9. Checklist kiểm thử trình bày
 
 ### Case 1 - Có ngày tái khám
 

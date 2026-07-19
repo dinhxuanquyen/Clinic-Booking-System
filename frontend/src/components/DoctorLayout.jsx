@@ -20,11 +20,12 @@ export default function DoctorLayout() {
   const isFollowUpMode = location.pathname === '/doctor/medical-records' && searchParams.get('followUpOnly') === 'true';
 
   useLayoutEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.documentElement.classList.add('doctor-portal-open');
+    document.body.classList.add('doctor-portal-open');
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.documentElement.classList.remove('doctor-portal-open');
+      document.body.classList.remove('doctor-portal-open');
     };
   }, []);
 

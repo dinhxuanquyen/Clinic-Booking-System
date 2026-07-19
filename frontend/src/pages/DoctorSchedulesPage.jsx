@@ -565,7 +565,7 @@ export default function DoctorSchedulesPage() {
       )}
 
       {exceptionModalOpen && (
-        <BaseModal ariaLabel={editingException ? 'Cập nhật ngoại lệ lịch làm việc' : 'Tạo ngoại lệ lịch làm việc'} className="admin-modal" onClose={() => setExceptionModalOpen(false)}>
+        <BaseModal ariaLabel={editingException ? 'Cập nhật ngoại lệ lịch làm việc' : 'Tạo ngoại lệ lịch làm việc'} className="admin-modal doctor-schedule-exception-modal" onClose={() => setExceptionModalOpen(false)}>
           <div className="d-flex align-items-center justify-content-between mb-3">
             <div>
               <span className="eyebrow">Ngoại lệ lịch</span>

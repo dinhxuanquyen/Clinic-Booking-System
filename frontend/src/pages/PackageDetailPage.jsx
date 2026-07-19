@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client.js';
 import PageSkeleton from '../components/PageSkeleton.jsx';
 import { cleanDisplayText } from '../utils/textEncoding.js';
-import { getPackageVisual } from './PackagesPage.jsx';
+import { DEFAULT_PACKAGE_IMAGE, getPackageVisual } from './PackagesPage.jsx';
 
 function formatCurrency(value) {
   return new Intl.NumberFormat('vi-VN', {
@@ -18,17 +18,23 @@ function valueName(value, fallback = 'Đang cập nhật') {
   return cleanDisplayText(typeof value === 'object' ? value.name : value, fallback);
 }
 
-function InfoList({ title, items, emptyText, variant = 'default' }) {
-  const values = Array.isArray(items) ? items.filter(Boolean) : [];
+function compactList(value) {
+  return Array.isArray(value) ? value.filter(Boolean) : [];
+}
+
+function ServiceList({ title, items, emptyText, numbered = false }) {
+  const values = compactList(items);
   return (
-    <section className={`package-detail-section package-detail-section-${variant}`}>
-      <div className="package-detail-section-title">
-        <span>{variant === 'includes' ? '✓' : 'i'}</span>
-        <h2>{title}</h2>
-      </div>
+    <section className="package-detail-service-section">
+      <h2>{title}</h2>
       {values.length ? (
-        <ul>
-          {values.map((item) => <li key={item}>{cleanDisplayText(item)}</li>)}
+        <ul className={numbered ? 'package-detail-numbered-list' : 'package-detail-check-list'}>
+          {values.map((item, index) => (
+            <li key={`${item}-${index}`}>
+              {numbered && <span>{String(index + 1).padStart(2, '0')}</span>}
+              <strong>{cleanDisplayText(item)}</strong>
+            </li>
+          ))}
         </ul>
       ) : (
         <p>{emptyText}</p>
@@ -85,191 +91,114 @@ export default function PackageDetailPage() {
   const clinicName = valueName(servicePackage.clinicId, 'Cơ sở');
   const specialtyName = valueName(servicePackage.specialtyId, 'Chuyên khoa');
   const doctorName = valueName(servicePackage.doctorId, 'Áp dụng chung');
-  const targetPatients = Array.isArray(servicePackage.targetPatients)
-    ? servicePackage.targetPatients.filter(Boolean)
-    : [];
-  const includes = Array.isArray(servicePackage.includes)
-    ? servicePackage.includes.filter(Boolean)
-    : [];
+  const duration = servicePackage.durationMinutes || 30;
 
   return (
-    <div className="public-page package-detail-page package-detail-page-pro package-detail-page-mec">
-      <div className="package-detail-shell-mec">
-        <Link className="package-detail-back-link package-detail-back-link-mec" to="/packages">
-          ← Quay lại danh sách gói khám
-        </Link>
+    <div className="public-page package-detail-page package-detail-page-market">
+      <nav className="package-detail-breadcrumb" aria-label="Điều hướng gói khám">
+        <Link to="/">Trang chủ</Link>
+        <span>/</span>
+        <Link to="/packages">Gói khám</Link>
+        <span>/</span>
+        <strong>{packageName}</strong>
+      </nav>
 
-        <section className="package-detail-banner-mec" style={{ backgroundImage: `url("${visual.image}")` }}>
-          <div className="package-detail-banner-content-mec">
-            <span>{specialtyName}</span>
-            <h1>{packageName}</h1>
-          </div>
-        </section>
-
-        <section className="package-detail-title-band-mec">
-          <span className="eyebrow">Dịch vụ y tế</span>
-          <h2>{packageName}</h2>
+      <section className="package-detail-summary-hero">
+        <div className="package-detail-summary-copy">
+          <span className="package-detail-specialty-badge">{specialtyName}</span>
+          <h1>{packageName}</h1>
           <p>{packageDescription}</p>
-        </section>
 
-        <div className="package-detail-layout-mec">
-          <aside className="package-detail-sidebar-mec" aria-label="Điều hướng nội dung gói khám">
-            <nav>
-              <a href="#gioi-thieu">Giới thiệu tổng quan</a>
-              <a href="#thong-tin">Thông tin gói khám</a>
-              <a href="#chi-tiet">Chi tiết dịch vụ</a>
-              <a href="#dang-ky">Đăng ký dịch vụ</a>
-            </nav>
+          <div className="package-detail-key-facts">
+            <span>{duration} phút</span>
+            <span>{clinicName}</span>
+            <span>{doctorName}</span>
+          </div>
 
-            <div className="package-detail-sidebar-price-mec">
-              <span>Giá tham khảo</span>
-              <strong>{formatCurrency(servicePackage.price)}</strong>
-              <em>{servicePackage.durationMinutes || 30} phút</em>
-            </div>
+          <div className="package-detail-hero-price">
+            <span>Giá tham khảo</span>
+            <strong>{formatCurrency(servicePackage.price)}</strong>
+          </div>
 
-            <div className="package-detail-sidebar-actions-mec">
-              <Link className="btn btn-primary rounded-pill" to={bookingUrl}>
-                Đặt lịch với gói này
-              </Link>
-              <Link className="btn btn-outline-primary rounded-pill" to="/booking">
-                Để bác sĩ tư vấn
-              </Link>
-            </div>
-          </aside>
-
-          <main className="package-detail-main-mec">
-            <section id="gioi-thieu" className="package-detail-panel-mec package-detail-intro-mec">
-              <span className="eyebrow">Giới thiệu tổng quan</span>
-              <h2>{packageName}</h2>
-              <p>{packageDescription}</p>
-              <div className="package-detail-trust-row package-detail-trust-row-mec">
-                <span>Thanh toán tại phòng khám</span>
-                <span>Tư vấn trước khi thực hiện</span>
-                <span>Không bắt buộc khi đặt lịch</span>
-              </div>
-            </section>
-
-            <section id="thong-tin" className="package-detail-panel-mec">
-              <span className="eyebrow">Thông tin gói khám</span>
-              <h2>Thông tin áp dụng</h2>
-              <div className="package-detail-info-grid package-detail-info-grid-pro package-detail-info-grid-mec">
-                <div><span>Mã gói</span><strong>{packageCode}</strong></div>
-                <div><span>Cơ sở</span><strong>{clinicName}</strong></div>
-                <div><span>Chuyên khoa</span><strong>{specialtyName}</strong></div>
-                <div><span>Bác sĩ</span><strong>{doctorName}</strong></div>
-                <div><span>Thời lượng</span><strong>{servicePackage.durationMinutes || 30} phút</strong></div>
-                <div><span>Thanh toán</span><strong>Tại phòng khám</strong></div>
-              </div>
-            </section>
-
-            <section id="chi-tiet" className="package-detail-panel-mec">
-              <span className="eyebrow">Chi tiết dịch vụ</span>
-              <h2>Nội dung gói khám</h2>
-              <div className="package-detail-detail-grid-mec">
-                <InfoList
-                  title="Phù hợp với ai"
-                  items={targetPatients}
-                  emptyText="Phù hợp với người bệnh cần thăm khám và tư vấn chuyên khoa."
-                />
-                <InfoList
-                  title="Gói khám bao gồm"
-                  items={includes}
-                  emptyText="Nội dung gói sẽ được phòng khám tư vấn chi tiết khi đặt lịch."
-                  variant="includes"
-                />
-              </div>
-            </section>
-
-            <section id="dang-ky" className="package-detail-panel-mec package-detail-registration-mec">
-              <span className="eyebrow">Đăng ký dịch vụ</span>
-              <h2>Lưu ý trước khi đặt lịch</h2>
-              <p>
-                Giá gói khám là thông tin tham khảo. Sau khi thăm khám, bác sĩ có thể tư vấn lại dịch vụ phù hợp hơn
-                dựa trên triệu chứng, tiền sử và tình trạng thực tế của người bệnh.
-              </p>
-              <div className="package-detail-step-grid-mec">
-                <div><span>01</span><strong>Chọn gói khám</strong><small>Xem thông tin dịch vụ và phạm vi áp dụng.</small></div>
-                <div><span>02</span><strong>Đặt lịch</strong><small>Chọn thời gian khám phù hợp với lịch trống.</small></div>
-                <div><span>03</span><strong>Đến phòng khám</strong><small>Thanh toán và thực hiện theo tư vấn bác sĩ.</small></div>
-              </div>
-              <Link className="btn btn-primary rounded-pill" to={bookingUrl}>Đặt lịch ngay</Link>
-            </section>
-          </main>
-        </div>
-      </div>
-    </div>
-  );
-
-  /*
-  return (
-    <div className="public-page package-detail-page package-detail-page-pro">
-      <section className="package-detail-hero package-detail-hero-pro">
-        <div className="package-detail-hero-copy">
-          <Link className="package-detail-back-link" to="/packages">← Quay lại danh sách gói khám</Link>
-          <span className="eyebrow">Chi tiết gói khám</span>
-          <h1>{cleanDisplayText(servicePackage.name, 'Gói khám')}</h1>
-          <p>{cleanDisplayText(servicePackage.description, 'Dịch vụ khám chuyên khoa tại phòng khám.')}</p>
-          <div className="package-detail-trust-row">
-            <span>Thanh toán tại phòng khám</span>
-            <span>Tư vấn trước khi thực hiện</span>
-            <span>Không bắt buộc khi đặt lịch</span>
+          <div className="package-detail-hero-actions">
+            <Link className="btn btn-primary rounded-pill" to={bookingUrl}>Đặt lịch với gói này</Link>
+            <Link className="btn btn-outline-primary rounded-pill" to="/booking">Để bác sĩ tư vấn</Link>
           </div>
         </div>
 
-        <div className="package-detail-visual-card" style={{ backgroundImage: `url("${visual.image}")` }}>
-          <div>
-            <span>{valueName(servicePackage.specialtyId, 'ChuyÃªn khoa')}</span>
-            <strong>{cleanDisplayText(servicePackage.name, 'GÃ³i khÃ¡m')}</strong>
-          </div>
+        <div className="package-detail-summary-media">
+          <img
+            src={visual.image}
+            alt={packageName}
+            loading="lazy"
+            onError={(event) => {
+              if (event.currentTarget.src !== DEFAULT_PACKAGE_IMAGE) {
+                event.currentTarget.src = DEFAULT_PACKAGE_IMAGE;
+              }
+            }}
+          />
         </div>
+      </section>
 
-        <aside className="package-detail-price-card package-detail-price-card-pro">
-          <span>Giá tham khảo</span>
+      <div className="package-detail-content-layout">
+        <main className="package-detail-content-main">
+          <section className="package-detail-content-card" id="tong-quan">
+            <span className="eyebrow">Tổng quan</span>
+            <h2>Thông tin gói khám</h2>
+            <dl className="package-detail-definition-grid">
+              <div><dt>Cơ sở</dt><dd>{clinicName}</dd></div>
+              <div><dt>Chuyên khoa</dt><dd>{specialtyName}</dd></div>
+              <div><dt>Bác sĩ / phạm vi</dt><dd>{doctorName}</dd></div>
+              <div><dt>Thời lượng</dt><dd>{duration} phút</dd></div>
+              <div><dt>Thanh toán</dt><dd>Tại phòng khám</dd></div>
+              <div><dt>Mã gói</dt><dd>{packageCode}</dd></div>
+            </dl>
+          </section>
+
+          <ServiceList
+            title="Gói khám này phù hợp với ai?"
+            items={servicePackage.targetPatients}
+            emptyText="Phù hợp với người bệnh cần thăm khám và tư vấn chuyên khoa."
+          />
+
+          <ServiceList
+            title="Gói khám bao gồm"
+            items={servicePackage.includes}
+            emptyText="Nội dung gói sẽ được phòng khám tư vấn chi tiết khi đặt lịch."
+            numbered
+          />
+
+          <section className="package-detail-content-card package-detail-note-card" id="luu-y">
+            <span className="eyebrow">Lưu ý trước khi đặt lịch</span>
+            <h2>Giá gói là thông tin tham khảo</h2>
+            <p>
+              Sau khi thăm khám, bác sĩ có thể tư vấn lại dịch vụ phù hợp hơn dựa trên triệu chứng, tiền sử và tình
+              trạng thực tế của người bệnh.
+            </p>
+            <div className="package-detail-step-strip">
+              <span><b>01</b> Chọn gói</span>
+              <span><b>02</b> Chọn thời gian</span>
+              <span><b>03</b> Đến phòng khám</span>
+            </div>
+          </section>
+        </main>
+
+        <aside className="package-booking-summary" aria-label="Thông tin đặt khám">
+          <span className="eyebrow">Thông tin đặt khám</span>
           <strong>{formatCurrency(servicePackage.price)}</strong>
-          <em>{servicePackage.durationMinutes || 30} phút</em>
-          <Link className="btn btn-primary rounded-pill" to={bookingUrl}>
-            Đặt lịch với gói này
-          </Link>
-          <Link className="btn btn-outline-primary rounded-pill" to="/booking">
-            Để bác sĩ tư vấn
-          </Link>
-          <small>Giá có thể được phòng khám tư vấn lại theo tình trạng thực tế.</small>
+          <small>Giá tham khảo</small>
+          <dl>
+            <div><dt>Cơ sở</dt><dd>{clinicName}</dd></div>
+            <div><dt>Chuyên khoa</dt><dd>{specialtyName}</dd></div>
+            <div><dt>Bác sĩ</dt><dd>{doctorName}</dd></div>
+            <div><dt>Thời lượng</dt><dd>{duration} phút</dd></div>
+            <div><dt>Thanh toán</dt><dd>Tại phòng khám</dd></div>
+          </dl>
+          <Link className="btn btn-primary rounded-pill" to={bookingUrl}>Đặt lịch ngay</Link>
+          <Link className="btn btn-outline-primary rounded-pill" to="/booking">Để bác sĩ tư vấn</Link>
+          <p>Không bắt buộc thanh toán online khi đặt lịch.</p>
         </aside>
-      </section>
-
-      <section className="package-detail-info-grid package-detail-info-grid-pro">
-        <div><span>Mã gói</span><strong>{cleanDisplayText(servicePackage.code, 'STANDARD')}</strong></div>
-        <div><span>Cơ sở</span><strong>{valueName(servicePackage.clinicId, 'Cơ sở')}</strong></div>
-        <div><span>Chuyên khoa</span><strong>{valueName(servicePackage.specialtyId, 'Chuyên khoa')}</strong></div>
-        <div><span>Bác sĩ</span><strong>{valueName(servicePackage.doctorId, 'Áp dụng chung')}</strong></div>
-      </section>
-
-      <div className="package-detail-content-grid package-detail-content-grid-pro">
-        <InfoList
-          title="Phù hợp với ai"
-          items={servicePackage.targetPatients}
-          emptyText="Phù hợp với người bệnh cần thăm khám và tư vấn chuyên khoa."
-        />
-        <InfoList
-          title="Gói khám bao gồm"
-          items={servicePackage.includes}
-          emptyText="Nội dung gói sẽ được phòng khám tư vấn chi tiết khi đặt lịch."
-          variant="includes"
-        />
       </div>
-
-      <section className="package-detail-note package-detail-note-pro">
-        <div>
-          <span className="eyebrow">Lưu ý khi đặt lịch</span>
-          <h2>Gói khám là thông tin tham khảo, không thay thế chỉ định của bác sĩ</h2>
-          <p>
-            Người bệnh có thể đặt lịch với gói này hoặc chọn khám theo tư vấn. Sau khi thăm khám, bác sĩ có thể
-            đề xuất dịch vụ phù hợp hơn dựa trên triệu chứng, tiền sử và kết quả kiểm tra thực tế.
-          </p>
-        </div>
-        <Link className="btn btn-primary rounded-pill" to={bookingUrl}>Đặt lịch ngay</Link>
-      </section>
     </div>
   );
-  */
 }

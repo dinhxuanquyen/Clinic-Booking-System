@@ -1,6 +1,6 @@
-# 08 - Demo Script
+# 08 - Presentation Script
 
-## Muc Tieu Demo
+## Muc Tieu Trinh Bay
 
 Chung minh he thong Clinic Booking ho tro day du vong doi dat lich kham:
 
@@ -29,10 +29,10 @@ npm run dev
 Tai khoan:
 
 - Admin: `admin@example.com / 123456`
-- Doctor: `demo.doctor01@clinic.test / 123456`
-- Patient: `demo.patient01@clinic.test / 123456`
+- Doctor: `doctor01@clinic.test / 123456`
+- Patient: `patient01@clinic.test / 123456`
 
-## Demo Flow 1 - Patient Booking
+## Flow 1 - Patient Booking
 
 1. Dang nhap Patient.
 2. Vao Dat lich kham.
@@ -47,7 +47,7 @@ Thong diep can nhan manh:
 - Co trang thai lich hen ro rang.
 - Co PDF phieu dat lich va phieu kham.
 
-## Demo Flow 2 - Doctor Operation
+## Flow 2 - Doctor Operation
 
 1. Dang nhap Doctor.
 2. Xem Doctor Dashboard.
@@ -62,7 +62,7 @@ Thong diep can nhan manh:
 - Co quy trinh lich hen ro rang.
 - Ho so kham co chan doan, ket luan, don thuoc, tai kham.
 
-## Demo Flow 3 - Patient Medical Records
+## Flow 3 - Patient Medical Records
 
 1. Dang nhap Patient.
 2. Vao Ho so kham benh.
@@ -75,7 +75,7 @@ Thong diep can nhan manh:
 - PDF ket qua kham chuyen nghiep.
 - Thong tin nhay cam duoc gioi han theo quyen.
 
-## Demo Flow 4 - Admin Dashboard
+## Flow 4 - Admin Dashboard
 
 1. Dang nhap Admin.
 2. Vao Dashboard.
@@ -88,17 +88,17 @@ Thong diep can nhan manh:
 - Admin co goc nhin toan he thong.
 - Co audit log va thong ke phuc vu quan tri.
 
-## Demo Flow 5 - Waiting List / Reschedule
+## Flow 5 - Waiting List / Reschedule
 
 1. Patient gui yeu cau doi lich hoac vao waiting list.
 2. Doctor/Admin xem yeu cau can xu ly.
 3. Xu ly va cap nhat trang thai.
 
-## Ket Bai Demo
+## Ket Bai Trinh Bay
 
 Tom tat:
 
 - 3 vai tro ro rang.
 - Nghiep vu dat lich - kham - ho so - PDF da lien ket.
 - UI/UX da polish theo huong san pham.
-- Co demo dataset, smoke test va tai lieu bao ve.
+- Co sample dataset, smoke test va tai lieu bao ve.

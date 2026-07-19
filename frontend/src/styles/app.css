@@ -15825,6 +15825,11 @@ body.modal-open.modal-scrollbar-padding .app-navbar.fixed-top {
   padding-right: var(--scrollbar-compensation, 0px);
 }
 
+body.modal-open .doctor-main,
+body.modal-open .admin-main {
+  overflow: hidden !important;
+}
+
 @media (max-width: 991.98px) {
   html,
   body,
@@ -33684,5 +33689,1521 @@ button.doctor-record-follow-up-card:focus-visible {
 
   .package-detail-registration-mec .btn {
     width: 100%;
+  }
+}
+
+/* Patient service packages marketplace refresh */
+.public-main .packages-page-market {
+  width: min(100%, 1360px) !important;
+  margin: 0 auto !important;
+  padding: 34px 24px 76px !important;
+}
+
+.packages-market-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: end;
+  padding: 34px 38px;
+  border: 1px solid #dcecf6;
+  border-radius: 26px;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.98) 52%, rgba(226, 248, 255, 0.84) 100%);
+  box-shadow: 0 20px 48px rgba(15, 43, 91, 0.09);
+}
+
+.packages-market-hero h1 {
+  max-width: 760px;
+  margin: 8px 0 10px;
+  color: #0b2d66;
+  font-size: clamp(2.1rem, 4vw, 3.25rem);
+  font-weight: 950;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.packages-market-hero p {
+  max-width: 780px;
+  margin: 0;
+  color: #5f718b;
+  font-size: 1.02rem;
+  font-weight: 650;
+  line-height: 1.65;
+}
+
+.packages-market-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.packages-market-trust span {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #e9f8ff;
+  color: #00699a;
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
+.packages-market-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.packages-market-hero-actions .btn {
+  min-width: 160px;
+  justify-content: center;
+}
+
+.packages-market-filter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.7fr);
+  gap: 16px;
+  margin: 22px 0 30px;
+  padding: 18px;
+  border: 1px solid #dfeaf5;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(15, 43, 91, 0.06);
+}
+
+.packages-market-filter label {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.packages-market-filter label span {
+  color: #66758d;
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.packages-market-filter :where(.form-control, .form-select) {
+  min-height: 46px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.packages-result-heading-market {
+  display: flex;
+  gap: 24px;
+  align-items: end;
+  justify-content: space-between;
+  margin: 0 0 20px;
+}
+
+.packages-result-heading-market h2 {
+  margin: 6px 0 4px;
+  color: #0b2d66;
+  font-size: clamp(1.7rem, 2.6vw, 2.35rem);
+  font-weight: 950;
+  line-height: 1.12;
+}
+
+.packages-result-heading-market p {
+  margin: 0;
+  color: #66758d;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.packages-result-heading-market > p {
+  max-width: 430px;
+  text-align: right;
+}
+
+.public-package-grid-market {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 24px !important;
+  align-items: stretch !important;
+}
+
+@media (min-width: 1320px) {
+  .public-package-grid-market {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+.public-package-card-market {
+  display: flex !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  flex-direction: column !important;
+  border: 1px solid #dcecf6 !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  box-shadow: 0 18px 42px rgba(15, 43, 91, 0.09) !important;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.public-package-card-market:hover {
+  transform: translateY(-3px);
+  border-color: #bfe6f6 !important;
+  box-shadow: 0 24px 54px rgba(15, 43, 91, 0.13) !important;
+}
+
+.public-package-image-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.public-package-image {
+  position: relative;
+  display: block;
+  min-height: 176px;
+  overflow: hidden;
+  background-color: #dff5ff;
+  background-position: center;
+  background-size: cover;
+}
+
+.public-package-image::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, rgba(6, 26, 58, 0.06) 0%, rgba(6, 26, 58, 0.14) 48%, rgba(6, 26, 58, 0.42) 100%);
+}
+
+.public-package-image > span {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  left: 14px;
+  max-width: calc(100% - 28px);
+  overflow: hidden;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #00699a;
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.public-package-market-body {
+  display: grid;
+  gap: 12px;
+  flex: 1;
+  padding: 18px 20px 20px;
+}
+
+.public-package-market-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.public-package-market-head span,
+.public-package-market-head em {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 30px;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.public-package-market-head span {
+  background: #e6f6ff;
+  color: #00699a;
+}
+
+.public-package-market-head em {
+  background: #e9fbf0;
+  color: #087a42;
+}
+
+.public-package-card-market h2 {
+  display: -webkit-box;
+  min-height: 2.75em;
+  margin: 0;
+  overflow: hidden;
+  color: #0b2d66;
+  font-size: 1.16rem;
+  font-weight: 950;
+  line-height: 1.28;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.public-package-card-market p {
+  display: -webkit-box;
+  min-height: 3em;
+  margin: 0;
+  overflow: hidden;
+  color: #66758d;
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.public-package-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.public-package-facts div {
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #e4eef7;
+  border-radius: 14px;
+  background: #fbfdff;
+}
+
+.public-package-facts dt {
+  margin: 0 0 4px;
+  color: #73829a;
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+.public-package-facts dd {
+  margin: 0;
+  overflow: hidden;
+  color: #0b2d66;
+  font-size: 0.92rem;
+  font-weight: 850;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.public-package-price-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+  padding: 12px 14px;
+  border: 1px solid #d7ebf8;
+  border-radius: 16px;
+  background: #eef8ff;
+}
+
+.public-package-price-row span {
+  color: #61728b;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.public-package-price-row strong {
+  color: #0876ff;
+  font-size: 1.22rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.public-package-market-actions {
+  display: grid;
+  grid-template-columns: 1fr 0.86fr;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.public-package-market-actions .btn {
+  min-height: 42px;
+  justify-content: center;
+  padding-inline: 14px;
+  white-space: nowrap;
+}
+
+.public-main .package-detail-page-market {
+  width: min(100%, 1320px) !important;
+  margin: 0 auto !important;
+  padding: 28px 24px 80px !important;
+}
+
+.package-detail-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 18px;
+  color: #61728b;
+  font-size: 0.94rem;
+  font-weight: 800;
+}
+
+.package-detail-breadcrumb a {
+  color: #0876ff;
+  text-decoration: none;
+}
+
+.package-detail-breadcrumb strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #0b2d66;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.package-detail-summary-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: 30px;
+  align-items: stretch;
+  padding: 34px;
+  border: 1px solid #dcecf6;
+  border-radius: 28px;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.98) 56%, rgba(226, 248, 255, 0.86) 100%);
+  box-shadow: 0 22px 54px rgba(15, 43, 91, 0.1);
+}
+
+.package-detail-summary-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.package-detail-specialty-badge {
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #e6f6ff;
+  color: #00699a;
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.package-detail-summary-copy h1 {
+  max-width: 820px;
+  margin: 14px 0 14px;
+  color: #0b2d66;
+  font-size: clamp(2.3rem, 5vw, 4.2rem);
+  font-weight: 950;
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+.package-detail-summary-copy p {
+  max-width: 760px;
+  margin: 0;
+  color: #61728b;
+  font-size: 1.06rem;
+  font-weight: 650;
+  line-height: 1.65;
+}
+
+.package-detail-key-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.package-detail-key-facts span {
+  display: inline-flex;
+  max-width: 100%;
+  min-height: 34px;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #edf7ff;
+  color: #075f95;
+  font-size: 0.9rem;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.package-detail-hero-price {
+  display: flex;
+  width: fit-content;
+  min-width: 290px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 18px;
+  border: 1px solid #d2eaf8;
+  border-radius: 18px;
+  background: #eef8ff;
+}
+
+.package-detail-hero-price span {
+  color: #61728b;
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.package-detail-hero-price strong {
+  color: #0876ff;
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.package-detail-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.package-detail-hero-actions .btn {
+  min-width: 200px;
+  justify-content: center;
+}
+
+.package-detail-summary-media {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #dff5ff;
+  box-shadow: 0 18px 42px rgba(15, 43, 91, 0.14);
+}
+
+.package-detail-summary-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+}
+
+.package-detail-content-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 26px;
+  align-items: start;
+  margin-top: 28px;
+}
+
+.package-detail-content-main {
+  display: grid;
+  min-width: 0;
+  gap: 22px;
+}
+
+.package-detail-content-card,
+.package-detail-service-section,
+.package-booking-summary {
+  border: 1px solid #dfeaf5;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 16px 38px rgba(15, 43, 91, 0.07);
+}
+
+.package-detail-content-card,
+.package-detail-service-section {
+  padding: 28px;
+}
+
+.package-detail-content-card h2,
+.package-detail-service-section h2 {
+  margin: 6px 0 16px;
+  color: #0b2d66;
+  font-size: clamp(1.45rem, 2vw, 1.9rem);
+  font-weight: 950;
+  line-height: 1.18;
+}
+
+.package-detail-content-card p,
+.package-detail-service-section p {
+  margin: 0;
+  color: #61728b;
+  font-weight: 650;
+  line-height: 1.7;
+}
+
+.package-detail-definition-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.package-detail-definition-grid div {
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid #e4eef7;
+  border-radius: 16px;
+  background: #fbfdff;
+}
+
+.package-detail-definition-grid dt {
+  margin-bottom: 6px;
+  color: #6b7b94;
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+.package-detail-definition-grid dd {
+  margin: 0;
+  color: #0b2d66;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.package-detail-check-list,
+.package-detail-numbered-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.package-detail-check-list li,
+.package-detail-numbered-list li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #f2fbff;
+  color: #0b2d66;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.package-detail-check-list li::before {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #15a9e0;
+  color: #ffffff;
+  content: "✓";
+  font-size: 0.82rem;
+  font-weight: 950;
+}
+
+.package-detail-numbered-list li span {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #dff5ff;
+  color: #0075a8;
+  font-size: 0.85rem;
+  font-weight: 950;
+}
+
+.package-detail-note-card {
+  background: #fbfdff;
+}
+
+.package-detail-step-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.package-detail-step-strip span {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #eef8ff;
+  color: #0b2d66;
+  font-weight: 850;
+}
+
+.package-detail-step-strip b {
+  color: #0096c8;
+}
+
+.package-booking-summary {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  padding: 22px;
+}
+
+.package-booking-summary > strong {
+  color: #0876ff;
+  font-size: 2rem;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.package-booking-summary > small,
+.package-booking-summary p {
+  color: #61728b;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.package-booking-summary dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.package-booking-summary dl div {
+  min-width: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5eef6;
+}
+
+.package-booking-summary dt {
+  color: #6b7b94;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.package-booking-summary dd {
+  margin: 3px 0 0;
+  color: #0b2d66;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.package-booking-summary .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 1180px) {
+  .package-detail-summary-hero,
+  .package-detail-content-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .package-detail-summary-media img {
+    min-height: 340px;
+    max-height: 440px;
+  }
+
+  .package-booking-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .packages-market-hero,
+  .packages-market-filter,
+  .packages-result-heading-market,
+  .package-detail-summary-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .packages-result-heading-market > p {
+    max-width: none;
+    text-align: left;
+  }
+
+  .packages-market-hero-actions {
+    justify-content: flex-start;
+  }
+
+  .package-detail-definition-grid,
+  .package-detail-step-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .public-main .packages-page-market,
+  .public-main .package-detail-page-market {
+    padding: 20px 14px 56px !important;
+  }
+
+  .packages-market-hero,
+  .package-detail-summary-hero {
+    padding: 24px 20px;
+    border-radius: 22px;
+  }
+
+  .packages-market-hero-actions .btn,
+  .package-detail-hero-actions .btn {
+    width: 100%;
+  }
+
+  .public-package-grid-market,
+  .package-detail-definition-grid,
+  .package-detail-step-strip,
+  .public-package-facts,
+  .public-package-market-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .public-package-image {
+    min-height: 168px;
+  }
+
+  .package-detail-summary-copy h1 {
+    font-size: clamp(2rem, 12vw, 2.85rem);
+  }
+
+  .package-detail-hero-price {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .package-detail-summary-media img {
+    min-height: 260px;
+  }
+
+  .package-detail-content-card,
+  .package-detail-service-section,
+  .package-booking-summary {
+    border-radius: 20px;
+    padding: 20px;
+  }
+}
+
+/* Package experience final visual polish */
+.public-main .packages-page-market,
+.public-main .package-detail-page-market {
+  background:
+    radial-gradient(circle at 90% 0%, rgba(210, 246, 255, 0.42), transparent 330px),
+    linear-gradient(180deg, #fbfdff 0%, #f7fbff 100%) !important;
+}
+
+.packages-market-hero {
+  padding: 30px 34px;
+  border-color: #e3eef7;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.98) 66%, rgba(232, 249, 255, 0.58) 100%);
+  box-shadow: 0 18px 42px rgba(15, 43, 91, 0.07);
+}
+
+.packages-market-hero h1 {
+  max-width: 720px;
+  font-size: clamp(2rem, 3.6vw, 2.95rem);
+}
+
+.packages-market-trust span {
+  background: #f0f9ff;
+}
+
+.packages-market-filter {
+  border-color: #e5eef6;
+  box-shadow: 0 12px 28px rgba(15, 43, 91, 0.045);
+}
+
+.public-package-grid-market {
+  gap: 22px !important;
+}
+
+.public-package-card-market {
+  border-color: #e2edf6 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 14px 34px rgba(15, 43, 91, 0.07) !important;
+}
+
+.public-package-card-market:hover {
+  box-shadow: 0 20px 44px rgba(15, 43, 91, 0.11) !important;
+}
+
+.public-package-image {
+  min-height: 156px;
+}
+
+.public-package-market-body {
+  gap: 10px;
+  padding: 17px 18px 18px;
+}
+
+.public-package-card-market h2 {
+  min-height: auto;
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.public-package-card-market p {
+  min-height: 2.85em;
+  font-size: 0.93rem;
+}
+
+.public-package-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  color: #61728b;
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.public-package-card-meta span {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  align-items: center;
+}
+
+.public-package-card-meta span + span::before {
+  width: 4px;
+  height: 4px;
+  margin-right: 8px;
+  border-radius: 999px;
+  background: #9fb0c5;
+  content: "";
+}
+
+.public-package-price-row {
+  align-items: baseline;
+  margin-top: 2px;
+  padding: 10px 0 0;
+  border-width: 1px 0 0;
+  border-color: #edf2f7;
+  border-radius: 0;
+  background: transparent;
+}
+
+.public-package-price-row span {
+  color: #73829a;
+}
+
+.public-package-price-row strong {
+  font-size: 1.18rem;
+}
+
+.public-package-market-actions {
+  gap: 9px;
+}
+
+.public-package-market-actions .btn {
+  min-height: 40px;
+  padding-inline: 12px;
+}
+
+.package-detail-summary-hero {
+  gap: 26px;
+  padding: 28px;
+  border-color: #e3eef7;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.99) 0%, rgba(255, 255, 255, 0.99) 64%, rgba(232, 249, 255, 0.58) 100%);
+  box-shadow: 0 18px 44px rgba(15, 43, 91, 0.08);
+}
+
+.package-detail-summary-copy h1 {
+  max-width: 760px;
+  margin: 12px 0;
+  font-size: clamp(2.1rem, 4.4vw, 3.35rem);
+  line-height: 1.04;
+}
+
+.package-detail-summary-copy p {
+  font-size: 1rem;
+}
+
+.package-detail-key-facts {
+  margin: 18px 0;
+}
+
+.package-detail-hero-price {
+  min-width: 260px;
+  padding: 12px 16px;
+  border-color: #dcecf6;
+  background: #f3fbff;
+}
+
+.package-detail-hero-price strong {
+  font-size: clamp(1.45rem, 2.5vw, 1.95rem);
+}
+
+.package-detail-hero-actions {
+  margin-top: 18px;
+}
+
+.package-detail-summary-media img {
+  min-height: 340px;
+  max-height: 390px;
+}
+
+.package-detail-content-layout {
+  margin-top: 22px;
+}
+
+.package-detail-content-card,
+.package-detail-service-section,
+.package-booking-summary {
+  border-color: #e3eef7;
+  box-shadow: 0 14px 34px rgba(15, 43, 91, 0.055);
+}
+
+.package-booking-summary {
+  top: 88px;
+}
+
+@media (max-width: 1180px) {
+  .package-detail-summary-media img {
+    min-height: 300px;
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 900px) {
+  .packages-market-hero,
+  .package-detail-summary-hero {
+    padding: 26px;
+  }
+
+  .package-booking-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .packages-market-hero,
+  .package-detail-summary-hero {
+    padding: 22px 18px;
+  }
+
+  .public-package-image {
+    min-height: 150px;
+  }
+
+  .public-package-price-row {
+    gap: 6px;
+  }
+
+  .package-detail-summary-copy h1 {
+    font-size: clamp(1.85rem, 11vw, 2.55rem);
+  }
+
+  .package-detail-summary-media img {
+    min-height: 220px;
+    max-height: 280px;
+  }
+}
+
+/* Targeted modal repair: package form, patient reschedule, doctor schedule exception */
+.service-package-modal,
+.appointment-reschedule-modal,
+.doctor-schedule-exception-modal {
+  width: min(980px, calc(100vw - 32px)) !important;
+  max-width: min(980px, calc(100vw - 32px)) !important;
+  max-height: calc(100vh - 32px) !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+}
+
+.service-package-modal *,
+.appointment-reschedule-modal *,
+.doctor-schedule-exception-modal * {
+  box-sizing: border-box;
+}
+
+.service-package-modal > form,
+.appointment-reschedule-modal,
+.doctor-schedule-exception-modal {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-package-modal > form {
+  min-height: 0;
+  max-height: calc(100vh - 32px);
+}
+
+.service-package-modal > form > .d-flex.justify-content-between,
+.appointment-reschedule-header,
+.doctor-schedule-exception-modal > .d-flex.justify-content-between,
+.doctor-schedule-exception-modal > .d-flex.align-items-center {
+  flex: 0 0 auto;
+  min-height: auto !important;
+  margin: 0 !important;
+  padding: 26px 32px 22px !important;
+  border-bottom: 1px solid #e2edf7;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.98) 68%, rgba(225, 247, 255, 0.72) 100%);
+}
+
+.service-package-modal > form > .d-flex.justify-content-between h2,
+.appointment-reschedule-header h2,
+.doctor-schedule-exception-modal h2 {
+  margin: 8px 0 4px !important;
+  color: #102d63;
+  font-size: clamp(1.7rem, 3vw, 2.3rem) !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+.service-package-modal > form > .d-flex.justify-content-between p,
+.appointment-reschedule-header p {
+  max-width: 680px;
+  color: #64748b !important;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.service-package-modal > form > .d-flex.justify-content-between .btn,
+.appointment-reschedule-close,
+.doctor-schedule-exception-modal > .d-flex .btn {
+  min-width: 84px;
+  min-height: 42px;
+  border-radius: 14px !important;
+  font-weight: 800;
+}
+
+.service-package-modal > form > .admin-modal-body.service-package-modal-body,
+.appointment-reschedule-modal .appointment-reschedule-form,
+.doctor-schedule-exception-modal > form {
+  min-height: 0;
+  overflow-x: hidden !important;
+}
+
+.service-package-modal > form > .admin-modal-body.service-package-modal-body {
+  flex: 1 1 auto;
+  padding: 26px 32px !important;
+  background: #fbfdff;
+}
+
+.service-package-modal .service-package-section-stack {
+  gap: 18px !important;
+  max-width: none;
+}
+
+.service-package-modal .service-package-form-section {
+  padding: 24px !important;
+  border: 1px solid #dceaf6 !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  box-shadow: 0 12px 32px rgba(15, 43, 91, 0.05) !important;
+}
+
+.service-package-modal .service-package-form-section-title {
+  gap: 14px !important;
+  margin-bottom: 20px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid #eaf1f8;
+}
+
+.service-package-modal .service-package-form-section-title span {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 14px !important;
+  font-size: 0.95rem !important;
+}
+
+.service-package-modal .service-package-form-section-title h3 {
+  font-size: 1.18rem !important;
+}
+
+.service-package-modal .service-package-form-section-title p {
+  margin-top: 2px !important;
+  font-size: 0.95rem !important;
+}
+
+.service-package-modal .service-package-form-grid {
+  display: grid !important;
+  grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  align-items: start;
+}
+
+.service-package-modal .service-package-form-grid-basic > :nth-child(1) { grid-column: 1 / 8 !important; }
+.service-package-modal .service-package-form-grid-basic > :nth-child(2) { grid-column: 8 / 13 !important; }
+.service-package-modal .service-package-form-grid-basic > :nth-child(3) { grid-column: 1 / 5 !important; }
+.service-package-modal .service-package-form-grid-basic > :nth-child(4) { grid-column: 5 / 9 !important; }
+.service-package-modal .service-package-form-grid-basic > :nth-child(5) { grid-column: 9 / 13 !important; }
+.service-package-modal .service-package-form-grid-basic > :nth-child(6) { grid-column: 1 / 7 !important; }
+.service-package-modal .service-package-form-grid-basic > :nth-child(7) { grid-column: 7 / 13 !important; }
+
+.service-package-modal .service-package-form-grid-content > :nth-child(1) { grid-column: 1 / 13 !important; }
+.service-package-modal .service-package-form-grid-content > :nth-child(2) { grid-column: 1 / 7 !important; }
+.service-package-modal .service-package-form-grid-content > :nth-child(3) { grid-column: 7 / 13 !important; }
+.service-package-modal .service-package-form-grid-content > :nth-child(4) { grid-column: 1 / 13 !important; }
+
+.service-package-modal .form-label,
+.appointment-reschedule-modal .form-label,
+.doctor-schedule-exception-modal .form-label {
+  margin-bottom: 8px;
+  color: #26384f;
+  font-size: 0.94rem;
+  font-weight: 800;
+}
+
+.service-package-modal .form-control,
+.service-package-modal .form-select,
+.appointment-reschedule-modal .form-control,
+.doctor-schedule-exception-modal .form-control,
+.doctor-schedule-exception-modal .form-select {
+  min-width: 0;
+  min-height: 46px;
+  border: 1px solid #d5e4f2;
+  border-radius: 14px;
+  color: #12213a;
+  font-size: 0.98rem;
+  box-shadow: none;
+}
+
+.service-package-modal textarea.form-control,
+.appointment-reschedule-modal textarea.form-control,
+.doctor-schedule-exception-modal textarea.form-control {
+  min-height: 118px;
+  resize: vertical;
+}
+
+.service-package-modal .service-package-preview-card {
+  min-height: auto !important;
+  padding: 18px 20px !important;
+  border: 1px dashed #bfe8fb !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(135deg, rgba(239, 250, 255, 0.92), rgba(255, 255, 255, 0.96)) !important;
+}
+
+.service-package-modal .service-package-preview-card::before {
+  display: none !important;
+}
+
+.service-package-modal .service-package-preview-card span,
+.service-package-modal .service-package-preview-card strong,
+.service-package-modal .service-package-preview-card em,
+.service-package-modal .service-package-preview-card p,
+.service-package-modal .service-package-preview-card div,
+.service-package-modal .service-package-preview-card small {
+  margin-left: 0 !important;
+}
+
+.service-package-modal > form > .admin-modal-footer,
+.appointment-reschedule-footer,
+.doctor-schedule-exception-modal > form > .d-flex.justify-content-end {
+  flex: 0 0 auto;
+  margin: 0 !important;
+  padding: 18px 32px !important;
+  border-top: 1px solid #e2edf7;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 -14px 30px rgba(15, 43, 91, 0.06);
+}
+
+.appointment-reschedule-modal {
+  width: min(760px, calc(100vw - 32px)) !important;
+  max-width: min(760px, calc(100vw - 32px)) !important;
+}
+
+.appointment-reschedule-current {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin: 22px 28px 0 !important;
+  padding: 0 !important;
+}
+
+.appointment-reschedule-current > div {
+  min-width: 0;
+  padding: 16px 18px !important;
+  border: 1px solid #dceaf6;
+  border-radius: 16px;
+  background: #f8fbff;
+}
+
+.appointment-reschedule-current strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #213756;
+  font-size: 0.94rem;
+}
+
+.appointment-reschedule-current span {
+  color: #516176;
+  font-size: 1rem;
+}
+
+.appointment-reschedule-modal .appointment-reschedule-form {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  padding: 22px 28px 26px !important;
+}
+
+.appointment-reschedule-date-field,
+.appointment-reschedule-slot-field,
+.appointment-reschedule-reason-field {
+  min-width: 0;
+}
+
+.appointment-reschedule-reason-field {
+  grid-column: 1 / -1;
+}
+
+.appointment-reschedule-slots {
+  min-height: 46px !important;
+  max-height: 190px;
+  overflow-y: auto;
+  padding: 8px !important;
+  border: 1px solid #dceaf6;
+  border-radius: 14px;
+  background: #fbfdff;
+}
+
+.appointment-reschedule-slot-empty {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  padding: 0 8px;
+  line-height: 1.45;
+}
+
+.appointment-reschedule-footer .btn,
+.doctor-schedule-exception-modal > form > .d-flex.justify-content-end .btn,
+.service-package-modal .admin-modal-footer .btn {
+  min-height: 44px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.doctor-schedule-exception-modal {
+  width: min(640px, calc(100vw - 32px)) !important;
+  max-width: min(640px, calc(100vw - 32px)) !important;
+}
+
+.doctor-schedule-exception-modal > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.doctor-schedule-exception-modal > form > .row {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  margin: 0 !important;
+  padding: 24px 28px 26px !important;
+  background: #fbfdff;
+}
+
+.doctor-schedule-exception-modal > form > .row > [class*="col-"] {
+  width: auto !important;
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+.doctor-schedule-exception-modal > form > .row > .col-md-4 {
+  grid-column: span 1;
+}
+
+.doctor-schedule-exception-modal > form > .row > .col-12 {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 780px) {
+  .service-package-modal,
+  .appointment-reschedule-modal,
+  .doctor-schedule-exception-modal {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100vh - 20px) !important;
+    border-radius: 20px !important;
+  }
+
+  .service-package-modal > form > .d-flex.justify-content-between,
+  .appointment-reschedule-header,
+  .doctor-schedule-exception-modal > .d-flex.justify-content-between,
+  .doctor-schedule-exception-modal > .d-flex.align-items-center {
+    padding: 22px 20px 18px !important;
+  }
+
+  .service-package-modal > form > .admin-modal-body.service-package-modal-body,
+  .appointment-reschedule-modal .appointment-reschedule-form,
+  .doctor-schedule-exception-modal > form > .row {
+    padding: 20px !important;
+  }
+
+  .service-package-modal .service-package-form-grid,
+  .appointment-reschedule-modal .appointment-reschedule-form,
+  .appointment-reschedule-current,
+  .doctor-schedule-exception-modal > form > .row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .service-package-modal .service-package-form-grid > *,
+  .appointment-reschedule-reason-field,
+  .doctor-schedule-exception-modal > form > .row > * {
+    grid-column: 1 / -1 !important;
+  }
+
+  .service-package-modal .service-package-form-section {
+    padding: 20px !important;
+  }
+
+  .service-package-modal > form > .admin-modal-footer,
+  .appointment-reschedule-footer,
+  .doctor-schedule-exception-modal > form > .d-flex.justify-content-end {
+    padding: 14px 20px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .service-package-modal > form > .d-flex.justify-content-between,
+  .appointment-reschedule-header,
+  .doctor-schedule-exception-modal > .d-flex {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .service-package-modal > form > .d-flex.justify-content-between .btn,
+  .appointment-reschedule-close,
+  .doctor-schedule-exception-modal > .d-flex .btn {
+    align-self: flex-start;
+  }
+
+  .service-package-modal > form > .admin-modal-footer,
+  .appointment-reschedule-footer,
+  .doctor-schedule-exception-modal > form > .d-flex.justify-content-end {
+    flex-direction: column-reverse;
+  }
+
+  .service-package-modal > form > .admin-modal-footer .btn,
+  .appointment-reschedule-footer .btn,
+  .doctor-schedule-exception-modal > form > .d-flex.justify-content-end .btn {
+    width: 100%;
+  }
+}
+
+/* Final doctor scroll repair: lock the document and keep doctor-main as the only scrollbar. */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html.doctor-portal-open,
+body.doctor-portal-open {
+  height: 100% !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+html.doctor-portal-open #root {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+body.doctor-portal-open .doctor-layout {
+  display: grid !important;
+  grid-template-columns: 260px minmax(0, 1fr) !important;
+  width: 100% !important;
+  height: calc(100vh - 76px) !important;
+  min-height: 0 !important;
+  max-height: calc(100vh - 76px) !important;
+  overflow: hidden !important;
+}
+
+body.doctor-portal-open .doctor-sidebar {
+  position: sticky !important;
+  top: 0 !important;
+  align-self: start !important;
+  height: calc(100vh - 76px) !important;
+  min-height: 0 !important;
+  max-height: calc(100vh - 76px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+}
+
+body.doctor-portal-open .doctor-main {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: calc(100vh - 76px) !important;
+  max-height: calc(100vh - 76px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+}
+
+body.doctor-portal-open .doctor-page-container {
+  min-height: 0 !important;
+  overflow: visible;
+}
+
+body.modal-open,
+body.modal-open.doctor-portal-open,
+body.modal-open:has(.admin-layout) {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none;
+}
+
+body.modal-open .doctor-main,
+body.modal-open .admin-main,
+body.modal-open .doctor-sidebar,
+body.modal-open .admin-sidebar {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+body.modal-open .admin-modal-backdrop {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none;
+}
+
+body.modal-open [data-cb-modal="true"] {
+  touch-action: auto;
+}
+
+@media (max-width: 768px) {
+  html.doctor-portal-open,
+  body.doctor-portal-open {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: auto !important;
+  }
+
+  html.doctor-portal-open #root {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+  }
+
+  body.doctor-portal-open .doctor-layout {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.doctor-portal-open .doctor-sidebar,
+  body.doctor-portal-open .doctor-main {
+    position: static !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  body.modal-open.doctor-portal-open {
+    overflow: hidden !important;
   }
 }

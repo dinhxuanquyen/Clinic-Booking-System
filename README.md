@@ -61,7 +61,7 @@ Included:
 - Deployment guide
 - API summary
 - Test report
-- Demo script
+- Presentation script
 - User, Doctor and Admin manuals
 - Slide outline
 
@@ -355,8 +355,8 @@ cp .env.example .env
 # chỉnh MONGO_URI nếu không dùng MongoDB local
 npm install
 npm run seed
-# Optional: add a richer graduation-demo dataset after the base seed
-npm run seed:demo
+# Optional: add a richer graduation sample dataset after the base seed
+npm run seed:sample
 npm run dev
 ```
 
@@ -429,13 +429,13 @@ Admin pages:
 
 Admin forms use Bootstrap tables and modal forms. Delete actions ask for browser confirmation before calling the API.
 
-Tài khoản demo sau khi seed:
+Tài khoản mẫu sau khi seed:
 
 - Admin: `admin@example.com` / `123456`
 - Doctor/Staff: `staff@example.com` / `123456`
 - Patient: `patient@example.com` / `123456`
-- Rich demo doctor: `demo.doctor01@clinic.test` / `123456`
-- Rich demo patient: `demo.patient01@clinic.test` / `123456`
+- Sample doctor: `doctor01@clinic.test` / `123456`
+- Sample patient: `patient01@clinic.test` / `123456`
 
 Auth redirect rules:
 

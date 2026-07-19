@@ -187,8 +187,21 @@ export default function BaseModal({
     }
   }
 
+  function preventBackdropScroll(event) {
+    event.preventDefault();
+  }
+
+  function stopModalScrollPropagation(event) {
+    event.stopPropagation();
+  }
+
   return createPortal(
-    <div className={backdropClassName} onClick={closeFromBackdrop}>
+    <div
+      className={backdropClassName}
+      onClick={closeFromBackdrop}
+      onTouchMove={preventBackdropScroll}
+      onWheel={preventBackdropScroll}
+    >
       <div
         aria-label={resolvedAriaLabel}
         aria-labelledby={ariaLabelledBy}
@@ -200,6 +213,8 @@ export default function BaseModal({
         role="dialog"
         tabIndex={-1}
         onClick={(event) => event.stopPropagation()}
+        onTouchMove={stopModalScrollPropagation}
+        onWheel={stopModalScrollPropagation}
       >
         {children}
       </div>

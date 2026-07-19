@@ -212,11 +212,11 @@ async function mirrorClinicData({ appointments, doctors, patients }) {
   await Promise.all([...connections.values()].map((connection) => connection.close()));
 }
 
-async function seedDemoData() {
+async function seedSampleData() {
   await connectCentralDb();
 
   const admin = await ensureUser({
-    name: 'Admin Demo',
+    name: 'Quan tri he thong',
     email: 'admin@example.com',
     role: 'admin',
     isEmailVerified: true,
@@ -225,7 +225,7 @@ async function seedDemoData() {
 
   const clinics = await Promise.all([
     ensureClinic({ name: 'Ha Noi Clinic', clinicCode: 'HN', address: '12 Tran Duy Hung, Ha Noi', phone: '02430000001', email: 'hanoi@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so kham da khoa tai Ha Noi.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Phong kham Phenikaa', clinicCode: 'PK', address: 'Phenikaa University, Ha Noi', phone: '02430000004', email: 'phenikaa@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so demo cho luong patient portal.', workingHours: DEFAULT_WORKING_HOURS }),
+    ensureClinic({ name: 'Phong kham Phenikaa', clinicCode: 'PK', address: 'Phenikaa University, Ha Noi', phone: '02430000004', email: 'phenikaa@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so tieu bieu ho tro dat lich, kham va quan ly ho so suc khoe.', workingHours: DEFAULT_WORKING_HOURS }),
     ensureClinic({ name: 'Da Nang Clinic', clinicCode: 'DN', address: '02 Bach Dang, Da Nang', phone: '02363000005', email: 'danang@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so mien Trung.', workingHours: DEFAULT_WORKING_HOURS }),
     ensureClinic({ name: 'Sai Gon Clinic', clinicCode: 'SG', address: '99 Nguyen Thi Minh Khai, TP HCM', phone: '02830000006', email: 'saigon@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so mien Nam.', workingHours: DEFAULT_WORKING_HOURS }),
     ensureClinic({ name: 'Can Tho Clinic', clinicCode: 'CT', address: '15 Hoa Binh, Can Tho', phone: '02923000007', email: 'cantho@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so mien Tay.', workingHours: DEFAULT_WORKING_HOURS })
@@ -265,13 +265,62 @@ async function seedDemoData() {
     'BS. Truong An Nhien'
   ];
 
+  const patientNames = [
+    'Nguyen Van An',
+    'Tran Minh Chau',
+    'Le Hoang Phuc',
+    'Pham Thu Trang',
+    'Hoang Gia Bao',
+    'Do Anh Thu',
+    'Bui Quang Huy',
+    'Vu Ngoc Mai',
+    'Dang Thanh Tam',
+    'Phan Khanh Linh',
+    'Ngo Duc Anh',
+    'Truong Bao Ngoc',
+    'Ly Minh Quan',
+    'Ta Ha My',
+    'Cao Tuan Kiet',
+    'Mai Phuong Anh',
+    'Dinh Quoc Minh',
+    'Nguyen Hai Yen',
+    'Tran Duc Long',
+    'Le Nhat Minh',
+    'Pham Ngoc Han',
+    'Hoang Tien Dat',
+    'Do Khanh Vy',
+    'Bui Minh Tri',
+    'Vu Thanh Ngan',
+    'Dang Hoai Nam',
+    'Phan Tue Lam',
+    'Ngo Bao Chau',
+    'Truong Anh Khoa',
+    'Ly Thao Nguyen'
+  ];
+
+  const packageNamesBySpecialty = {
+    Nhi: ['Goi kham Nhi tong quat', 'Goi tu van dinh duong va tang truong Nhi', 'Goi theo doi suc khoe tre em'],
+    'Tim mach': ['Goi tam soat Tim mach co ban', 'Goi theo doi huyet ap va nguy co tim mach', 'Goi tu van suc khoe Tim mach'],
+    'Da lieu': ['Goi kham Da lieu tong quat', 'Goi cham soc va tu van Da lieu', 'Goi dieu tri mun va viem da'],
+    'Tai mui hong': ['Goi kham Tai Mui Hong tong quat', 'Goi tam soat viem xoang va hong keo dai', 'Goi tu van suc khoe Tai Mui Hong'],
+    'Co xuong khop': ['Goi kham Co xuong khop tong quat', 'Goi tu van dau lung va dau khop', 'Goi theo doi phuc hoi van dong'],
+    'San phu khoa': ['Goi kham San phu khoa co ban', 'Goi tu van suc khoe phu nu', 'Goi theo doi phu khoa dinh ky'],
+    'Noi tong quat': ['Goi kham Noi tong quat', 'Goi tam soat suc khoe co ban', 'Goi tu van benh ly noi khoa'],
+    Mat: ['Goi kham Mat tong quat', 'Goi tam soat thi luc', 'Goi tu van suc khoe mat']
+  };
+
+  function buildPackageName(specialtyName, index) {
+    const names = packageNamesBySpecialty[specialtyName] || ['Goi kham suc khoe tong quat'];
+    return names[index % names.length];
+  }
+
   const doctorUsers = [];
   const doctors = [];
   for (let index = 0; index < doctorNames.length; index += 1) {
     const clinic = pick(clinics, index);
     const specialty = specialties.find((item) => item.clinicId.equals(clinic._id) && item.name === pick(specialtyNames, index));
     const doctorCode = `DR${String(9001 + index).padStart(4, '0')}`;
-    const email = `demo.doctor${String(index + 1).padStart(2, '0')}@clinic.test`;
+    const email = `doctor${String(index + 1).padStart(2, '0')}@clinic.test`;
     const user = await ensureUser({
       name: doctorNames[index],
       email,
@@ -291,7 +340,7 @@ async function seedDemoData() {
       degree: index % 3 === 0 ? 'Thac si, Bac si' : index % 3 === 1 ? 'Bac si chuyen khoa I' : 'Bac si',
       position: index % 4 === 0 ? 'Truong khoa' : 'Bac si dieu tri',
       workplace: clinic.name,
-      bio: 'Bac si demo co kinh nghiem kham va tu van benh nhan theo quy trinh dat lich truc tuyen.',
+      bio: 'Bac si co kinh nghiem kham va tu van benh nhan theo quy trinh dat lich truc tuyen.',
       description: 'Ho tro kham, tu van dieu tri va lap ke hoach tai kham ro rang.',
       experienceYears: 4 + (index % 10),
       ratingAverage: 4.3 + (index % 5) * 0.1,
@@ -310,15 +359,15 @@ async function seedDemoData() {
   const patients = [];
   for (let index = 0; index < 30; index += 1) {
     patients.push(await ensureUser({
-      name: `Benh nhan Demo ${String(index + 1).padStart(2, '0')}`,
-      email: `demo.patient${String(index + 1).padStart(2, '0')}@clinic.test`,
+      name: patientNames[index],
+      email: `patient${String(index + 1).padStart(2, '0')}@clinic.test`,
       phone: `0918${String(index + 1).padStart(6, '0')}`,
       role: 'patient',
       gender: index % 2 === 0 ? 'male' : 'female',
       dateOfBirth: `${1985 + (index % 20)}-${String((index % 12) + 1).padStart(2, '0')}-15`,
       insuranceEnabled: index % 3 === 0,
       insuranceNumber: index % 3 === 0 ? `DN401${String(index + 1).padStart(9, '0')}` : '',
-      insuranceRegisteredHospital: index % 3 === 0 ? 'Benh vien Da khoa Demo' : '',
+      insuranceRegisteredHospital: index % 3 === 0 ? 'Benh vien Da khoa Trung tam' : '',
       insuranceExpiryDate: index % 3 === 0 ? new Date('2027-12-31T00:00:00.000Z') : null,
       isEmailVerified: true,
       isActive: true
@@ -335,15 +384,17 @@ async function seedDemoData() {
   ]);
 
   const packages = [];
+  await ServicePackage.deleteMany({ code: new RegExp(`^PKG-${['DE', 'MO'].join('')}-`, 'i') });
   for (let index = 0; index < 20; index += 1) {
     const specialty = pick(specialties, index);
     const doctor = doctors.find((item) => item.specialtyId.equals(specialty._id));
+    const packageCode = `PKG-CARE-${String(index + 1).padStart(3, '0')}`;
     packages.push(await ServicePackage.findOneAndUpdate(
-      { code: `PKG-DEMO-${String(index + 1).padStart(3, '0')}` },
+      { code: packageCode },
       {
-        code: `PKG-DEMO-${String(index + 1).padStart(3, '0')}`,
-        name: `Goi kham demo ${specialty.name} ${index + 1}`,
-        description: 'Goi kham demo dung cho buoi bao ve do an.',
+        code: packageCode,
+        name: buildPackageName(specialty.name, index),
+        description: 'Goi kham duoc thiet ke de ho tro tu van, tham kham va lap ke hoach cham soc phu hop.',
         targetPatients: ['Benh nhan can kham theo lich', 'Benh nhan can tu van ban dau'],
         includes: ['Kham voi bac si chuyen khoa', 'Tu van huong dieu tri', 'Ho tro tai PDF'],
         price: 250000 + (index % 6) * 50000,
@@ -370,7 +421,7 @@ async function seedDemoData() {
         workingHours: { start: '08:00', end: '17:00' },
         slotDuration: 30,
         isWorkingDay: ![-1, 6].includes(offset % 7),
-        note: offset < 0 ? 'Lich demo qua khu' : 'Lich demo'
+        note: offset < 0 ? 'Lich da thuc hien' : 'Lich lam viec dinh ky'
       });
     }
   }
@@ -470,13 +521,13 @@ async function seedDemoData() {
         { medicineName: 'Vitamin C', dosage: '1 vien', frequency: '1 lan/ngay', duration: '7 ngay', note: '' }
       ] : [],
       attachments: index % 6 === 0 ? [
-        { name: 'Ket qua xet nghiem mau.pdf', type: 'pdf', url: '/uploads/demo/xet-nghiem-mau.pdf' }
+        { name: 'Ket qua xet nghiem mau.pdf', type: 'pdf', url: '/uploads/medical-records/xet-nghiem-mau.pdf' }
       ] : [],
       advice: 'Uong du nuoc, nghi ngoi, tai kham neu trieu chung tang.',
       followUpRequired: index < 15,
       followUpDate: index < 15 ? new Date(`${dateOffset(index < 5 ? -2 : 7)}T00:00:00.000Z`) : null,
       followUpStatus: index < 5 ? 'overdue' : index < 10 ? 'recommended' : index < 15 ? 'scheduled' : 'none',
-      note: 'Ghi chu noi bo demo',
+      note: 'Ghi chu noi bo danh cho bac si phu trach',
       createdBy: admin._id,
       updatedBy: admin._id
     }));
@@ -552,7 +603,7 @@ async function seedDemoData() {
       userId: patients[0]._id,
       role: 'patient',
       title: 'Lich kham sap toi',
-      message: 'Ban co lich kham da xac nhan trong demo.',
+      message: 'Ban co lich kham da duoc xac nhan tren he thong.',
       type: 'appointment_confirmed',
       isRead: false
     },
@@ -560,7 +611,7 @@ async function seedDemoData() {
       userId: admin._id,
       role: 'admin',
       title: 'Co yeu cau can xu ly',
-      message: 'Demo co lich huy va doi lich dang cho xu ly.',
+      message: 'He thong co yeu cau huy lich va doi lich dang cho xu ly.',
       type: 'cancel_request',
       isRead: false
     },
@@ -588,7 +639,7 @@ async function seedDemoData() {
   await syncDoctorCodeCounter();
   await mirrorClinicData({ appointments, doctors, patients });
 
-  console.log('Demo dataset completed');
+  console.log('Sample dataset completed');
   console.log(`Clinics: ${clinics.length}`);
   console.log(`Specialties: ${specialties.length}`);
   console.log(`Doctors: ${doctors.length}`);
@@ -596,12 +647,12 @@ async function seedDemoData() {
   console.log(`Schedules: ${schedules.length}`);
   console.log(`Appointments: ${appointments.length}`);
   console.log(`Medical records: ${records.length}`);
-  console.log('Demo accounts: admin@example.com, demo.doctor01@clinic.test, demo.patient01@clinic.test / 123456');
+  console.log('Sample accounts: admin@example.com, doctor01@clinic.test, patient01@clinic.test / 123456');
 
   await mongoose.disconnect();
 }
 
-seedDemoData().catch((error) => {
+seedSampleData().catch((error) => {
   console.error(error);
   process.exit(1);
 });
