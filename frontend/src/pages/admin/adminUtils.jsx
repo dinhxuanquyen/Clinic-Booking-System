@@ -56,12 +56,21 @@ export function getName(value) {
   return typeof value === 'object' ? value.name : value;
 }
 
-export function Modal({ title, children, onClose, onSubmit, submitText = 'Lưu' }) {
+export function Modal({
+  children,
+  onClose,
+  onSubmit,
+  submitDisabled = false,
+  submitPendingText = 'Đang lưu...',
+  submitText = 'Lưu',
+  submitting = false,
+  title
+}) {
   return (
-    <BaseModal ariaLabel={title} className="admin-modal" onClose={onClose}>
+    <BaseModal ariaLabel={title} className="admin-modal" disableClose={submitting} onClose={onClose}>
       <div className="d-flex align-items-center justify-content-between mb-3">
         <h2 className="h5 mb-0">{title}</h2>
-        <button className="btn btn-sm btn-outline-secondary" type="button" onClick={onClose}>
+        <button className="btn btn-sm btn-outline-secondary" disabled={submitting} type="button" onClick={onClose}>
           Đóng
         </button>
       </div>
@@ -70,11 +79,11 @@ export function Modal({ title, children, onClose, onSubmit, submitText = 'Lưu' 
           {children}
         </div>
         <div className="d-flex justify-content-end gap-2 mt-3 admin-modal-footer">
-          <button className="btn btn-outline-secondary" type="button" onClick={onClose}>
+          <button className="btn btn-outline-secondary" disabled={submitting} type="button" onClick={onClose}>
             Hủy
           </button>
-          <button className="btn btn-primary" type="submit">
-            {submitText}
+          <button className="btn btn-primary" disabled={submitting || submitDisabled} type="submit">
+            {submitting ? submitPendingText : submitText}
           </button>
         </div>
       </form>
@@ -84,7 +93,16 @@ export function Modal({ title, children, onClose, onSubmit, submitText = 'Lưu' 
 
 export function AdminAlert({ message, type = 'success' }) {
   if (!message) return null;
-  return <div className={`alert alert-${type}`}>{message}</div>;
+  const isAssertive = ['danger', 'warning'].includes(type);
+  return (
+    <div
+      aria-live={isAssertive ? 'assertive' : 'polite'}
+      className={`alert alert-${type}`}
+      role={isAssertive ? 'alert' : 'status'}
+    >
+      {message}
+    </div>
+  );
 }
 
 export function ConfirmDialog({ title = 'Xác nhận', message, confirmText = 'Xóa', cancelText = 'Hủy', onConfirm, onCancel }) {

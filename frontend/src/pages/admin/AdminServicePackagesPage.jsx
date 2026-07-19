@@ -286,9 +286,18 @@ export default function AdminServicePackagesPage() {
               <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => setModalOpen(false)}>Đóng</button>
             </div>
 
-            <div className="admin-modal-body">
-              <div className="row g-3">
-                <div className="col-md-8">
+            <div className="admin-modal-body service-package-modal-body">
+              <div className="service-package-section-stack">
+                <section className="service-package-form-section">
+                  <div className="service-package-form-section-title service-package-form-section-title-primary">
+                  <span>01</span>
+                  <div>
+                    <h3>Thông tin gói khám</h3>
+                    <p>Thiết lập phạm vi áp dụng, giá và thời lượng tư vấn.</p>
+                  </div>
+                  </div>
+                  <div className="service-package-form-grid service-package-form-grid-basic">
+                    <div className="col-md-8">
                   <label className="form-label">Tên gói khám</label>
                   <input className="form-control" value={form.name} onChange={(event) => updateForm('name', event.target.value)} placeholder="Ví dụ: Khám tổng quát Nhi khoa" />
                 </div>
@@ -328,7 +337,18 @@ export default function AdminServicePackagesPage() {
                   <label className="form-label">Thời lượng</label>
                   <input className="form-control" min="1" type="number" value={form.durationMinutes} onChange={(event) => updateForm('durationMinutes', event.target.value)} />
                 </div>
-                <div className="col-12">
+                  </div>
+                </section>
+                <section className="service-package-form-section">
+                  <div className="service-package-form-section-title service-package-form-section-title-content">
+                  <span>02</span>
+                  <div>
+                    <h3>Nội dung hiển thị</h3>
+                    <p>Mô tả quyền lợi và nhóm bệnh nhân phù hợp với gói khám.</p>
+                  </div>
+                  </div>
+                  <div className="service-package-form-grid service-package-form-grid-content">
+                    <div className="col-12">
                   <label className="form-label">Mô tả</label>
                   <textarea className="form-control" rows="4" value={form.description} onChange={(event) => updateForm('description', event.target.value)} placeholder="Mô tả ngắn về quyền lợi hoặc nội dung gói khám" />
                 </div>
@@ -351,6 +371,8 @@ export default function AdminServicePackagesPage() {
                     </div>
                   </div>
                 </div>
+                  </div>
+                </section>
               </div>
             </div>
 

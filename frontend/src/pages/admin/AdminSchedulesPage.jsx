@@ -43,6 +43,7 @@ export default function AdminSchedulesPage() {
   const [slotData, setSlotData] = useState([]);
   const [slotViewed, setSlotViewed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const filterDoctors = doctors.filter((item) => !filters.clinicId || getId(item.clinicId) === filters.clinicId);
@@ -170,6 +171,7 @@ export default function AdminSchedulesPage() {
 
   async function submit(event) {
     event.preventDefault();
+    if (saving) return;
     setError('');
     if (!form.clinicId) {
       toast.warning('Vui lòng chọn cơ sở');
@@ -188,6 +190,7 @@ export default function AdminSchedulesPage() {
       return;
     }
 
+    setSaving(true);
     try {
       const body = {
         doctorId: form.doctorId,
@@ -208,6 +211,8 @@ export default function AdminSchedulesPage() {
     } catch (err) {
       setError(err.message);
       toast.error(err.message);
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -399,7 +404,14 @@ export default function AdminSchedulesPage() {
       )}
 
       {modalOpen && (
-        <Modal title={editing ? 'Cập nhật lịch làm việc' : 'Thêm lịch làm việc'} onClose={() => setModalOpen(false)} onSubmit={submit}>
+        <Modal
+          submitPendingText="Đang lưu..."
+          submitText={editing ? 'Cập nhật lịch' : 'Lưu lịch'}
+          submitting={saving}
+          title={editing ? 'Cập nhật lịch làm việc' : 'Thêm lịch làm việc'}
+          onClose={() => setModalOpen(false)}
+          onSubmit={submit}
+        >
           <AdminAlert message={error} type="danger" />
           <div className="admin-schedule-form">
             <section className="admin-schedule-form-section">

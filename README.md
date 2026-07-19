@@ -48,6 +48,23 @@ frontend/
     styles/
 ```
 
+## Thesis-ready documents
+
+The graduation/thesis document pack is available at [`docs/thesis`](docs/thesis/README.md).
+
+Included:
+
+- Architecture
+- Database diagram
+- Use cases
+- Sequence diagrams
+- Deployment guide
+- API summary
+- Test report
+- Demo script
+- User, Doctor and Admin manuals
+- Slide outline
+
 ## 3. Database schema
 
 Central DB:
@@ -338,6 +355,8 @@ cp .env.example .env
 # chỉnh MONGO_URI nếu không dùng MongoDB local
 npm install
 npm run seed
+# Optional: add a richer graduation-demo dataset after the base seed
+npm run seed:demo
 npm run dev
 ```
 
@@ -415,6 +434,8 @@ Tài khoản demo sau khi seed:
 - Admin: `admin@example.com` / `123456`
 - Doctor/Staff: `staff@example.com` / `123456`
 - Patient: `patient@example.com` / `123456`
+- Rich demo doctor: `demo.doctor01@clinic.test` / `123456`
+- Rich demo patient: `demo.patient01@clinic.test` / `123456`
 
 Auth redirect rules:
 

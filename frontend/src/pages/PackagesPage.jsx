@@ -26,13 +26,98 @@ function listOf(value, limit = 3) {
   return Array.isArray(value) ? value.filter(Boolean).slice(0, limit) : [];
 }
 
+const PACKAGE_VISUALS = [
+  {
+    keys: ['nhi', 'tre em', 'pediatric'],
+    image: 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=900&q=82',
+    tone: 'pediatric'
+  },
+  {
+    keys: ['tim', 'mach', 'huyet ap', 'cardio'],
+    image: 'https://images.unsplash.com/photo-1628348070889-cb656235b4eb?auto=format&fit=crop&w=900&q=82',
+    tone: 'cardio'
+  },
+  {
+    keys: ['da lieu', 'da', 'derma'],
+    image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=82',
+    tone: 'derma'
+  },
+  {
+    keys: ['tai mui hong', 'tai', 'mui', 'hong', 'ent'],
+    image: 'https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=900&q=82',
+    tone: 'ent'
+  },
+  {
+    keys: ['san phu', 'phu khoa', 'ivf', 'thai', 'me be'],
+    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=82',
+    tone: 'women'
+  },
+  {
+    keys: ['mat', 'nhan khoa', 'eye'],
+    image: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=900&q=82',
+    tone: 'eye'
+  },
+  {
+    keys: ['co xuong khop', 'xuong', 'khop', 'chan thuong', 'ortho'],
+    image: 'https://images.unsplash.com/photo-1612776572997-76cc42e058c3?auto=format&fit=crop&w=900&q=82',
+    tone: 'ortho'
+  },
+  {
+    keys: ['tong quat', 'suc khoe', 'noi tong quat', 'general'],
+    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=82',
+    tone: 'general'
+  }
+];
+
+const DEFAULT_PACKAGE_VISUAL = {
+  image: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=900&q=82',
+  tone: 'general'
+};
+
+function normalizeSearchText(value) {
+  return cleanDisplayText(value || '', '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function packageImageUrl(item) {
+  return item.imageUrl || item.coverImage || item.thumbnailUrl || item.bannerUrl || item.image || '';
+}
+
+export function getPackageVisual(item) {
+  const explicitImage = packageImageUrl(item);
+  if (explicitImage) {
+    return { image: explicitImage, tone: 'custom' };
+  }
+
+  const haystack = normalizeSearchText([
+    item.name,
+    item.description,
+    valueName(item.specialtyId, ''),
+    valueName(item.clinicId, ''),
+    ...(Array.isArray(item.targetPatients) ? item.targetPatients : []),
+    ...(Array.isArray(item.includes) ? item.includes : [])
+  ].join(' '));
+
+  return PACKAGE_VISUALS.find((visual) => visual.keys.some((key) => haystack.includes(key))) || DEFAULT_PACKAGE_VISUAL;
+}
+
 function PackageCard({ item }) {
   const targetPatients = listOf(item.targetPatients, 3);
   const includes = listOf(item.includes, 3);
   const isDoctorPackage = Boolean(item.doctorId);
+  const visual = getPackageVisual(item);
 
   return (
-    <article className="public-package-card public-package-card-pro">
+    <article className={`public-package-card public-package-card-pro public-package-card-visual-${visual.tone}`}>
+      <div className="public-package-media" style={{ backgroundImage: `url("${visual.image}")` }}>
+        <div className="public-package-media-overlay">
+          <span>{valueName(item.specialtyId, 'ChuyÃªn khoa')}</span>
+          <strong>{cleanDisplayText(item.name, 'GÃ³i khÃ¡m')}</strong>
+        </div>
+      </div>
+
       <div className="public-package-card-ribbon">
         <span>{cleanDisplayText(item.code, 'Gói khám')}</span>
         <em>{isDoctorPackage ? 'Gói riêng bác sĩ' : 'Áp dụng chung'}</em>
