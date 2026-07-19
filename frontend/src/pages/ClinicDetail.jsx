@@ -46,12 +46,27 @@ export default function ClinicDetail() {
   const [error, setError] = useState('');
 
   const workingHours = useMemo(() => normalizeWorkingHours(clinic?.workingHours), [clinic]);
+  const openDays = useMemo(() => workingHours.filter((item) => !item.isClosed), [workingHours]);
 
   const filteredDoctors = useMemo(() => {
     if (selectedSpecialtyId === 'all') return doctors;
 
     return doctors.filter((doctor) => getObjectId(doctor.specialtyId) === selectedSpecialtyId);
   }, [doctors, selectedSpecialtyId]);
+
+  const specialtyDoctorCounts = useMemo(() => {
+    return doctors.reduce((counts, doctor) => {
+      const specialtyId = getObjectId(doctor.specialtyId);
+      if (!specialtyId) return counts;
+
+      counts[specialtyId] = (counts[specialtyId] || 0) + 1;
+      return counts;
+    }, {});
+  }, [doctors]);
+
+  function scrollToDoctors() {
+    document.getElementById('doctors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   useEffect(() => {
     Promise.all([
@@ -77,114 +92,102 @@ export default function ClinicDetail() {
 
   if (!clinic) return <PageSkeleton label="Đang tải thông tin cơ sở..." />;
 
+  const clinicImageUrl = resolveMediaUrl(clinic.image);
+
   return (
     <main className="section-band clinic-detail-page">
-      <div className="container">
-        <section className="clinic-detail-hero mb-5">
-          <div className="row g-4 align-items-center">
-            <div className="col-lg-5">
-              <img
-                className="clinic-hero-image"
-                src={resolveMediaUrl(clinic.image)}
-                alt={clinic.name}
-                onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')}
-              />
+      <section className="clinic-detail-hero">
+        <img
+          className="clinic-hero-image"
+          src={clinicImageUrl}
+          alt={clinic.name}
+          onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')}
+        />
+        <div className="clinic-hero-overlay" />
+        <div className="clinic-hero-inner">
+          <span className="clinic-crumb">Trang chủ / Cơ sở / {clinic.name}</span>
+          <h1 className="clinic-title">{clinic.name}</h1>
+          <p className="clinic-hero-address">
+            <span aria-hidden="true">📍</span>
+            {clinic.address || 'Đang cập nhật địa chỉ'}
+          </p>
+          <div className="clinic-hero-actions">
+            <a className="clinic-hero-phone" href={`tel:${clinic.phone || ''}`}>
+              <span aria-hidden="true">☎</span>
+              {clinic.phone || 'Đang cập nhật'}
+            </a>
+            <Link className="btn btn-primary clinic-cta" to={`/booking?clinicId=${clinicId}`}>
+              Đặt lịch khám
+            </Link>
+          </div>
+          <div className="clinic-quick-stats" aria-label="Tổng quan cơ sở">
+            <span><strong>{specialties.length}</strong> chuyên khoa</span>
+            <span><strong>{doctors.length}</strong> bác sĩ</span>
+            <span><strong>{openDays.length || '--'}</strong> ngày/tuần</span>
+          </div>
+        </div>
+      </section>
+
+      <div className="container clinic-detail-shell">
+        <div className="clinic-detail-main">
+          <section className="clinic-about-section">
+            <div className="clinic-section-head">
+              <div>
+                <span className="clinic-section-label">Giới thiệu chung</span>
+                <h2>Tổng quan cơ sở</h2>
+              </div>
             </div>
-            <div className="col-lg-7">
-              <span className="clinic-section-label">Thông tin cơ sở</span>
-              <h1 className="clinic-title mt-3">{clinic.name}</h1>
-              <p className="clinic-description">
-                {clinic.description || 'Thông tin cơ sở đang được cập nhật.'}
-              </p>
-
-              <div className="clinic-info-grid">
-                <article className="clinic-info-card">
-                  <span className="clinic-info-icon" aria-hidden="true">📍</span>
-                  <div>
-                    <strong>Địa chỉ</strong>
-                    <span>{clinic.address || 'Đang cập nhật'}</span>
-                  </div>
+            <div className="clinic-about-card">
+              <p>{clinic.description || 'Thông tin cơ sở đang được cập nhật.'}</p>
+              <div className="clinic-about-highlights">
+                <article>
+                  <strong>Sứ mệnh</strong>
+                  <span>Đặt lịch khám nhanh, minh bạch thông tin và tối ưu trải nghiệm người bệnh.</span>
                 </article>
-
-                <article className="clinic-info-card">
-                  <span className="clinic-info-icon" aria-hidden="true">📞</span>
-                  <div>
-                    <strong>Điện thoại</strong>
-                    <span>{clinic.phone || 'Đang cập nhật'}</span>
-                  </div>
-                </article>
-
-                <article className="clinic-info-card">
-                  <span className="clinic-info-icon" aria-hidden="true">✉️</span>
-                  <div>
-                    <strong>Email</strong>
-                    <span>{clinic.email || 'Đang cập nhật'}</span>
-                  </div>
-                </article>
-
-                <article className="clinic-info-card">
-                  <span className="clinic-info-icon" aria-hidden="true">🕒</span>
-                  <div>
-                    <strong>Giờ làm việc</strong>
-                    <div className="clinic-hours-list">
-                      {workingHours.length ? (
-                        workingHours.map((item) => (
-                          <div className="clinic-hours-row" key={item.dayOfWeek}>
-                            <span className="hours-day">{formatDayOfWeek(item.dayOfWeek)}</span>
-                            <span className={`hours-time ${item.isClosed ? 'closed' : 'open'}`}>
-                              {item.isClosed ? 'Nghỉ' : `${item.open || '--:--'} - ${item.close || '--:--'}`}
-                            </span>
-                          </div>
-                        ))
-                      ) : (
-                        <span>Đang cập nhật</span>
-                      )}
-                    </div>
-                  </div>
+                <article>
+                  <strong>Cơ sở vật chất</strong>
+                  <span>Không gian khám hiện đại, hỗ trợ nhiều chuyên khoa và đội ngũ bác sĩ phù hợp.</span>
                 </article>
               </div>
-
-              <Link className="btn btn-primary clinic-cta mt-4" to="#doctors">
-                <span className="calendar-icon" aria-hidden="true" />
-                Đặt lịch khám
-              </Link>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="mb-5">
-          <div className="d-flex justify-content-between align-items-end mb-3">
-            <div>
-              <span className="clinic-section-label">Chuyên khoa</span>
-              <h2 className="h3 mt-2 mb-0">Chuyên khoa tại cơ sở</h2>
+          <section className="clinic-specialties-section">
+            <div className="clinic-section-head">
+              <div>
+                <span className="clinic-section-label">Chuyên khoa nổi bật</span>
+                <h2>Chuyên khoa tại cơ sở</h2>
+              </div>
             </div>
-          </div>
-          <div className="d-flex flex-wrap gap-2">
-            {specialties.map((item) => (
-              <span className="specialty-pill" key={item._id}>
-                {item.name}
-              </span>
-            ))}
-            {!specialties.length && <span className="text-secondary">Chưa có chuyên khoa.</span>}
-          </div>
-        </section>
-
-        <section id="doctors" className="doctor-directory-section">
-          <div className="d-flex justify-content-between align-items-end mb-4">
-            <div>
-              <span className="clinic-section-label">Đội ngũ bác sĩ</span>
-              <h2 className="h3 mt-2 mb-0">Bác sĩ tại cơ sở</h2>
+            <div className="clinic-specialty-grid">
+              {specialties.map((item, index) => (
+                <article className="clinic-specialty-card" key={item._id}>
+                  <span aria-hidden="true">{['❤️', '🩺', '👶', '🛡️', '🧠', '👂'][index % 6]}</span>
+                  <strong>{item.name}</strong>
+                  <small>{specialtyDoctorCounts[item._id] || 0} bác sĩ đang nhận lịch</small>
+                </article>
+              ))}
+              {!specialties.length && <span className="clinic-muted-note">Chưa có chuyên khoa.</span>}
             </div>
-          </div>
+          </section>
 
-          <div className="doctor-directory-layout">
-            <aside className="doctor-specialty-sidebar" aria-label="Lọc bác sĩ theo chuyên khoa">
+          <section id="doctors" className="doctor-directory-section">
+            <div className="clinic-section-head clinic-doctor-head">
+              <div>
+                <span className="clinic-section-label">Đội ngũ bác sĩ tại cơ sở</span>
+                <h2>Bác sĩ đang nhận lịch</h2>
+              </div>
+              <p>{filteredDoctors.length} bác sĩ phù hợp</p>
+            </div>
+
+            <div className="clinic-doctor-filter-row" aria-label="Lọc bác sĩ theo chuyên khoa">
               <button
                 className={`doctor-specialty-filter ${selectedSpecialtyId === 'all' ? 'active' : ''}`}
                 type="button"
                 onClick={() => setSelectedSpecialtyId('all')}
               >
-                Tất cả
+                <span>Tất cả</span>
+                <strong>{doctors.length}</strong>
               </button>
               {specialties.map((item) => (
                 <button
@@ -193,10 +196,11 @@ export default function ClinicDetail() {
                   type="button"
                   onClick={() => setSelectedSpecialtyId(item._id)}
                 >
-                  {item.name}
+                  <span>{item.name}</span>
+                  <strong>{specialtyDoctorCounts[item._id] || 0}</strong>
                 </button>
               ))}
-            </aside>
+            </div>
 
             <div className="doctor-directory-results">
               <div className="row g-4">
@@ -213,8 +217,77 @@ export default function ClinicDetail() {
                 </div>
               )}
             </div>
-          </div>
-        </section>
+          </section>
+
+          <section className="clinic-gallery-section">
+            <div className="clinic-section-head">
+              <div>
+                <span className="clinic-section-label">Cơ sở vật chất & Trang thiết bị</span>
+                <h2>Không gian khám bệnh</h2>
+              </div>
+            </div>
+            <div className="clinic-gallery-grid">
+              <img
+                src={clinicImageUrl}
+                alt={`${clinic.name} - khu vực chính`}
+                onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')}
+              />
+              <div className="clinic-gallery-tile">Phòng khám sạch sẽ</div>
+              <div className="clinic-gallery-tile">Thiết bị hỗ trợ chẩn đoán</div>
+              <div className="clinic-gallery-tile wide">Khu vực tiếp đón người bệnh</div>
+            </div>
+          </section>
+        </div>
+
+        <aside className="clinic-detail-sidebar" aria-label="Thông tin hỗ trợ cơ sở">
+          <section className="clinic-side-card">
+            <h2>Giờ làm việc</h2>
+            <div className="clinic-hours-list">
+              {workingHours.length ? (
+                workingHours.map((item) => (
+                  <div className="clinic-hours-row" key={item.dayOfWeek}>
+                    <span className="hours-day">{formatDayOfWeek(item.dayOfWeek)}</span>
+                    <span className={`hours-time ${item.isClosed ? 'closed' : 'open'}`}>
+                      {item.isClosed ? 'Nghỉ' : `${item.open || '--:--'} - ${item.close || '--:--'}`}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <span>Đang cập nhật</span>
+              )}
+            </div>
+          </section>
+
+          <section className="clinic-side-card">
+            <h2>Vị trí bản đồ</h2>
+            <div className="clinic-map-preview">
+              <span aria-hidden="true">📍</span>
+            </div>
+            <p>{clinic.address || 'Đang cập nhật địa chỉ'}</p>
+            <a
+              className="clinic-map-link"
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.address || clinic.name)}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Xem đường đi trên Google Maps
+            </a>
+          </section>
+
+          <section className="clinic-side-card clinic-support-card">
+            <h2>Bạn cần hỗ trợ?</h2>
+            <p>Liên hệ tổng đài để được tư vấn và hỗ trợ đặt lịch nhanh.</p>
+            <a className="clinic-support-phone" href={`tel:${clinic.phone || ''}`}>
+              {clinic.phone || '1900 0000'}
+            </a>
+            <Link className="btn btn-primary clinic-sidebar-cta" to={`/booking?clinicId=${clinicId}`}>
+              Đặt lịch khám ngay
+            </Link>
+            <button className="btn btn-outline-primary clinic-sidebar-secondary" type="button" onClick={scrollToDoctors}>
+              Xem bác sĩ
+            </button>
+          </section>
+        </aside>
       </div>
     </main>
   );

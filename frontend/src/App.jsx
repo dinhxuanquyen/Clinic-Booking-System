@@ -6,7 +6,7 @@ import AdminLayout from './components/AdminLayout.jsx';
 import DoctorLayout from './components/DoctorLayout.jsx';
 import ManagementLayout from './components/ManagementLayout.jsx';
 import PublicLayout from './components/PublicLayout.jsx';
-
+import ScrollToTop from './components/ScrollToTop.jsx';
 // ---- Lazy load Pages ----
 // Public Pages
 const HomePage = lazy(() => import('./pages/HomePage.jsx'));
@@ -70,8 +70,10 @@ function ProfileRouteByRole() {
 
 export default function App() {
   return (
-    <Suspense fallback={<PageLoadingFallback />}>
-      <Routes>
+    <>
+      <ScrollToTop />
+      <Suspense fallback={<PageLoadingFallback />}>
+        <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/booking" element={<BookingPage />} />
@@ -193,5 +195,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
+    </>
   );
 }

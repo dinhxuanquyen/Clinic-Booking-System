@@ -1,5 +1,7 @@
 # Hệ thống web đặt lịch khám bệnh
 
+Frontend design notes live in [docs/frontend-design-guidelines.md](docs/frontend-design-guidelines.md). The project does not currently install a separate `frontend-design` skill, so the guidelines document and `frontend/src/styles/app.css` tokens are the source of truth for UI work.
+
 Full-stack project cho phòng khám nhỏ, dùng React + Bootstrap ở frontend, Node.js + Express.js ở backend, MongoDB + Mongoose cho database, JWT cho xác thực và Nodemailer cho email xác nhận.
 
 ## 1. Phân tích kiến trúc

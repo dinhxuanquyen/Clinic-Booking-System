@@ -13,6 +13,22 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
+function getArticleAuthorName(article) {
+  const name = cleanDisplayText(article?.authorId?.name, '').trim();
+  if (!name) return 'Đội ngũ Clinic Booking';
+
+  const normalized = name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+  if (normalized.includes('quan tri he thong') || normalized.includes('admin')) {
+    return 'Đội ngũ Clinic Booking';
+  }
+
+  return name;
+}
+
 function parseArticleContent(content) {
   const blocks = [];
   const lines = String(content || '').split(/\r?\n/);
@@ -161,7 +177,7 @@ export default function ArticleDetailPage() {
             <h1>{title}</h1>
             <p>{summary}</p>
             <div className="article-detail-meta">
-              <span>{cleanDisplayText(article.authorId?.name, 'Clinic Booking')}</span>
+              <span>{getArticleAuthorName(article)}</span>
               <span>{formatDate(article.publishedAt || article.createdAt)}</span>
               <span>{article.viewCount || 0} lượt xem</span>
             </div>

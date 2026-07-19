@@ -52,6 +52,40 @@ function patientDisplayName(patient) {
   return `Bệnh nhân ${parts.map((part) => part[0]).join('.')}`;
 }
 
+function practiceAreasForSpecialty(name = '') {
+  const normalized = cleanDisplayText(name, '').toLowerCase();
+
+  if (normalized.includes('nhi')) {
+    return ['Khám nhi tổng quát', 'Theo dõi tăng trưởng', 'Hô hấp nhi', 'Dinh dưỡng trẻ em'];
+  }
+
+  if (normalized.includes('tim')) {
+    return ['Tư vấn tim mạch', 'Theo dõi huyết áp', 'Điện tim', 'Dự phòng bệnh tim'];
+  }
+
+  if (normalized.includes('da')) {
+    return ['Khám da liễu', 'Mụn và viêm da', 'Dị ứng da', 'Chăm sóc da y khoa'];
+  }
+
+  if (normalized.includes('mắt') || normalized.includes('mat')) {
+    return ['Khám mắt tổng quát', 'Tật khúc xạ', 'Khô mắt', 'Theo dõi thị lực'];
+  }
+
+  if (normalized.includes('tai') || normalized.includes('mũi') || normalized.includes('hong') || normalized.includes('họng')) {
+    return ['Tai mũi họng tổng quát', 'Viêm xoang', 'Viêm họng', 'Rối loạn thính lực'];
+  }
+
+  if (normalized.includes('sản') || normalized.includes('phụ')) {
+    return ['Khám phụ khoa', 'Tư vấn thai kỳ', 'Tầm soát sức khỏe nữ', 'Siêu âm sản phụ khoa'];
+  }
+
+  if (normalized.includes('xương') || normalized.includes('khớp')) {
+    return ['Khám cơ xương khớp', 'Đau lưng', 'Thoái hóa khớp', 'Phục hồi vận động'];
+  }
+
+  return ['Khám chuyên khoa', 'Tư vấn điều trị', 'Theo dõi sức khỏe', 'Hướng dẫn chăm sóc'];
+}
+
 function DoctorServicePackageCard({ item, doctorId, fallback = false }) {
   const targetPatients = Array.isArray(item?.targetPatients) ? item.targetPatients.slice(0, 2) : [];
   const includes = Array.isArray(item?.includes) ? item.includes.slice(0, 3) : [];
@@ -334,7 +368,7 @@ export default function DoctorDetail() {
     cleanDisplayText(doctor.description || doctor.bio, '') ||
     'Bác sĩ có kinh nghiệm thăm khám, tư vấn và theo dõi điều trị cho người bệnh theo từng nhu cầu sức khỏe cụ thể. Quy trình khám được xây dựng rõ ràng, giúp bệnh nhân yên tâm từ lúc đặt lịch đến khi hoàn tất buổi khám.';
   const workExperience = cleanDisplayText(doctor.workplace, '') || clinicName(doctor);
-  const doctorPracticeAreas = ['Khám trẻ em', 'Dị ứng', 'Hen suyễn', 'Viêm phổi', 'Theo dõi tăng trưởng'];
+  const doctorPracticeAreas = practiceAreasForSpecialty(specialtyName(doctor));
   const highlights = [
     { icon: '⭐', value: ratingCount ? averageRating : '-', label: 'Đánh giá' },
     { icon: '👥', value: '500+', label: 'Lượt khám' },
@@ -380,7 +414,7 @@ export default function DoctorDetail() {
 
             <section className="doctor-highlights-card">
               <div>
-                <span className="eyebrow">Doctor Highlights</span>
+                <span className="eyebrow">Điểm nổi bật</span>
                 <h2>Năng lực và mức độ tin cậy</h2>
               </div>
               <div className="doctor-highlights-list">

@@ -224,21 +224,21 @@ async function seedSampleData() {
   });
 
   const clinics = await Promise.all([
-    ensureClinic({ name: 'Ha Noi Clinic', clinicCode: 'HN', address: '12 Tran Duy Hung, Ha Noi', phone: '02430000001', email: 'hanoi@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so kham da khoa tai Ha Noi.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Phong kham Phenikaa', clinicCode: 'PK', address: 'Phenikaa University, Ha Noi', phone: '02430000004', email: 'phenikaa@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so tieu bieu ho tro dat lich, kham va quan ly ho so suc khoe.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Da Nang Clinic', clinicCode: 'DN', address: '02 Bach Dang, Da Nang', phone: '02363000005', email: 'danang@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so mien Trung.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Sai Gon Clinic', clinicCode: 'SG', address: '99 Nguyen Thi Minh Khai, TP HCM', phone: '02830000006', email: 'saigon@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so mien Nam.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Can Tho Clinic', clinicCode: 'CT', address: '15 Hoa Binh, Can Tho', phone: '02923000007', email: 'cantho@clinic.test', image: '/placeholder-clinic.svg', description: 'Co so mien Tay.', workingHours: DEFAULT_WORKING_HOURS })
+    ensureClinic({ name: 'Ha Noi Clinic', clinicCode: 'HN', address: '12 Tran Duy Hung, Ha Noi', phone: '02430000001', email: 'hanoi@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở khám đa khoa tại Hà Nội.', workingHours: DEFAULT_WORKING_HOURS }),
+    ensureClinic({ name: 'Phong kham Phenikaa', clinicCode: 'PK', address: 'Phenikaa University, Ha Noi', phone: '02430000004', email: 'phenikaa@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở tiêu biểu hỗ trợ đặt lịch, khám và quản lý hồ sơ sức khỏe.', workingHours: DEFAULT_WORKING_HOURS }),
+    ensureClinic({ name: 'Da Nang Clinic', clinicCode: 'DN', address: '02 Bach Dang, Da Nang', phone: '02363000005', email: 'danang@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở miền Trung.', workingHours: DEFAULT_WORKING_HOURS }),
+    ensureClinic({ name: 'Sai Gon Clinic', clinicCode: 'SG', address: '99 Nguyen Thi Minh Khai, TP HCM', phone: '02830000006', email: 'saigon@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở miền Nam.', workingHours: DEFAULT_WORKING_HOURS }),
+    ensureClinic({ name: 'Can Tho Clinic', clinicCode: 'CT', address: '15 Hoa Binh, Can Tho', phone: '02923000007', email: 'cantho@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở miền Tây.', workingHours: DEFAULT_WORKING_HOURS })
   ]);
 
-  const specialtyNames = ['Nhi', 'Tim mach', 'Da lieu', 'Tai mui hong', 'Co xuong khop', 'San phu khoa', 'Noi tong quat', 'Mat'];
+  const specialtyNames = ['Nhi', 'Tim mạch', 'Da liễu', 'Tai mũi họng', 'Cơ xương khớp', 'Sản phụ khoa', 'Nội tổng quát', 'Mắt'];
   const specialties = [];
   for (const clinic of clinics) {
     for (const name of specialtyNames) {
       specialties.push(await ensureSpecialty({
         clinicId: clinic._id,
         name,
-        description: `Kham va tu van ${name.toLowerCase()} tai ${clinic.name}.`,
+        description: `Khám và tư vấn ${name.toLowerCase()} tại ${clinic.name}.`,
         image: '/placeholder-specialty.svg'
       }));
     }
@@ -248,21 +248,21 @@ async function seedSampleData() {
   }
 
   const doctorNames = [
-    'Thac si Dinh Minh Quoc',
-    'BS. Nguyen Minh Khoa',
-    'BS. Tran Thu Ha',
-    'BS. Pham Hoang Nam',
-    'BS. Le Minh Anh',
-    'BS. Do Quang Huy',
-    'BS. Vu Lan Chi',
-    'TS. Nguyen Bao Chau',
-    'BS.CKII Hoang Duc Anh',
-    'BS.CKI Phan Mai Linh',
-    'ThS.BS Vo Thanh Tam',
-    'BS. Dang Ngoc Tue',
-    'BS.CKI Bui Khanh Vy',
-    'ThS.BS Le Quoc Viet',
-    'BS. Truong An Nhien'
+    'Đinh Minh Quốc',
+    'Nguyễn Minh Khoa',
+    'Trần Thu Hà',
+    'Phạm Hoàng Nam',
+    'Lê Minh Anh',
+    'Đỗ Quang Huy',
+    'Vũ Lan Chi',
+    'Nguyễn Bảo Châu',
+    'Hoàng Đức Anh',
+    'Phan Mai Linh',
+    'Võ Thanh Tâm',
+    'Đặng Ngọc Tuệ',
+    'Bùi Khánh Vy',
+    'Lê Quốc Việt',
+    'Trương An Nhiên'
   ];
 
   const patientNames = [
@@ -299,14 +299,14 @@ async function seedSampleData() {
   ];
 
   const packageNamesBySpecialty = {
-    Nhi: ['Goi kham Nhi tong quat', 'Goi tu van dinh duong va tang truong Nhi', 'Goi theo doi suc khoe tre em'],
-    'Tim mach': ['Goi tam soat Tim mach co ban', 'Goi theo doi huyet ap va nguy co tim mach', 'Goi tu van suc khoe Tim mach'],
-    'Da lieu': ['Goi kham Da lieu tong quat', 'Goi cham soc va tu van Da lieu', 'Goi dieu tri mun va viem da'],
-    'Tai mui hong': ['Goi kham Tai Mui Hong tong quat', 'Goi tam soat viem xoang va hong keo dai', 'Goi tu van suc khoe Tai Mui Hong'],
-    'Co xuong khop': ['Goi kham Co xuong khop tong quat', 'Goi tu van dau lung va dau khop', 'Goi theo doi phuc hoi van dong'],
-    'San phu khoa': ['Goi kham San phu khoa co ban', 'Goi tu van suc khoe phu nu', 'Goi theo doi phu khoa dinh ky'],
-    'Noi tong quat': ['Goi kham Noi tong quat', 'Goi tam soat suc khoe co ban', 'Goi tu van benh ly noi khoa'],
-    Mat: ['Goi kham Mat tong quat', 'Goi tam soat thi luc', 'Goi tu van suc khoe mat']
+    'Nhi': ['Gói khám Nhi tổng quát', 'Gói tư vấn dinh dưỡng và tăng trưởng Nhi', 'Gói theo dõi sức khỏe trẻ em'],
+    'Tim mạch': ['Gói tầm soát Tim mạch cơ bản', 'Gói theo dõi huyết áp và nguy cơ tim mạch', 'Gói tư vấn sức khỏe Tim mạch'],
+    'Da liễu': ['Gói khám Da liễu tổng quát', 'Gói chăm sóc và tư vấn Da liễu', 'Gói điều trị mụn và viêm da'],
+    'Tai mũi họng': ['Gói khám Tai Mũi Họng tổng quát', 'Gói tầm soát viêm xoang và ho kéo dài', 'Gói tư vấn sức khỏe Tai Mũi Họng'],
+    'Cơ xương khớp': ['Gói khám Cơ xương khớp tổng quát', 'Gói tư vấn đau lưng và đau khớp', 'Gói theo dõi phục hồi vận động'],
+    'Sản phụ khoa': ['Gói khám Sản phụ khoa cơ bản', 'Gói tư vấn sức khỏe phụ nữ', 'Gói theo dõi phụ khoa định kỳ'],
+    'Nội tổng quát': ['Gói khám Nội tổng quát', 'Gói tầm soát sức khỏe cơ bản', 'Gói tư vấn bệnh lý nội khoa'],
+    'Mắt': ['Gói khám Mắt tổng quát', 'Gói tầm soát thị lực', 'Gói tư vấn sức khỏe mắt']
   };
 
   function buildPackageName(specialtyName, index) {
@@ -337,11 +337,11 @@ async function seedSampleData() {
       doctorCode,
       phone: `0909${String(index + 1).padStart(6, '0')}`,
       avatar: '/placeholder-doctor.svg',
-      degree: index % 3 === 0 ? 'Thac si, Bac si' : index % 3 === 1 ? 'Bac si chuyen khoa I' : 'Bac si',
-      position: index % 4 === 0 ? 'Truong khoa' : 'Bac si dieu tri',
+      degree: index % 3 === 0 ? 'Thạc sĩ, Bác sĩ' : index % 3 === 1 ? 'Bác sĩ chuyên khoa I' : 'Bác sĩ',
+      position: index % 4 === 0 ? 'Trưởng khoa' : 'Bác sĩ điều trị',
       workplace: clinic.name,
-      bio: 'Bac si co kinh nghiem kham va tu van benh nhan theo quy trinh dat lich truc tuyen.',
-      description: 'Ho tro kham, tu van dieu tri va lap ke hoach tai kham ro rang.',
+      bio: 'Bác sĩ có kinh nghiệm khám và tư vấn bệnh nhân theo quy trình đặt lịch trực tuyến.',
+      description: 'Hỗ trợ khám, tư vấn điều trị và lập kế hoạch tái khám rõ ràng.',
       experienceYears: 4 + (index % 10),
       ratingAverage: 4.3 + (index % 5) * 0.1,
       ratingCount: 6 + index,

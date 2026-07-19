@@ -103,7 +103,6 @@ export default function BookingPage() {
   const initialSpecialtyId = searchParams.get('specialtyId') || '';
   const initialPackageId = searchParams.get('packageId') || '';
   const initialFollowUpRecordId = searchParams.get('followUpRecordId') || '';
-  const preserveInitialSpecialtyRef = useRef(Boolean(initialClinicId && initialSpecialtyId));
   const pendingPackageIdRef = useRef(initialPackageId);
   const pendingDoctorIdRef = useRef('');
   const today = getVietnamToday();
@@ -178,7 +177,6 @@ export default function BookingPage() {
 
         pendingPackageIdRef.current = item._id;
         pendingDoctorIdRef.current = doctorId || '';
-        preserveInitialSpecialtyRef.current = Boolean(clinicId && specialtyId);
         setForm((current) => ({
           ...current,
           clinicId: clinicId || current.clinicId,
@@ -214,7 +212,6 @@ export default function BookingPage() {
         setFollowUpRecord(record);
         setFollowUpDoctorUnavailable(false);
         pendingDoctorIdRef.current = doctorId || '';
-        preserveInitialSpecialtyRef.current = Boolean(clinicId && specialtyId);
         setForm((current) => ({
           ...current,
           clinicId: clinicId || current.clinicId,
@@ -242,11 +239,7 @@ export default function BookingPage() {
     setDoctors([]);
     setSlots([]);
     setServicePackages([]);
-    setForm((current) => {
-      const nextSpecialtyId = preserveInitialSpecialtyRef.current ? current.specialtyId : '';
-      preserveInitialSpecialtyRef.current = false;
-      return { ...current, specialtyId: nextSpecialtyId, doctorId: '', timeSlot: '', servicePackageId: '' };
-    });
+    
     if (!form.clinicId) return;
 
     setLoading((current) => ({ ...current, specialties: true }));
@@ -260,7 +253,7 @@ export default function BookingPage() {
     setDoctors([]);
     setSlots([]);
     setServicePackages([]);
-    setForm((current) => ({ ...current, doctorId: '', timeSlot: '', servicePackageId: '' }));
+    
     if (!form.clinicId || !form.specialtyId) return;
 
     setLoading((current) => ({ ...current, doctors: true }));
@@ -290,7 +283,7 @@ export default function BookingPage() {
   useEffect(() => {
     setServicePackages([]);
     setShowAllPackages(false);
-    setForm((current) => ({ ...current, servicePackageId: '' }));
+    
     if (!form.clinicId || !form.specialtyId) return;
 
     setLoading((current) => ({ ...current, packages: true }));
@@ -330,7 +323,23 @@ export default function BookingPage() {
   }, [loadWaitingEntries]);
 
   function updateForm(field, value) {
-    setForm((current) => ({ ...current, [field]: value }));
+    setForm((current) => {
+      const next = { ...current, [field]: value };
+      if (field === 'clinicId') {
+        next.specialtyId = '';
+        next.doctorId = '';
+        next.timeSlot = '';
+        next.servicePackageId = '';
+      } else if (field === 'specialtyId') {
+        next.doctorId = '';
+        next.timeSlot = '';
+        next.servicePackageId = '';
+      } else if (field === 'doctorId') {
+        next.timeSlot = '';
+        next.servicePackageId = '';
+      }
+      return next;
+    });
   }
 
   function updatePatient(field, value) {
