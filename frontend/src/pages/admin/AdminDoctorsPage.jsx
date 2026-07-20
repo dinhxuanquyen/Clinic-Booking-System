@@ -430,8 +430,8 @@ export default function AdminDoctorsPage() {
         {filteredDoctors.length ? (
           <>
             <div className="table-responsive">
-              <table className="table table-hover align-middle admin-table">
-                <thead><tr><th>Mã bác sĩ</th><th>Mã cơ sở</th><th>Tên</th><th>Email cá nhân</th><th>Email đăng nhập</th><th>Trạng thái tài khoản</th><th>Chuyên khoa</th><th></th></tr></thead>
+              <table className="table table-hover align-middle admin-table admin-doctors-table">
+                <thead><tr><th>Bác sĩ</th><th>Mã cơ sở</th><th>Email cá nhân</th><th>Email đăng nhập</th><th>Trạng thái tài khoản</th><th>Chuyên khoa</th><th></th></tr></thead>
                 <tbody>
                   {pageItems.map((item) => {
                     const account = doctorAccountMap.get(item._id);
@@ -439,24 +439,39 @@ export default function AdminDoctorsPage() {
                     return (
                       <tr key={item._id}>
                         <td>
-                          {item.doctorCode
-                            ? <span className="badge bg-info-subtle text-primary">{item.doctorCode}</span>
-                            : <span className="small text-warning">Bác sĩ chưa có mã. Vui lòng lưu lại hồ sơ hoặc chạy đồng bộ mã.</span>}
+                          <div className="admin-media-cell">
+                            <img
+                              className="admin-media-thumb admin-media-thumb-doctor"
+                              src={resolveMediaUrl(item.avatar, '/placeholder-doctor.svg')}
+                              alt={item.name || 'Bác sĩ'}
+                              onError={(event) => useImageFallback(event, '/placeholder-doctor.svg')}
+                            />
+                            <div className="admin-media-copy">
+                              <strong title={item.name}>{item.name}</strong>
+                              <div className="admin-media-meta">
+                                {item.doctorCode
+                                  ? <span className="admin-code-pill">{item.doctorCode}</span>
+                                  : <span className="admin-code-pill warning">Chưa có mã</span>}
+                                {item.degree ? <span className="admin-media-muted">{item.degree}</span> : null}
+                              </div>
+                            </div>
+                          </div>
                         </td>
                         <td>
                           {item.clinicId?.clinicCode
-                            ? <span className="badge bg-primary-subtle text-primary">{item.clinicId.clinicCode}</span>
-                            : <span className="small text-warning">Cơ sở chưa có mã cơ sở. Vui lòng cập nhật cơ sở.</span>}
+                            ? <span className="admin-code-pill">{item.clinicId.clinicCode}</span>
+                            : <span className="admin-code-pill warning">Chưa có mã</span>}
                         </td>
-                        <td className="fw-semibold">{item.name}</td>
-                        <td>{item.personalEmail || item.email}</td>
-                        <td>{account?.email || item.loginEmail || 'Chưa cấp'}</td>
+                        <td><span className="admin-table-text admin-table-email" title={item.personalEmail || item.email}>{item.personalEmail || item.email}</span></td>
+                        <td><span className="admin-table-text admin-table-email" title={account?.email || item.loginEmail || 'Chưa cấp'}>{account?.email || item.loginEmail || 'Chưa cấp'}</span></td>
                         <td><span className={`badge ${accountState.badgeClass}`}>{accountState.label}</span></td>
-                        <td>{getName(item.specialtyId)}</td>
-                        <td className="text-end text-nowrap">
-                          <button className="btn btn-sm btn-outline-info me-2" onClick={() => openDetail(item)}>Chi tiết</button>
-                          <button className="btn btn-sm btn-outline-primary me-2" onClick={() => openEdit(item)}>Sửa</button>
-                          <button className="btn btn-sm btn-outline-danger" onClick={() => setDeleting(item)}>Xóa</button>
+                        <td><span className="admin-table-text admin-table-specialty" title={getName(item.specialtyId)}>{getName(item.specialtyId)}</span></td>
+                        <td className="text-end">
+                          <div className="admin-table-actions">
+                            <button className="btn btn-sm btn-outline-info" onClick={() => openDetail(item)}>Chi tiết</button>
+                            <button className="btn btn-sm btn-outline-primary" onClick={() => openEdit(item)}>Sửa</button>
+                            <button className="btn btn-sm btn-outline-danger" onClick={() => setDeleting(item)}>Xóa</button>
+                          </div>
                         </td>
                       </tr>
                     );

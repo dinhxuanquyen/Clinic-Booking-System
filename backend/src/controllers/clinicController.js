@@ -22,6 +22,8 @@ export const clinicRules = [
   body('email').optional({ checkFalsy: true }).isEmail().withMessage('Clinic email must be valid').normalizeEmail(),
   body('description').optional().trim(),
   body('image').optional().trim(),
+  body('galleryImages').optional().isArray().withMessage('galleryImages must be an array'),
+  body('galleryImages.*').optional().trim(),
   body('workingHours').optional().isArray().withMessage('workingHours must be an array')
 ];
 
@@ -50,6 +52,25 @@ export const getClinicById = asyncHandler(async (req, res) => {
 
 function normalizeText(value) {
   return String(value || '').trim();
+}
+
+function normalizeGalleryImages(value) {
+  const images = Array.isArray(value) ? value : [];
+  const normalized = images
+    .map((item) => normalizeText(item))
+    .filter(Boolean);
+
+  return Array.from(new Set(normalized));
+}
+
+function buildClinicPayload(body) {
+  const image = normalizeText(body.image);
+
+  return {
+    ...body,
+    image,
+    galleryImages: normalizeGalleryImages(body.galleryImages)
+  };
 }
 
 async function assertUniqueClinic({ name, clinicCode, email, phone, excludeId = null }) {
@@ -95,9 +116,10 @@ async function assertUniqueClinic({ name, clinicCode, email, phone, excludeId = 
 }
 
 export const createClinic = asyncHandler(async (req, res) => {
-  await assertUniqueClinic(req.body);
+  const payload = buildClinicPayload(req.body);
+  await assertUniqueClinic(payload);
 
-  const clinic = await Clinic.create(req.body);
+  const clinic = await Clinic.create(payload);
 
   await createAuditLog({
     req,
@@ -122,9 +144,10 @@ export const updateClinic = asyncHandler(async (req, res) => {
     throw new ApiError(404, 'Clinic not found');
   }
 
-  await assertUniqueClinic({ ...req.body, excludeId: req.params.id });
+  const payload = buildClinicPayload(req.body);
+  await assertUniqueClinic({ ...payload, excludeId: req.params.id });
 
-  const clinic = await Clinic.findOneAndUpdate({ _id: req.params.id, ...activeClinicFilter }, req.body, {
+  const clinic = await Clinic.findOneAndUpdate({ _id: req.params.id, ...activeClinicFilter }, payload, {
     new: true,
     runValidators: true
   });
@@ -140,7 +163,7 @@ export const updateClinic = asyncHandler(async (req, res) => {
     entityId: clinic._id,
     entityName: clinic.name,
     description: `Cập nhật cơ sở ${clinic.name}`,
-    metadata: { clinicCode: clinic.clinicCode, changes: req.body }
+    metadata: { clinicCode: clinic.clinicCode, changes: payload }
   });
 
   res.json({

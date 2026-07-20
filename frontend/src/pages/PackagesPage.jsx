@@ -192,10 +192,18 @@ export default function PackagesPage() {
 
   return (
     <div className="public-page packages-page packages-page-market">
-      <section className="packages-market-hero">
-        <div>
+      <section className="packages-market-hero packages-market-hero-banner" aria-label="Ảnh giới thiệu gói khám">
+        <img
+          className="packages-market-hero-image"
+          src="/packages-family-banner.webp"
+          alt="Bác sĩ và gia đình trong banner gói khám sức khỏe"
+        />
+      </section>
+
+      <section className="packages-market-info-card" aria-labelledby="packages-market-title">
+        <div className="packages-market-info-copy">
           <span className="eyebrow">Gói khám & dịch vụ</span>
-          <h1>Chăm sóc sức khỏe phù hợp với nhu cầu của bạn</h1>
+          <h1 id="packages-market-title">Chăm sóc sức khỏe phù hợp với nhu cầu của bạn</h1>
           <p>
             Tìm kiếm các gói khám theo chuyên khoa, cơ sở và nhu cầu với thông tin rõ ràng trước khi đặt lịch.
           </p>

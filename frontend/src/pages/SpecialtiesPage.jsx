@@ -106,10 +106,18 @@ export default function SpecialtiesPage() {
   return (
     <main className="section-band specialties-page">
       <div className="container">
-        <section className="specialties-hero">
-          <div>
+        <section className="specialties-hero specialties-hero-banner" aria-label="Ảnh giới thiệu chuyên khoa">
+          <img
+            className="specialties-hero-image"
+            src="/specialties-banner.webp"
+            alt="Banner giới thiệu các chuyên khoa y tế"
+          />
+        </section>
+
+        <section className="specialties-info-card" aria-labelledby="specialties-page-title">
+          <div className="specialties-info-main">
             <span className="eyebrow">Chuyên khoa</span>
-            <h1>Tìm chuyên khoa phù hợp</h1>
+            <h1 id="specialties-page-title">Tìm chuyên khoa phù hợp</h1>
             <p>
               Tra cứu chuyên khoa, xem thông tin dịch vụ thường gặp và chọn đội ngũ bác sĩ phù hợp trước khi đặt lịch.
             </p>

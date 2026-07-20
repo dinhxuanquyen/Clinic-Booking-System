@@ -37,16 +37,36 @@ function getObjectId(value) {
   return typeof value === 'object' ? value._id : value;
 }
 
+function normalizeClinicImages(clinic) {
+  const galleryImages = Array.isArray(clinic?.galleryImages) ? clinic.galleryImages : [];
+  const images = [clinic?.image, ...galleryImages]
+    .map((item) => String(item || '').trim())
+    .filter(Boolean);
+  const uniqueImages = Array.from(new Set(images));
+
+  return uniqueImages.length ? uniqueImages : ['/placeholder-clinic.svg'];
+}
+
 export default function ClinicDetail() {
   const { clinicId } = useParams();
   const [clinic, setClinic] = useState(null);
   const [specialties, setSpecialties] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [selectedSpecialtyId, setSelectedSpecialtyId] = useState('all');
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [error, setError] = useState('');
 
   const workingHours = useMemo(() => normalizeWorkingHours(clinic?.workingHours), [clinic]);
   const openDays = useMemo(() => workingHours.filter((item) => !item.isClosed), [workingHours]);
+  const clinicImages = useMemo(() => normalizeClinicImages(clinic), [clinic]);
+  const clinicSpaceImages = useMemo(() => {
+    const images = Array.isArray(clinic?.galleryImages)
+      ? Array.from(new Set(clinic.galleryImages.map((item) => String(item || '').trim()).filter(Boolean)))
+      : [];
+
+    return images.length ? images : clinicImages;
+  }, [clinic, clinicImages]);
+  const activeClinicImage = clinicImages[activeImageIndex] || clinicImages[0] || '/placeholder-clinic.svg';
 
   const filteredDoctors = useMemo(() => {
     if (selectedSpecialtyId === 'all') return doctors;
@@ -68,6 +88,16 @@ export default function ClinicDetail() {
     document.getElementById('doctors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function showPreviousImage() {
+    if (clinicImages.length < 2) return;
+    setActiveImageIndex((current) => (current - 1 + clinicImages.length) % clinicImages.length);
+  }
+
+  function showNextImage() {
+    if (clinicImages.length < 2) return;
+    setActiveImageIndex((current) => (current + 1) % clinicImages.length);
+  }
+
   useEffect(() => {
     Promise.all([
       api(`/clinics/${clinicId}`),
@@ -82,6 +112,16 @@ export default function ClinicDetail() {
       .catch((err) => setError(err.message));
   }, [clinicId]);
 
+  useEffect(() => {
+    setActiveImageIndex(0);
+  }, [clinicId]);
+
+  useEffect(() => {
+    if (activeImageIndex >= clinicImages.length) {
+      setActiveImageIndex(0);
+    }
+  }, [activeImageIndex, clinicImages.length]);
+
   if (error) {
     return (
       <main className="container py-4">
@@ -92,7 +132,7 @@ export default function ClinicDetail() {
 
   if (!clinic) return <PageSkeleton label="Đang tải thông tin cơ sở..." />;
 
-  const clinicImageUrl = resolveMediaUrl(clinic.image);
+  const clinicImageUrl = resolveMediaUrl(activeClinicImage, '/placeholder-clinic.svg');
 
   return (
     <main className="section-band clinic-detail-page">
@@ -104,6 +144,17 @@ export default function ClinicDetail() {
           onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')}
         />
         <div className="clinic-hero-overlay" />
+        {clinicImages.length > 1 && (
+          <div className="clinic-hero-carousel" aria-label="Chuyển ảnh cơ sở">
+            <button className="clinic-hero-nav previous" type="button" onClick={showPreviousImage} aria-label="Ảnh trước">
+              ‹
+            </button>
+            <button className="clinic-hero-nav next" type="button" onClick={showNextImage} aria-label="Ảnh tiếp theo">
+              ›
+            </button>
+            <span className="clinic-hero-image-count">{activeImageIndex + 1}/{clinicImages.length}</span>
+          </div>
+        )}
         <div className="clinic-hero-inner">
           <span className="clinic-crumb">Trang chủ / Cơ sở / {clinic.name}</span>
           <h1 className="clinic-title">{clinic.name}</h1>
@@ -227,14 +278,28 @@ export default function ClinicDetail() {
               </div>
             </div>
             <div className="clinic-gallery-grid">
-              <img
-                src={clinicImageUrl}
-                alt={`${clinic.name} - khu vực chính`}
-                onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')}
-              />
-              <div className="clinic-gallery-tile">Phòng khám sạch sẽ</div>
-              <div className="clinic-gallery-tile">Thiết bị hỗ trợ chẩn đoán</div>
-              <div className="clinic-gallery-tile wide">Khu vực tiếp đón người bệnh</div>
+              {clinicSpaceImages.map((image, index) => {
+                const imageIndex = clinicImages.indexOf(image);
+                const targetIndex = imageIndex >= 0 ? imageIndex : index;
+
+                return (
+                <button
+                  className={`clinic-gallery-photo ${index === 0 ? 'large' : ''} ${activeImageIndex === targetIndex ? 'active' : ''}`}
+                  key={`${image}-${index}`}
+                  type="button"
+                  onClick={() => setActiveImageIndex(targetIndex)}
+                >
+                  <img
+                    src={resolveMediaUrl(image, '/placeholder-clinic.svg')}
+                    alt={`${clinic.name} - không gian ${index + 1}`}
+                    onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')}
+                  />
+                </button>
+              );
+              })}
+              {clinicSpaceImages.length < 2 && <div className="clinic-gallery-tile">Phòng khám sạch sẽ</div>}
+              {clinicSpaceImages.length < 3 && <div className="clinic-gallery-tile">Thiết bị hỗ trợ chẩn đoán</div>}
+              {clinicSpaceImages.length < 4 && <div className="clinic-gallery-tile wide">Khu vực tiếp đón người bệnh</div>}
             </div>
           </section>
         </div>

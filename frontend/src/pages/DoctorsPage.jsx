@@ -8,6 +8,16 @@ import { SkeletonGrid } from '../components/SkeletonCard.jsx';
 import { FaHospital, FaStethoscope, FaUser } from '../components/icons/FaIcons.jsx';
 
 const pageSize = 12;
+const doctorHeroImages = [
+  {
+    src: '/doctor-team-banner.webp',
+    alt: 'Đội ngũ bác sĩ và cơ sở bệnh viện'
+  },
+  {
+    src: '/doctor-team-banner-leading.webp',
+    alt: 'Đội ngũ chuyên gia bác sĩ hàng đầu'
+  }
+];
 
 function getObjectId(value) {
   if (!value) return '';
@@ -67,6 +77,7 @@ export default function DoctorsPage() {
   const [selectedSpecialtyName, setSelectedSpecialtyName] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeHeroIndex, setActiveHeroIndex] = useState(0);
 
   const { data: doctors = [], isLoading: loading, error } = useQuery({
     queryKey: ['doctors'],
@@ -124,13 +135,47 @@ export default function DoctorsPage() {
     }
   }, [currentPage, totalPages]);
 
+  function showPreviousHeroImage() {
+    setActiveHeroIndex((current) => (current === 0 ? doctorHeroImages.length - 1 : current - 1));
+  }
+
+  function showNextHeroImage() {
+    setActiveHeroIndex((current) => (current + 1) % doctorHeroImages.length);
+  }
+
   return (
     <main className="section-band doctors-page">
       <div className="container">
-        <section className="doctor-page-hero">
-          <div>
+        <section className="doctor-page-hero doctor-page-hero-banner" aria-label="Ảnh giới thiệu đội ngũ bác sĩ">
+          <div
+            className="doctor-hero-image-stack"
+            style={{
+              '--active-slide': activeHeroIndex,
+              '--slide-count': doctorHeroImages.length
+            }}
+          >
+            {doctorHeroImages.map((image, index) => (
+              <img
+                className="doctor-page-hero-image"
+                src={image.src}
+                alt={image.alt}
+                aria-hidden={index === activeHeroIndex ? undefined : 'true'}
+                key={`${image.src}-${index}`}
+              />
+            ))}
+          </div>
+          <button className="doctor-hero-nav previous" type="button" aria-label="Xem ảnh trước" onClick={showPreviousHeroImage}>
+            ‹
+          </button>
+          <button className="doctor-hero-nav next" type="button" aria-label="Xem ảnh tiếp theo" onClick={showNextHeroImage}>
+            ›
+          </button>
+        </section>
+
+        <section className="doctor-hero-info-card" aria-labelledby="doctor-page-title">
+          <div className="doctor-page-hero-content">
             <span className="eyebrow">Tìm bác sĩ</span>
-            <h1>Đội ngũ bác sĩ BookingCare Mini</h1>
+            <h1 id="doctor-page-title">Đội ngũ bác sĩ BookingCare Mini</h1>
             <p>Tra cứu bác sĩ theo chuyên khoa, học vị và nơi công tác để chọn lịch khám phù hợp.</p>
           </div>
 

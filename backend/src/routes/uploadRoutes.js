@@ -34,6 +34,34 @@ function uploadImage(folder, successMessage = 'Upload ảnh thành công') {
   ];
 }
 
+function uploadImages(folder, successMessage = 'Upload ảnh thành công') {
+  const upload = createImageUpload(folder);
+
+  return [
+    authMiddleware,
+    roleMiddleware('admin'),
+    (req, res, next) => {
+      upload.array('images', 10)(req, res, (error) => {
+        if (error) return handleUploadError(error, req, res, next);
+        return next();
+      });
+    },
+    (req, res, next) => {
+      if (!req.files?.length) {
+        return next(new ApiError(400, 'Vui lòng chọn ảnh để upload'));
+      }
+
+      res.status(201).json({
+        success: true,
+        message: successMessage,
+        data: {
+          urls: req.files.map((file) => `/uploads/${folder}/${file.filename}`)
+        }
+      });
+    }
+  ];
+}
+
 function uploadUserAvatar() {
   const folder = 'users';
   const upload = createImageUpload(folder);
@@ -63,6 +91,7 @@ function uploadUserAvatar() {
 }
 
 router.post('/clinic-image', uploadImage('clinics'));
+router.post('/clinic-images', uploadImages('clinics'));
 router.post('/doctor-avatar', uploadImage('doctors'));
 router.post('/specialty-image', uploadImage('specialties', 'Upload ảnh chuyên khoa thành công'));
 router.post('/user-avatar', uploadUserAvatar());

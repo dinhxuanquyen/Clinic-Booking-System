@@ -506,14 +506,17 @@ export default function BookingPage() {
   return (
     <main className={`section-band booking-page ${showStickyAction ? 'has-booking-sticky' : ''}`}>
       <div className="container">
-        <div className="page-heading">
-          <span className="eyebrow">Đặt lịch khám</span>
-          <h1 className="h2 mt-2 mb-2">Đặt lịch hẹn</h1>
-          <p className="text-secondary mb-0">Chọn cơ sở, chuyên khoa, bác sĩ và khung giờ phù hợp trong một form.</p>
-          <Link className="booking-ai-helper-link" to="/symptom-checker">
-            Chưa biết nên khám khoa nào? Thử tư vấn triệu chứng
-          </Link>
-        </div>
+        <section className="booking-hero-banner" aria-labelledby="booking-page-title">
+          <img src="/banner-dang-ky-kham.webp" alt="" aria-hidden="true" />
+          <div className="booking-hero-content">
+            <span className="eyebrow">Đặt lịch khám</span>
+            <h1 id="booking-page-title">Đặt lịch hẹn nhanh</h1>
+            <p>Chọn cơ sở, chuyên khoa, bác sĩ và khung giờ phù hợp trong một form.</p>
+            <Link className="booking-ai-helper-link" to="/symptom-checker">
+              Chưa biết nên khám khoa nào? Thử tư vấn triệu chứng
+            </Link>
+          </div>
+        </section>
 
         {followUpRecord && (
           <div className="booking-follow-up-banner">

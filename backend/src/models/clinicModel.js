@@ -34,6 +34,7 @@ const clinicSchema = new mongoose.Schema(
     },
     description: { type: String, default: '', trim: true },
     image: { type: String, default: '' },
+    galleryImages: { type: [String], default: [] },
     workingHours: { type: [workingHoursSchema], default: [] },
     specialtyIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Specialty' }],
     isActive: { type: Boolean, default: true }

@@ -32,6 +32,7 @@ const defaultForm = {
   email: '',
   description: '',
   image: '/placeholder-clinic.svg',
+  galleryImages: [],
   workingHours: defaultWorkingHours
 };
 
@@ -54,6 +55,21 @@ function buildDefaultForm() {
 
 function getUploadUrl(response) {
   return response?.data?.url || response?.data?.data?.url || response?.url || '';
+}
+
+function normalizeGalleryImages(images) {
+  const list = Array.isArray(images) ? images : [];
+  const normalized = list.map((item) => String(item || '').trim()).filter(Boolean);
+
+  return Array.from(new Set(normalized));
+}
+
+function isSameImage(first, second) {
+  const firstValue = String(first || '').trim();
+  const secondValue = String(second || '').trim();
+  if (!firstValue || !secondValue) return false;
+
+  return firstValue === secondValue || resolveMediaUrl(firstValue, '') === resolveMediaUrl(secondValue, '');
 }
 
 function isValidEmail(value) {
@@ -81,6 +97,10 @@ export default function AdminClinicsPage() {
   }, [clinics, search]);
 
   const { currentPage: safePage, pageItems, totalPages } = useMemo(() => paginate(filteredClinics, currentPage), [currentPage, filteredClinics]);
+  const visibleGalleryImages = useMemo(
+    () => normalizeGalleryImages(form.galleryImages).filter((url) => !isSameImage(url, form.image)),
+    [form.galleryImages, form.image]
+  );
 
   useEffect(() => {
     setCurrentPage(1);
@@ -122,6 +142,7 @@ export default function AdminClinicsPage() {
       email: item.email || '',
       description: item.description || '',
       image: item.image || '/placeholder-clinic.svg',
+      galleryImages: normalizeGalleryImages(item.galleryImages).filter((url) => !isSameImage(url, item.image)),
       workingHours: normalizeWorkingHours(item.workingHours)
     });
     setModalOpen(true);
@@ -156,7 +177,11 @@ export default function AdminClinicsPage() {
       const response = await apiForm('/uploads/clinic-image', formData);
       const url = getUploadUrl(response);
       if (!url) throw new Error('Không nhận được URL ảnh sau khi upload');
-      setForm((current) => ({ ...current, image: url }));
+      setForm((current) => ({
+        ...current,
+        image: url,
+        galleryImages: normalizeGalleryImages(current.galleryImages).filter((item) => !isSameImage(item, url))
+      }));
       toast.success('Upload ảnh thành công');
     } catch (err) {
       setError(err.message);
@@ -165,6 +190,65 @@ export default function AdminClinicsPage() {
       setUploading(false);
       event.target.value = '';
     }
+  }
+
+  async function uploadGalleryImages(event) {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) return;
+
+    setUploading(true);
+    setError('');
+
+    try {
+      const urls = [];
+
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('image', file);
+        const response = await apiForm('/uploads/clinic-image', formData);
+        const url = getUploadUrl(response);
+        if (url) urls.push(url);
+      }
+
+      if (!urls.length) throw new Error('Không nhận được URL ảnh sau khi upload');
+      setForm((current) => {
+        const image = current.image && current.image !== '/placeholder-clinic.svg' ? current.image : urls[0];
+
+        return {
+          ...current,
+          image,
+          galleryImages: normalizeGalleryImages([...current.galleryImages, ...urls]).filter((item) => !isSameImage(item, image))
+        };
+      });
+      toast.success(`Upload ${urls.length} ảnh thành công`);
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message);
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
+  }
+
+  function setPrimaryImage(url) {
+    setForm((current) => ({
+      ...current,
+      image: url,
+      galleryImages: normalizeGalleryImages(current.galleryImages).filter((item) => !isSameImage(item, url))
+    }));
+  }
+
+  function removeGalleryImage(url) {
+    setForm((current) => {
+      const galleryImages = current.galleryImages.filter((item) => item !== url);
+      const image = current.image === url ? galleryImages[0] || '/placeholder-clinic.svg' : current.image;
+
+      return {
+        ...current,
+        image,
+        galleryImages: normalizeGalleryImages(galleryImages)
+      };
+    });
   }
 
   async function submit(event) {
@@ -189,6 +273,8 @@ export default function AdminClinicsPage() {
           phone: form.phone.trim(),
           email: form.email.trim(),
           description: form.description.trim(),
+          image: form.image,
+          galleryImages: normalizeGalleryImages(form.galleryImages).filter((url) => !isSameImage(url, form.image)),
           workingHours: normalizeWorkingHours(form.workingHours)
         })
       });
@@ -231,19 +317,38 @@ export default function AdminClinicsPage() {
         {filteredClinics.length ? (
           <>
             <div className="table-responsive">
-              <table className="table table-hover align-middle admin-table">
-                <thead><tr><th>Mã cơ sở</th><th>Tên</th><th>Địa chỉ</th><th>Điện thoại</th><th>Email</th><th></th></tr></thead>
+              <table className="table table-hover align-middle admin-table admin-clinics-table">
+                <thead><tr><th>Cơ sở</th><th>Địa chỉ</th><th>Điện thoại</th><th>Email</th><th></th></tr></thead>
                 <tbody>
                   {pageItems.map((item) => (
                     <tr key={item._id}>
-                      <td><span className="badge bg-info-subtle text-primary">{item.clinicCode || 'Chưa có mã'}</span></td>
-                      <td className="fw-semibold">{item.name}</td>
-                      <td>{item.address}</td>
-                      <td>{item.phone}</td>
-                      <td>{item.email}</td>
+                      <td>
+                        <div className="admin-media-cell">
+                          <img
+                            className="admin-media-thumb admin-media-thumb-clinic"
+                            src={resolveMediaUrl(item.image, '/placeholder-clinic.svg')}
+                            alt={item.name || 'Cơ sở'}
+                            onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')}
+                          />
+                          <div className="admin-media-copy">
+                            <strong title={item.name}>{item.name}</strong>
+                            <div className="admin-media-meta">
+                              <span className="admin-code-pill">{item.clinicCode || 'Chưa có mã'}</span>
+                              {Array.isArray(item.galleryImages) && item.galleryImages.length > 0 ? (
+                                <span className="admin-media-count">{item.galleryImages.length} ảnh không gian</span>
+                              ) : null}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span className="admin-table-text admin-table-address" title={item.address}>{item.address}</span></td>
+                      <td><span className="admin-table-text">{item.phone}</span></td>
+                      <td><span className="admin-table-text admin-table-email" title={item.email}>{item.email}</span></td>
                       <td className="text-end">
-                        <button className="btn btn-sm btn-outline-primary me-2" onClick={() => openEdit(item)}>Sửa</button>
-                        <button className="btn btn-sm btn-outline-danger" onClick={() => setDeleting(item)}>Xóa</button>
+                        <div className="admin-table-actions">
+                          <button className="btn btn-sm btn-outline-primary" onClick={() => openEdit(item)}>Sửa</button>
+                          <button className="btn btn-sm btn-outline-danger" onClick={() => setDeleting(item)}>Xóa</button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -307,16 +412,47 @@ export default function AdminClinicsPage() {
 
               <section className="admin-clinic-form-section admin-clinic-image-section">
                 <div>
-                  <h3>Ảnh cơ sở</h3>
-                  <p>Khuyến nghị ảnh ngang, rõ nét.</p>
+                  <h3>Ảnh chính cơ sở</h3>
+                  <p>Ảnh đại diện hiển thị ở đầu trang chi tiết cơ sở.</p>
                 </div>
                 <div className="admin-clinic-image-card">
                   <img src={resolveMediaUrl(form.image, '/placeholder-clinic.svg')} alt="Preview cơ sở" onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')} />
-                  <label className={`admin-clinic-upload-btn ${uploading ? 'disabled' : ''}`}>
-                    <input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading} onChange={uploadImage} />
-                    {uploading ? 'Đang tải ảnh...' : 'Tải ảnh cơ sở'}
+                  <div className="admin-clinic-image-actions">
+                    <label className={`admin-clinic-upload-btn ${uploading ? 'disabled' : ''}`}>
+                      <input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading} onChange={uploadImage} />
+                      {uploading ? 'Đang tải ảnh...' : 'Tải ảnh chính'}
+                    </label>
+                  </div>
+                </div>
+              </section>
+
+              <section className="admin-clinic-form-section admin-clinic-gallery-section">
+                <div className="admin-clinic-gallery-header">
+                  <div>
+                    <h3>Ảnh không gian khám bệnh</h3>
+                    <p>Thêm nhiều ảnh phòng khám, khu tiếp đón và trang thiết bị để hiển thị trong trang chi tiết.</p>
+                  </div>
+                  <label className={`admin-clinic-upload-btn secondary inline ${uploading ? 'disabled' : ''}`}>
+                    <input type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={uploading} onChange={uploadGalleryImages} />
+                    {uploading ? 'Đang tải ảnh...' : 'Thêm ảnh không gian'}
                   </label>
                 </div>
+                {visibleGalleryImages.length ? (
+                  <div className="admin-clinic-gallery-list">
+                    {visibleGalleryImages.map((url) => (
+                      <article className="admin-clinic-gallery-thumb" key={url}>
+                        <img src={resolveMediaUrl(url, '/placeholder-clinic.svg')} alt="Ảnh không gian khám bệnh" onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')} />
+                        <span className="admin-clinic-gallery-badge">Ảnh không gian</span>
+                        <div className="admin-clinic-gallery-actions">
+                          <button type="button" onClick={() => setPrimaryImage(url)}>Dùng làm chính</button>
+                          <button type="button" onClick={() => removeGalleryImage(url)}>Xóa</button>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="admin-clinic-gallery-empty">Chưa có ảnh không gian khám bệnh.</div>
+                )}
               </section>
 
               <section className="admin-clinic-form-section">
