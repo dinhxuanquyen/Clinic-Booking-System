@@ -1,7 +1,6 @@
 import { body } from 'express-validator';
 import Specialty from '../models/specialtyModel.js';
-import Clinic from '../models/clinicModel.js';
-import { analyzeSymptoms } from '../services/geminiService.js';
+import { analyzeSymptomAssistant, analyzeSymptoms } from '../services/geminiService.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/apiError.js';
 
@@ -11,6 +10,18 @@ export const symptomCheckerRules = [
   body('gender').optional({ checkFalsy: true }).trim(),
   body('duration').optional({ checkFalsy: true }).trim().isLength({ max: 200 }).withMessage('Thời gian bị quá dài'),
   body('severity').optional({ checkFalsy: true }).trim().isLength({ max: 100 }).withMessage('Mức độ không hợp lệ')
+];
+
+export const symptomAssistantRules = [
+  body('symptoms').optional({ checkFalsy: true }).trim().isLength({ max: 2000 }).withMessage('Mô tả triệu chứng quá dài'),
+  body('latestMessage').optional({ checkFalsy: true }).trim().isLength({ max: 2000 }).withMessage('Tin nhắn quá dài'),
+  body('age').optional({ checkFalsy: true }).isInt({ min: 0, max: 120 }).withMessage('Tuổi không hợp lệ'),
+  body('gender').optional({ checkFalsy: true }).trim().isLength({ max: 80 }).withMessage('Giới tính không hợp lệ'),
+  body('duration').optional({ checkFalsy: true }).trim().isLength({ max: 200 }).withMessage('Thời gian bị quá dài'),
+  body('severity').optional({ checkFalsy: true }).trim().isLength({ max: 100 }).withMessage('Mức độ không hợp lệ'),
+  body('messages').optional().isArray({ max: 12 }).withMessage('Lịch sử hội thoại không hợp lệ'),
+  body('messages.*.role').optional({ checkFalsy: true }).isIn(['user', 'assistant']).withMessage('Vai trò tin nhắn không hợp lệ'),
+  body('messages.*.content').optional({ checkFalsy: true }).trim().isLength({ max: 1200 }).withMessage('Nội dung tin nhắn quá dài')
 ];
 
 function normalizeText(value) {
@@ -70,6 +81,25 @@ async function mapSpecialties(suggestions) {
   return mapped;
 }
 
+async function mapRecommendations(recommendations) {
+  const mappedSpecialties = await mapSpecialties(
+    recommendations.map((item) => item.specialtyName || item.name).filter(Boolean)
+  );
+
+  return recommendations.map((item) => {
+    const matchedSpecialty = mappedSpecialties.find((specialty) => (
+      specialty.matchedFrom === item.specialtyName ||
+      specialtyScore(item.specialtyName, specialty.name) >= 20
+    ));
+
+    return {
+      ...item,
+      specialty: matchedSpecialty || null,
+      canBook: Boolean(matchedSpecialty?._id)
+    };
+  });
+}
+
 function fallbackMessage(analysis) {
   const messages = {
     missing_api_key: 'Trợ lý AI hiện chưa được kích hoạt. Hệ thống đang sử dụng gợi ý cơ bản dựa trên từ khóa.',
@@ -124,3 +154,47 @@ export const analyzeSymptomsController = asyncHandler(async (req, res) => {
   });
 });
 
+export const analyzeSymptomAssistantController = asyncHandler(async (req, res) => {
+  const symptoms = req.body.symptoms?.trim();
+  const latestMessage = req.body.latestMessage?.trim();
+  const messages = Array.isArray(req.body.messages) ? req.body.messages : [];
+
+  if (!symptoms && !latestMessage && !messages.length) {
+    throw new ApiError(422, 'Vui lòng nhập triệu chứng hoặc câu hỏi cần tư vấn');
+  }
+
+  const analysis = await analyzeSymptomAssistant({
+    symptoms,
+    latestMessage,
+    messages,
+    age: req.body.age,
+    gender: req.body.gender,
+    duration: req.body.duration,
+    severity: req.body.severity
+  });
+
+  const recommendations = await mapRecommendations(analysis.recommendations || []);
+  const matchedSpecialties = recommendations
+    .map((item) => item.specialty)
+    .filter(Boolean)
+    .filter((item, index, array) => array.findIndex((current) => String(current._id) === String(item._id)) === index);
+
+  const message = analysis.isFallback
+    ? fallbackMessage(analysis)
+    : 'Trợ lý AI đã phân tích triệu chứng thành công';
+
+  const clientData = analysis.isFallback
+    ? sanitizeFallbackForClient(analysis)
+    : analysis;
+
+  res.json({
+    success: !analysis.isFallback,
+    isFallback: Boolean(analysis.isFallback),
+    message,
+    data: {
+      ...clientData,
+      recommendations,
+      matchedSpecialties
+    }
+  });
+});

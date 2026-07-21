@@ -1,4 +1,5 @@
 ﻿import { useEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../api/client.js';
 import PageSkeleton from '../components/PageSkeleton.jsx';
@@ -86,6 +87,23 @@ function practiceAreasForSpecialty(name = '') {
   return ['Khám chuyên khoa', 'Tư vấn điều trị', 'Theo dõi sức khỏe', 'Hướng dẫn chăm sóc'];
 }
 
+function scrollDoctorDetailToTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+  [
+    document.scrollingElement,
+    document.documentElement,
+    document.body,
+    document.getElementById('root'),
+    document.querySelector('.app-shell'),
+    document.querySelector('.public-main'),
+    document.querySelector('.public-page-frame')
+  ].filter(Boolean).forEach((element) => {
+    element.scrollTop = 0;
+    element.scrollLeft = 0;
+  });
+}
+
 function DoctorServicePackageCard({ item, doctorId, fallback = false }) {
   const targetPatients = Array.isArray(item?.targetPatients) ? item.targetPatients.slice(0, 2) : [];
   const includes = Array.isArray(item?.includes) ? item.includes.slice(0, 3) : [];
@@ -165,6 +183,18 @@ export default function DoctorDetail() {
 
   const resolvedClinicId = clinicId || objectId(doctor?.clinicId);
   const resolvedSpecialtyId = objectId(doctor?.specialtyId);
+
+  useLayoutEffect(() => {
+    scrollDoctorDetailToTop();
+
+    const frameId = window.requestAnimationFrame(scrollDoctorDetailToTop);
+    const timeoutId = window.setTimeout(scrollDoctorDetailToTop, 120);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [doctorId]);
 
   useEffect(() => {
     api(`/doctors/${doctorId}`)

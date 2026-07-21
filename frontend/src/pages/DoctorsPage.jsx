@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../api/client.js';
@@ -8,6 +8,8 @@ import { SkeletonGrid } from '../components/SkeletonCard.jsx';
 import { FaHospital, FaStethoscope, FaUser } from '../components/icons/FaIcons.jsx';
 
 const pageSize = 12;
+const heroAutoplayDelayMs = 5200;
+const heroTransitionMs = 760;
 const doctorHeroImages = [
   {
     src: '/doctor-team-banner.webp',
@@ -78,6 +80,14 @@ export default function DoctorsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
+  const [heroTrackIndex, setHeroTrackIndex] = useState(1);
+  const [isHeroJumping, setIsHeroJumping] = useState(false);
+  const [isHeroAnimating, setIsHeroAnimating] = useState(false);
+  const [isHeroPaused, setIsHeroPaused] = useState(false);
+  const isHeroLockedRef = useRef(false);
+  const heroResetTimerRef = useRef(null);
+  const heroAutoplayTimerRef = useRef(null);
+  const heroSectionRef = useRef(null);
 
   const { data: doctors = [], isLoading: loading, error } = useQuery({
     queryKey: ['doctors'],
@@ -135,12 +145,171 @@ export default function DoctorsPage() {
     }
   }, [currentPage, totalPages]);
 
-  function showPreviousHeroImage() {
-    setActiveHeroIndex((current) => (current === 0 ? doctorHeroImages.length - 1 : current - 1));
-  }
+  const heroSlides = useMemo(() => {
+    if (doctorHeroImages.length <= 1) {
+      return doctorHeroImages;
+    }
 
-  function showNextHeroImage() {
+    return [
+      doctorHeroImages[doctorHeroImages.length - 1],
+      ...doctorHeroImages,
+      doctorHeroImages[0]
+    ];
+  }, []);
+
+  useEffect(() => () => {
+    if (heroResetTimerRef.current) {
+      window.clearTimeout(heroResetTimerRef.current);
+    }
+  }, []);
+
+  const clearHeroAutoplayTimer = useCallback(() => {
+    if (heroAutoplayTimerRef.current) {
+      window.clearTimeout(heroAutoplayTimerRef.current);
+      heroAutoplayTimerRef.current = null;
+    }
+  }, []);
+
+  const unlockHeroTrack = useCallback(() => {
+    isHeroLockedRef.current = false;
+    setIsHeroAnimating(false);
+  }, []);
+
+  const completeHeroTransition = useCallback((nextTrackIndex) => {
+    if (doctorHeroImages.length <= 1) return;
+
+    if (heroResetTimerRef.current) {
+      window.clearTimeout(heroResetTimerRef.current);
+      heroResetTimerRef.current = null;
+    }
+
+    let normalizedTrackIndex = nextTrackIndex;
+    let normalizedHeroIndex = nextTrackIndex - 1;
+
+    if (nextTrackIndex === 0) {
+      normalizedTrackIndex = doctorHeroImages.length;
+      normalizedHeroIndex = doctorHeroImages.length - 1;
+    } else if (nextTrackIndex === doctorHeroImages.length + 1) {
+      normalizedTrackIndex = 1;
+      normalizedHeroIndex = 0;
+    }
+
+    if (normalizedTrackIndex === nextTrackIndex) {
+      unlockHeroTrack();
+      return;
+    }
+
+    setIsHeroJumping(true);
+    setHeroTrackIndex(normalizedTrackIndex);
+    setActiveHeroIndex(normalizedHeroIndex);
+
+    heroResetTimerRef.current = window.setTimeout(() => {
+      setIsHeroJumping(false);
+      heroResetTimerRef.current = null;
+      unlockHeroTrack();
+    }, 32);
+  }, [unlockHeroTrack]);
+
+  const scheduleHeroTrackFallback = useCallback((nextTrackIndex) => {
+    if (heroResetTimerRef.current) {
+      window.clearTimeout(heroResetTimerRef.current);
+    }
+
+    heroResetTimerRef.current = window.setTimeout(() => {
+      completeHeroTransition(nextTrackIndex);
+    }, heroTransitionMs + 60);
+  }, [completeHeroTransition]);
+
+  const showPreviousHeroImage = useCallback(() => {
+    if (isHeroLockedRef.current || doctorHeroImages.length <= 1) return;
+
+    clearHeroAutoplayTimer();
+    isHeroLockedRef.current = true;
+    setIsHeroAnimating(true);
+    setActiveHeroIndex((current) => (current === 0 ? doctorHeroImages.length - 1 : current - 1));
+    setHeroTrackIndex((current) => {
+      const nextTrackIndex = current - 1;
+      scheduleHeroTrackFallback(nextTrackIndex);
+      return nextTrackIndex;
+    });
+  }, [clearHeroAutoplayTimer, scheduleHeroTrackFallback]);
+
+  const showNextHeroImage = useCallback(() => {
+    if (isHeroLockedRef.current || doctorHeroImages.length <= 1) return;
+
+    clearHeroAutoplayTimer();
+    isHeroLockedRef.current = true;
+    setIsHeroAnimating(true);
     setActiveHeroIndex((current) => (current + 1) % doctorHeroImages.length);
+    setHeroTrackIndex((current) => {
+      const nextTrackIndex = current + 1;
+      scheduleHeroTrackFallback(nextTrackIndex);
+      return nextTrackIndex;
+    });
+  }, [clearHeroAutoplayTimer, scheduleHeroTrackFallback]);
+
+  const showHeroImageAt = useCallback((nextHeroIndex) => {
+    if (
+      isHeroLockedRef.current ||
+      doctorHeroImages.length <= 1 ||
+      nextHeroIndex === activeHeroIndex
+    ) {
+      return;
+    }
+
+    clearHeroAutoplayTimer();
+    isHeroLockedRef.current = true;
+    setIsHeroAnimating(true);
+    setActiveHeroIndex(nextHeroIndex);
+    setHeroTrackIndex(nextHeroIndex + 1);
+    scheduleHeroTrackFallback(nextHeroIndex + 1);
+  }, [activeHeroIndex, clearHeroAutoplayTimer, scheduleHeroTrackFallback]);
+
+  const pauseHeroAutoplay = useCallback(() => {
+    setIsHeroPaused(true);
+    clearHeroAutoplayTimer();
+  }, [clearHeroAutoplayTimer]);
+
+  const resumeHeroAutoplay = useCallback(() => {
+    setIsHeroPaused(false);
+  }, []);
+
+  useEffect(() => () => {
+    clearHeroAutoplayTimer();
+  }, [clearHeroAutoplayTimer]);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+    if (
+      doctorHeroImages.length <= 1 ||
+      isHeroPaused ||
+      isHeroAnimating ||
+      isHeroJumping ||
+      document.hidden ||
+      prefersReducedMotion
+    ) {
+      clearHeroAutoplayTimer();
+      return undefined;
+    }
+
+    heroAutoplayTimerRef.current = window.setTimeout(showNextHeroImage, heroAutoplayDelayMs);
+
+    return clearHeroAutoplayTimer;
+  }, [activeHeroIndex, clearHeroAutoplayTimer, isHeroAnimating, isHeroJumping, isHeroPaused, showNextHeroImage]);
+
+  useEffect(() => {
+    function handleVisibilityChange() {
+      setIsHeroPaused(document.hidden || Boolean(heroSectionRef.current?.matches(':hover')));
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  function handleHeroTransitionEnd(event) {
+    if (event.target !== event.currentTarget) return;
+    completeHeroTransition(heroTrackIndex);
   }
 
   return (
@@ -149,20 +318,33 @@ export default function DoctorsPage() {
         <section className="doctor-page-hero doctor-page-hero-banner" aria-label="Ảnh giới thiệu đội ngũ bác sĩ">
           <div
             className="doctor-hero-image-stack"
+            ref={heroSectionRef}
+            aria-live="polite"
+            onBlur={resumeHeroAutoplay}
+            onFocus={pauseHeroAutoplay}
+            onMouseEnter={pauseHeroAutoplay}
+            onMouseLeave={resumeHeroAutoplay}
+            onTransitionEnd={handleHeroTransitionEnd}
             style={{
-              '--active-slide': activeHeroIndex,
-              '--slide-count': doctorHeroImages.length
+              '--active-slide': heroTrackIndex,
+              '--slide-count': heroSlides.length
             }}
+            data-jumping={isHeroJumping ? 'true' : undefined}
+            data-animating={isHeroAnimating ? 'true' : undefined}
           >
-            {doctorHeroImages.map((image, index) => (
+            {heroSlides.map((image, index) => {
+              const realIndex = (index - 1 + doctorHeroImages.length) % doctorHeroImages.length;
+
+              return (
               <img
                 className="doctor-page-hero-image"
                 src={image.src}
                 alt={image.alt}
-                aria-hidden={index === activeHeroIndex ? undefined : 'true'}
+                aria-hidden={realIndex === activeHeroIndex && index === heroTrackIndex ? undefined : 'true'}
                 key={`${image.src}-${index}`}
               />
-            ))}
+              );
+            })}
           </div>
           <button className="doctor-hero-nav previous" type="button" aria-label="Xem ảnh trước" onClick={showPreviousHeroImage}>
             ‹
@@ -172,6 +354,25 @@ export default function DoctorsPage() {
           </button>
         </section>
 
+          <div className="doctor-hero-controls" aria-label="Chọn ảnh giới thiệu">
+            {doctorHeroImages.map((image, index) => (
+              <button
+                className={index === activeHeroIndex ? 'active' : undefined}
+                key={image.src}
+                type="button"
+                aria-label={`Xem ảnh ${index + 1}`}
+                aria-current={index === activeHeroIndex ? 'true' : undefined}
+                onClick={() => showHeroImageAt(index)}
+              />
+            ))}
+          </div>
+          <div className="doctor-hero-progress" aria-hidden="true">
+            <span
+              key={`${activeHeroIndex}-${isHeroPaused ? 'paused' : 'playing'}`}
+              style={{ '--hero-autoplay-delay': `${heroAutoplayDelayMs}ms` }}
+              data-paused={isHeroPaused || isHeroAnimating || isHeroJumping ? 'true' : undefined}
+            />
+          </div>
         <section className="doctor-hero-info-card" aria-labelledby="doctor-page-title">
           <div className="doctor-page-hero-content">
             <span className="eyebrow">Tìm bác sĩ</span>

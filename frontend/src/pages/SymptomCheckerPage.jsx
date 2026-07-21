@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../api/client.js';
 import { useToast } from '../context/ToastContext.jsx';
@@ -15,22 +15,19 @@ const initialForm = {
 const urgencyMeta = {
   low: {
     label: 'Có thể đặt lịch khám thông thường',
-    icon: '✅',
-    className: 'low',
+    icon: 'OK',
     color: 'var(--color-success)',
     bg: 'var(--color-success-light)'
   },
   medium: {
     label: 'Nên đặt lịch khám sớm',
-    icon: '⚠️',
-    className: 'medium',
-    color: '#D97706',
-    bg: '#FEF3C7'
+    icon: '!',
+    color: '#d97706',
+    bg: '#fef3c7'
   },
   high: {
     label: 'Cần được đánh giá khẩn cấp',
-    icon: '🚨',
-    className: 'high',
+    icon: '!!',
     color: 'var(--color-danger)',
     bg: 'var(--color-danger-light)'
   }
@@ -38,36 +35,105 @@ const urgencyMeta = {
 
 const severityOptions = [
   { value: 'low', label: 'Nhẹ', desc: 'Triệu chứng nhẹ, không ảnh hưởng sinh hoạt' },
-  { value: 'medium', label: 'Trung bình', desc: 'Ảnh hưởng đến sinh hoạt hàng ngày' },
+  { value: 'medium', label: 'Trung bình', desc: 'Ảnh hưởng đến sinh hoạt hằng ngày' },
   { value: 'high', label: 'Nặng', desc: 'Triệu chứng nghiêm trọng, cần chú ý' }
 ];
 
+const emptySuggestions = [
+  'Nêu rõ vị trí đau, thời gian xuất hiện và mức độ',
+  'Mô tả triệu chứng đi kèm như sốt, mệt, khó thở',
+  'Cho biết triệu chứng đang tăng, giảm hay tái phát'
+];
+
+const ASSISTANT_BOOKING_CONTEXT_KEY = 'bookingcare:symptom-assistant-context';
+
 function apiErrorMessage(error) {
-  return cleanDisplayText(error?.message, 'Không thể phân tích triệu chứng lúc này. Vui lòng thử lại sau.');
+  return cleanDisplayText(
+    error?.message,
+    'Không thể phân tích triệu chứng lúc này. Vui lòng thử lại sau.'
+  );
+}
+
+function messageId() {
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function LoadingPulse() {
   return (
-    <div className="sc-loading-state">
-      <div className="sc-loading-brain">🧠</div>
+    <div className="sc-loading-state sc-assistant-loading">
+      <div className="sc-loading-brain">AI</div>
       <div className="sc-loading-dots">
         <span /><span /><span />
       </div>
-      <p>AI đang phân tích triệu chứng của bạn...</p>
-      <small>Thường mất 5–15 giây</small>
+      <p>Trợ lý đang phân tích và sắp xếp gợi ý phù hợp...</p>
+      <small>Thường mất 5-15 giây</small>
     </div>
   );
 }
 
-function UrgencyCard({ urgency }) {
+function UrgencyCard({ urgency, action }) {
   return (
     <div className="sc-urgency-card" style={{ '--urgency-color': urgency.color, '--urgency-bg': urgency.bg }}>
       <span className="sc-urgency-icon">{urgency.icon}</span>
       <div>
         <span className="sc-urgency-level">Mức độ cần khám</span>
         <strong className="sc-urgency-label">{urgency.label}</strong>
+        {action ? <p className="sc-urgency-action">{cleanDisplayText(action)}</p> : null}
       </div>
     </div>
+  );
+}
+
+function ChatBubble({ message }) {
+  return (
+    <div className={`sc-chat-row ${message.role === 'user' ? 'user' : 'assistant'}`}>
+      <div className="sc-chat-avatar">{message.role === 'user' ? 'B' : 'AI'}</div>
+      <div className="sc-chat-bubble">
+        <p>{cleanDisplayText(message.content)}</p>
+      </div>
+    </div>
+  );
+}
+
+function RecommendationCard({ item, onBook }) {
+  const specialty = item.specialty;
+  const confidence = Number.isFinite(Number(item.confidence)) ? Number(item.confidence) : 60;
+
+  return (
+    <article className={`sc-recommendation-card priority-${item.priority || 'medium'}`}>
+      <div className="sc-recommendation-head">
+        <div>
+          <strong>{cleanDisplayText(item.specialtyName || specialty?.name || 'Chuyên khoa phù hợp')}</strong>
+          <span>{cleanDisplayText(specialty?.clinicName || 'Hệ thống sẽ gợi ý cơ sở phù hợp khi đặt lịch')}</span>
+        </div>
+        <div className="sc-confidence">
+          <b>{Math.max(0, Math.min(100, Math.round(confidence)))}</b>
+          <span>phù hợp</span>
+        </div>
+      </div>
+
+      <p className="sc-recommendation-reason">{cleanDisplayText(item.reason)}</p>
+
+      {!!item.matchingSymptoms?.length && (
+        <div className="sc-match-tags">
+          {item.matchingSymptoms.map((symptom) => (
+            <span key={symptom}>{cleanDisplayText(symptom)}</span>
+          ))}
+        </div>
+      )}
+
+      <div className="sc-recommendation-actions">
+        <small>{cleanDisplayText(item.bookingHint)}</small>
+        <button
+          type="button"
+          className="sc-book-btn"
+          disabled={!item.canBook || !specialty?._id}
+          onClick={() => onBook(item)}
+        >
+          {item.canBook ? 'Đặt lịch' : 'Chưa có lịch'}
+        </button>
+      </div>
+    </article>
   );
 }
 
@@ -75,82 +141,175 @@ export default function SymptomCheckerPage() {
   const navigate = useNavigate();
   const toast = useToast();
   const [form, setForm] = useState(initialForm);
+  const [messages, setMessages] = useState([]);
+  const [assistantData, setAssistantData] = useState(null);
+  const [chatInput, setChatInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
   const resultRef = useRef(null);
+  const chatEndRef = useRef(null);
 
-  const urgency = useMemo(() => urgencyMeta[result?.urgencyLevel] || urgencyMeta.medium, [result]);
+  const urgency = useMemo(
+    () => urgencyMeta[assistantData?.safety?.urgencyLevel] || urgencyMeta.medium,
+    [assistantData]
+  );
 
-  // Auto-scroll to results when they arrive
   useEffect(() => {
-    if (result && resultRef.current) {
-      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    if ((assistantData || loading) && resultRef.current) {
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
     }
-  }, [result]);
+  }, [assistantData, loading]);
+
+  useEffect(() => {
+    if (messages.length || loading) {
+      chatEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [messages, loading]);
 
   function update(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
   }
 
   function bookWithSpecialty(item) {
+    const specialty = item?.specialty;
     const params = new URLSearchParams();
-    if (item?._id) params.set('specialtyId', item._id);
+    if (specialty?.clinicId) params.set('clinicId', specialty.clinicId);
+    if (specialty?._id) params.set('specialtyId', specialty._id);
+    params.set('source', 'symptom-assistant');
+
+    try {
+      window.sessionStorage.setItem(ASSISTANT_BOOKING_CONTEXT_KEY, JSON.stringify({
+        source: 'symptom-assistant',
+        specialtyId: specialty?._id || '',
+        clinicId: specialty?.clinicId || '',
+        specialtyName: item?.specialtyName || specialty?.name || '',
+        clinicName: specialty?.clinicName || '',
+        summary: assistantData?.summary || '',
+        reason: item?.reason || '',
+        symptoms: form.symptoms || assistantData?.updatedContext?.symptoms || '',
+        urgencyLevel: assistantData?.safety?.urgencyLevel || ''
+      }));
+    } catch {
+      // Booking still works from query params if session storage is unavailable.
+    }
+
     navigate(`/booking${params.toString() ? `?${params.toString()}` : ''}`);
   }
 
-  async function submit(event) {
-    event.preventDefault();
-    if (form.symptoms.trim().length < 8) {
-      toast.warning('Vui lòng mô tả triệu chứng rõ hơn (ít nhất 8 ký tự)');
-      return;
-    }
+  function buildRequestBody(nextMessages, latestMessage = '') {
+    const context = assistantData?.updatedContext || {};
+    return {
+      symptoms: form.symptoms.trim() || context.symptoms || undefined,
+      latestMessage: latestMessage || undefined,
+      age: form.age || context.age || undefined,
+      gender: form.gender || context.gender || undefined,
+      duration: form.duration.trim() || context.duration || undefined,
+      severity: form.severity || context.severity || undefined,
+      messages: nextMessages.map((message) => ({
+        role: message.role,
+        content: message.content
+      }))
+    };
+  }
 
+  async function askAssistant(nextMessages, latestMessage = '') {
     setLoading(true);
-    setResult(null);
     try {
-      const payload = await api('/ai/symptom-checker', {
+      const payload = await api('/ai/symptom-assistant', {
         method: 'POST',
-        body: JSON.stringify({
-          symptoms: form.symptoms.trim(),
-          age: form.age || undefined,
-          gender: form.gender || undefined,
-          duration: form.duration.trim() || undefined,
-          severity: form.severity || undefined
-        })
+        body: JSON.stringify(buildRequestBody(nextMessages, latestMessage))
       });
-      setResult(payload.data);
-      if (payload.isFallback || payload.data?.isFallback) {
-        toast.info('Đang sử dụng gợi ý cơ bản. Thử lại sau để nhận phân tích AI chính xác hơn.');
-      } else if (payload.data?.urgencyLevel === 'high') {
-        toast.warning('Có dấu hiệu cần được đánh giá khẩn cấp. Vui lòng đến cơ sở y tế nếu triệu chứng nặng.');
+
+      const data = payload.data || {};
+      const assistantMessage = cleanDisplayText(
+        data.assistantMessage,
+        'Mình đã phân tích mô tả của bạn và gợi ý các chuyên khoa phù hợp.'
+      );
+
+      setAssistantData(data);
+      setMessages([
+        ...nextMessages,
+        {
+          id: messageId(),
+          role: 'assistant',
+          content: assistantMessage
+        }
+      ]);
+
+      if (payload.isFallback || data.isFallback) {
+        toast.info('Đang dùng gợi ý cơ bản. Kết quả vẫn có thể dùng để định hướng đặt lịch.');
+      } else if (data.safety?.urgencyLevel === 'high') {
+        toast.warning('Có dấu hiệu cần được đánh giá khẩn cấp. Hãy đến cơ sở y tế nếu triệu chứng nặng.');
       } else {
-        toast.success('Đã phân tích triệu chứng bằng AI');
+        toast.success('Trợ lý AI đã cập nhật gợi ý chuyên khoa.');
       }
     } catch (error) {
       toast.error(apiErrorMessage(error));
+      setMessages(nextMessages);
     } finally {
       setLoading(false);
     }
   }
 
+  async function submit(event) {
+    event.preventDefault();
+    if (form.symptoms.trim().length < 8) {
+      toast.warning('Vui lòng mô tả triệu chứng rõ hơn, ít nhất 8 ký tự.');
+      return;
+    }
+
+    const firstMessage = {
+      id: messageId(),
+      role: 'user',
+      content: form.symptoms.trim()
+    };
+
+    setAssistantData(null);
+    setMessages([firstMessage]);
+    await askAssistant([firstMessage], form.symptoms.trim());
+  }
+
+  async function sendFollowUp(event, preset = '') {
+    event?.preventDefault();
+    const content = (preset || chatInput).trim();
+    if (!content || loading) return;
+
+    const nextMessages = [
+      ...messages,
+      {
+        id: messageId(),
+        role: 'user',
+        content
+      }
+    ];
+    setChatInput('');
+    setMessages(nextMessages);
+    await askAssistant(nextMessages, content);
+  }
+
+  function resetAssistant() {
+    setForm(initialForm);
+    setMessages([]);
+    setAssistantData(null);
+    setChatInput('');
+  }
+
   return (
     <main className="sc-page">
-      {/* ── Hero Banner ── */}
       <section className="sc-hero">
         <div className="container">
           <div className="sc-hero-inner">
             <div className="sc-hero-badge">
-              <span>🤖</span> AI Symptom Checker
+              <span>AI</span> Trợ lý triệu chứng
             </div>
             <h1>Chưa biết nên khám khoa nào?</h1>
             <p>
-              Mô tả triệu chứng để AI phân tích và gợi ý chuyên khoa phù hợp.
-              Kết quả chỉ mang tính tham khảo — không thay thế khám bác sĩ.
+              Mô tả triệu chứng để trợ lý AI hỏi tiếp, tóm tắt thông tin và gợi ý
+              chuyên khoa phù hợp. Kết quả chỉ mang tính tham khảo.
             </p>
             <div className="sc-hero-chips">
-              <span>⚡ Phân tích tức thì</span>
-              <span>🔒 Bảo mật tuyệt đối</span>
-              <span>🆓 Miễn phí hoàn toàn</span>
+              <span>Phân tích nhiều lượt</span>
+              <span>Hỏi tiếp thông minh</span>
+              <span>Gợi ý đặt lịch</span>
             </div>
           </div>
         </div>
@@ -158,17 +317,14 @@ export default function SymptomCheckerPage() {
 
       <div className="container sc-container">
         <div className="sc-layout">
-
-          {/* ── LEFT: INPUT FORM ── */}
           <aside className="sc-form-panel">
             <div className="sc-form-card">
               <div className="sc-form-card-header">
-                <h2>Mô tả triệu chứng</h2>
-                <p>Càng chi tiết, kết quả càng chính xác</p>
+                <h2>Thông tin ban đầu</h2>
+                <p>Càng rõ bối cảnh, trợ lý gợi ý càng sát hơn</p>
               </div>
 
               <form onSubmit={submit}>
-                {/* Main symptoms textarea */}
                 <div className="sc-field">
                   <label className="sc-field-label" htmlFor="sc-symptoms">
                     Triệu chứng bạn đang gặp <span className="sc-required">*</span>
@@ -179,19 +335,19 @@ export default function SymptomCheckerPage() {
                     rows="5"
                     value={form.symptoms}
                     onChange={(event) => update('symptoms', event.target.value)}
-                    placeholder="Ví dụ: Tôi bị đau họng, sốt nhẹ 2 ngày, ho khan và mệt mỏi. Đau đầu nhẹ vào buổi sáng..."
+                    placeholder="Ví dụ: Tôi bị đau họng, sốt nhẹ 2 ngày, ho khan và mệt mỏi..."
                   />
                   <div className="sc-char-count">{form.symptoms.length} ký tự</div>
                 </div>
 
-                {/* Info grid */}
                 <div className="sc-info-grid">
                   <div className="sc-field">
                     <label className="sc-field-label" htmlFor="sc-age">Tuổi</label>
                     <input
                       id="sc-age"
                       className="sc-input"
-                      min="0" max="120"
+                      min="0"
+                      max="120"
                       type="number"
                       value={form.age}
                       onChange={(event) => update('age', event.target.value)}
@@ -224,7 +380,6 @@ export default function SymptomCheckerPage() {
                   </div>
                 </div>
 
-                {/* Severity selector */}
                 <div className="sc-field">
                   <span className="sc-field-label">Mức độ triệu chứng</span>
                   <div className="sc-severity-group">
@@ -247,164 +402,192 @@ export default function SymptomCheckerPage() {
                   type="submit"
                   disabled={loading || form.symptoms.trim().length < 8}
                 >
-                  {loading ? (
+                  {loading && !messages.length ? (
                     <>
                       <span className="sc-btn-spinner" />
-                      Đang phân tích...
+                      Đang khởi tạo...
                     </>
                   ) : (
-                    <>🔍 Phân tích triệu chứng</>
+                    <>Bắt đầu tư vấn AI</>
                   )}
                 </button>
               </form>
 
-              {/* Disclaimer */}
               <div className="sc-disclaimer-box">
-                <strong>⚕️ Lưu ý y tế quan trọng</strong>
+                <strong>Lưu ý y tế quan trọng</strong>
                 <p>
-                  Công cụ này không chẩn đoán bệnh, không kê thuốc và không thay thế
-                  thăm khám trực tiếp với bác sĩ. Nếu có triệu chứng nặng, hãy đến
-                  cơ sở y tế ngay.
+                  Trợ lý này không chẩn đoán bệnh, không kê thuốc và không thay thế
+                  thăm khám trực tiếp. Nếu có triệu chứng nặng, hãy đến cơ sở y tế ngay.
                 </p>
               </div>
             </div>
           </aside>
 
-          {/* ── RIGHT: RESULT PANEL ── */}
           <section className="sc-result-panel" ref={resultRef}>
-            {loading ? (
-              <LoadingPulse />
-            ) : !result ? (
-              <div className="sc-empty-result">
-                <div className="sc-empty-icon">🩺</div>
-                <h2>Kết quả phân tích sẽ hiển thị tại đây</h2>
-                <p>Mô tả triệu chứng càng cụ thể càng tốt: vị trí đau, thời gian xuất hiện, mức độ và triệu chứng đi kèm.</p>
-                <div className="sc-tips-list">
-                  <div className="sc-tip-item">💡 <span><strong>Gợi ý:</strong> Nêu rõ vị trí đau (ngực, bụng, đầu...)</span></div>
-                  <div className="sc-tip-item">💡 <span><strong>Gợi ý:</strong> Mô tả triệu chứng đi kèm (sốt, mệt...)</span></div>
-                  <div className="sc-tip-item">💡 <span><strong>Gợi ý:</strong> Cho biết triệu chứng kéo dài bao lâu</span></div>
+            <div className="sc-assistant-shell">
+              <div className="sc-assistant-header">
+                <div>
+                  <span className="sc-result-eyebrow">Trợ lý định hướng chuyên khoa</span>
+                  <h2>Phòng tư vấn AI</h2>
                 </div>
+                <button className="sc-reset-btn" type="button" onClick={resetAssistant}>
+                  Làm mới
+                </button>
               </div>
-            ) : (
-              <div className="sc-result-content">
-                {/* Header bar */}
-                <div className="sc-result-topbar">
-                  <span className="sc-result-eyebrow">Kết quả tham khảo AI</span>
-                  <button
-                    className="sc-reset-btn"
-                    type="button"
-                    onClick={() => { setResult(null); setForm(initialForm); }}
-                  >
-                    Phân tích lại
-                  </button>
-                </div>
 
-                {result.isFallback && (
-                  <div className="sc-fallback-notice">
-                    <span>ℹ️</span>
-                    <div>
-                      <strong>Đang dùng gợi ý cơ bản</strong>
-                      <p>Để nhận phân tích AI chính xác hơn, vui lòng thử lại sau ít phút.</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Urgency card */}
-                <UrgencyCard urgency={urgency} />
-
-                {/* Summary */}
-                <div className="sc-result-card">
-                  <div className="sc-result-card-title">
-                    <span>📋</span> Tóm tắt phân tích
-                  </div>
-                  <p className="sc-result-card-body">{cleanDisplayText(result.summary)}</p>
-                </div>
-
-                {/* Specialties */}
-                <div className="sc-result-card">
-                  <div className="sc-result-card-title">
-                    <span>🔬</span> Chuyên khoa gợi ý
-                  </div>
-                  <p className="sc-specialty-guidance">
-                    AI chỉ hỗ trợ định hướng chuyên khoa. Gói khám/dịch vụ cụ thể sẽ được bác sĩ tư vấn khi thăm khám.
+              {!messages.length && !loading ? (
+                <div className="sc-empty-result sc-assistant-empty">
+                  <div className="sc-empty-icon">AI</div>
+                  <h2>Bắt đầu bằng mô tả triệu chứng của bạn</h2>
+                  <p>
+                    Trợ lý sẽ hỏi tiếp khi thiếu thông tin, sau đó gợi ý nhiều
+                    chuyên khoa kèm lý do và mức độ ưu tiên.
                   </p>
-                  {(result.matchedSpecialties || []).length ? (
-                    <div className="sc-specialty-cards">
-                      {result.matchedSpecialties.map((item) => (
-                        <div className="sc-specialty-card" key={item._id}>
-                          <div className="sc-specialty-info">
-                            <strong className="sc-specialty-name">{item.name}</strong>
-                            <span className="sc-specialty-clinic">{item.clinicName || 'Cơ sở phù hợp'}</span>
+                  <div className="sc-tips-list">
+                    {emptySuggestions.map((item) => (
+                      <div className="sc-tip-item" key={item}>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="sc-assistant-grid">
+                  <div className="sc-chat-card">
+                    <div className="sc-chat-transcript" aria-live="polite">
+                      {messages.map((message) => (
+                        <ChatBubble key={message.id} message={message} />
+                      ))}
+                      {loading ? <LoadingPulse /> : null}
+                      <div className="sc-chat-end" ref={chatEndRef} />
+                    </div>
+
+                    {!!assistantData?.followUpQuestions?.length && (
+                      <div className="sc-followup-block">
+                        <span className="sc-mini-label">Trợ lý cần làm rõ thêm</span>
+                        {assistantData.followUpQuestions.map((item) => (
+                          <div className="sc-followup-question" key={item.id || item.question}>
+                            <strong>{cleanDisplayText(item.question)}</strong>
+                            {!!item.choices?.length && (
+                              <div className="sc-followup-choices">
+                                {item.choices.map((choice) => (
+                                  <button
+                                    key={choice}
+                                    type="button"
+                                    onClick={(event) => sendFollowUp(event, choice)}
+                                    disabled={loading}
+                                  >
+                                    {cleanDisplayText(choice)}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
                           </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {!!assistantData?.quickReplies?.length && (
+                      <div className="sc-quick-replies">
+                        {assistantData.quickReplies.map((reply) => (
                           <button
-                            className="sc-book-btn"
                             type="button"
-                            onClick={() => bookWithSpecialty(item)}
+                            key={reply}
+                            onClick={(event) => sendFollowUp(event, reply)}
+                            disabled={loading}
                           >
-                            Đặt lịch với chuyên khoa này
+                            {cleanDisplayText(reply)}
                           </button>
+                        ))}
+                      </div>
+                    )}
+
+                    <form className="sc-chat-input-row" onSubmit={sendFollowUp}>
+                      <input
+                        value={chatInput}
+                        onChange={(event) => setChatInput(event.target.value)}
+                        placeholder="Trả lời tiếp hoặc bổ sung triệu chứng..."
+                        disabled={loading || !messages.length}
+                      />
+                      <button type="submit" disabled={loading || !chatInput.trim()}>
+                        Gửi
+                      </button>
+                    </form>
+                  </div>
+
+                  <aside className="sc-insight-card">
+                    {assistantData ? (
+                      <>
+                        {assistantData.isFallback && (
+                          <div className="sc-fallback-notice">
+                            <span>i</span>
+                            <div>
+                              <strong>Đang dùng gợi ý cơ bản</strong>
+                              <p>Hệ thống vẫn trả về dữ liệu tham khảo để bạn đặt lịch phù hợp.</p>
+                            </div>
+                          </div>
+                        )}
+
+                        <UrgencyCard
+                          urgency={urgency}
+                          action={assistantData.safety?.recommendedAction}
+                        />
+
+                        <div className="sc-result-card">
+                          <div className="sc-result-card-title">Tóm tắt</div>
+                          <p className="sc-result-card-body">{cleanDisplayText(assistantData.summary)}</p>
                         </div>
-                      ))}
-                    </div>
-                  ) : (result.suggestedSpecialties || []).length ? (
-                    <div className="sc-specialty-tags">
-                      {result.suggestedSpecialties.map((item) => (
-                        <span className="sc-specialty-tag" key={item}>{item}</span>
-                      ))}
-                    </div>
-                  ) : (
-                    <p style={{ color: 'var(--gray-500)', fontSize: '0.9rem' }}>Không có gợi ý chuyên khoa cụ thể.</p>
-                  )}
+
+                        <div className="sc-result-card">
+                          <div className="sc-result-card-title">Chuyên khoa gợi ý</div>
+                          <div className="sc-recommendation-list">
+                            {(assistantData.recommendations || []).map((item, index) => (
+                              <RecommendationCard
+                                key={`${item.specialtyName}-${index}`}
+                                item={item}
+                                onBook={bookWithSpecialty}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        {!!assistantData.safety?.warningSigns?.length && (
+                          <div className="sc-result-card sc-warning-card">
+                            <div className="sc-result-card-title">Dấu hiệu cần chú ý</div>
+                            <ul className="sc-warning-list">
+                              {assistantData.safety.warningSigns.map((item) => (
+                                <li key={item}>{cleanDisplayText(item)}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        <div className="sc-result-disclaimer">
+                          <span>!</span>
+                          <p>{cleanDisplayText(assistantData.disclaimer)}</p>
+                        </div>
+
+                        <div className="sc-booking-cta">
+                          <div>
+                            <strong>Sẵn sàng đặt lịch?</strong>
+                            <p>Chọn chuyên khoa phù hợp hoặc đặt lịch trực tiếp.</p>
+                          </div>
+                          <Link className="sc-booking-cta-btn" to="/booking">
+                            Đặt lịch khám
+                          </Link>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="sc-insight-placeholder">
+                        <span>AI</span>
+                        <strong>Bảng gợi ý sẽ hiển thị tại đây</strong>
+                        <p>Sau khi phân tích, bạn sẽ thấy mức độ cần khám, chuyên khoa phù hợp và câu hỏi tiếp theo.</p>
+                      </div>
+                    )}
+                  </aside>
                 </div>
-
-                {/* Warning signs */}
-                {!!result.warningSigns?.length && (
-                  <div className="sc-result-card sc-warning-card">
-                    <div className="sc-result-card-title">
-                      <span>⚠️</span> Dấu hiệu cần chú ý
-                    </div>
-                    <ul className="sc-warning-list">
-                      {result.warningSigns.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Questions for doctor */}
-                {(result.questionsForDoctor || []).length > 0 && (
-                  <div className="sc-result-card">
-                    <div className="sc-result-card-title">
-                      <span>💬</span> Câu hỏi nên hỏi bác sĩ
-                    </div>
-                    <ul className="sc-question-list">
-                      {result.questionsForDoctor.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Disclaimer */}
-                {result.disclaimer && (
-                  <div className="sc-result-disclaimer">
-                    <span>📌</span>
-                    <p>{cleanDisplayText(result.disclaimer)}</p>
-                  </div>
-                )}
-
-                {/* Booking CTA */}
-                <div className="sc-booking-cta">
-                  <div>
-                    <strong>Sẵn sàng đặt lịch khám?</strong>
-                    <p>Đặt lịch với bác sĩ chuyên khoa ngay hôm nay</p>
-                  </div>
-                  <Link className="sc-booking-cta-btn" to="/booking">
-                    Đặt lịch khám →
-                  </Link>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </section>
         </div>
       </div>

@@ -16,6 +16,21 @@ const defaultPatientInfo = {
   confirmed: false
 };
 
+const ASSISTANT_BOOKING_CONTEXT_KEY = 'bookingcare:symptom-assistant-context';
+
+function readAssistantBookingContext(searchParams) {
+  if (searchParams.get('source') !== 'symptom-assistant') return null;
+  try {
+    const raw = window.sessionStorage.getItem(ASSISTANT_BOOKING_CONTEXT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || parsed.source !== 'symptom-assistant') return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
 function getId(value) {
   return typeof value === 'object' ? value?._id : value;
 }
@@ -103,6 +118,7 @@ export default function BookingPage() {
   const initialSpecialtyId = searchParams.get('specialtyId') || '';
   const initialPackageId = searchParams.get('packageId') || '';
   const initialFollowUpRecordId = searchParams.get('followUpRecordId') || '';
+  const [assistantBookingContext] = useState(() => readAssistantBookingContext(searchParams));
   const pendingPackageIdRef = useRef(initialPackageId);
   const pendingDoctorIdRef = useRef('');
   const today = getVietnamToday();
@@ -322,6 +338,20 @@ export default function BookingPage() {
     loadWaitingEntries();
   }, [loadWaitingEntries]);
 
+  useEffect(() => {
+    if (!assistantBookingContext) return;
+    const symptomReason = cleanDisplayText(assistantBookingContext.symptoms || assistantBookingContext.reason || '');
+    if (!symptomReason) return;
+
+    setPatientInfo((current) => {
+      if (current.reason.trim()) return current;
+      return {
+        ...current,
+        reason: `Tư vấn triệu chứng AI: ${symptomReason}`.slice(0, 500)
+      };
+    });
+  }, [assistantBookingContext]);
+
   function updateForm(field, value) {
     setForm((current) => {
       const next = { ...current, [field]: value };
@@ -517,6 +547,24 @@ export default function BookingPage() {
             </Link>
           </div>
         </section>
+
+        {assistantBookingContext && (
+          <div className="booking-ai-context-banner">
+            <span className="booking-ai-context-icon">AI</span>
+            <div>
+              <strong>
+                Đang đặt lịch theo gợi ý {cleanDisplayText(assistantBookingContext.specialtyName || selectedSpecialty?.name || 'chuyên khoa phù hợp')}
+              </strong>
+              <p>
+                {assistantBookingContext.clinicName
+                  ? `Cơ sở gợi ý: ${cleanDisplayText(assistantBookingContext.clinicName)}. `
+                  : ''}
+                {cleanDisplayText(assistantBookingContext.reason || assistantBookingContext.summary || 'Bạn có thể chọn bác sĩ và khung giờ phù hợp để được thăm khám trực tiếp.')}
+              </p>
+            </div>
+            <Link to="/symptom-checker">Quay lại tư vấn</Link>
+          </div>
+        )}
 
         {followUpRecord && (
           <div className="booking-follow-up-banner">

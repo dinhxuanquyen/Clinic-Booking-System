@@ -35,6 +35,14 @@ export default function ClinicsPage() {
   return (
     <main className="section-band clinics-page">
       <div className="container">
+        <div className="clinics-hero-banner">
+          <img
+            src="/clinics-technology-banner.webp"
+            alt="Cong nghe y te hang dau"
+            className="clinics-hero-image"
+          />
+        </div>
+
         <div className="page-heading d-flex flex-column flex-lg-row justify-content-between gap-3">
           <div>
             <span className="eyebrow">Hệ thống phòng khám</span>

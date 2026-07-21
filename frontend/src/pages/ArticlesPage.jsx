@@ -97,6 +97,15 @@ export default function ArticlesPage() {
 
   return (
     <div className="public-page articles-page">
+      <section className="articles-hero-banner" aria-label="Cẩm nang sức khỏe">
+        <img
+          className="articles-hero-image"
+          src="/articles-health-banner.webp"
+          alt=""
+          aria-hidden="true"
+        />
+      </section>
+
       <section className="articles-hero">
         <div>
           <span className="eyebrow">Cẩm nang sức khỏe</span>

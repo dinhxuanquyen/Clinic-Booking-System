@@ -25,6 +25,10 @@ function getInitial(name = '') {
   return clean.charAt(0).toUpperCase() || 'B';
 }
 
+function isPlaceholderAvatar(value = '') {
+  return String(value).toLowerCase().includes('placeholder-doctor.svg');
+}
+
 export default function DoctorCard({ doctor, to }) {
   const [avatarFailed, setAvatarFailed] = useState(false);
   const rating = getRating(doctor);
@@ -32,7 +36,7 @@ export default function DoctorCard({ doctor, to }) {
   const accepting = hasActiveSchedule(doctor);
   const initial = getInitial(doctor.name || '');
   const avatarUrl = useMemo(() => {
-    if (!doctor.avatar || avatarFailed) return '';
+    if (!doctor.avatar || avatarFailed || isPlaceholderAvatar(doctor.avatar)) return '';
     return resolveMediaUrl(doctor.avatar, '');
   }, [doctor.avatar, avatarFailed]);
 
