@@ -9,8 +9,7 @@ const links = [
   { to: '/admin/schedules', label: 'Lịch làm việc' },
   { to: '/admin/queue', label: 'Hàng đợi khám' },
   { to: '/admin/appointments', label: 'Lịch hẹn' },
-  { to: '/admin/articles', label: 'Cẩm nang' },
-  { to: '/admin/audit-logs', label: 'Nhật ký hệ thống' }
+  { to: '/admin/articles', label: 'Cẩm nang' }
 ];
 
 export default function AdminLayout({ children }) {
@@ -33,6 +32,7 @@ export default function AdminLayout({ children }) {
           </NavLink>
         ))}
         <NavLink to="/admin/service-packages">Gói khám</NavLink>
+        <NavLink to="/admin/audit-logs">Nhật ký hệ thống</NavLink>
       </aside>
       <section className="admin-main" ref={mainRef}>
         <div className="admin-topbar">

@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import BaseModal from '../../components/BaseModal.jsx';
-import { api } from '../../api/client.js';
+import { api, apiForm } from '../../api/client.js';
 import { useToast } from '../../context/ToastContext.jsx';
+import { resolveMediaUrl, useImageFallback } from '../../utils/media.js';
 import { AdminEmptyState, normalizeText } from './adminUtils.jsx';
 
 const defaultForm = {
   name: '',
   description: '',
+  imageUrl: '',
   targetPatients: '',
   includes: '',
   price: '',
@@ -41,6 +43,10 @@ function textToList(value) {
     .filter(Boolean);
 }
 
+function getUploadUrl(response) {
+  return response?.data?.url || response?.data?.data?.url || response?.url || '';
+}
+
 export default function AdminServicePackagesPage() {
   const toast = useToast();
   const [packages, setPackages] = useState([]);
@@ -50,6 +56,7 @@ export default function AdminServicePackagesPage() {
   const [form, setForm] = useState(defaultForm);
   const [editing, setEditing] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [filters, setFilters] = useState({ keyword: '', clinicId: '', specialtyId: '', status: '' });
 
@@ -105,6 +112,7 @@ export default function AdminServicePackagesPage() {
     setForm({
       name: item.name || '',
       description: item.description || '',
+      imageUrl: item.imageUrl || '',
       targetPatients: listToText(item.targetPatients),
       includes: listToText(item.includes),
       price: item.price ?? '',
@@ -133,6 +141,28 @@ export default function AdminServicePackagesPage() {
     if (Number(form.price) < 0 || form.price === '') return 'Giá gói khám không hợp lệ';
     if (Number(form.durationMinutes) <= 0) return 'Thời lượng khám không hợp lệ';
     return '';
+  }
+
+  async function uploadImage(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const response = await apiForm('/uploads/package-image', formData);
+      const url = getUploadUrl(response);
+      if (!url) throw new Error('Không nhận được URL ảnh sau khi upload');
+      updateForm('imageUrl', url);
+      toast.success('Tải ảnh gói khám thành công');
+    } catch (error) {
+      toast.error(error.message || 'Không tải được ảnh gói khám');
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
   }
 
   async function submit(event) {
@@ -241,14 +271,23 @@ export default function AdminServicePackagesPage() {
                   <tr key={item._id}>
                     <td><strong>{item.code}</strong></td>
                     <td>
-                      <strong>{item.name}</strong>
-                      <p className="text-secondary mb-0 small">{item.description || 'Không có mô tả'}</p>
-                      {(item.targetPatients?.length > 0 || item.includes?.length > 0) && (
-                        <div className="service-package-admin-preview">
-                          {item.targetPatients?.slice(0, 2).map((text) => <small key={`target-${text}`}>{text}</small>)}
-                          {item.includes?.slice(0, 2).map((text) => <small key={`include-${text}`}>✓ {text}</small>)}
+                      <div className="service-package-admin-name-cell">
+                        <img
+                          src={resolveMediaUrl(item.imageUrl, '/packages-family-banner.webp')}
+                          alt={item.name}
+                          onError={(event) => useImageFallback(event, '/packages-family-banner.webp')}
+                        />
+                        <div>
+                          <strong>{item.name}</strong>
+                          <p className="text-secondary mb-0 small">{item.description || 'Không có mô tả'}</p>
+                          {(item.targetPatients?.length > 0 || item.includes?.length > 0) && (
+                            <div className="service-package-admin-preview">
+                              {item.targetPatients?.slice(0, 2).map((text) => <small key={`target-${text}`}>{text}</small>)}
+                              {item.includes?.slice(0, 2).map((text) => <small key={`include-${text}`}>✓ {text}</small>)}
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
                     </td>
                     <td>
                       <div>{getName(item.clinicId, 'Cơ sở')}</div>
@@ -275,7 +314,7 @@ export default function AdminServicePackagesPage() {
       </section>
 
       {modalOpen && (
-        <BaseModal ariaLabel={editing ? 'Cập nhật gói khám' : 'Thêm gói khám'} className="admin-modal service-package-modal" onClose={() => !saving && setModalOpen(false)} size="lg">
+        <BaseModal ariaLabel={editing ? 'Cập nhật gói khám' : 'Thêm gói khám'} className="admin-modal service-package-modal" disableClose={saving || uploading} onClose={() => !saving && !uploading && setModalOpen(false)} size="lg">
           <form onSubmit={submit}>
             <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
               <div>
@@ -283,7 +322,7 @@ export default function AdminServicePackagesPage() {
                 <h2 className="h4 mt-2 mb-1">{editing ? 'Cập nhật gói khám' : 'Thêm gói khám'}</h2>
                 <p className="text-secondary mb-0">Thiết lập giá, thời lượng và phạm vi áp dụng.</p>
               </div>
-              <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => setModalOpen(false)}>Đóng</button>
+              <button className="btn btn-sm btn-outline-secondary" disabled={saving || uploading} type="button" onClick={() => setModalOpen(false)}>Đóng</button>
             </div>
 
             <div className="admin-modal-body service-package-modal-body">
@@ -360,7 +399,30 @@ export default function AdminServicePackagesPage() {
                   <label className="form-label">Quyền lợi / bao gồm</label>
                   <textarea className="form-control" rows="4" value={form.includes} onChange={(event) => updateForm('includes', event.target.value)} placeholder="Mỗi dòng một quyền lợi hoặc nội dung gói" />
                 </div>
-                <div className="col-12">
+                <div className="col-12 service-package-image-field">
+                  <label className="form-label">Ảnh gói khám</label>
+                  <div className="service-package-image-uploader">
+                    <img
+                      src={resolveMediaUrl(form.imageUrl, '/packages-family-banner.webp')}
+                      alt="Preview gói khám"
+                      onError={(event) => useImageFallback(event, '/packages-family-banner.webp')}
+                    />
+                    <div>
+                      <label className={`service-package-upload-btn ${uploading ? 'disabled' : ''}`}>
+                        <input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading} onChange={uploadImage} />
+                        {uploading ? 'Đang tải ảnh...' : 'Tải ảnh gói khám'}
+                      </label>
+                      <input
+                        className="form-control"
+                        value={form.imageUrl}
+                        onChange={(event) => updateForm('imageUrl', event.target.value)}
+                        placeholder="Hoặc dán URL ảnh: https://..."
+                      />
+                      <small>Ưu tiên ảnh ngang 16:9, rõ nét, dung lượng dưới 2MB.</small>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12 service-package-preview-field">
                   <div className="service-package-preview-card">
                     <span>Preview</span>
                     <strong>{form.name || 'Tên gói khám'}</strong>
@@ -377,8 +439,8 @@ export default function AdminServicePackagesPage() {
             </div>
 
             <div className="d-flex justify-content-end gap-2 mt-4 admin-modal-footer">
-              <button className="btn btn-outline-secondary rounded-pill px-4" disabled={saving} type="button" onClick={() => setModalOpen(false)}>Hủy</button>
-              <button className="btn btn-primary rounded-pill px-4" disabled={saving} type="submit">{saving ? 'Đang lưu...' : 'Lưu gói khám'}</button>
+              <button className="btn btn-outline-secondary rounded-pill px-4" disabled={saving || uploading} type="button" onClick={() => setModalOpen(false)}>Hủy</button>
+              <button className="btn btn-primary rounded-pill px-4" disabled={saving || uploading} type="submit">{saving ? 'Đang lưu...' : 'Lưu gói khám'}</button>
             </div>
           </form>
         </BaseModal>

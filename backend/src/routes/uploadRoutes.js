@@ -94,6 +94,7 @@ router.post('/clinic-image', uploadImage('clinics'));
 router.post('/clinic-images', uploadImages('clinics'));
 router.post('/doctor-avatar', uploadImage('doctors'));
 router.post('/specialty-image', uploadImage('specialties', 'Upload ảnh chuyên khoa thành công'));
+router.post('/package-image', uploadImage('service-packages', 'Upload ảnh gói khám thành công'));
 router.post('/user-avatar', uploadUserAvatar());
 
 export default router;

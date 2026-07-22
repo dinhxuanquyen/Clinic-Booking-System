@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client.js';
 import DoctorCard from '../components/DoctorCard.jsx';
 import PageSkeleton from '../components/PageSkeleton.jsx';
+import { FaChevronLeft, FaChevronRight } from '../components/icons/FaIcons.jsx';
 import { resolveMediaUrl, useImageFallback } from '../utils/media.js';
 import { cleanDisplayText } from '../utils/textEncoding.js';
 import {
@@ -303,10 +304,10 @@ export default function ClinicDetail() {
         {clinicImages.length > 1 && (
           <div className="clinic-hero-carousel" aria-label="Chuyển ảnh cơ sở">
             <button className="clinic-hero-nav previous" type="button" onClick={showPreviousImage} aria-label="Ảnh trước">
-              ‹
+              <FaChevronLeft size={17} />
             </button>
             <button className="clinic-hero-nav next" type="button" onClick={showNextImage} aria-label="Ảnh tiếp theo">
-              ›
+              <FaChevronRight size={17} />
             </button>
             <span className="clinic-hero-image-count">{activeImageIndex + 1}/{clinicImages.length}</span>
           </div>

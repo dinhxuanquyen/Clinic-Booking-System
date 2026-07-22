@@ -19,6 +19,7 @@ const packagePopulate = [
 export const servicePackageRules = [
   body('name').trim().notEmpty().withMessage('Tên gói khám là bắt buộc'),
   body('description').optional().trim(),
+  body('imageUrl').optional().trim(),
   body('targetPatients').optional().isArray().withMessage('targetPatients phải là danh sách'),
   body('targetPatients.*').optional().trim().isLength({ max: 180 }).withMessage('Mỗi dòng đối tượng phù hợp tối đa 180 ký tự'),
   body('includes').optional().isArray().withMessage('includes phải là danh sách'),
@@ -153,6 +154,7 @@ export const createAdminServicePackage = asyncHandler(async (req, res) => {
     name: req.body.name,
     code: await generateServicePackageCode(),
     description: req.body.description || '',
+    imageUrl: req.body.imageUrl || '',
     targetPatients: cleanStringList(req.body.targetPatients),
     includes: cleanStringList(req.body.includes),
     price: req.body.price,
@@ -207,6 +209,7 @@ export const updateAdminServicePackage = asyncHandler(async (req, res) => {
 
   servicePackage.name = req.body.name;
   servicePackage.description = req.body.description || '';
+  servicePackage.imageUrl = req.body.imageUrl || '';
   servicePackage.targetPatients = cleanStringList(req.body.targetPatients);
   servicePackage.includes = cleanStringList(req.body.includes);
   servicePackage.price = req.body.price;

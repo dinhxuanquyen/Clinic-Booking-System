@@ -5,6 +5,7 @@ const servicePackageSchema = new mongoose.Schema(
     name: { type: String, required: [true, 'Package name is required'], trim: true },
     code: { type: String, required: true, unique: true, uppercase: true, trim: true },
     description: { type: String, default: '', trim: true },
+    imageUrl: { type: String, default: '', trim: true },
     targetPatients: [{ type: String, trim: true }],
     includes: [{ type: String, trim: true }],
     price: { type: Number, required: [true, 'Package price is required'], min: 0 },

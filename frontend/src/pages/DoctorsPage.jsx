@@ -5,7 +5,13 @@ import { api } from '../api/client.js';
 import DoctorCard from '../components/DoctorCard.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import { SkeletonGrid } from '../components/SkeletonCard.jsx';
-import { FaHospital, FaStethoscope, FaUser } from '../components/icons/FaIcons.jsx';
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaHospital,
+  FaStethoscope,
+  FaUser
+} from '../components/icons/FaIcons.jsx';
 
 const pageSize = 12;
 const heroAutoplayDelayMs = 5200;
@@ -347,10 +353,10 @@ export default function DoctorsPage() {
             })}
           </div>
           <button className="doctor-hero-nav previous" type="button" aria-label="Xem ảnh trước" onClick={showPreviousHeroImage}>
-            ‹
+            <FaChevronLeft size={17} />
           </button>
           <button className="doctor-hero-nav next" type="button" aria-label="Xem ảnh tiếp theo" onClick={showNextHeroImage}>
-            ›
+            <FaChevronRight size={17} />
           </button>
         </section>
 
