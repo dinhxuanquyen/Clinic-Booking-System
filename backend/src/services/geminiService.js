@@ -331,6 +331,18 @@ const DEFAULT_ASSISTANT_RESULT = {
   assistantMessage:
     'Mình đã ghi nhận triệu chứng của bạn và gợi ý một số chuyên khoa phù hợp để đặt lịch khám. Thông tin này chỉ mang tính tham khảo, không thay thế bác sĩ.',
   summary: DEFAULT_RESULT.summary,
+  possibleCauses: [
+    'Triệu chứng cần được bác sĩ thăm khám để xác định nguyên nhân.',
+    'Kết quả này chỉ giúp định hướng bước tiếp theo, không phải chẩn đoán.'
+  ],
+  careGuidance: [
+    'Theo dõi mức độ, thời gian xuất hiện và triệu chứng đi kèm.',
+    'Không tự dùng thuốc kê đơn hoặc kháng sinh khi chưa có chỉ định.'
+  ],
+  nextSteps: [
+    'Chuẩn bị thông tin về thời điểm bắt đầu, vị trí triệu chứng và yếu tố làm nặng hơn.',
+    'Đặt lịch khám nếu triệu chứng kéo dài, tăng lên hoặc ảnh hưởng sinh hoạt.'
+  ],
   recommendations: [
     {
       specialtyName: 'Nội tổng quát',
@@ -441,9 +453,16 @@ function sanitizeAssistantResult(value, input) {
         notes: []
       };
 
+  const possibleCauses = sanitizeStringArray(result.possibleCauses, 6);
+  const careGuidance = sanitizeStringArray(result.careGuidance || result.safeCareGuidance, 8);
+  const nextSteps = sanitizeStringArray(result.nextSteps, 6);
+
   return {
     assistantMessage: String(result.assistantMessage || DEFAULT_ASSISTANT_RESULT.assistantMessage).trim(),
     summary: String(result.summary || DEFAULT_ASSISTANT_RESULT.summary).trim(),
+    possibleCauses: possibleCauses.length ? possibleCauses : DEFAULT_ASSISTANT_RESULT.possibleCauses,
+    careGuidance: careGuidance.length ? careGuidance : DEFAULT_ASSISTANT_RESULT.careGuidance,
+    nextSteps: nextSteps.length ? nextSteps : DEFAULT_ASSISTANT_RESULT.nextSteps,
     recommendations: recommendations.length ? recommendations : DEFAULT_ASSISTANT_RESULT.recommendations,
     followUpQuestions,
     quickReplies: sanitizeStringArray(result.quickReplies, 5).length
@@ -475,6 +494,11 @@ function buildAssistantFallbackAnalysis(input) {
   const symptoms = normalizeText(`${input.symptoms || ''} ${input.latestMessage || ''}`);
   const recommendations = [];
   const warningSigns = [];
+  const possibleCauses = [];
+  const careGuidance = [];
+  const nextSteps = [];
+  let followUpQuestions = null;
+  let quickReplies = null;
   let urgencyLevel = 'medium';
   let summary = 'Hệ thống đã ghi nhận mô tả triệu chứng và gợi ý hướng khám phù hợp dựa trên từ khóa.';
 
@@ -484,6 +508,56 @@ function buildAssistantFallbackAnalysis(input) {
     warningSigns.push('Đau ngực, khó thở, ngất, yếu liệt, nói khó, co giật hoặc sốt cao là dấu hiệu cần đi khám/cấp cứu ngay.');
     addRecommendation(recommendations, 'Cấp cứu', 'Có dấu hiệu cảnh báo cần được đánh giá khẩn cấp.', 92, 'high', ['dấu hiệu nặng']);
     addRecommendation(recommendations, 'Tim mạch', 'Phù hợp khi có đau ngực, khó thở hoặc hồi hộp.', 82, 'high', ['đau ngực', 'khó thở']);
+    possibleCauses.push('Có dấu hiệu cần được đánh giá y tế khẩn cấp.');
+    careGuidance.push('Không chờ đợi tại nhà nếu có khó thở, ngất, yếu liệt hoặc đau ngực dữ dội.');
+    nextSteps.push('Đến cơ sở y tế hoặc cấp cứu ngay nếu triệu chứng đang nặng lên.');
+  }
+
+  const hasDentalSymptoms = /(dau rang|nhuc rang|sau rang|e buot rang|rang ham|\brang\b|\bloi\b|nha khoa|viem loi|chay mau chan rang|sung loi|sung mat|ap xe rang|mu rang)/.test(symptoms);
+  if (hasDentalSymptoms) {
+    const hasDentalWarning = /(sung mat|sung loi|sot|co mu|mu rang|ap xe|kho nuot|kho tho|dau du doi|dau tang nhanh)/.test(symptoms);
+    urgencyLevel = hasDentalWarning ? 'high' : urgencyLevel;
+    summary = hasDentalWarning
+      ? 'Đau răng kèm sưng, sốt, mủ hoặc đau tăng nhanh cần được khám Răng hàm mặt/Nha khoa sớm để kiểm tra nhiễm trùng hoặc biến chứng.'
+      : 'Đau răng kéo dài vài ngày thường nên được khám Răng hàm mặt/Nha khoa để tìm nguyên nhân như sâu răng, viêm lợi hoặc viêm quanh răng.';
+    addRecommendation(
+      recommendations,
+      'Răng hàm mặt',
+      'Phù hợp nhất với đau răng, ê buốt, sâu răng, viêm lợi hoặc sưng vùng răng miệng.',
+      94,
+      hasDentalWarning ? 'high' : 'medium',
+      ['đau răng', 'răng miệng'],
+      'Nên đặt lịch Răng hàm mặt/Nha khoa. Nếu hệ thống chưa có chuyên khoa này, hãy liên hệ cơ sở nha khoa phù hợp.'
+    );
+    possibleCauses.push(
+      'Có thể liên quan sâu răng, viêm tủy răng, viêm lợi hoặc viêm quanh răng.',
+      'Đau khi nhai, ê buốt nóng lạnh hoặc sưng lợi là thông tin quan trọng cho bác sĩ.'
+    );
+    careGuidance.push(
+      'Giữ vệ sinh răng miệng nhẹ nhàng, tránh nhai bên răng đau và tránh đồ quá nóng/lạnh nếu gây ê buốt.',
+      'Không tự dùng kháng sinh hoặc thuốc kê đơn khi chưa được bác sĩ chỉ định.',
+      'Theo dõi sưng mặt, sốt, mủ quanh răng, đau tăng nhanh hoặc khó nuốt.'
+    );
+    nextSteps.push(
+      'Ưu tiên khám Răng hàm mặt/Nha khoa, nhất là khi đau kéo dài trên 1-2 ngày hoặc ảnh hưởng ăn uống.',
+      'Chuẩn bị thông tin: răng đau ở vị trí nào, đau âm ỉ hay đau nhói, có ê buốt/sưng/sốt không.'
+    );
+    if (hasDentalWarning) {
+      warningSigns.push('Sưng mặt, sốt, có mủ quanh răng, khó nuốt, khó thở hoặc đau dữ dội là dấu hiệu cần đi khám ngay.');
+    }
+    followUpQuestions = [
+      {
+        id: 'tooth_location',
+        question: 'Răng đau ở vị trí nào và đau âm ỉ hay đau nhói từng cơn?',
+        choices: ['Răng hàm', 'Răng cửa', 'Đau nhói', 'Đau âm ỉ']
+      },
+      {
+        id: 'dental_red_flags',
+        question: 'Bạn có sưng lợi/mặt, sốt, mủ quanh răng hoặc đau tăng khi nhai không?',
+        choices: ['Không có', 'Có sưng', 'Có sốt/mủ', 'Đau khi nhai']
+      }
+    ];
+    quickReplies = ['Có sưng mặt hoặc sốt', 'Đau tăng khi nhai', 'Tôi muốn đặt lịch nha khoa'];
   }
 
   if (/(dau hong|ho|sot|nghet mui|so mui|chay mui|viem hong|amidan|tai|mui)/.test(symptoms)) {
@@ -511,6 +585,9 @@ function buildAssistantFallbackAnalysis(input) {
 
   if (!recommendations.length) {
     addRecommendation(recommendations, 'Nội tổng quát', 'Phù hợp để đánh giá ban đầu khi triệu chứng chưa đủ rõ.', 62, urgencyLevel);
+    possibleCauses.push('Thông tin hiện chưa đủ đặc hiệu để xác định nhóm chuyên khoa hẹp.');
+    careGuidance.push('Theo dõi diễn tiến, mức độ ảnh hưởng sinh hoạt và các triệu chứng đi kèm.');
+    nextSteps.push('Có thể khám Nội tổng quát để được đánh giá ban đầu và chuyển chuyên khoa nếu cần.');
   }
 
   if (normalizeText(input.severity).includes('high')) {
@@ -520,8 +597,11 @@ function buildAssistantFallbackAnalysis(input) {
   return sanitizeAssistantResult({
     assistantMessage: 'Mình đã phân tích mô tả của bạn và gợi ý các chuyên khoa phù hợp nhất. Bạn có thể trả lời thêm vài câu hỏi để kết quả chính xác hơn.',
     summary,
+    possibleCauses,
+    careGuidance,
+    nextSteps,
     recommendations,
-    followUpQuestions: [
+    followUpQuestions: followUpQuestions || [
       {
         id: 'duration',
         question: 'Triệu chứng đã kéo dài bao lâu và có nặng hơn theo thời gian không?',
@@ -533,7 +613,7 @@ function buildAssistantFallbackAnalysis(input) {
         choices: ['Không có', 'Có sốt', 'Có đau nhiều', 'Có khó thở']
       }
     ],
-    quickReplies: ['Tôi muốn bổ sung triệu chứng', 'Đặt lịch với chuyên khoa phù hợp', 'Tôi có dấu hiệu nặng'],
+    quickReplies: quickReplies || ['Tôi muốn bổ sung triệu chứng', 'Đặt lịch với chuyên khoa phù hợp', 'Tôi có dấu hiệu nặng'],
     safety: {
       urgencyLevel,
       warningSigns,
@@ -567,6 +647,7 @@ function buildAssistantPrompt(input) {
 
 Mục tiêu:
 - Hỗ trợ người dùng mô tả triệu chứng qua nhiều lượt hỏi đáp.
+- Tra loi nhu cau nguoi dung truoc: giai thich huong xu tri an toan, dau hieu can chu y va buoc tiep theo.
 - Gợi ý nhiều chuyên khoa phù hợp hơn, có lý do và mức độ phù hợp.
 - Hỏi tiếp tối đa 3 câu nếu thiếu thông tin quan trọng.
 - Chỉ định hướng đặt lịch khám, không chẩn đoán chắc chắn, không kê thuốc.
@@ -579,11 +660,16 @@ Quy tắc an toàn:
 - Không làm người dùng trì hoãn cấp cứu khi có dấu hiệu nặng.
 - Trả về JSON hợp lệ duy nhất, không markdown, không code block.
 - Mỗi chuỗi ngắn gọn, rõ ràng, tiếng Việt tự nhiên.
+- Khong goi y chuyen khoa khong lien quan. Voi dau rang/rang/loi/nha khoa, uu tien Rang ham mat hoac Nha khoa; khong goi y Co xuong khop tru khi co chan thuong ham/xuong ro rang.
+- Neu he thong chua co chuyen khoa phu hop, van tra loi huong xu tri va ghi bookingHint rang hien chua ho tro dat lich chuyen khoa do.
 
 Schema JSON bắt buộc:
 {
   "assistantMessage":"string",
   "summary":"string",
+  "possibleCauses":["string"],
+  "careGuidance":["string"],
+  "nextSteps":["string"],
   "recommendations":[
     {
       "specialtyName":"string",

@@ -34,6 +34,15 @@ Endpoint cu `/api/ai/symptom-checker` duoc giu nguyen de tranh pha vo giao dien 
   "data": {
     "assistantMessage": "string",
     "summary": "string",
+    "possibleCauses": [
+      "Huong lien quan co the xay ra, khong phai chan doan"
+    ],
+    "careGuidance": [
+      "Huong cham soc an toan truoc khi kham"
+    ],
+    "nextSteps": [
+      "Buoc tiep theo nguoi dung nen lam"
+    ],
     "recommendations": [
       {
         "specialtyName": "Tai mui hong",
@@ -50,7 +59,9 @@ Endpoint cu `/api/ai/symptom-checker` duoc giu nguyen de tranh pha vo giao dien 
           "clinicCode": "PK",
           "matchedFrom": "Tai mui hong"
         },
-        "canBook": true
+        "canBook": true,
+        "bookingStatus": "available",
+        "bookingMessage": "Co the dat lich truc tiep voi chuyen khoa phu hop trong he thong."
       }
     ],
     "followUpQuestions": [
@@ -86,6 +97,8 @@ Endpoint cu `/api/ai/symptom-checker` duoc giu nguyen de tranh pha vo giao dien 
 - Khong ke thuoc hoac lieu dung.
 - Khong thay the bac si.
 - Neu co dau hieu nang, `safety.urgencyLevel` phai uu tien `high`.
+- Ket qua phai tra loi nhu cau nguoi dung truoc khi goi y chuyen khoa: `possibleCauses`, `careGuidance`, `nextSteps`.
+- Dau rang/rang/loi/nha khoa phai uu tien Rang ham mat/Nha khoa; khong map sang Co xuong khop neu khong co chan thuong ham/xuong ro rang.
 - Fallback keyword van tra ve cung schema khi Gemini khong kha dung.
 
 ## Frontend booking handoff

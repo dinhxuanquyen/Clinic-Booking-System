@@ -40531,9 +40531,47 @@ body.modal-open.doctor-portal-open {
   overflow-wrap: anywhere;
 }
 
+.public-main .sc-guidance-card {
+  padding: 16px;
+}
+
+.public-main .sc-guidance-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.public-main .sc-guidance-list li {
+  position: relative;
+  padding-left: 20px;
+  color: #475569;
+  font-size: 0.84rem;
+  font-weight: 680;
+  line-height: 1.55;
+}
+
+.public-main .sc-guidance-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.65em;
+  left: 2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #06b6d4;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+}
+
 .public-main .sc-recommendation-card.priority-high {
   border-color: rgba(252, 165, 165, 0.72);
   background: linear-gradient(180deg, #fffafa, #fff7ed);
+}
+
+.public-main .sc-recommendation-card.unavailable {
+  border-color: rgba(203, 213, 225, 0.95);
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
 }
 
 .public-main .sc-recommendation-head {

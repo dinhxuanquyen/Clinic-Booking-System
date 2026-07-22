@@ -45,6 +45,22 @@ function specialtyScore(suggestion, specialtyName) {
   return rightTokens.reduce((score, token) => score + (leftTokens.has(token) ? 20 : 0), 0);
 }
 
+function isDentalSuggestion(value) {
+  return /(rang|nha khoa|loi|tooth|dental)/.test(normalizeText(value));
+}
+
+function bookingMessageForRecommendation(item, matchedSpecialty) {
+  if (matchedSpecialty?._id) {
+    return 'Có thể đặt lịch trực tiếp với chuyên khoa phù hợp trong hệ thống.';
+  }
+
+  if (isDentalSuggestion(item.specialtyName || item.name)) {
+    return 'Hệ thống hiện chưa có lịch Răng hàm mặt/Nha khoa. Bạn vẫn nên khám nha khoa nếu đau kéo dài, sưng, sốt hoặc có mủ.';
+  }
+
+  return 'Hệ thống chưa có lịch phù hợp cho chuyên khoa này. Bạn có thể đặt lịch Nội tổng quát để được định hướng thêm.';
+}
+
 async function mapSpecialties(suggestions) {
   const specialties = await Specialty.find({ isActive: { $ne: false } })
     .populate({ path: 'clinicId', select: 'name clinicCode address isActive' })
@@ -95,7 +111,9 @@ async function mapRecommendations(recommendations) {
     return {
       ...item,
       specialty: matchedSpecialty || null,
-      canBook: Boolean(matchedSpecialty?._id)
+      canBook: Boolean(matchedSpecialty?._id),
+      bookingStatus: matchedSpecialty?._id ? 'available' : 'unavailable',
+      bookingMessage: bookingMessageForRecommendation(item, matchedSpecialty)
     };
   });
 }

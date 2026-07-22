@@ -84,6 +84,25 @@ function UrgencyCard({ urgency, action }) {
   );
 }
 
+function GuidanceList({ title, items }) {
+  const visibleItems = Array.isArray(items)
+    ? items.map((item) => cleanDisplayText(item)).filter(Boolean).slice(0, 4)
+    : [];
+
+  if (!visibleItems.length) return null;
+
+  return (
+    <div className="sc-result-card sc-guidance-card">
+      <div className="sc-result-card-title">{cleanDisplayText(title)}</div>
+      <ul className="sc-guidance-list">
+        {visibleItems.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function ChatBubble({ message }) {
   return (
     <div className={`sc-chat-row ${message.role === 'user' ? 'user' : 'assistant'}`}>
@@ -98,9 +117,10 @@ function ChatBubble({ message }) {
 function RecommendationCard({ item, onBook }) {
   const specialty = item.specialty;
   const confidence = Number.isFinite(Number(item.confidence)) ? Number(item.confidence) : 60;
+  const canBook = Boolean(item.canBook && specialty?._id);
 
   return (
-    <article className={`sc-recommendation-card priority-${item.priority || 'medium'}`}>
+    <article className={`sc-recommendation-card priority-${item.priority || 'medium'} ${canBook ? '' : 'unavailable'}`}>
       <div className="sc-recommendation-head">
         <div>
           <strong>{cleanDisplayText(item.specialtyName || specialty?.name || 'Chuyên khoa phù hợp')}</strong>
@@ -123,14 +143,14 @@ function RecommendationCard({ item, onBook }) {
       )}
 
       <div className="sc-recommendation-actions">
-        <small>{cleanDisplayText(item.bookingHint)}</small>
+        <small>{cleanDisplayText(item.bookingMessage || item.bookingHint)}</small>
         <button
           type="button"
           className="sc-book-btn"
-          disabled={!item.canBook || !specialty?._id}
+          disabled={!canBook}
           onClick={() => onBook(item)}
         >
-          {item.canBook ? 'Đặt lịch' : 'Chưa có lịch'}
+          {canBook ? 'Đặt lịch' : 'Chưa hỗ trợ'}
         </button>
       </div>
     </article>
@@ -537,6 +557,16 @@ export default function SymptomCheckerPage() {
                           <div className="sc-result-card-title">Tóm tắt</div>
                           <p className="sc-result-card-body">{cleanDisplayText(assistantData.summary)}</p>
                         </div>
+
+                        <GuidanceList
+                          title="Có thể liên quan"
+                          items={assistantData.possibleCauses}
+                        />
+
+                        <GuidanceList
+                          title="Nên làm tiếp theo"
+                          items={[...(assistantData.nextSteps || []), ...(assistantData.careGuidance || [])]}
+                        />
 
                         <div className="sc-result-card">
                           <div className="sc-result-card-title">Chuyên khoa gợi ý</div>
