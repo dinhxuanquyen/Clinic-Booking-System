@@ -171,6 +171,8 @@ export default function HomePage() {
   const [isHeroPaused, setIsHeroPaused] = useState(false);
   const [doctorStart, setDoctorStart] = useState(0);
   const [specialtyStart, setSpecialtyStart] = useState(0);
+  const [doctorDirection, setDoctorDirection] = useState('');
+  const [specialtyDirection, setSpecialtyDirection] = useState('');
 
   const { data: doctorsPayload = [] } = useQuery({
     queryKey: ['home-doctors'],
@@ -205,6 +207,22 @@ export default function HomePage() {
   const visibleDoctors = useMemo(() => rotateList(doctors, doctorStart, 4), [doctors, doctorStart]);
   const visibleSpecialties = useMemo(() => rotateList(specialties, specialtyStart, 6), [specialties, specialtyStart]);
   const slide = heroSlides[activeSlide];
+
+  const moveDoctors = (direction) => {
+    if (!doctors.length) return;
+    setDoctorDirection(direction);
+    setDoctorStart((current) => (
+      (current + (direction === 'next' ? 1 : -1) + doctors.length) % doctors.length
+    ));
+  };
+
+  const moveSpecialties = (direction) => {
+    if (!specialties.length) return;
+    setSpecialtyDirection(direction);
+    setSpecialtyStart((current) => (
+      (current + (direction === 'next' ? 1 : -1) + specialties.length) % specialties.length
+    ));
+  };
 
   useEffect(() => {
     if (isHeroPaused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
@@ -320,8 +338,11 @@ export default function HomePage() {
           action="Xem toàn bộ"
         />
         <div className="home-modern-carousel-shell dark">
-          <button aria-label="Bác sĩ trước" type="button" onClick={() => setDoctorStart((current) => (current - 1 + doctors.length) % doctors.length)}><FaChevronLeft size={16} /></button>
-          <div className="home-modern-doctor-grid">
+          <button aria-label="Bác sĩ trước" type="button" onClick={() => moveDoctors('previous')}><FaChevronLeft size={16} /></button>
+          <div
+            className={`home-modern-doctor-grid home-modern-carousel-track${doctorDirection ? ` is-${doctorDirection}` : ''}`}
+            key={`doctors-${doctorStart}`}
+          >
             {visibleDoctors.map((doctor) => {
               const image = getDoctorImage(doctor);
               const name = cleanDisplayText(doctor.name, 'Bác sĩ');
@@ -347,7 +368,7 @@ export default function HomePage() {
               );
             })}
           </div>
-          <button aria-label="Bác sĩ tiếp theo" type="button" onClick={() => setDoctorStart((current) => (current + 1) % doctors.length)}><FaChevronRight size={16} /></button>
+          <button aria-label="Bác sĩ tiếp theo" type="button" onClick={() => moveDoctors('next')}><FaChevronRight size={16} /></button>
         </div>
       </section>
 
@@ -360,8 +381,11 @@ export default function HomePage() {
           action="Xem chuyên khoa"
         />
         <div className="home-modern-carousel-shell">
-          <button aria-label="Chuyên khoa trước" type="button" onClick={() => setSpecialtyStart((current) => (current - 1 + specialties.length) % specialties.length)}><FaChevronLeft size={16} /></button>
-          <div className="home-modern-specialty-grid">
+          <button aria-label="Chuyên khoa trước" type="button" onClick={() => moveSpecialties('previous')}><FaChevronLeft size={16} /></button>
+          <div
+            className={`home-modern-specialty-grid home-modern-carousel-track${specialtyDirection ? ` is-${specialtyDirection}` : ''}`}
+            key={`specialties-${specialtyStart}`}
+          >
             {visibleSpecialties.map((specialty) => {
               const name = cleanDisplayText(specialty.name, 'Chuyên khoa');
               const content = getSpecialtyContent(name);
@@ -381,7 +405,7 @@ export default function HomePage() {
               );
             })}
           </div>
-          <button aria-label="Chuyên khoa tiếp theo" type="button" onClick={() => setSpecialtyStart((current) => (current + 1) % specialties.length)}><FaChevronRight size={16} /></button>
+          <button aria-label="Chuyên khoa tiếp theo" type="button" onClick={() => moveSpecialties('next')}><FaChevronRight size={16} /></button>
         </div>
       </section>
 

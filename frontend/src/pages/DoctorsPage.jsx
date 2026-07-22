@@ -15,7 +15,6 @@ import {
 
 const pageSize = 12;
 const heroAutoplayDelayMs = 5200;
-const heroTransitionMs = 760;
 const doctorHeroImages = [
   {
     src: '/doctor-team-banner.webp',
@@ -86,12 +85,7 @@ export default function DoctorsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
-  const [heroTrackIndex, setHeroTrackIndex] = useState(1);
-  const [isHeroJumping, setIsHeroJumping] = useState(false);
-  const [isHeroAnimating, setIsHeroAnimating] = useState(false);
   const [isHeroPaused, setIsHeroPaused] = useState(false);
-  const isHeroLockedRef = useRef(false);
-  const heroResetTimerRef = useRef(null);
   const heroAutoplayTimerRef = useRef(null);
   const heroSectionRef = useRef(null);
 
@@ -151,24 +145,6 @@ export default function DoctorsPage() {
     }
   }, [currentPage, totalPages]);
 
-  const heroSlides = useMemo(() => {
-    if (doctorHeroImages.length <= 1) {
-      return doctorHeroImages;
-    }
-
-    return [
-      doctorHeroImages[doctorHeroImages.length - 1],
-      ...doctorHeroImages,
-      doctorHeroImages[0]
-    ];
-  }, []);
-
-  useEffect(() => () => {
-    if (heroResetTimerRef.current) {
-      window.clearTimeout(heroResetTimerRef.current);
-    }
-  }, []);
-
   const clearHeroAutoplayTimer = useCallback(() => {
     if (heroAutoplayTimerRef.current) {
       window.clearTimeout(heroAutoplayTimerRef.current);
@@ -176,100 +152,28 @@ export default function DoctorsPage() {
     }
   }, []);
 
-  const unlockHeroTrack = useCallback(() => {
-    isHeroLockedRef.current = false;
-    setIsHeroAnimating(false);
-  }, []);
-
-  const completeHeroTransition = useCallback((nextTrackIndex) => {
+  const showPreviousHeroImage = useCallback(() => {
     if (doctorHeroImages.length <= 1) return;
 
-    if (heroResetTimerRef.current) {
-      window.clearTimeout(heroResetTimerRef.current);
-      heroResetTimerRef.current = null;
-    }
-
-    let normalizedTrackIndex = nextTrackIndex;
-    let normalizedHeroIndex = nextTrackIndex - 1;
-
-    if (nextTrackIndex === 0) {
-      normalizedTrackIndex = doctorHeroImages.length;
-      normalizedHeroIndex = doctorHeroImages.length - 1;
-    } else if (nextTrackIndex === doctorHeroImages.length + 1) {
-      normalizedTrackIndex = 1;
-      normalizedHeroIndex = 0;
-    }
-
-    if (normalizedTrackIndex === nextTrackIndex) {
-      unlockHeroTrack();
-      return;
-    }
-
-    setIsHeroJumping(true);
-    setHeroTrackIndex(normalizedTrackIndex);
-    setActiveHeroIndex(normalizedHeroIndex);
-
-    heroResetTimerRef.current = window.setTimeout(() => {
-      setIsHeroJumping(false);
-      heroResetTimerRef.current = null;
-      unlockHeroTrack();
-    }, 32);
-  }, [unlockHeroTrack]);
-
-  const scheduleHeroTrackFallback = useCallback((nextTrackIndex) => {
-    if (heroResetTimerRef.current) {
-      window.clearTimeout(heroResetTimerRef.current);
-    }
-
-    heroResetTimerRef.current = window.setTimeout(() => {
-      completeHeroTransition(nextTrackIndex);
-    }, heroTransitionMs + 60);
-  }, [completeHeroTransition]);
-
-  const showPreviousHeroImage = useCallback(() => {
-    if (isHeroLockedRef.current || doctorHeroImages.length <= 1) return;
-
     clearHeroAutoplayTimer();
-    isHeroLockedRef.current = true;
-    setIsHeroAnimating(true);
     setActiveHeroIndex((current) => (current === 0 ? doctorHeroImages.length - 1 : current - 1));
-    setHeroTrackIndex((current) => {
-      const nextTrackIndex = current - 1;
-      scheduleHeroTrackFallback(nextTrackIndex);
-      return nextTrackIndex;
-    });
-  }, [clearHeroAutoplayTimer, scheduleHeroTrackFallback]);
+  }, [clearHeroAutoplayTimer]);
 
   const showNextHeroImage = useCallback(() => {
-    if (isHeroLockedRef.current || doctorHeroImages.length <= 1) return;
+    if (doctorHeroImages.length <= 1) return;
 
     clearHeroAutoplayTimer();
-    isHeroLockedRef.current = true;
-    setIsHeroAnimating(true);
     setActiveHeroIndex((current) => (current + 1) % doctorHeroImages.length);
-    setHeroTrackIndex((current) => {
-      const nextTrackIndex = current + 1;
-      scheduleHeroTrackFallback(nextTrackIndex);
-      return nextTrackIndex;
-    });
-  }, [clearHeroAutoplayTimer, scheduleHeroTrackFallback]);
+  }, [clearHeroAutoplayTimer]);
 
   const showHeroImageAt = useCallback((nextHeroIndex) => {
-    if (
-      isHeroLockedRef.current ||
-      doctorHeroImages.length <= 1 ||
-      nextHeroIndex === activeHeroIndex
-    ) {
+    if (doctorHeroImages.length <= 1 || nextHeroIndex === activeHeroIndex) {
       return;
     }
 
     clearHeroAutoplayTimer();
-    isHeroLockedRef.current = true;
-    setIsHeroAnimating(true);
     setActiveHeroIndex(nextHeroIndex);
-    setHeroTrackIndex(nextHeroIndex + 1);
-    scheduleHeroTrackFallback(nextHeroIndex + 1);
-  }, [activeHeroIndex, clearHeroAutoplayTimer, scheduleHeroTrackFallback]);
+  }, [activeHeroIndex, clearHeroAutoplayTimer]);
 
   const pauseHeroAutoplay = useCallback(() => {
     setIsHeroPaused(true);
@@ -290,8 +194,6 @@ export default function DoctorsPage() {
     if (
       doctorHeroImages.length <= 1 ||
       isHeroPaused ||
-      isHeroAnimating ||
-      isHeroJumping ||
       document.hidden ||
       prefersReducedMotion
     ) {
@@ -302,7 +204,7 @@ export default function DoctorsPage() {
     heroAutoplayTimerRef.current = window.setTimeout(showNextHeroImage, heroAutoplayDelayMs);
 
     return clearHeroAutoplayTimer;
-  }, [activeHeroIndex, clearHeroAutoplayTimer, isHeroAnimating, isHeroJumping, isHeroPaused, showNextHeroImage]);
+  }, [activeHeroIndex, clearHeroAutoplayTimer, isHeroPaused, showNextHeroImage]);
 
   useEffect(() => {
     function handleVisibilityChange() {
@@ -312,11 +214,6 @@ export default function DoctorsPage() {
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
-
-  function handleHeroTransitionEnd(event) {
-    if (event.target !== event.currentTarget) return;
-    completeHeroTransition(heroTrackIndex);
-  }
 
   return (
     <main className="section-band doctors-page">
@@ -330,27 +227,16 @@ export default function DoctorsPage() {
             onFocus={pauseHeroAutoplay}
             onMouseEnter={pauseHeroAutoplay}
             onMouseLeave={resumeHeroAutoplay}
-            onTransitionEnd={handleHeroTransitionEnd}
-            style={{
-              '--active-slide': heroTrackIndex,
-              '--slide-count': heroSlides.length
-            }}
-            data-jumping={isHeroJumping ? 'true' : undefined}
-            data-animating={isHeroAnimating ? 'true' : undefined}
           >
-            {heroSlides.map((image, index) => {
-              const realIndex = (index - 1 + doctorHeroImages.length) % doctorHeroImages.length;
-
-              return (
+            {doctorHeroImages.map((image, index) => (
               <img
-                className="doctor-page-hero-image"
+                className={`doctor-page-hero-image ${index === activeHeroIndex ? 'active' : ''}`}
                 src={image.src}
                 alt={image.alt}
-                aria-hidden={realIndex === activeHeroIndex && index === heroTrackIndex ? undefined : 'true'}
-                key={`${image.src}-${index}`}
+                aria-hidden={index === activeHeroIndex ? undefined : 'true'}
+                key={image.src}
               />
-              );
-            })}
+            ))}
           </div>
           <button className="doctor-hero-nav previous" type="button" aria-label="Xem ảnh trước" onClick={showPreviousHeroImage}>
             <FaChevronLeft size={17} />
@@ -376,7 +262,7 @@ export default function DoctorsPage() {
             <span
               key={`${activeHeroIndex}-${isHeroPaused ? 'paused' : 'playing'}`}
               style={{ '--hero-autoplay-delay': `${heroAutoplayDelayMs}ms` }}
-              data-paused={isHeroPaused || isHeroAnimating || isHeroJumping ? 'true' : undefined}
+              data-paused={isHeroPaused ? 'true' : undefined}
             />
           </div>
         <section className="doctor-hero-info-card" aria-labelledby="doctor-page-title">

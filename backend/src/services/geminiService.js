@@ -257,7 +257,109 @@ Thông tin người dùng:
 - Mức độ: ${input.severity || 'không rõ'}`;
 }
 
-function buildGeminiRequestBody(prompt, maxOutputTokens = 1024) {
+function stringArraySchema(maxItems) {
+  return {
+    type: 'array',
+    items: { type: 'string' },
+    maxItems
+  };
+}
+
+const BASIC_RESPONSE_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    summary: { type: 'string' },
+    suggestedSpecialties: stringArraySchema(3),
+    urgencyLevel: { type: 'string', enum: ['low', 'medium', 'high'] },
+    warningSigns: stringArraySchema(4),
+    questionsForDoctor: stringArraySchema(4),
+    disclaimer: { type: 'string' }
+  },
+  required: ['summary', 'suggestedSpecialties', 'urgencyLevel', 'warningSigns', 'questionsForDoctor']
+};
+
+const ASSISTANT_RESPONSE_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    assistantMessage: { type: 'string' },
+    summary: { type: 'string' },
+    possibleCauses: stringArraySchema(5),
+    careGuidance: stringArraySchema(6),
+    nextSteps: stringArraySchema(5),
+    recommendations: {
+      type: 'array',
+      maxItems: 4,
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          specialtyName: { type: 'string' },
+          reason: { type: 'string' },
+          confidence: { type: 'integer', minimum: 0, maximum: 100 },
+          priority: { type: 'string', enum: ['low', 'medium', 'high'] },
+          matchingSymptoms: stringArraySchema(4),
+          bookingHint: { type: 'string' }
+        },
+        required: ['specialtyName', 'reason', 'confidence', 'priority', 'matchingSymptoms', 'bookingHint']
+      }
+    },
+    followUpQuestions: {
+      type: 'array',
+      maxItems: 3,
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          id: { type: 'string' },
+          question: { type: 'string' },
+          choices: stringArraySchema(4)
+        },
+        required: ['id', 'question', 'choices']
+      }
+    },
+    quickReplies: stringArraySchema(4),
+    safety: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        urgencyLevel: { type: 'string', enum: ['low', 'medium', 'high'] },
+        warningSigns: stringArraySchema(5),
+        recommendedAction: { type: 'string' }
+      },
+      required: ['urgencyLevel', 'warningSigns', 'recommendedAction']
+    },
+    updatedContext: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        symptoms: { type: 'string' },
+        age: { type: 'string' },
+        gender: { type: 'string' },
+        duration: { type: 'string' },
+        severity: { type: 'string' },
+        notes: stringArraySchema(6)
+      },
+      required: ['symptoms', 'age', 'gender', 'duration', 'severity', 'notes']
+    },
+    disclaimer: { type: 'string' }
+  },
+  required: [
+    'assistantMessage',
+    'summary',
+    'possibleCauses',
+    'careGuidance',
+    'nextSteps',
+    'recommendations',
+    'followUpQuestions',
+    'quickReplies',
+    'safety',
+    'updatedContext'
+  ]
+};
+
+function buildGeminiRequestBody(prompt, maxOutputTokens = 1024, responseSchema = BASIC_RESPONSE_SCHEMA) {
   return {
     contents: [
       {
@@ -268,7 +370,12 @@ function buildGeminiRequestBody(prompt, maxOutputTokens = 1024) {
     generationConfig: {
       temperature: 0.2,
       maxOutputTokens,
-      responseMimeType: 'application/json'
+      responseFormat: {
+        text: {
+          mimeType: 'application/json',
+          schema: responseSchema
+        }
+      }
     }
   };
 }
@@ -300,7 +407,11 @@ async function callGeminiApi(prompt, options = {}) {
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(buildGeminiRequestBody(prompt, options.maxOutputTokens))
+      body: JSON.stringify(buildGeminiRequestBody(
+        prompt,
+        options.maxOutputTokens,
+        options.responseSchema
+      ))
     }
   );
 
@@ -315,7 +426,10 @@ async function callGeminiApi(prompt, options = {}) {
   }
 
   const payload = await response.json();
-  const text = payload?.candidates?.[0]?.content?.parts?.[0]?.text;
+  const candidate = payload?.candidates?.[0];
+  const text = candidate?.content?.parts
+    ?.map((part) => part?.text || '')
+    .join('');
   console.info('[Gemini] raw response:', String(text || '').slice(0, 700));
 
   if (!text) {
@@ -387,8 +501,52 @@ function sanitizeStringArray(value, maxItems = 6) {
     : [];
 }
 
+const CLINICAL_SIGNAL_PATTERNS = [
+  /\b(kho ngu|mat ngu|ngu khong ngon|roi loan giac ngu|thuc giac)\b/,
+  /\b(dau rang|nhuc rang|sau rang|e buot rang|viem loi|sung loi|nha khoa)\b/,
+  /\b(dau hong|viem hong|nghet mui|so mui|chay mui|dau tai|viem tai|amidan)\b/,
+  /\b(ho|sot)\b/,
+  /\b(dau bung|tieu chay|buon non|non|day hoi|da day|tieu hoa)\b/,
+  /\b(ngua|phat ban|noi me day|di ung|mun|viem da|noi man)\b/,
+  /\b(dau dau|chong mat|dau nua dau|te bi|run tay)\b/,
+  /\b(dau nguc|kho tho|hoi hop|tim dap nhanh|ngat)\b/,
+  /\b(nga xe|tai nan|chan thuong|bam tim|dau chan|dau tay|dau goi|dau vai|bong gan|gay xuong)\b/
+];
+
+function matchesAny(text, patterns) {
+  return patterns.some((pattern) => pattern.test(text));
+}
+
+function isContextualReply(text) {
+  if (!text) return false;
+  return /\b(khong co|khong sot|co sot|co dau|co kho tho|duoi 24 gio|2-3 ngay|tren 1 tuan|moi xuat hien|dang nang hon|nhe|trung binh|nang)\b/.test(text)
+    || (/^(co|khong|duoi|tren|khoang|tu)\b/.test(text) && text.length <= 70);
+}
+
+function resolveAssistantContext(input) {
+  const baseSymptoms = String(input?.symptoms || '').trim();
+  const latestMessage = String(input?.latestMessage || '').trim();
+  const normalizedLatest = normalizeText(latestMessage);
+  const latestHasClinicalSignal = matchesAny(normalizedLatest, CLINICAL_SIGNAL_PATTERNS);
+  const latestOverridesContext = Boolean(
+    latestMessage && latestHasClinicalSignal && !isContextualReply(normalizedLatest)
+  );
+  const currentSymptoms = latestOverridesContext
+    ? latestMessage
+    : baseSymptoms || latestMessage;
+
+  return {
+    currentSymptoms,
+    latestOverridesContext,
+    classificationText: latestOverridesContext
+      ? normalizedLatest
+      : normalizeText(`${baseSymptoms} ${latestMessage}`)
+  };
+}
+
 function sanitizeAssistantResult(value, input) {
   const result = value && typeof value === 'object' ? value : {};
+  const resolvedContext = resolveAssistantContext(input);
   const safety = result.safety && typeof result.safety === 'object' ? result.safety : {};
   const urgencyLevel = ['low', 'medium', 'high'].includes(safety.urgencyLevel)
     ? safety.urgencyLevel
@@ -437,7 +595,11 @@ function sanitizeAssistantResult(value, input) {
 
   const updatedContext = result.updatedContext && typeof result.updatedContext === 'object'
     ? {
-        symptoms: String(result.updatedContext.symptoms || input.symptoms || '').trim(),
+        symptoms: String(
+          resolvedContext.latestOverridesContext
+            ? resolvedContext.currentSymptoms
+            : result.updatedContext.symptoms || resolvedContext.currentSymptoms
+        ).trim(),
         age: result.updatedContext.age || input.age || '',
         gender: result.updatedContext.gender || input.gender || '',
         duration: String(result.updatedContext.duration || input.duration || '').trim(),
@@ -445,7 +607,7 @@ function sanitizeAssistantResult(value, input) {
         notes: sanitizeStringArray(result.updatedContext.notes, 8)
       }
     : {
-        symptoms: String(input.symptoms || '').trim(),
+        symptoms: resolvedContext.currentSymptoms,
         age: input.age || '',
         gender: input.gender || '',
         duration: String(input.duration || '').trim(),
@@ -491,7 +653,8 @@ function addRecommendation(list, specialtyName, reason, confidence, priority, ma
 }
 
 function buildAssistantFallbackAnalysis(input) {
-  const symptoms = normalizeText(`${input.symptoms || ''} ${input.latestMessage || ''}`);
+  const resolvedContext = resolveAssistantContext(input);
+  const symptoms = resolvedContext.classificationText;
   const recommendations = [];
   const warningSigns = [];
   const possibleCauses = [];
@@ -501,6 +664,7 @@ function buildAssistantFallbackAnalysis(input) {
   let quickReplies = null;
   let urgencyLevel = 'medium';
   let summary = 'Hệ thống đã ghi nhận mô tả triệu chứng và gợi ý hướng khám phù hợp dựa trên từ khóa.';
+  let assistantMessage = 'Mình đã ghi nhận mô tả của bạn. Hãy cho biết thêm thời gian xuất hiện và triệu chứng đi kèm để mình định hướng sát hơn.';
 
   if (/(dau nguc|kho tho|ngat|te nua nguoi|meo mieng|noi kho|co giat|sot cao|dau du doi)/.test(symptoms)) {
     urgencyLevel = 'high';
@@ -511,10 +675,62 @@ function buildAssistantFallbackAnalysis(input) {
     possibleCauses.push('Có dấu hiệu cần được đánh giá y tế khẩn cấp.');
     careGuidance.push('Không chờ đợi tại nhà nếu có khó thở, ngất, yếu liệt hoặc đau ngực dữ dội.');
     nextSteps.push('Đến cơ sở y tế hoặc cấp cứu ngay nếu triệu chứng đang nặng lên.');
+    assistantMessage = 'Mô tả của bạn có dấu hiệu cần được nhân viên y tế đánh giá sớm. Nếu triệu chứng đang xảy ra hoặc tăng nhanh, hãy đến cơ sở y tế/cấp cứu ngay.';
   }
 
-  const hasDentalSymptoms = /(dau rang|nhuc rang|sau rang|e buot rang|rang ham|\brang\b|\bloi\b|nha khoa|viem loi|chay mau chan rang|sung loi|sung mat|ap xe rang|mu rang)/.test(symptoms);
-  if (hasDentalSymptoms) {
+  const hasSleepSymptoms = /\b(kho ngu|mat ngu|ngu khong ngon|roi loan giac ngu|thuc giac nhieu|kho vao giac)\b/.test(symptoms);
+  const hasDentalSymptoms = /\b(dau rang|nhuc rang|sau rang|e buot rang|rang ham|nha khoa|viem loi|chay mau chan rang|sung loi|sung mat|ap xe rang|mu rang)\b/.test(symptoms);
+
+  if (urgencyLevel !== 'high' && hasSleepSymptoms) {
+    urgencyLevel = 'low';
+    summary = 'Khó ngủ mới xuất hiện thường có thể liên quan căng thẳng, thói quen sinh hoạt hoặc môi trường ngủ; cần theo dõi thời gian kéo dài và mức độ ảnh hưởng ban ngày.';
+    assistantMessage = 'Nếu bạn mới khó ngủ một đêm, trước mắt hãy giữ giờ ngủ và giờ thức cố định, tránh cà phê hoặc trà đặc từ buổi chiều, hạn chế rượu và màn hình sát giờ ngủ. Đừng cố nằm quá lâu khi chưa buồn ngủ; hãy thư giãn nhẹ và quay lại giường khi thấy buồn ngủ.';
+    addRecommendation(
+      recommendations,
+      'Nội tổng quát',
+      'Phù hợp để đánh giá ban đầu nếu mất ngủ kéo dài, tái diễn hoặc ảnh hưởng rõ đến sinh hoạt ban ngày.',
+      78,
+      'low',
+      ['khó ngủ'],
+      'Nên đặt lịch nếu khó ngủ kéo dài trên 2 tuần, tái diễn thường xuyên hoặc gây mệt mỏi nhiều ban ngày.'
+    );
+    addRecommendation(
+      recommendations,
+      'Tâm lý - Tâm thần',
+      'Phù hợp khi khó ngủ đi kèm căng thẳng, lo âu, tâm trạng giảm hoặc suy nghĩ lặp lại.',
+      72,
+      'low',
+      ['khó ngủ', 'căng thẳng'],
+      'Có thể tìm chuyên gia phù hợp nếu mất ngủ liên quan rõ đến lo âu hoặc thay đổi tâm trạng.'
+    );
+    possibleCauses.push(
+      'Căng thẳng, lo âu hoặc thay đổi lịch sinh hoạt.',
+      'Caffeine, rượu, nicotine, màn hình hoặc vận động quá muộn.',
+      'Môi trường ngủ ồn, sáng, nóng hoặc không thoải mái.'
+    );
+    careGuidance.push(
+      'Giữ giờ thức dậy ổn định mỗi ngày và chỉ lên giường khi buồn ngủ.',
+      'Tránh caffeine từ buổi chiều, hạn chế rượu và bữa ăn lớn sát giờ ngủ.',
+      'Giảm ánh sáng, màn hình và công việc căng thẳng trong khoảng một giờ trước khi ngủ.'
+    );
+    nextSteps.push(
+      'Theo dõi số đêm khó ngủ, tổng thời gian ngủ và mức độ buồn ngủ ban ngày trong 1-2 tuần.',
+      'Đi khám nếu tình trạng kéo dài trên 2 tuần, tái diễn nhiều hoặc ảnh hưởng công việc và sinh hoạt.'
+    );
+    followUpQuestions = [
+      {
+        id: 'sleep_duration',
+        question: 'Bạn khó ngủ từ khi nào và tình trạng này xảy ra bao nhiêu đêm mỗi tuần?',
+        choices: ['Mới một đêm', 'Dưới 2 tuần', 'Trên 2 tuần', 'Gần như mỗi đêm']
+      },
+      {
+        id: 'sleep_context',
+        question: 'Gần đây bạn có căng thẳng, dùng caffeine buổi chiều hoặc buồn ngủ nhiều ban ngày không?',
+        choices: ['Không có', 'Có căng thẳng', 'Có dùng caffeine', 'Buồn ngủ ban ngày']
+      }
+    ];
+    quickReplies = ['Mới bị một đêm', 'Tôi đang căng thẳng', 'Tình trạng kéo dài trên 2 tuần'];
+  } else if (urgencyLevel !== 'high' && hasDentalSymptoms) {
     const hasDentalWarning = /(sung mat|sung loi|sot|co mu|mu rang|ap xe|kho nuot|kho tho|dau du doi|dau tang nhanh)/.test(symptoms);
     urgencyLevel = hasDentalWarning ? 'high' : urgencyLevel;
     summary = hasDentalWarning
@@ -560,25 +776,27 @@ function buildAssistantFallbackAnalysis(input) {
     quickReplies = ['Có sưng mặt hoặc sốt', 'Đau tăng khi nhai', 'Tôi muốn đặt lịch nha khoa'];
   }
 
-  if (/(dau hong|ho|sot|nghet mui|so mui|chay mui|viem hong|amidan|tai|mui)/.test(symptoms)) {
+  const hasRespiratorySymptoms = /\b(dau hong|ho|sot|nghet mui|so mui|chay mui|viem hong|amidan|dau tai|viem tai)\b/.test(symptoms);
+  if (urgencyLevel !== 'high' && !hasSleepSymptoms && !hasDentalSymptoms && hasRespiratorySymptoms) {
     addRecommendation(recommendations, 'Tai mũi họng', 'Phù hợp với triệu chứng họng, mũi, tai hoặc ho kéo dài.', 84, urgencyLevel, ['đau họng', 'ho', 'nghẹt mũi']);
     summary = 'Các triệu chứng vùng tai mũi họng nên được thăm khám nếu kéo dài, tái phát hoặc kèm sốt.';
+    assistantMessage = 'Bạn nên nghỉ ngơi, uống đủ nước ấm và theo dõi nhiệt độ cùng diễn tiến ho, đau họng hoặc nghẹt mũi. Nếu triệu chứng kéo dài, sốt cao, khó thở hoặc nặng dần, hãy đi khám sớm.';
   }
 
   if (/(tre em|\bbe\b|\bnhi\b|con toi|be nha)/.test(symptoms)) {
     addRecommendation(recommendations, 'Nhi', 'Người bệnh là trẻ em nên ưu tiên chuyên khoa Nhi để đánh giá theo độ tuổi.', 88, urgencyLevel, ['trẻ em']);
   }
 
-  if (/(dau bung|tieu chay|non|buon non|day hoi|da day|tieu hoa)/.test(symptoms)) {
+  if (urgencyLevel !== 'high' && !hasSleepSymptoms && /\b(dau bung|tieu chay|non|buon non|day hoi|da day|tieu hoa)\b/.test(symptoms)) {
     addRecommendation(recommendations, 'Tiêu hóa', 'Phù hợp với đau bụng, nôn, tiêu chảy hoặc khó chịu dạ dày.', 86, urgencyLevel, ['đau bụng', 'tiêu chảy', 'buồn nôn']);
     summary = 'Triệu chứng tiêu hóa cần được đánh giá nếu kéo dài, mất nước, đau tăng hoặc có sốt.';
   }
 
-  if (/(ngua|phat ban|noi me day|di ung|mun|viem da|noi man)/.test(symptoms)) {
+  if (urgencyLevel !== 'high' && !hasSleepSymptoms && /\b(ngua|phat ban|noi me day|di ung|mun|viem da|noi man)\b/.test(symptoms)) {
     addRecommendation(recommendations, 'Da liễu', 'Phù hợp với ngứa, phát ban, mẩn đỏ hoặc các vấn đề về da.', 84, urgencyLevel, ['ngứa', 'phát ban']);
   }
 
-  if (/(nga xe|tai nan|chan thuong|sung|bam tim|dau chan|dau tay|dau goi|dau vai|bong gan|gay xuong)/.test(symptoms)) {
+  if (urgencyLevel !== 'high' && !hasSleepSymptoms && /\b(nga xe|tai nan|chan thuong|sung|bam tim|dau chan|dau tay|dau goi|dau vai|bong gan|gay xuong)\b/.test(symptoms)) {
     addRecommendation(recommendations, 'Cơ xương khớp', 'Phù hợp khi có đau, sưng hoặc hạn chế vận động sau va chạm.', 82, 'medium', ['đau', 'sưng']);
     warningSigns.push('Nếu biến dạng chi, không cử động được, tê bì hoặc đau tăng nhanh, nên đi khám ngay.');
   }
@@ -588,6 +806,7 @@ function buildAssistantFallbackAnalysis(input) {
     possibleCauses.push('Thông tin hiện chưa đủ đặc hiệu để xác định nhóm chuyên khoa hẹp.');
     careGuidance.push('Theo dõi diễn tiến, mức độ ảnh hưởng sinh hoạt và các triệu chứng đi kèm.');
     nextSteps.push('Có thể khám Nội tổng quát để được đánh giá ban đầu và chuyển chuyên khoa nếu cần.');
+    assistantMessage = 'Mô tả hiện chưa đủ để chọn một chuyên khoa hẹp. Bạn hãy cho biết triệu chứng chính, vị trí, thời điểm bắt đầu và mức độ ảnh hưởng để mình định hướng chính xác hơn.';
   }
 
   if (normalizeText(input.severity).includes('high')) {
@@ -595,7 +814,7 @@ function buildAssistantFallbackAnalysis(input) {
   }
 
   return sanitizeAssistantResult({
-    assistantMessage: 'Mình đã phân tích mô tả của bạn và gợi ý các chuyên khoa phù hợp nhất. Bạn có thể trả lời thêm vài câu hỏi để kết quả chính xác hơn.',
+    assistantMessage,
     summary,
     possibleCauses,
     careGuidance,
@@ -622,7 +841,7 @@ function buildAssistantFallbackAnalysis(input) {
         : 'Bạn có thể đặt lịch khám phù hợp và theo dõi thêm nếu triệu chứng thay đổi.'
     },
     updatedContext: {
-      symptoms: String(input.symptoms || '').trim(),
+      symptoms: resolvedContext.currentSymptoms,
       age: input.age || '',
       gender: input.gender || '',
       duration: input.duration || '',
@@ -647,7 +866,7 @@ function buildAssistantPrompt(input) {
 
 Mục tiêu:
 - Hỗ trợ người dùng mô tả triệu chứng qua nhiều lượt hỏi đáp.
-- Tra loi nhu cau nguoi dung truoc: giai thich huong xu tri an toan, dau hieu can chu y va buoc tiep theo.
+- Trả lời trực tiếp nhu cầu trong tin nhắn mới nhất trước: giải thích hướng xử trí an toàn, dấu hiệu cần chú ý và bước tiếp theo.
 - Gợi ý nhiều chuyên khoa phù hợp hơn, có lý do và mức độ phù hợp.
 - Hỏi tiếp tối đa 3 câu nếu thiếu thông tin quan trọng.
 - Chỉ định hướng đặt lịch khám, không chẩn đoán chắc chắn, không kê thuốc.
@@ -660,8 +879,11 @@ Quy tắc an toàn:
 - Không làm người dùng trì hoãn cấp cứu khi có dấu hiệu nặng.
 - Trả về JSON hợp lệ duy nhất, không markdown, không code block.
 - Mỗi chuỗi ngắn gọn, rõ ràng, tiếng Việt tự nhiên.
-- Khong goi y chuyen khoa khong lien quan. Voi dau rang/rang/loi/nha khoa, uu tien Rang ham mat hoac Nha khoa; khong goi y Co xuong khop tru khi co chan thuong ham/xuong ro rang.
-- Neu he thong chua co chuyen khoa phu hop, van tra loi huong xu tri va ghi bookingHint rang hien chua ho tro dat lich chuyen khoa do.
+- Tin nhắn mới nhất có mức ưu tiên cao nhất. Nếu người dùng nêu triệu chứng hoặc chủ đề mới, phải cập nhật updatedContext.symptoms và không tái sử dụng nhận định/chuyên khoa của chủ đề cũ.
+- Nếu tin nhắn mới chỉ là câu trả lời ngắn cho câu hỏi trước (ví dụ: "2-3 ngày", "không sốt"), hãy kết hợp với triệu chứng đang có trong ngữ cảnh.
+- Không gợi ý chuyên khoa không liên quan. Với đau răng/răng/lợi/nha khoa, ưu tiên Răng hàm mặt hoặc Nha khoa; không gợi ý Cơ xương khớp trừ khi có chấn thương hàm/xương rõ ràng.
+- Với khó ngủ hoặc mất ngủ, phải trả lời hướng vệ sinh giấc ngủ phù hợp; không suy diễn thành ho hoặc bệnh Tai mũi họng nếu không có triệu chứng hô hấp rõ ràng.
+- Nếu hệ thống chưa có chuyên khoa phù hợp, vẫn trả lời hướng xử trí và ghi bookingHint rằng hiện chưa hỗ trợ đặt lịch chuyên khoa đó.
 
 Schema JSON bắt buộc:
 {
@@ -755,7 +977,10 @@ export async function analyzeSymptomAssistant(input) {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       console.info(`[Gemini Assistant] attempt ${attempt}/${MAX_RETRIES}`);
-      const parsed = await callGeminiApi(prompt, { maxOutputTokens: 2048 });
+      const parsed = await callGeminiApi(prompt, {
+        maxOutputTokens: 3072,
+        responseSchema: ASSISTANT_RESPONSE_SCHEMA
+      });
       return {
         ...sanitizeAssistantResult(parsed, safeInput),
         aiAvailable: true,
@@ -807,7 +1032,7 @@ export async function analyzeSymptoms(input) {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       console.info(`[Gemini] attempt ${attempt}/${MAX_RETRIES}`);
-      const parsed = await callGeminiApi(prompt);
+      const parsed = await callGeminiApi(prompt, { responseSchema: BASIC_RESPONSE_SCHEMA });
       return {
         ...sanitizeResult(parsed),
         aiAvailable: true,
@@ -841,4 +1066,11 @@ export async function analyzeSymptoms(input) {
   );
 }
 
-export { GEMINI_MODEL, MEDICAL_DISCLAIMER, hasUsableGeminiKey, keyPrefix };
+export {
+  GEMINI_MODEL,
+  MEDICAL_DISCLAIMER,
+  buildAssistantFallbackAnalysis,
+  hasUsableGeminiKey,
+  keyPrefix,
+  resolveAssistantContext
+};

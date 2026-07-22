@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client.js';
 import DoctorCard from '../components/DoctorCard.jsx';
@@ -12,8 +12,6 @@ import {
 } from '../data/specialtyContent.js';
 
 const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-const clinicHeroTransitionMs = 760;
-
 function formatDayOfWeek(dayOfWeek) {
   const mapping = {
     monday: 'Thứ 2',
@@ -78,25 +76,11 @@ export default function ClinicDetail() {
   const [doctors, setDoctors] = useState([]);
   const [selectedSpecialtyId, setSelectedSpecialtyId] = useState('all');
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [imageTrackIndex, setImageTrackIndex] = useState(1);
-  const [isImageJumping, setIsImageJumping] = useState(false);
-  const [isImageAnimating, setIsImageAnimating] = useState(false);
   const [error, setError] = useState('');
-  const imageLockedRef = useRef(false);
-  const imageResetTimerRef = useRef(null);
 
   const workingHours = useMemo(() => normalizeWorkingHours(clinic?.workingHours), [clinic]);
   const openDays = useMemo(() => workingHours.filter((item) => !item.isClosed), [workingHours]);
   const clinicImages = useMemo(() => normalizeClinicImages(clinic), [clinic]);
-  const clinicHeroSlides = useMemo(() => {
-    if (clinicImages.length <= 1) return clinicImages;
-
-    return [
-      clinicImages[clinicImages.length - 1],
-      ...clinicImages,
-      clinicImages[0]
-    ];
-  }, [clinicImages]);
   const clinicSpaceImages = useMemo(() => {
     const images = Array.isArray(clinic?.galleryImages)
       ? Array.from(new Set(clinic.galleryImages.map((item) => String(item || '').trim()).filter(Boolean)))
@@ -138,85 +122,14 @@ export default function ClinicDetail() {
     document.getElementById('doctors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  const unlockImageTrack = useCallback(() => {
-    imageLockedRef.current = false;
-    setIsImageAnimating(false);
-  }, []);
-
-  const completeImageTransition = useCallback((nextTrackIndex) => {
+  function showPreviousImage() {
     if (clinicImages.length <= 1) return;
-
-    if (imageResetTimerRef.current) {
-      window.clearTimeout(imageResetTimerRef.current);
-      imageResetTimerRef.current = null;
-    }
-
-    let normalizedTrackIndex = nextTrackIndex;
-    let normalizedImageIndex = nextTrackIndex - 1;
-
-    if (nextTrackIndex === 0) {
-      normalizedTrackIndex = clinicImages.length;
-      normalizedImageIndex = clinicImages.length - 1;
-    } else if (nextTrackIndex === clinicImages.length + 1) {
-      normalizedTrackIndex = 1;
-      normalizedImageIndex = 0;
-    }
-
-    if (normalizedTrackIndex === nextTrackIndex) {
-      unlockImageTrack();
-      return;
-    }
-
-    setIsImageJumping(true);
-    setImageTrackIndex(normalizedTrackIndex);
-    setActiveImageIndex(normalizedImageIndex);
-
-    imageResetTimerRef.current = window.setTimeout(() => {
-      setIsImageJumping(false);
-      imageResetTimerRef.current = null;
-      unlockImageTrack();
-    }, 32);
-  }, [clinicImages.length, unlockImageTrack]);
-
-  const scheduleImageTrackFallback = useCallback((nextTrackIndex) => {
-    if (imageResetTimerRef.current) {
-      window.clearTimeout(imageResetTimerRef.current);
-    }
-
-    imageResetTimerRef.current = window.setTimeout(() => {
-      completeImageTransition(nextTrackIndex);
-    }, clinicHeroTransitionMs + 60);
-  }, [completeImageTransition]);
-
-  const showPreviousImage = useCallback(() => {
-    if (imageLockedRef.current || clinicImages.length <= 1) return;
-
-    imageLockedRef.current = true;
-    setIsImageAnimating(true);
     setActiveImageIndex((current) => (current === 0 ? clinicImages.length - 1 : current - 1));
-    setImageTrackIndex((current) => {
-      const nextTrackIndex = current - 1;
-      scheduleImageTrackFallback(nextTrackIndex);
-      return nextTrackIndex;
-    });
-  }, [clinicImages.length, scheduleImageTrackFallback]);
+  }
 
-  const showNextImage = useCallback(() => {
-    if (imageLockedRef.current || clinicImages.length <= 1) return;
-
-    imageLockedRef.current = true;
-    setIsImageAnimating(true);
+  function showNextImage() {
+    if (clinicImages.length <= 1) return;
     setActiveImageIndex((current) => (current + 1) % clinicImages.length);
-    setImageTrackIndex((current) => {
-      const nextTrackIndex = current + 1;
-      scheduleImageTrackFallback(nextTrackIndex);
-      return nextTrackIndex;
-    });
-  }, [clinicImages.length, scheduleImageTrackFallback]);
-
-  function handleImageTransitionEnd(event) {
-    if (!event.target.classList.contains('clinic-hero-image-track')) return;
-    completeImageTransition(imageTrackIndex);
   }
 
   useEffect(() => {
@@ -235,32 +148,13 @@ export default function ClinicDetail() {
 
   useEffect(() => {
     setActiveImageIndex(0);
-    setImageTrackIndex(clinicImages.length > 1 ? 1 : 0);
-    setIsImageAnimating(false);
-    setIsImageJumping(false);
-    imageLockedRef.current = false;
   }, [clinicId]);
 
   useEffect(() => {
     if (activeImageIndex >= clinicImages.length) {
       setActiveImageIndex(0);
-      setImageTrackIndex(clinicImages.length > 1 ? 1 : 0);
     }
   }, [activeImageIndex, clinicImages.length]);
-
-  useEffect(() => {
-    setActiveImageIndex(0);
-    setImageTrackIndex(clinicImages.length > 1 ? 1 : 0);
-    setIsImageAnimating(false);
-    setIsImageJumping(false);
-    imageLockedRef.current = false;
-  }, [clinicImages.length]);
-
-  useEffect(() => () => {
-    if (imageResetTimerRef.current) {
-      window.clearTimeout(imageResetTimerRef.current);
-    }
-  }, []);
 
   if (error) {
     return (
@@ -282,20 +176,15 @@ export default function ClinicDetail() {
         <div className="clinic-hero-media">
           <div
             className="clinic-hero-image-track"
-            data-animating={isImageAnimating}
-            data-jumping={isImageJumping}
-            style={{
-              '--slide-count': clinicHeroSlides.length,
-              '--active-slide': imageTrackIndex
-            }}
-            onTransitionEnd={handleImageTransitionEnd}
+            aria-live="polite"
           >
-            {clinicHeroSlides.map((image, index) => (
+            {clinicImages.map((image, index) => (
               <img
-                className="clinic-hero-image"
+                className={`clinic-hero-image ${index === activeImageIndex ? 'active' : ''}`}
                 src={resolveMediaUrl(image, '/placeholder-clinic.svg')}
                 alt={clinic.name}
-                key={`${image}-${index}`}
+                aria-hidden={index === activeImageIndex ? undefined : 'true'}
+                key={image}
                 onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')}
               />
             ))}

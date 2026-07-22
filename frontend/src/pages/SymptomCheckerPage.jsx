@@ -342,7 +342,7 @@ export default function SymptomCheckerPage() {
         clinicName: specialty?.clinicName || '',
         summary: assistantData?.summary || '',
         reason: item?.reason || '',
-        symptoms: form.symptoms || assistantData?.updatedContext?.symptoms || '',
+        symptoms: assistantData?.updatedContext?.symptoms || form.symptoms || '',
         urgencyLevel: assistantData?.safety?.urgencyLevel || ''
       }));
     } catch {
@@ -355,7 +355,7 @@ export default function SymptomCheckerPage() {
   function buildRequestBody(nextMessages, latestMessage = '') {
     const context = assistantData?.updatedContext || {};
     return {
-      symptoms: form.symptoms.trim() || context.symptoms || latestMessage || undefined,
+      symptoms: context.symptoms || form.symptoms.trim() || latestMessage || undefined,
       latestMessage: latestMessage || undefined,
       age: form.age || context.age || undefined,
       gender: form.gender || context.gender || undefined,
