@@ -14,7 +14,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { connectSocket, getSocket } from '../services/socket.js';
 import { getToken } from '../utils/auth.js';
-import { downloadPdf } from '../utils/downloadFile.js';
+import { downloadMedicalRecordPdf } from '../utils/medicalRecordPdf.js';
 import {
   displayName,
   examDate,
@@ -110,10 +110,12 @@ export default function MedicalRecordsPage() {
     }
 
     socket.on('medical-record:created', refreshMedicalRecords);
+    socket.on('medical-record:updated', refreshMedicalRecords);
     socket.on('follow-up:updated', refreshMedicalRecords);
     socket.on('appointment:updated', refreshMedicalRecords);
     return () => {
       socket.off('medical-record:created', refreshMedicalRecords);
+      socket.off('medical-record:updated', refreshMedicalRecords);
       socket.off('follow-up:updated', refreshMedicalRecords);
       socket.off('appointment:updated', refreshMedicalRecords);
     };
@@ -184,7 +186,7 @@ export default function MedicalRecordsPage() {
 
   async function handleDownloadPdf(record) {
     try {
-      await downloadPdf(`/medical-records/${record._id}/pdf`);
+      await downloadMedicalRecordPdf(record._id);
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF');
     }
@@ -204,66 +206,68 @@ export default function MedicalRecordsPage() {
   }
 
   return (
-    <div className="public-page patient-health-record-page">
-      {initialLoading ? (
-        <MedicalRecordsLoadingState />
-      ) : (
-        <>
-          <HealthRecordPageHeader patientName={user?.name} latestDate={latestExamDate(records)} />
+    <main className="section-band patient-health-record-page pa-page">
+      <div className="container pa-container phr-container">
+        {initialLoading ? (
+          <MedicalRecordsLoadingState />
+        ) : (
+          <>
+            <HealthRecordPageHeader patientName={user?.name} latestDate={latestExamDate(records)} />
 
-          <HealthSummaryBar metrics={metrics} />
+            <HealthSummaryBar metrics={metrics} />
 
-          {!loading && !showLoadError && (
-            <FollowUpAlert
-              records={followUpRecords}
-              onBook={(record) => navigate(followUpBookingUrl(record))}
-              onOpenRecord={setSelected}
-              onViewAll={showFollowUps}
-            />
-          )}
-        </>
-      )}
+            {!loading && !showLoadError && (
+              <FollowUpAlert
+                records={followUpRecords}
+                onBook={(record) => navigate(followUpBookingUrl(record))}
+                onOpenRecord={setSelected}
+                onViewAll={showFollowUps}
+              />
+            )}
+          </>
+        )}
 
-      {!initialLoading && (
-        <section className="phr-workspace" ref={recordsTopRef}>
-          {showLoadError ? (
-            <MedicalRecordsErrorState onRetry={loadRecords} />
-          ) : (
-            <MedicalRecordFilters
-              activeTab={activeTab}
-              filterActive={filterActive}
-              onReset={resetFilters}
-              onSearchChange={setSearch}
-              onSortChange={setSortOrder}
-              onSpecialtyChange={setSpecialty}
-              onTabChange={setActiveTab}
-              onYearChange={setYear}
-              search={search}
-              sortOrder={sortOrder}
-              specialties={specialties}
-              specialty={specialty}
-              tabCounts={tabCounts}
-              tabs={FILTER_TABS}
-              year={year}
-              years={years}
-            />
-          )}
+        {!initialLoading && (
+          <section className="phr-workspace" ref={recordsTopRef}>
+            {showLoadError ? (
+              <MedicalRecordsErrorState onRetry={loadRecords} />
+            ) : (
+              <MedicalRecordFilters
+                activeTab={activeTab}
+                filterActive={filterActive}
+                onReset={resetFilters}
+                onSearchChange={setSearch}
+                onSortChange={setSortOrder}
+                onSpecialtyChange={setSpecialty}
+                onTabChange={setActiveTab}
+                onYearChange={setYear}
+                search={search}
+                sortOrder={sortOrder}
+                specialties={specialties}
+                specialty={specialty}
+                tabCounts={tabCounts}
+                tabs={FILTER_TABS}
+                year={year}
+                years={years}
+              />
+            )}
 
-          {showLoadError ? null : loading && !records.length ? (
-            <MedicalRecordsLoadingState />
-          ) : filteredRecords.length ? (
-            <MedicalRecordGroup records={filteredRecords} onOpen={setSelected} onDownload={handleDownloadPdf} />
-          ) : (
-            <RecordEmptyState
-              filtered={filterActive || activeTab !== 'all'}
-              onBook={() => navigate('/booking')}
-              onReset={resetFilters}
-            />
-          )}
-        </section>
-      )}
+            {showLoadError ? null : loading && !records.length ? (
+              <MedicalRecordsLoadingState />
+            ) : filteredRecords.length ? (
+              <MedicalRecordGroup records={filteredRecords} onOpen={setSelected} onDownload={handleDownloadPdf} />
+            ) : (
+              <RecordEmptyState
+                filtered={filterActive || activeTab !== 'all'}
+                onBook={() => navigate('/booking')}
+                onReset={resetFilters}
+              />
+            )}
+          </section>
+        )}
 
-      <MedicalRecordDetailModal record={selected} onClose={() => setSelected(null)} />
-    </div>
+        <MedicalRecordDetailModal record={selected} onClose={() => setSelected(null)} />
+      </div>
+    </main>
   );
 }

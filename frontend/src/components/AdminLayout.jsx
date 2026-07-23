@@ -3,13 +3,15 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 
 const links = [
   { to: '/admin', label: 'Tổng quan', end: true },
+  { to: '/admin/appointments', label: 'Lịch hẹn' },
+  { to: '/admin/queue', label: 'Hàng đợi khám' },
+  { to: '/admin/schedules', label: 'Lịch làm việc' },
+  { to: '/admin/doctors', label: 'Bác sĩ' },
   { to: '/admin/clinics', label: 'Cơ sở' },
   { to: '/admin/specialties', label: 'Chuyên khoa' },
-  { to: '/admin/doctors', label: 'Bác sĩ' },
-  { to: '/admin/schedules', label: 'Lịch làm việc' },
-  { to: '/admin/queue', label: 'Hàng đợi khám' },
-  { to: '/admin/appointments', label: 'Lịch hẹn' },
-  { to: '/admin/articles', label: 'Cẩm nang' }
+  { to: '/admin/service-packages', label: 'Gói khám' },
+  { to: '/admin/articles', label: 'Cẩm nang' },
+  { to: '/admin/audit-logs', label: 'Nhật ký hệ thống' }
 ];
 
 export default function AdminLayout({ children }) {
@@ -31,8 +33,6 @@ export default function AdminLayout({ children }) {
             {item.label}
           </NavLink>
         ))}
-        <NavLink to="/admin/service-packages">Gói khám</NavLink>
-        <NavLink to="/admin/audit-logs">Nhật ký hệ thống</NavLink>
       </aside>
       <section className="admin-main" ref={mainRef}>
         <div className="admin-topbar">

@@ -1,11 +1,22 @@
 import { Link } from 'react-router-dom';
-import { FaCalendarAlt, FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from './icons/FaIcons.jsx';
+import {
+  FaArrowRight,
+  FaCalendarAlt,
+  FaCalendarCheck,
+  FaCheckCircle,
+  FaCommentMedical,
+  FaEnvelope,
+  FaHospital,
+  FaPhoneAlt,
+  FaStethoscope,
+  FaUser
+} from './icons/FaIcons.jsx';
 
-const services = [
+const serviceLinks = [
   { label: 'Đặt lịch khám online', to: '/booking' },
   { label: 'Tư vấn triệu chứng AI', to: '/symptom-checker' },
   { label: 'Gói khám sức khỏe', to: '/packages' },
-  { label: 'Tìm kiếm bác sĩ', to: '/doctors' },
+  { label: 'Danh sách bác sĩ', to: '/doctors' },
   { label: 'Chuyên khoa y tế', to: '/specialties' }
 ];
 
@@ -17,100 +28,117 @@ const patientLinks = [
 ];
 
 const trustFeatures = [
-  { icon: '🛡️', title: 'Bảo mật dữ liệu Y tế' },
-  { icon: '⚡', title: 'Xác nhận tức thì 24/7' },
-  { icon: '🏥', title: 'Cơ sở y tế đạt chuẩn' },
-  { icon: '🤖', title: 'Trợ lý AI thông minh' }
+  {
+    icon: FaCheckCircle,
+    title: 'Bảo mật dữ liệu y tế',
+    text: 'Thông tin cá nhân được xử lý theo phạm vi chăm sóc sức khỏe.'
+  },
+  {
+    icon: FaCalendarCheck,
+    title: 'Quy trình đặt lịch rõ ràng',
+    text: 'Theo dõi lịch hẹn, trạng thái xác nhận và yêu cầu đổi lịch.'
+  },
+  {
+    icon: FaHospital,
+    title: 'Kết nối cơ sở uy tín',
+    text: 'Tìm cơ sở, chuyên khoa và bác sĩ phù hợp nhu cầu khám.'
+  }
 ];
 
 export default function Footer() {
   return (
-    <footer className="compact-footer">
-      <div className="compact-footer-container">
-        {/* Main 4-Column Grid */}
-        <div className="compact-footer-grid">
-          {/* Col 1: Brand & Contact */}
-          <div className="compact-footer-col compact-col-brand">
-            <Link className="compact-footer-logo" to="/">
-              <span className="brand-mark">B</span>
+    <footer className="bc-footer">
+      <div className="bc-footer-shell">
+        <section className="bc-footer-cta" aria-label="Đặt lịch khám nhanh">
+          <div>
+            <span className="bc-footer-eyebrow">BookingCare Mini</span>
+            <h2>Chủ động đặt lịch và quản lý hành trình khám của bạn</h2>
+            <p>
+              Tìm cơ sở, chuyên khoa, bác sĩ và gói khám phù hợp trong một hệ thống đặt lịch thống nhất.
+            </p>
+          </div>
+          <div className="bc-footer-cta-actions">
+            <Link className="bc-footer-primary-btn" to="/booking">
+              <FaCalendarAlt size={14} />
+              Đặt lịch khám
+            </Link>
+            <Link className="bc-footer-secondary-btn" to="/symptom-checker">
+              <FaCommentMedical size={14} />
+              Hỏi trợ lý AI
+            </Link>
+          </div>
+        </section>
+
+        <div className="bc-footer-main">
+          <section className="bc-footer-brand" aria-label="Thông tin BookingCare Mini">
+            <Link className="bc-footer-logo" to="/">
+              <span className="brand-mark brand-logo">
+                <img src="/site-logo.webp" alt="" />
+              </span>
               <span className="brand-text">
-                BookingCare Mini
+                <strong>BookingCare Mini</strong>
                 <small>Clinic Appointment System</small>
               </span>
             </Link>
-
-            <p className="compact-brand-desc">
-              Hệ thống y tế số thông minh kết nối người bệnh với các cơ sở y tế và bác sĩ uy tín trên toàn quốc.
+            <p>
+              Hệ thống đặt lịch khám thông minh, giúp người bệnh tiếp cận dịch vụ y tế phù hợp và quản lý lịch hẹn dễ dàng.
             </p>
-
-            <div className="compact-contact-row">
-              <a className="compact-hotline-chip" href="tel:19000000">
-                <FaPhoneAlt size={13} />
-                <span>Hotline: <strong>1900 0000</strong></span>
+            <div className="bc-footer-contact">
+              <a href="tel:19000000">
+                <FaPhoneAlt size={14} />
+                <span>1900 0000</span>
               </a>
-              <div className="compact-contact-chip">
-                <FaEnvelope size={13} />
+              <a href="mailto:support@bookingcare-mini.vn">
+                <FaEnvelope size={14} />
                 <span>support@bookingcare-mini.vn</span>
-              </div>
+              </a>
             </div>
-          </div>
+          </section>
 
-          {/* Col 2: Services */}
-          <div className="compact-footer-col">
-            <h4 className="compact-col-heading">DỊCH VỤ Y TẾ</h4>
-            <ul className="compact-menu-list">
-              {services.map((item) => (
-                <li key={item.label}>
-                  <Link to={item.to}>{item.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Col 3: Patient Links & CTA */}
-          <div className="compact-footer-col">
-            <h4 className="compact-col-heading">DÀNH CHO BỆNH NHÂN</h4>
-            <ul className="compact-menu-list">
-              {patientLinks.map((item) => (
-                <li key={item.to}>
-                  <Link to={item.to}>{item.label}</Link>
-                </li>
-              ))}
-            </ul>
-
-            <div className="compact-cta-box">
-              <Link className="btn btn-primary compact-booking-btn" to="/booking">
-                <FaCalendarAlt size={13} />
-                <span>Đặt lịch khám ngay</span>
+          <nav className="bc-footer-col" aria-label="Dịch vụ y tế">
+            <h3>Dịch vụ y tế</h3>
+            {serviceLinks.map((item) => (
+              <Link key={item.to} to={item.to}>
+                <FaArrowRight size={11} />
+                {item.label}
               </Link>
-            </div>
-          </div>
+            ))}
+          </nav>
 
-          {/* Col 4: Trust Commitments */}
-          <div className="compact-footer-col">
-            <h4 className="compact-col-heading">CAM KẾT CHẤT LƯỢNG</h4>
-            <div className="compact-trust-list">
-              {trustFeatures.map((item) => (
-                <div className="compact-trust-item" key={item.title}>
-                  <span className="compact-trust-icon">{item.icon}</span>
-                  <span className="compact-trust-title">{item.title}</span>
-                </div>
+          <nav className="bc-footer-col" aria-label="Dành cho bệnh nhân">
+            <h3>Dành cho bệnh nhân</h3>
+            {patientLinks.map((item) => (
+              <Link key={item.to} to={item.to}>
+                <FaArrowRight size={11} />
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <section className="bc-footer-trust" aria-label="Cam kết chất lượng">
+            <h3>Cam kết chất lượng</h3>
+            <div className="bc-footer-trust-list">
+              {trustFeatures.map(({ icon: Icon, title, text }) => (
+                <article key={title}>
+                  <span>
+                    <Icon size={15} />
+                  </span>
+                  <div>
+                    <strong>{title}</strong>
+                    <p>{text}</p>
+                  </div>
+                </article>
               ))}
             </div>
-          </div>
+          </section>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="compact-footer-bottom">
-          <div className="compact-copyright">
-            © 2026 BookingCare Mini. Tất cả quyền được bảo lưu.
-          </div>
-          <div className="compact-legal-links">
-            <span>Chính sách bảo mật</span>
-            <span className="compact-dot">•</span>
-            <span>Điều khoản sử dụng</span>
-            <span className="compact-dot">•</span>
-            <span>Quy chế hoạt động</span>
+        <div className="bc-footer-bottom">
+          <span>© 2026 BookingCare Mini. Tất cả quyền được bảo lưu.</span>
+          <div>
+            <Link to="/articles">Cẩm nang</Link>
+            <Link to="/clinics">Cơ sở</Link>
+            <Link to="/doctors">Tìm bác sĩ</Link>
           </div>
         </div>
       </div>

@@ -82,7 +82,7 @@ function getNotificationIcon(notification) {
   if (notification.type === 'consultation_called') return '📣';
   if (notification.type === 'consultation_completed') return '✅';
   if (notification.type === 'appointment_no_show') return '⚠';
-  if (notification.type === 'medical_record_created') return '📋';
+  if (notification.type === 'medical_record_created' || notification.type === 'medical_record_updated') return '📋';
   if (notification.type === 'cancel_request' || notification.type === 'cancel_request_approved') return '⚠';
   if (notification.type === 'reschedule_request') return '↻';
   return '📅';
@@ -116,6 +116,10 @@ function notifyPatientToast(notification, toast) {
   }
   if (notification.type === 'medical_record_created') {
     toast.success('Hồ sơ khám bệnh của bạn đã được cập nhật.');
+    return;
+  }
+  if (notification.type === 'medical_record_updated') {
+    toast.info('Hồ sơ khám bệnh của bạn vừa được bác sĩ cập nhật.');
     return;
   }
   if (notification.type === 'appointment_no_show') {

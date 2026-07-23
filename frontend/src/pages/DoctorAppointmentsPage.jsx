@@ -9,6 +9,7 @@ import { useToast } from '../context/ToastContext.jsx';
 import { connectSocket, getSocket } from '../services/socket.js';
 import { getToken } from '../utils/auth.js';
 import { downloadPdf } from '../utils/downloadFile.js';
+import { downloadMedicalRecordPdf } from '../utils/medicalRecordPdf.js';
 import { getStatusBadge } from '../utils/status.js';
 import { AdminEmptyState, AdminPagination, ConfirmDialog, getName, paginate } from './admin/adminUtils.jsx';
 
@@ -184,8 +185,13 @@ function monthRange() {
   };
 }
 
-function isInDateRange(appointment, rangeKey, dateFilter) {
+function isInDateRange(appointment, rangeKey, dateFilter, customFromDate = '', customToDate = '') {
   if (dateFilter) return appointment.date === dateFilter;
+  if (rangeKey === 'customRange') {
+    if (customFromDate && appointment.date < customFromDate) return false;
+    if (customToDate && appointment.date > customToDate) return false;
+    return true;
+  }
   if (rangeKey === 'all') return true;
 
   const today = todayString();
@@ -345,10 +351,14 @@ export default function DoctorAppointmentsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryOpenedRef = useRef('');
   const actionLockRef = useRef('');
+  const initialFromDate = searchParams.get('fromDate') || '';
+  const initialToDate = searchParams.get('toDate') || '';
   const [appointments, setAppointments] = useState([]);
   const [selected, setSelected] = useState(null);
   const [dateFilter, setDateFilter] = useState('');
-  const [dateRange, setDateRange] = useState('all');
+  const [dateRange, setDateRange] = useState(initialFromDate || initialToDate ? 'customRange' : 'all');
+  const [customFromDate, setCustomFromDate] = useState(initialFromDate);
+  const [customToDate, setCustomToDate] = useState(initialToDate);
   const [activeStatusTab, setActiveStatusTab] = useState(() => {
     const status = new URLSearchParams(window.location.search).get('status');
     return statusTabs.some((tab) => tab.key === status) ? status : 'all';
@@ -364,8 +374,8 @@ export default function DoctorAppointmentsPage() {
   const [downloadingPdfKey, setDownloadingPdfKey] = useState('');
 
   const dateFilteredAppointments = useMemo(
-    () => appointments.filter((item) => isInDateRange(item, dateRange, dateFilter)),
-    [appointments, dateFilter, dateRange]
+    () => appointments.filter((item) => isInDateRange(item, dateRange, dateFilter, customFromDate, customToDate)),
+    [appointments, dateFilter, dateRange, customFromDate, customToDate]
   );
 
   const tabCounts = useMemo(() => {
@@ -411,7 +421,7 @@ export default function DoctorAppointmentsPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeStatusTab, dateFilter, dateRange]);
+  }, [activeStatusTab, dateFilter, dateRange, customFromDate, customToDate]);
 
   useEffect(() => {
     const status = searchParams.get('status');
@@ -421,6 +431,16 @@ export default function DoctorAppointmentsPage() {
       setActiveStatusTab('all');
     }
   }, [activeStatusTab, searchParams]);
+
+  useEffect(() => {
+    const fromDate = searchParams.get('fromDate') || '';
+    const toDate = searchParams.get('toDate') || '';
+    if (!fromDate && !toDate) return;
+    setCustomFromDate(fromDate);
+    setCustomToDate(toDate);
+    setDateFilter('');
+    setDateRange('customRange');
+  }, [searchParams]);
 
   async function loadAppointments({ preserveSelectedId = selected?._id } = {}) {
     if (!user?.doctorId) return [];
@@ -635,7 +655,7 @@ export default function DoctorAppointmentsPage() {
         await downloadPdf(`/appointments/${appointment._id}/queue-ticket/pdf`);
       } else if (type === 'record') {
         const payload = await api(`/appointments/${appointment._id}/medical-record`);
-        await downloadPdf(`/medical-records/${payload.data._id}/pdf`);
+        await downloadMedicalRecordPdf(payload.data._id);
       }
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF');
@@ -825,6 +845,13 @@ export default function DoctorAppointmentsPage() {
   function applyQuickDateFilter(key) {
     setDateRange(key);
     setDateFilter('');
+    setCustomFromDate('');
+    setCustomToDate('');
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('fromDate');
+    nextParams.delete('toDate');
+    nextParams.delete('appointmentId');
+    setSearchParams(nextParams);
   }
 
   return (
@@ -896,6 +923,9 @@ export default function DoctorAppointmentsPage() {
               <p>Chọn nhanh khoảng thời gian cần theo dõi.</p>
             </div>
             {dateFilter && <span className="doctor-filter-active-date">Ngày chọn: {dateFilter}</span>}
+            {!dateFilter && dateRange === 'customRange' && (
+              <span className="doctor-filter-active-date">Khoảng: {customFromDate || '...'} - {customToDate || '...'}</span>
+            )}
           </div>
           <div className="doctor-filter-card-body">
             <div className="doctor-quick-filter-group">
@@ -910,16 +940,23 @@ export default function DoctorAppointmentsPage() {
                 </button>
               ))}
             </div>
-            {dateFilter && (
+            {(dateFilter || dateRange === 'customRange') && (
               <button
                 className="doctor-clear-filter"
                 type="button"
                 onClick={() => {
                   setDateFilter('');
+                  setCustomFromDate('');
+                  setCustomToDate('');
                   setDateRange('all');
+                  const nextParams = new URLSearchParams(searchParams);
+                  nextParams.delete('fromDate');
+                  nextParams.delete('toDate');
+                  nextParams.delete('appointmentId');
+                  setSearchParams(nextParams);
                 }}
               >
-                Xóa ngày lọc
+                Xóa lọc thời gian
               </button>
             )}
           </div>
@@ -961,6 +998,13 @@ export default function DoctorAppointmentsPage() {
             onChange={(event) => {
               setDateFilter(event.target.value);
               setDateRange('custom');
+              setCustomFromDate('');
+              setCustomToDate('');
+              const nextParams = new URLSearchParams(searchParams);
+              nextParams.delete('fromDate');
+              nextParams.delete('toDate');
+              nextParams.delete('appointmentId');
+              setSearchParams(nextParams);
             }}
           />
         </div>

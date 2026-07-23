@@ -1,4 +1,7 @@
-import { axiosClient } from '../api/client.js';
+import { apiForm, axiosClient } from '../api/client.js';
+import { getUser } from './auth.js';
+import { convertImageFileToPng } from './imageConversion.js';
+import { resolveMediaUrl } from './media.js';
 
 let activePrintFrame = null;
 let preparingPrint = false;
@@ -25,6 +28,65 @@ function assertPdfResponse(response) {
   }
 }
 
+function isPdfReadyImage(attachment) {
+  const url = String(attachment?.url || attachment?.name || '');
+  return /\.(png|jpe?g)(?:$|\?)/i.test(url);
+}
+
+function needsPdfImageNormalization(attachment) {
+  return attachment?.type === 'image' && attachment?.url && !isPdfReadyImage(attachment);
+}
+
+async function normalizeAttachmentForPdf(attachment, index) {
+  const sourceUrl = resolveMediaUrl(attachment.url, '');
+  if (!sourceUrl) return attachment;
+
+  const response = await fetch(sourceUrl);
+  if (!response.ok) throw new Error('Không thể tải ảnh cận lâm sàng để chuẩn bị PDF');
+
+  const blob = await response.blob();
+  const sourceFile = new File([blob], attachment.name || `ket-qua-${index + 1}`, {
+    type: blob.type || 'image/*',
+    lastModified: Date.now()
+  });
+  const pngFile = await convertImageFileToPng(sourceFile);
+  const data = new FormData();
+  data.append('files', pngFile);
+
+  const payload = await apiForm('/uploads/medical-record-attachments', data);
+  const uploaded = payload.data?.attachments?.[0];
+  return uploaded
+    ? { ...attachment, ...uploaded, uploadedAt: attachment.uploadedAt || attachment.createdAt || new Date().toISOString() }
+    : attachment;
+}
+
+async function ensurePdfCompatibleAttachments(recordId) {
+  const role = getUser()?.role;
+  if (!['admin', 'doctor', 'patient'].includes(role)) return;
+
+  const response = await axiosClient.request({
+    url: `/medical-records/${recordId}`,
+    method: 'GET'
+  });
+  const record = response.data?.data;
+  const attachments = Array.isArray(record?.attachments) ? record.attachments : [];
+  if (!attachments.some(needsPdfImageNormalization)) return;
+
+  const normalizedAttachments = await Promise.all(
+    attachments.map((attachment, index) => (
+      needsPdfImageNormalization(attachment)
+        ? normalizeAttachmentForPdf(attachment, index)
+        : Promise.resolve(attachment)
+    ))
+  );
+
+  await axiosClient.request({
+    url: `/medical-records/${recordId}/attachments`,
+    method: 'PATCH',
+    data: { attachments: normalizedAttachments }
+  });
+}
+
 function cleanupPrintFrame(frame, objectUrl) {
   if (frame?.parentNode) frame.parentNode.removeChild(frame);
   if (activePrintFrame === frame) activePrintFrame = null;
@@ -36,6 +98,8 @@ function releasePrintLock(frame) {
 }
 
 export async function fetchMedicalRecordPdf(recordId) {
+  await ensurePdfCompatibleAttachments(recordId);
+
   const response = await axiosClient.request({
     url: `/medical-records/${recordId}/pdf`,
     method: 'GET',

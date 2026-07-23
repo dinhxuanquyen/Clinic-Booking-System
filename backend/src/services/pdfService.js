@@ -1,4 +1,5 @@
-﻿import fs from 'fs';
+import fs from 'fs';
+import path from 'path';
 import PDFDocument from 'pdfkit';
 import { buildAppointmentCode, buildMedicalRecordCode } from '../utils/pdfFilename.js';
 
@@ -604,6 +605,78 @@ function attachmentTypeLabel(type) {
   return labels[type] || 'Tài liệu';
 }
 
+function isLocalUploadUrl(url) {
+  return typeof url === 'string' && url.startsWith('/uploads/');
+}
+
+function resolveLocalUploadPath(url) {
+  if (!isLocalUploadUrl(url)) return '';
+  const normalized = path.normalize(url.replace(/^\/uploads\/?/, ''));
+  if (normalized.startsWith('..') || path.isAbsolute(normalized)) return '';
+  const uploadRoot = path.resolve(process.cwd(), 'uploads');
+  const filePath = path.resolve(uploadRoot, normalized);
+  return filePath.startsWith(uploadRoot) ? filePath : '';
+}
+
+function canEmbedImageAttachment(attachment) {
+  const url = String(attachment?.url || '');
+  return attachment?.type === 'image' && isLocalUploadUrl(url);
+}
+
+function drawAttachmentImageCard(doc, attachment, index) {
+  const filePath = resolveLocalUploadPath(attachment.url);
+  if (!filePath || !fs.existsSync(filePath)) return false;
+
+  const left = doc.page.margins.left;
+  const width = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+  const imageHeight = 170;
+  const cardHeight = imageHeight + 54;
+  ensureSpace(doc, cardHeight + 10, 'attachment-image');
+
+  const y = doc.y;
+  doc.roundedRect(left, y, width, cardHeight, 8).fillAndStroke('#ffffff', '#dbeafe');
+  doc
+    .fontSize(9)
+    .fillColor(TEXT_MUTED)
+    .text(`Kết quả ${index + 1}`, left + 12, y + 12, { width: 76 })
+    .fontSize(10)
+    .fillColor(PRIMARY_BLUE)
+    .text(attachment.name || 'Hình ảnh cận lâm sàng', left + 92, y + 11, { width: width - 104 });
+
+  try {
+    doc.image(filePath, left + 12, y + 40, {
+      fit: [width - 24, imageHeight],
+      align: 'center',
+      valign: 'center'
+    });
+    doc.y = y + cardHeight + 10;
+    return true;
+  } catch {
+    doc
+      .fontSize(8.8)
+      .fillColor(TEXT_MUTED)
+      .text(`Không thể nhúng ảnh này vào PDF. Đường dẫn: ${attachment.url}`, left + 12, y + 42, { width: width - 24 });
+    doc.y = y + cardHeight + 10;
+    return false;
+  }
+}
+
+function drawAttachmentPreviews(doc, attachments) {
+  const imageAttachments = attachments.filter(canEmbedImageAttachment);
+  if (!imageAttachments.length) return;
+
+  ensureSpace(doc, 70, 'attachment-previews-title');
+  doc
+    .fontSize(10)
+    .fillColor(PRIMARY_BLUE)
+    .text('Hình ảnh kết quả', doc.page.margins.left, doc.y, { width: doc.page.width - doc.page.margins.left - doc.page.margins.right })
+    .moveDown(0.35);
+
+  imageAttachments.forEach((attachment, index) => {
+    drawAttachmentImageCard(doc, attachment, index);
+  });
+}
+
 function drawAttachmentSection(doc, record, title) {
   const attachments = Array.isArray(record.attachments) ? record.attachments : [];
   if (!attachments.length) return;
@@ -620,6 +693,7 @@ function drawAttachmentSection(doc, record, title) {
     [30, 190, 72, 104, 103],
     { title }
   );
+  drawAttachmentPreviews(doc, attachments);
 }
 
 function tableRowHeight(doc, row, columnWidths, fontSize = 8.8) {

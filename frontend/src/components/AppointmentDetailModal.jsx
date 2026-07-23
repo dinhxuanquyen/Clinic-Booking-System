@@ -4,6 +4,7 @@ import { api } from '../api/client.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { downloadPdf } from '../utils/downloadFile.js';
+import { downloadMedicalRecordPdf } from '../utils/medicalRecordPdf.js';
 import { resolveMediaUrl } from '../utils/media.js';
 import { cleanDisplayText } from '../utils/textEncoding.js';
 import BaseModal from './BaseModal.jsx';
@@ -1016,7 +1017,7 @@ export default function AppointmentDetailModal({
         await downloadPdf(`/appointments/${appointment._id}/queue-ticket/pdf`);
       } else if (type === 'record') {
         const payload = await api(`/appointments/${appointment._id}/medical-record`);
-        await downloadPdf(`/medical-records/${payload.data._id}/pdf`);
+        await downloadMedicalRecordPdf(payload.data._id);
       }
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF');

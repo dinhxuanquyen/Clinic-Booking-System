@@ -3,8 +3,8 @@ import path from 'path';
 import multer from 'multer';
 import { ApiError } from '../utils/apiError.js';
 
-const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
-const maxFileSize = 2 * 1024 * 1024;
+const imageMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+const defaultMaxFileSize = 2 * 1024 * 1024;
 
 function ensureDirectory(directory) {
   fs.mkdirSync(directory, { recursive: true });
@@ -26,19 +26,33 @@ function createStorage(folder) {
   });
 }
 
-function fileFilter(req, file, callback) {
-  if (!allowedMimeTypes.includes(file.mimetype)) {
-    return callback(new ApiError(400, 'Chỉ hỗ trợ ảnh JPG, PNG hoặc WEBP'));
-  }
+function createFileFilter(allowedMimeTypes, message) {
+  return (req, file, callback) => {
+    if (!allowedMimeTypes.includes(file.mimetype)) {
+      return callback(new ApiError(400, message));
+    }
 
-  callback(null, true);
+    callback(null, true);
+  };
+}
+
+export function createFileUpload(folder, options = {}) {
+  const allowedMimeTypes = options.allowedMimeTypes || imageMimeTypes;
+  const maxFileSize = options.maxFileSize || defaultMaxFileSize;
+  const message = options.message || 'Chỉ hỗ trợ ảnh JPG, PNG hoặc WEBP';
+
+  return multer({
+    storage: createStorage(folder),
+    fileFilter: createFileFilter(allowedMimeTypes, message),
+    limits: { fileSize: maxFileSize }
+  });
 }
 
 export function createImageUpload(folder) {
-  return multer({
-    storage: createStorage(folder),
-    fileFilter,
-    limits: { fileSize: maxFileSize }
+  return createFileUpload(folder, {
+    allowedMimeTypes: imageMimeTypes,
+    maxFileSize: defaultMaxFileSize,
+    message: 'Chỉ hỗ trợ ảnh JPG, PNG hoặc WEBP'
   });
 }
 
@@ -46,7 +60,7 @@ export function handleUploadError(error, req, res, next) {
   if (!error) return next();
 
   if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
-    return next(new ApiError(400, 'Ảnh không được vượt quá 2MB'));
+    return next(new ApiError(400, 'Tệp tải lên vượt quá dung lượng cho phép'));
   }
 
   return next(error);

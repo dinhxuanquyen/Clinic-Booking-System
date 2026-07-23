@@ -4,12 +4,13 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 const links = [
   { to: '/doctor', label: 'Tổng quan', end: true },
   { to: '/doctor/queue', label: 'Hàng đợi khám' },
-  { to: '/doctor/schedules', label: 'Lịch làm việc của tôi' },
   { to: '/doctor/appointments', label: 'Lịch hẹn của tôi' },
   { to: '/doctor/medical-records', label: 'Hồ sơ đã tạo' },
   { to: '/doctor/medical-records?followUpOnly=true', label: 'Theo dõi tái khám' },
-  { to: '/doctor/articles', label: 'Bài viết của tôi' },
+  { to: '/doctor/schedules', label: 'Lịch làm việc của tôi' },
   { to: '/doctor/reviews', label: 'Đánh giá của tôi' },
+  { to: '/doctor/articles', label: 'Bài viết của tôi' },
+  { to: '/doctor/service-packages', label: 'Gói khám áp dụng' },
   { to: '/doctor/profile', label: 'Hồ sơ bác sĩ' }
 ];
 
@@ -63,7 +64,6 @@ export default function DoctorLayout() {
             {item.label}
           </NavLink>
         ))}
-        <NavLink to="/doctor/service-packages">Gói khám áp dụng</NavLink>
       </aside>
       <section className="doctor-main" ref={mainRef}>
         <div className="doctor-topbar">

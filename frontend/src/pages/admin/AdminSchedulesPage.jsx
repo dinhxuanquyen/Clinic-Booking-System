@@ -26,6 +26,54 @@ function parseWorkingHours(value, fallbackStart = '08:00', fallbackEnd = '11:00'
   };
 }
 
+function normalizeSearchValue(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .toLowerCase()
+    .trim();
+}
+
+function getDoctorCode(doctor) {
+  return doctor?.doctorCode || doctor?.code || '';
+}
+
+function getDoctorSearchText(doctor, clinicName = '') {
+  return normalizeSearchValue([
+    doctor?._id,
+    doctor?.name,
+    getDoctorCode(doctor),
+    doctor?.email,
+    doctor?.personalEmail,
+    doctor?.loginEmail,
+    doctor?.phone,
+    doctor?.degree,
+    doctor?.position,
+    clinicName
+  ].filter(Boolean).join(' '));
+}
+
+function doctorMatchesSearch(doctor, query, clinicName = '') {
+  const keyword = normalizeSearchValue(query);
+  if (!keyword) return true;
+  return getDoctorSearchText(doctor, clinicName).includes(keyword);
+}
+
+function getScheduleDoctor(schedule, doctorById) {
+  const doctorId = getId(schedule?.doctorId);
+  const populatedDoctor = typeof schedule?.doctorId === 'object' ? schedule.doctorId : null;
+  return doctorById.get(doctorId) || populatedDoctor || null;
+}
+
+function getDoctorMeta(doctor, fallbackClinic) {
+  const code = getDoctorCode(doctor);
+  const clinicValue = typeof doctor?.clinicId === 'object' ? doctor.clinicId : fallbackClinic || doctor?.clinicId;
+  const clinicName = getName(clinicValue);
+  return [code && `Mã ${code}`, clinicName].filter(Boolean).join(' · ');
+}
+
 export default function AdminSchedulesPage() {
   const toast = useToast();
   const [doctors, setDoctors] = useState([]);
@@ -34,9 +82,9 @@ export default function AdminSchedulesPage() {
   const [editing, setEditing] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState('');
-  const [filters, setFilters] = useState({ clinicId: '', doctorId: '', date: '' });
+  const [filters, setFilters] = useState({ clinicId: '', doctorId: '', date: '', doctorSearch: '' });
   const [activeTab, setActiveTab] = useState('list');
-  const [slotFilters, setSlotFilters] = useState({ clinicId: '', doctorId: '', date: todayString() });
+  const [slotFilters, setSlotFilters] = useState({ clinicId: '', doctorId: '', date: todayString(), doctorSearch: '' });
   const [slotLoading, setSlotLoading] = useState(false);
   const [slotMessage, setSlotMessage] = useState('');
   const [slotError, setSlotError] = useState('');
@@ -46,9 +94,16 @@ export default function AdminSchedulesPage() {
   const [saving, setSaving] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filterDoctors = doctors.filter((item) => !filters.clinicId || getId(item.clinicId) === filters.clinicId);
+  const doctorById = useMemo(() => new Map(doctors.map((item) => [item._id, item])), [doctors]);
+  const filterDoctors = useMemo(() => doctors.filter((item) => (
+    (!filters.clinicId || getId(item.clinicId) === filters.clinicId)
+    && doctorMatchesSearch(item, filters.doctorSearch, getName(item.clinicId))
+  )), [doctors, filters.clinicId, filters.doctorSearch]);
   const formDoctors = doctors.filter((item) => form.clinicId && getId(item.clinicId) === form.clinicId);
-  const slotDoctors = doctors.filter((item) => slotFilters.clinicId && getId(item.clinicId) === slotFilters.clinicId);
+  const slotDoctors = useMemo(() => doctors.filter((item) => (
+    (!slotFilters.clinicId || getId(item.clinicId) === slotFilters.clinicId)
+    && doctorMatchesSearch(item, slotFilters.doctorSearch, getName(item.clinicId))
+  )), [doctors, slotFilters.clinicId, slotFilters.doctorSearch]);
   const selectedSlotDoctor = doctors.find((item) => item._id === slotFilters.doctorId);
   const slotSummary = {
     total: slotData.length,
@@ -58,11 +113,13 @@ export default function AdminSchedulesPage() {
   };
 
   const filteredSchedules = useMemo(() => schedules.filter((item) => {
+    const doctor = getScheduleDoctor(item, doctorById);
     const matchesClinic = !filters.clinicId || getId(item.clinicId) === filters.clinicId;
     const matchesDoctor = !filters.doctorId || getId(item.doctorId) === filters.doctorId;
     const matchesDate = !filters.date || item.date === filters.date;
-    return matchesClinic && matchesDoctor && matchesDate;
-  }), [filters, schedules]);
+    const matchesDoctorSearch = doctorMatchesSearch(doctor, filters.doctorSearch, getName(item.clinicId || doctor?.clinicId));
+    return matchesClinic && matchesDoctor && matchesDate && matchesDoctorSearch;
+  }), [doctorById, filters, schedules]);
 
   const clinics = useMemo(() => {
     const map = new Map();
@@ -79,7 +136,7 @@ export default function AdminSchedulesPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters.clinicId, filters.doctorId, filters.date]);
+  }, [filters.clinicId, filters.doctorId, filters.date, filters.doctorSearch]);
 
   function load() {
     setLoading(true);
@@ -137,12 +194,41 @@ export default function AdminSchedulesPage() {
     setFilters({ ...filters, clinicId, doctorId: '' });
   }
 
+  function updateFilterDoctorSearch(doctorSearch) {
+    setFilters({ ...filters, doctorSearch, doctorId: '' });
+  }
+
   function updateSlotClinic(clinicId) {
     setSlotFilters({ ...slotFilters, clinicId, doctorId: '' });
     setSlotData([]);
     setSlotMessage('');
     setSlotError('');
     setSlotViewed(false);
+  }
+
+  function updateSlotDoctorSearch(doctorSearch) {
+    setSlotFilters({ ...slotFilters, doctorSearch, doctorId: '' });
+    setSlotData([]);
+    setSlotMessage('');
+    setSlotError('');
+    setSlotViewed(false);
+  }
+
+  function updateSlotDoctor(doctorId) {
+    const doctor = doctors.find((item) => item._id === doctorId);
+    setSlotFilters({
+      ...slotFilters,
+      doctorId,
+      clinicId: getId(doctor?.clinicId) || slotFilters.clinicId
+    });
+    setSlotData([]);
+    setSlotMessage('');
+    setSlotError('');
+    setSlotViewed(false);
+  }
+
+  function clearListFilters() {
+    setFilters({ clinicId: '', doctorId: '', date: '', doctorSearch: '' });
   }
 
   async function loadAvailableSlots() {
@@ -235,22 +321,51 @@ export default function AdminSchedulesPage() {
       {activeTab === 'list' && (
       <div className="management-panel admin-table-card admin-schedules-list-card">
         <div className="admin-table-toolbar admin-schedules-filter-panel">
-          <select className="form-select" value={filters.clinicId} onChange={(event) => updateFilterClinic(event.target.value)}>
-            <option value="">Tất cả cơ sở</option>
-            {clinics.map((item) => <option key={getId(item)} value={getId(item)}>{getName(item)}</option>)}
-          </select>
-          <select className="form-select" value={filters.doctorId} onChange={(event) => setFilters({ ...filters, doctorId: event.target.value })}>
-            <option value="">Tất cả bác sĩ</option>
-            {filterDoctors.map((item) => <option key={item._id} value={item._id}>{item.name}</option>)}
-          </select>
-          <input className="form-control" type="date" value={filters.date} onChange={(event) => setFilters({ ...filters, date: event.target.value })} />
+          <label>
+            <span>Cơ sở</span>
+            <select className="form-select" value={filters.clinicId} onChange={(event) => updateFilterClinic(event.target.value)}>
+              <option value="">Tất cả cơ sở</option>
+              {clinics.map((item) => <option key={getId(item)} value={getId(item)}>{getName(item)}</option>)}
+            </select>
+          </label>
+          <label className="admin-schedule-search-control">
+            <span>Tìm bác sĩ</span>
+            <input
+              className="form-control"
+              placeholder="Tên, mã bác sĩ, email, SĐT..."
+              type="search"
+              value={filters.doctorSearch}
+              onChange={(event) => updateFilterDoctorSearch(event.target.value)}
+            />
+          </label>
+          <label>
+            <span>Bác sĩ</span>
+            <select className="form-select" value={filters.doctorId} onChange={(event) => setFilters({ ...filters, doctorId: event.target.value })}>
+              <option value="">{filterDoctors.length ? 'Tất cả bác sĩ phù hợp' : 'Không có bác sĩ phù hợp'}</option>
+              {filterDoctors.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {[item.name, getDoctorCode(item)].filter(Boolean).join(' · ')}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>Ngày</span>
+            <input className="form-control" type="date" value={filters.date} onChange={(event) => setFilters({ ...filters, date: event.target.value })} />
+          </label>
+          {(filters.clinicId || filters.doctorId || filters.date || filters.doctorSearch) && (
+            <button className="btn btn-outline-secondary admin-schedules-clear-filter" type="button" onClick={clearListFilters}>
+              Xóa lọc
+            </button>
+          )}
         </div>
 
         {!loading && !error && (
           <div className="admin-schedules-result-bar">
             <strong>{filteredSchedules.length}</strong>
             <span>lịch làm việc phù hợp</span>
-            {(filters.clinicId || filters.doctorId || filters.date) && <em>Đang áp dụng bộ lọc</em>}
+            {(filters.clinicId || filters.doctorId || filters.date || filters.doctorSearch) && <em>Đang áp dụng bộ lọc</em>}
+            {filters.doctorSearch && <em>Từ khóa: {filters.doctorSearch}</em>}
           </div>
         )}
 
@@ -266,9 +381,16 @@ export default function AdminSchedulesPage() {
               <table className="table table-hover align-middle admin-table">
                 <thead><tr><th>Bác sĩ</th><th>Cơ sở</th><th>Ngày</th><th>Giờ</th><th>Khung giờ</th><th>Làm việc</th><th></th></tr></thead>
                 <tbody>
-                  {pageItems.map((item) => (
+                  {pageItems.map((item) => {
+                    const doctor = getScheduleDoctor(item, doctorById);
+                    return (
                     <tr key={item._id}>
-                      <td className="fw-semibold">{getName(item.doctorId)}</td>
+                      <td>
+                        <div className="admin-schedule-doctor-cell">
+                          <strong>{getName(doctor || item.doctorId)}</strong>
+                          <small>{getDoctorMeta(doctor || item.doctorId, item.clinicId)}</small>
+                        </div>
+                      </td>
                       <td>{getName(item.clinicId)}</td>
                       <td>{item.date}</td>
                       <td>{item.workingHours?.start}-{item.workingHours?.end}</td>
@@ -276,7 +398,8 @@ export default function AdminSchedulesPage() {
                       <td><span className={`admin-schedule-status-badge ${item.isWorkingDay ? 'working' : 'off'}`}>{item.isWorkingDay ? 'Có' : 'Nghỉ'}</span></td>
                       <td className="text-end"><button className="btn btn-sm btn-outline-primary" onClick={() => openEdit(item)}>Sửa</button></td>
                     </tr>
-                  ))}
+                  );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -308,20 +431,25 @@ export default function AdminSchedulesPage() {
               </label>
               <label>
                 <span>Bác sĩ</span>
+                <input
+                  className="form-control admin-schedule-doctor-search"
+                  placeholder="Tìm theo tên, mã bác sĩ, email..."
+                  type="search"
+                  value={slotFilters.doctorSearch}
+                  onChange={(event) => updateSlotDoctorSearch(event.target.value)}
+                />
                 <select
                   className="form-select"
-                  disabled={!slotFilters.clinicId || slotDoctors.length === 0}
+                  disabled={slotDoctors.length === 0}
                   value={slotFilters.doctorId}
-                  onChange={(event) => {
-                    setSlotFilters({ ...slotFilters, doctorId: event.target.value });
-                    setSlotData([]);
-                    setSlotMessage('');
-                    setSlotError('');
-                    setSlotViewed(false);
-                  }}
+                  onChange={(event) => updateSlotDoctor(event.target.value)}
                 >
-                  <option value="">{slotFilters.clinicId && slotDoctors.length === 0 ? 'Cơ sở này chưa có bác sĩ' : 'Chọn bác sĩ'}</option>
-                  {slotDoctors.map((item) => <option key={item._id} value={item._id}>{item.name}</option>)}
+                  <option value="">{slotDoctors.length === 0 ? 'Không có bác sĩ phù hợp' : 'Chọn bác sĩ'}</option>
+                  {slotDoctors.map((item) => (
+                    <option key={item._id} value={item._id}>
+                      {[item.name, getDoctorCode(item), getName(item.clinicId)].filter(Boolean).join(' · ')}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label>
@@ -345,8 +473,10 @@ export default function AdminSchedulesPage() {
             </div>
           </div>
 
-          {slotFilters.clinicId && slotDoctors.length === 0 && (
-            <div className="admin-schedule-inline-empty">Cơ sở này chưa có bác sĩ</div>
+          {(slotFilters.clinicId || slotFilters.doctorSearch) && slotDoctors.length === 0 && (
+            <div className="admin-schedule-inline-empty">
+              {slotFilters.doctorSearch ? 'Không tìm thấy bác sĩ phù hợp với từ khóa.' : 'Cơ sở này chưa có bác sĩ'}
+            </div>
           )}
 
           {slotViewed && (

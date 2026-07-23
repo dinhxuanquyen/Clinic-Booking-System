@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { api } from '../../api/client.js';
 import { getStatusBadge } from '../../utils/status.js';
 import { resolveMediaUrl } from '../../utils/media.js';
@@ -19,11 +19,15 @@ const statusChartConfig = {
 };
 
 const timeFilterOptions = [
+  { value: 'today', label: 'Hôm nay' },
+  { value: 'yesterday', label: 'Hôm qua' },
+  { value: 'this_week', label: 'Tuần này' },
   { value: '7d', label: '7 ngày gần nhất' },
   { value: '30d', label: '30 ngày gần nhất' },
   { value: 'this_month', label: 'Tháng này' },
   { value: 'this_quarter', label: 'Quý này' },
   { value: 'this_year', label: 'Năm nay' },
+  { value: 'custom', label: 'Tùy chọn' },
   { value: 'all', label: 'Toàn bộ' }
 ];
 
@@ -60,6 +64,23 @@ function startOfToday() {
   return today;
 }
 
+function addDays(date, amount) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + amount);
+  return next;
+}
+
+function startOfWeek(date) {
+  const next = new Date(date);
+  const day = next.getDay() || 7;
+  next.setDate(next.getDate() - day + 1);
+  return next;
+}
+
+function endOfWeek(date) {
+  return addDays(startOfWeek(date), 6);
+}
+
 function startOfMonth(date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
@@ -85,9 +106,22 @@ function endOfYear(date) {
   return new Date(date.getFullYear(), 11, 31);
 }
 
-function getDateRange(range) {
+function getDateRange(range, customFrom = '', customTo = '') {
   const today = startOfToday();
   const end = new Date(today);
+
+  if (range === 'today') {
+    return { start: today, end };
+  }
+
+  if (range === 'yesterday') {
+    const yesterday = addDays(today, -1);
+    return { start: yesterday, end: yesterday };
+  }
+
+  if (range === 'this_week') {
+    return { start: startOfWeek(today), end: endOfWeek(today) };
+  }
 
   if (range === '7d' || range === '30d') {
     const days = range === '7d' ? 7 : 30;
@@ -108,14 +142,23 @@ function getDateRange(range) {
     return { start: startOfYear(today), end: endOfYear(today) };
   }
 
+  if (range === 'custom') {
+    let start = parseAppointmentDate(customFrom) || today;
+    let finish = parseAppointmentDate(customTo) || start;
+    if (start > finish) {
+      [start, finish] = [finish, start];
+    }
+    return { start, end: finish };
+  }
+
   return { start: null, end: null };
 }
 
-function isInDateRange(appointment, range) {
+function isInDateRange(appointment, range, customFrom = '', customTo = '') {
   if (range === 'all') return true;
   const date = parseAppointmentDate(appointment.date);
   if (!date) return false;
-  const { start, end } = getDateRange(range);
+  const { start, end } = getDateRange(range, customFrom, customTo);
   return (!start || date >= start) && (!end || date <= end);
 }
 
@@ -143,7 +186,7 @@ function buildMonthBuckets(year, startMonth = 0, endMonth = 11) {
   });
 }
 
-function getTimeChartConfig(range, appointments) {
+function getTimeChartConfig(range, appointments, customFrom = '', customTo = '') {
   const today = startOfToday();
 
   if (range === 'this_year') {
@@ -192,7 +235,7 @@ function getTimeChartConfig(range, appointments) {
     };
   }
 
-  const { start, end } = getDateRange(range);
+  const { start, end } = getDateRange(range, customFrom, customTo);
   const buckets = buildDayBuckets(start, end);
   const bucketMap = new Map(buckets.map((item) => [item.key, item]));
   appointments.forEach((appointment) => {
@@ -339,8 +382,10 @@ function activityMeta(appointment) {
   };
 }
 
-function scopeLabel(timeRange, clinicFilter, clinics) {
-  const timeLabel = timeFilterOptions.find((item) => item.value === timeRange)?.label || 'Khoảng thời gian đã chọn';
+function scopeLabel(timeRange, clinicFilter, clinics, customFrom = '', customTo = '') {
+  const timeLabel = timeRange === 'custom'
+    ? `${customFrom || '...'} - ${customTo || '...'}`
+    : timeFilterOptions.find((item) => item.value === timeRange)?.label || 'Khoảng thời gian đã chọn';
   const clinicLabel = clinicFilter === 'all'
     ? 'tất cả cơ sở'
     : clinics.find((clinic) => clinic._id === clinicFilter)?.name || 'cơ sở đã chọn';
@@ -428,31 +473,49 @@ function StatusDonutChart({ data }) {
   const total = data.reduce((sum, item) => sum + item.value, 0);
 
   if (!total) {
-    return <AdminEmptyState message="Chưa có dữ liệu trạng thái trong phạm vi đã chọn" />;
+    return <div className="dash-chart-body"><AdminEmptyState message="Chưa có dữ liệu trạng thái trong phạm vi đã chọn" /></div>;
   }
 
   return (
-    <div>
-      <ResponsiveContainer height={220} width="100%">
-        <PieChart>
-          <Pie data={data} dataKey="value" innerRadius={58} outerRadius={88} paddingAngle={3}>
-            {data.map((item) => <Cell fill={item.color} key={item.status} />)}
-          </Pie>
-          <Tooltip
-            formatter={(value, _name, props) => [value, props.payload.label]}
-            contentStyle={{ borderRadius: 10, border: '1px solid var(--gray-200)', boxShadow: 'var(--shadow-md)', fontSize: '0.85rem' }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+    <>
+      <div className="dash-chart-body dash-chart-body-donut">
+        <ResponsiveContainer height="100%" width="100%">
+          <PieChart margin={{ top: 16, right: 18, bottom: 18, left: 18 }}>
+            <Pie
+              data={data}
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              innerRadius={58}
+              outerRadius={86}
+              paddingAngle={3}
+              stroke="#ffffff"
+              strokeWidth={3}
+            >
+              {data.map((item) => <Cell fill={item.color} key={item.status} />)}
+            </Pie>
+            <Tooltip
+              allowEscapeViewBox={{ x: true, y: true }}
+              formatter={(value, _name, props) => [value, props.payload.label]}
+              contentStyle={{ borderRadius: 10, border: '1px solid var(--gray-200)', boxShadow: 'var(--shadow-md)', fontSize: '0.85rem' }}
+              wrapperStyle={{ zIndex: 30, pointerEvents: 'none' }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="dash-donut-center" aria-hidden="true">
+          <strong>{total}</strong>
+          <span>Tổng lịch</span>
+        </div>
+      </div>
       <div className="dash-chart-legend">
-        {data.map((item) => (
+        {data.filter((item) => item.value > 0).map((item) => (
           <div className="dash-chart-legend-item" key={item.status}>
             <span className="dash-chart-legend-dot" style={{ background: item.color }} />
             <span>{item.label}: <strong>{item.value}</strong></span>
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 
@@ -460,35 +523,43 @@ function TimeAppointmentsChart({ data, type }) {
   const total = data.reduce((sum, item) => sum + item.total, 0);
 
   if (!total) {
-    return <AdminEmptyState message="Chưa có lịch hẹn trong khoảng thời gian này" />;
+    return <div className="dash-chart-body"><AdminEmptyState message="Chưa có lịch hẹn trong khoảng thời gian này" /></div>;
   }
 
   return (
-    <ResponsiveContainer height={220} width="100%">
-      {type === 'bar' ? (
-        <BarChart data={data}>
-          <CartesianGrid stroke="var(--gray-100)" vertical={false} />
-          <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
-          <YAxis allowDecimals={false} tickLine={false} width={32} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
-          <Tooltip
-            formatter={(value) => [value, 'Lịch hẹn']}
-            contentStyle={{ borderRadius: 10, border: '1px solid var(--gray-200)', boxShadow: 'var(--shadow-md)', fontSize: '0.85rem' }}
-          />
-          <Bar dataKey="total" fill="#0EA5E9" radius={[6, 6, 0, 0]} />
-        </BarChart>
-      ) : (
-        <LineChart data={data}>
-          <CartesianGrid stroke="var(--gray-100)" vertical={false} />
-          <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
-          <YAxis allowDecimals={false} tickLine={false} width={32} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
-          <Tooltip
-            formatter={(value) => [value, 'Lịch hẹn']}
-            contentStyle={{ borderRadius: 10, border: '1px solid var(--gray-200)', boxShadow: 'var(--shadow-md)', fontSize: '0.85rem' }}
-          />
-          <Line type="monotone" dataKey="total" stroke="#0EA5E9" strokeWidth={3} dot={{ r: 3, fill: '#0284C7' }} activeDot={{ r: 6 }} />
-        </LineChart>
-      )}
-    </ResponsiveContainer>
+    <div className="dash-chart-body dash-chart-body-trend">
+      <ResponsiveContainer height="100%" width="100%">
+        {type === 'bar' ? (
+          <BarChart data={data} margin={{ top: 18, right: 18, bottom: 8, left: 0 }}>
+            <CartesianGrid stroke="var(--gray-100)" vertical={false} />
+            <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
+            <YAxis allowDecimals={false} domain={[0, (dataMax) => Math.max(4, dataMax + 1)]} tickLine={false} width={32} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
+            <Tooltip
+              formatter={(value) => [value, 'Lịch hẹn']}
+              contentStyle={{ borderRadius: 10, border: '1px solid var(--gray-200)', boxShadow: 'var(--shadow-md)', fontSize: '0.85rem' }}
+            />
+            <Bar dataKey="total" fill="#0EA5E9" radius={[6, 6, 0, 0]} />
+          </BarChart>
+        ) : (
+          <AreaChart data={data} margin={{ top: 18, right: 18, bottom: 8, left: 0 }}>
+            <defs>
+              <linearGradient id="appointmentsTrendFill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="5%" stopColor="#0EA5E9" stopOpacity={0.26} />
+                <stop offset="95%" stopColor="#0EA5E9" stopOpacity={0.02} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid stroke="var(--gray-100)" vertical={false} />
+            <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
+            <YAxis allowDecimals={false} domain={[0, (dataMax) => Math.max(4, dataMax + 1)]} tickLine={false} width={32} tick={{ fontSize: 12, fill: 'var(--gray-500)' }} />
+            <Tooltip
+              formatter={(value) => [value, 'Lịch hẹn']}
+              contentStyle={{ borderRadius: 10, border: '1px solid var(--gray-200)', boxShadow: 'var(--shadow-md)', fontSize: '0.85rem' }}
+            />
+            <Area type="monotone" dataKey="total" stroke="#0EA5E9" strokeWidth={3} fill="url(#appointmentsTrendFill)" dot={{ r: 3, fill: '#ffffff', stroke: '#0EA5E9', strokeWidth: 3 }} activeDot={{ r: 6, fill: '#0284C7', stroke: '#ffffff', strokeWidth: 3 }} />
+          </AreaChart>
+        )}
+      </ResponsiveContainer>
+    </div>
   );
 }
 
@@ -546,7 +617,10 @@ export default function AdminDashboardPage() {
   const [doctors, setDoctors] = useState([]);
   const [doctorUsers, setDoctorUsers] = useState([]);
   const [appointments, setAppointments] = useState([]);
-  const [timeRange, setTimeRange] = useState('30d');
+  const todayKey = useMemo(() => getVietnamToday(), []);
+  const [timeRange, setTimeRange] = useState('today');
+  const [customFrom, setCustomFrom] = useState(todayKey);
+  const [customTo, setCustomTo] = useState(todayKey);
   const [clinicFilter, setClinicFilter] = useState('all');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -578,16 +652,9 @@ export default function AdminDashboardPage() {
     };
   }, []);
 
-  const todayKey = useMemo(() => getVietnamToday(), []);
-
   const clinicScopedAppointments = useMemo(() => appointments.filter((item) => {
     return clinicFilter === 'all' || entityKey(item.clinicId, '') === clinicFilter;
   }), [appointments, clinicFilter]);
-
-  const todayAppointments = useMemo(
-    () => clinicScopedAppointments.filter((item) => item.date === todayKey),
-    [clinicScopedAppointments, todayKey]
-  );
 
   const currentTaskAppointments = useMemo(
     () => clinicScopedAppointments.filter((item) => taskStatuses.includes(item.status)),
@@ -595,8 +662,8 @@ export default function AdminDashboardPage() {
   );
 
   const analyticsAppointments = useMemo(
-    () => clinicScopedAppointments.filter((item) => isInDateRange(item, timeRange)),
-    [clinicScopedAppointments, timeRange]
+    () => clinicScopedAppointments.filter((item) => isInDateRange(item, timeRange, customFrom, customTo)),
+    [clinicScopedAppointments, timeRange, customFrom, customTo]
   );
 
   const statusChartData = useMemo(() => Object.entries(statusChartConfig).map(([status, config]) => ({
@@ -605,7 +672,7 @@ export default function AdminDashboardPage() {
     value: statCount(analyticsAppointments, status)
   })), [analyticsAppointments]);
 
-  const timeChart = useMemo(() => getTimeChartConfig(timeRange, analyticsAppointments), [analyticsAppointments, timeRange]);
+  const timeChart = useMemo(() => getTimeChartConfig(timeRange, analyticsAppointments, customFrom, customTo), [analyticsAppointments, timeRange, customFrom, customTo]);
   const topDoctors = useMemo(() => buildRanking(analyticsAppointments, 'doctorId', 'unknown-doctor'), [analyticsAppointments]);
   const topSpecialties = useMemo(() => buildRanking(analyticsAppointments, 'specialtyId', 'unknown-specialty'), [analyticsAppointments]);
   const topClinics = useMemo(() => buildRanking(analyticsAppointments, 'clinicId', 'unknown-clinic'), [analyticsAppointments]);
@@ -613,7 +680,10 @@ export default function AdminDashboardPage() {
   const pendingCount = statCount(currentTaskAppointments, 'pending');
   const rescheduleRequestCount = statCount(currentTaskAppointments, 'reschedule_requested');
   const cancelRequestCount = statCount(currentTaskAppointments, 'cancel_requested');
-  const inProgressTodayCount = statCount(todayAppointments, 'in_progress');
+  const analyticsPendingCount = statCount(analyticsAppointments, 'pending');
+  const analyticsRescheduleRequestCount = statCount(analyticsAppointments, 'reschedule_requested');
+  const analyticsCancelRequestCount = statCount(analyticsAppointments, 'cancel_requested');
+  const inProgressCount = statCount(analyticsAppointments, 'in_progress');
   const noShowCount = statCount(analyticsAppointments, 'no_show');
 
   const actionAppointments = useMemo(
@@ -647,26 +717,29 @@ export default function AdminDashboardPage() {
     };
   }, [doctorUsers, doctors.length]);
 
-  const selectedScopeLabel = scopeLabel(timeRange, clinicFilter, clinics);
+  const selectedScopeLabel = scopeLabel(timeRange, clinicFilter, clinics, customFrom, customTo);
   const selectedClinicLabel = clinicFilter === 'all'
     ? 'toàn hệ thống'
     : clinics.find((clinic) => clinic._id === clinicFilter)?.name || 'cơ sở đã chọn';
+  const selectedTimeLabel = timeRange === 'custom'
+    ? `${customFrom || '...'} - ${customTo || '...'}`
+    : timeFilterOptions.find((item) => item.value === timeRange)?.label || 'Khoảng đang chọn';
 
   const todayStats = [
     {
-      label: 'Tổng lịch hôm nay',
-      description: `Ngày ${formatDateLabel(todayKey)} · ${selectedClinicLabel}`,
-      value: todayAppointments.length,
-      badge: 'Hôm nay',
+      label: 'Tổng lịch',
+      description: `${selectedTimeLabel} · ${selectedClinicLabel}`,
+      value: analyticsAppointments.length,
+      badge: selectedTimeLabel,
       tone: 'primary',
       marker: 'calendar',
-      to: '/admin/appointments?date=today'
+      to: timeRange === 'today' ? '/admin/appointments?date=today' : '/admin/appointments'
     },
     {
       label: 'Chờ xác nhận',
       description: 'Lịch mới cần phòng khám xác nhận',
-      value: pendingCount,
-      badge: pendingCount ? 'Cần xử lý' : 'Ổn định',
+      value: analyticsPendingCount,
+      badge: analyticsPendingCount ? 'Cần xử lý' : 'Ổn định',
       tone: 'warning',
       marker: 'pending',
       to: '/admin/appointments?status=pending'
@@ -674,8 +747,8 @@ export default function AdminDashboardPage() {
     {
       label: 'Yêu cầu đổi lịch',
       description: 'Bệnh nhân đang chờ phản hồi đổi lịch',
-      value: rescheduleRequestCount,
-      badge: rescheduleRequestCount ? 'Cần xử lý' : 'Ổn định',
+      value: analyticsRescheduleRequestCount,
+      badge: analyticsRescheduleRequestCount ? 'Cần xử lý' : 'Ổn định',
       tone: 'info',
       marker: 'reschedule',
       to: '/admin/appointments?status=reschedule_requested'
@@ -683,16 +756,16 @@ export default function AdminDashboardPage() {
     {
       label: 'Yêu cầu hủy',
       description: 'Yêu cầu hủy cần được xử lý',
-      value: cancelRequestCount,
-      badge: cancelRequestCount ? 'Cần xử lý' : 'Ổn định',
+      value: analyticsCancelRequestCount,
+      badge: analyticsCancelRequestCount ? 'Cần xử lý' : 'Ổn định',
       tone: 'danger',
       marker: 'cancel',
       to: '/admin/appointments?status=cancel_requested'
     },
     {
       label: 'Đang khám',
-      description: 'Lịch hôm nay đang trong quy trình khám',
-      value: inProgressTodayCount,
+      description: 'Lịch trong khoảng đang ở quy trình khám',
+      value: inProgressCount,
       badge: 'Theo dõi',
       tone: 'success',
       marker: 'progress',
@@ -772,14 +845,45 @@ export default function AdminDashboardPage() {
 
       {!error && (
         <div className="admin-dashboard-page">
-          <section className="dash-section-block" aria-labelledby="today-operations-heading">
+          <section className="dash-section-block" aria-labelledby="operations-overview-heading">
             <div className="dash-section-head dash-section-head-compact">
               <div>
-                <span className="eyebrow">Vận hành hôm nay</span>
-                <h2 id="today-operations-heading">Vận hành hôm nay</h2>
-                <p>Không phụ thuộc bộ lọc thời gian phân tích. Phạm vi cơ sở: {selectedClinicLabel}.</p>
+                <span className="eyebrow">Vận hành</span>
+                <h2 id="operations-overview-heading">Tổng quan vận hành</h2>
+                <p>Theo dõi lịch khám theo ngày, tuần, tháng, quý hoặc khoảng thời gian tùy chọn. Phạm vi cơ sở: {selectedClinicLabel}.</p>
+              </div>
+              <div className="dash-filter-controls dash-overview-filter-controls">
+                <label className="dash-filter-label">
+                  <span>Khoảng thời gian</span>
+                  <select className="form-select form-select-sm" value={timeRange} onChange={(event) => setTimeRange(event.target.value)}>
+                    {timeFilterOptions.map((option) => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="dash-filter-label">
+                  <span>Phạm vi cơ sở</span>
+                  <select className="form-select form-select-sm" value={clinicFilter} onChange={(event) => setClinicFilter(event.target.value)}>
+                    <option value="all">Tất cả cơ sở</option>
+                    {clinics.map((clinic) => (
+                      <option key={clinic._id} value={clinic._id}>{clinic.name}</option>
+                    ))}
+                  </select>
+                </label>
               </div>
             </div>
+            {timeRange === 'custom' && (
+              <div className="dash-custom-range-row">
+                <label className="dash-filter-label">
+                  <span>Từ ngày</span>
+                  <input className="form-control form-control-sm" type="date" value={customFrom} onChange={(event) => setCustomFrom(event.target.value)} />
+                </label>
+                <label className="dash-filter-label">
+                  <span>Đến ngày</span>
+                  <input className="form-control form-control-sm" type="date" value={customTo} onChange={(event) => setCustomTo(event.target.value)} />
+                </label>
+              </div>
+            )}
             <div className="dash-kpi-grid dash-kpi-grid-five">
               {todayStats.map((item) => (
                 <Link className={`dash-kpi-card accent-${item.tone}`} key={item.label} to={item.to}>
@@ -827,26 +931,7 @@ export default function AdminDashboardPage() {
             <div>
               <span className="eyebrow">Phân tích</span>
               <h2 id="analytics-filter-heading">Phân tích lịch hẹn</h2>
-              <p>Bộ lọc thời gian chỉ áp dụng cho biểu đồ, xếp hạng và cập nhật gần đây.</p>
-            </div>
-            <div className="dash-filter-controls">
-              <label className="dash-filter-label">
-                <span>Phân tích theo khoảng thời gian</span>
-                <select className="form-select form-select-sm" value={timeRange} onChange={(event) => setTimeRange(event.target.value)}>
-                  {timeFilterOptions.map((option) => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
-                  ))}
-                </select>
-              </label>
-              <label className="dash-filter-label">
-                <span>Phạm vi cơ sở</span>
-                <select className="form-select form-select-sm" value={clinicFilter} onChange={(event) => setClinicFilter(event.target.value)}>
-                  <option value="all">Tất cả cơ sở</option>
-                  {clinics.map((clinic) => (
-                    <option key={clinic._id} value={clinic._id}>{clinic.name}</option>
-                  ))}
-                </select>
-              </label>
+              <p>Biểu đồ, xếp hạng và cập nhật gần đây đang dùng cùng khoảng: {selectedScopeLabel}.</p>
             </div>
           </section>
 

@@ -1,5 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import BaseModal from './BaseModal.jsx';
+import { apiForm } from '../api/client.js';
+import { useToast } from '../context/ToastContext.jsx';
+import { convertImageFileToPng } from '../utils/imageConversion.js';
 
 const emptyMedicine = {
   medicineName: '',
@@ -38,6 +41,15 @@ const initialForm = {
   },
   attachments: []
 };
+
+function createInitialForm() {
+  return {
+    ...initialForm,
+    prescription: [],
+    attachments: [],
+    vitals: { ...initialForm.vitals }
+  };
+}
 
 const vitalFieldOrder = ['bloodPressure', 'heartRate', 'temperature', 'spo2', 'height', 'weight', 'bmi'];
 
@@ -80,11 +92,63 @@ function cleanVitals(vitals, enabled) {
   }, {});
 }
 
-export default function MedicalRecordModal({ appointment, onClose, onSubmit, submitting = false }) {
-  const [form, setForm] = useState(initialForm);
-  const [vitalsEnabled, setVitalsEnabled] = useState(false);
+function dateInputValue(value) {
+  return value ? String(value).slice(0, 10) : '';
+}
+
+function formFromRecord(record) {
+  if (!record) return createInitialForm();
+
+  return {
+    symptoms: record.symptoms || '',
+    diagnosis: record.diagnosis || '',
+    conclusion: record.conclusion || '',
+    prescription: Array.isArray(record.prescription) ? record.prescription.map((item) => ({
+      medicineName: item.medicineName || '',
+      dosage: item.dosage || '',
+      frequency: item.frequency || '',
+      duration: item.duration || '',
+      note: item.note || ''
+    })) : [],
+    advice: record.advice || record.doctorAdvice || '',
+    followUpRequired: Boolean(record.followUpRequired),
+    followUpDate: dateInputValue(record.followUpDate),
+    note: record.note || '',
+    icd10Code: record.icd10Code || '',
+    allergies: record.allergies || record.allergyHistory || '',
+    vitals: {
+      ...initialForm.vitals,
+      ...(record.vitals || {})
+    },
+    attachments: Array.isArray(record.attachments) ? record.attachments.map((item) => ({
+      url: item.url || '',
+      name: item.name || '',
+      type: item.type || 'other'
+    })) : []
+  };
+}
+
+function hasVitals(vitals) {
+  return Object.values(vitals || {}).some((value) => value !== '' && value !== null && value !== undefined);
+}
+
+export default function MedicalRecordModal({ appointment, record = null, mode = 'create', onClose, onSubmit, submitting = false }) {
+  const toast = useToast();
+  const attachmentInputRef = useRef(null);
+  const isEditMode = mode === 'edit' || Boolean(record?._id);
+  const activeAppointment = appointment || record?.appointmentId || {};
+  const [form, setForm] = useState(() => formFromRecord(record));
+  const [vitalsEnabled, setVitalsEnabled] = useState(() => hasVitals(record?.vitals));
   const [activeVitalPreset, setActiveVitalPreset] = useState('basic');
-  const title = useMemo(() => `Hồ sơ khám - ${patientName(appointment)}`, [appointment]);
+  const [uploadingAttachments, setUploadingAttachments] = useState(false);
+  const title = useMemo(() => `${isEditMode ? 'Cập nhật hồ sơ' : 'Hồ sơ khám'} - ${patientName(activeAppointment)}`, [activeAppointment, isEditMode]);
+
+  useEffect(() => {
+    const nextForm = formFromRecord(record);
+    setForm(nextForm);
+    setVitalsEnabled(hasVitals(nextForm.vitals));
+    setActiveVitalPreset('basic');
+  }, [activeAppointment?._id, record?._id]);
 
   const activeVitalFields = useMemo(() => {
     const preset = vitalPresets.find((item) => item.key === activeVitalPreset) || vitalPresets[0];
@@ -93,7 +157,7 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
     return vitalFieldOrder.filter((field) => fieldSet.has(field));
   }, [activeVitalPreset]);
 
-  if (!appointment) return null;
+  if (!activeAppointment?._id && !record?._id) return null;
 
   function update(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -166,11 +230,42 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
     }));
   }
 
+  async function uploadAttachmentFiles(event) {
+    const files = Array.from(event.target.files || []);
+    event.target.value = '';
+    if (!files.length) return;
+
+    setUploadingAttachments(true);
+    try {
+      const normalizedFiles = await Promise.all(files.map(convertImageFileToPng));
+      const data = new FormData();
+      normalizedFiles.forEach((file) => data.append('files', file));
+      const payload = await apiForm('/uploads/medical-record-attachments', data);
+      const uploaded = payload.data?.attachments || [];
+      if (!uploaded.length) throw new Error('Không nhận được file sau khi upload');
+      setForm((current) => ({
+        ...current,
+        attachments: [...current.attachments, ...uploaded]
+      }));
+      toast.success(`Đã tải ${uploaded.length} file cận lâm sàng`);
+    } catch (error) {
+      toast.error(error.message || 'Không tải được file cận lâm sàng');
+    } finally {
+      setUploadingAttachments(false);
+    }
+  }
+
+  function openAttachmentFilePicker() {
+    if (submitting || uploadingAttachments) return;
+    attachmentInputRef.current?.click();
+  }
+
   function submit(event) {
     event.preventDefault();
     onSubmit?.({
       ...form,
-      appointmentId: appointment._id,
+      appointmentId: activeAppointment._id,
+      recordId: record?._id,
       vitals: cleanVitals(form.vitals, vitalsEnabled),
       prescription: form.prescription.filter((item) => (
         item.medicineName || item.dosage || item.frequency || item.duration || item.note
@@ -180,14 +275,17 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
   }
 
   return (
-    <BaseModal ariaLabel="Tạo hồ sơ khám" className="admin-modal medical-record-modal" disableClose={submitting} onClose={onClose} size="lg">
+    <BaseModal ariaLabel={isEditMode ? 'Cập nhật hồ sơ khám' : 'Tạo hồ sơ khám'} className="admin-modal medical-record-modal" disableClose={submitting || uploadingAttachments} onClose={onClose} size="lg">
       <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
         <div>
-          <span className="eyebrow">Hồ sơ khám bệnh</span>
+          <span className="eyebrow">{isEditMode ? 'Cập nhật hồ sơ' : 'Hồ sơ khám bệnh'}</span>
           <h2 className="h4 mt-2 mb-1">{title}</h2>
-          <p className="text-secondary mb-0">{appointment.date} - {appointment.timeSlot}</p>
+          <p className="text-secondary mb-0">{activeAppointment.date || dateInputValue(record?.createdAt)} - {activeAppointment.timeSlot || 'Đang cập nhật'}</p>
+          {isEditMode ? (
+            <p className="text-secondary small mb-0 mt-2">Nội dung cập nhật sẽ được ghi nhận vào lịch sử thao tác hệ thống.</p>
+          ) : null}
         </div>
-        <button className="btn btn-sm btn-outline-secondary" disabled={submitting} type="button" onClick={onClose}>
+        <button className="btn btn-sm btn-outline-secondary" disabled={submitting || uploadingAttachments} type="button" onClick={onClose}>
           Đóng
         </button>
       </div>
@@ -297,9 +395,28 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
                 <h3 className="h6 mb-1">Cận lâm sàng</h3>
                 <p className="text-secondary small mb-0">Thêm URL ảnh chụp X-quang, siêu âm, xét nghiệm.</p>
               </div>
-              <button className="btn btn-sm btn-outline-primary" disabled={submitting} type="button" onClick={addAttachment}>
-                Đính kèm URL kết quả
-              </button>
+              <div className="medical-attachment-actions">
+                <input
+                  ref={attachmentInputRef}
+                  className="medical-attachment-file-input"
+                  accept="image/*,application/pdf"
+                  disabled={submitting || uploadingAttachments}
+                  multiple
+                  type="file"
+                  onChange={uploadAttachmentFiles}
+                />
+                <button
+                  className="btn btn-sm btn-primary medical-attachment-upload-btn"
+                  disabled={submitting || uploadingAttachments}
+                  type="button"
+                  onClick={openAttachmentFilePicker}
+                >
+                  {uploadingAttachments ? 'Đang tải file...' : 'Tải file kết quả'}
+                </button>
+                <button className="btn btn-sm btn-outline-primary" disabled={submitting || uploadingAttachments} type="button" onClick={addAttachment}>
+                  Đính kèm URL kết quả
+                </button>
+              </div>
             </div>
 
             {form.attachments.length ? (
@@ -331,7 +448,7 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
                         <option value="other">Khác</option>
                       </select>
                     </div>
-                    <button className="btn btn-sm btn-outline-danger" disabled={submitting} type="button" onClick={() => removeAttachment(index)}>
+                    <button className="btn btn-sm btn-outline-danger" disabled={submitting || uploadingAttachments} type="button" onClick={() => removeAttachment(index)}>
                       Xóa
                     </button>
                   </div>
@@ -418,11 +535,11 @@ export default function MedicalRecordModal({ appointment, onClose, onSubmit, sub
         </div>
 
         <div className="d-flex justify-content-end gap-2 mt-4 pt-3 border-top medical-record-modal-footer">
-          <button className="btn btn-outline-secondary" disabled={submitting} type="button" onClick={onClose}>
+          <button className="btn btn-outline-secondary" disabled={submitting || uploadingAttachments} type="button" onClick={onClose}>
             Hủy
           </button>
-          <button className="btn btn-primary" disabled={submitting} type="submit">
-            {submitting ? 'Đang lưu...' : 'Lưu hồ sơ và hoàn thành'}
+          <button className="btn btn-primary" disabled={submitting || uploadingAttachments} type="submit">
+            {uploadingAttachments ? 'Đang tải file...' : submitting ? 'Đang lưu...' : isEditMode ? 'Cập nhật hồ sơ' : 'Lưu hồ sơ và hoàn thành'}
           </button>
         </div>
       </form>

@@ -24,6 +24,7 @@ import {
   isUpcomingAppointment
 } from '../utils/appointmentView.js';
 import { downloadPdf } from '../utils/downloadFile.js';
+import { downloadMedicalRecordPdf } from '../utils/medicalRecordPdf.js';
 import { getConsultationStatusBadge, getStatusBadge } from '../utils/status.js';
 import { cleanDisplayText } from '../utils/textEncoding.js';
 
@@ -178,7 +179,7 @@ function MedicalRecordDetailModal({ record, onClose }) {
     if (!record?._id || downloading) return;
     setDownloading(true);
     try {
-      await downloadPdf(`/medical-records/${record._id}/pdf`);
+      await downloadMedicalRecordPdf(record._id);
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF kết quả khám');
     } finally {
@@ -1004,7 +1005,7 @@ export default function MyAppointments() {
         await downloadPdf(`/appointments/${appointment._id}/queue-ticket/pdf`);
       } else if (type === 'record') {
         const payload = await api(`/appointments/${appointment._id}/medical-record`);
-        await downloadPdf(`/medical-records/${payload.data._id}/pdf`);
+        await downloadMedicalRecordPdf(payload.data._id);
       }
     } catch (err) {
       toast.error(errorMessage(err) || 'Không tải được PDF');

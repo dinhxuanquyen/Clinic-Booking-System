@@ -6,6 +6,7 @@ import BaseModal from '../../components/BaseModal.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
 import { AdminEmptyState, AdminPagination, getName, paginate } from './adminUtils.jsx';
 import { downloadPdf } from '../../utils/downloadFile.js';
+import { downloadMedicalRecordPdf } from '../../utils/medicalRecordPdf.js';
 import { getStatusBadge } from '../../utils/status.js';
 import { getVietnamToday } from '../../utils/dateTime.js';
 
@@ -154,7 +155,7 @@ export default function AdminAppointmentsPage() {
         await downloadPdf(`/appointments/${appointment._id}/queue-ticket/pdf`);
       } else if (type === 'record') {
         const payload = await api(`/appointments/${appointment._id}/medical-record`);
-        await downloadPdf(`/medical-records/${payload.data._id}/pdf`);
+        await downloadMedicalRecordPdf(payload.data._id);
       }
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF');

@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../api/client.js';
 import BaseModal from '../components/BaseModal.jsx';
+import MedicalRecordModal from '../components/MedicalRecordModal.jsx';
 import { useToast } from '../context/ToastContext.jsx';
-import { downloadPdf } from '../utils/downloadFile.js';
+import { downloadMedicalRecordPdf } from '../utils/medicalRecordPdf.js';
 import { connectSocket, getSocket } from '../services/socket.js';
 import { getToken, getUser } from '../utils/auth.js';
 
@@ -146,7 +147,7 @@ function InsuranceSnapshotCard({ insurance }) {
   );
 }
 
-function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }) {
+function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, onEdit, downloading }) {
   const navigate = useNavigate();
   if (!record) return null;
   const appointment = record.appointmentId || {};
@@ -169,6 +170,9 @@ function DoctorRecordDetailModal({ record, onClose, onDownloadPdf, downloading }
           <p className="text-secondary mb-0">{appointment.date || formatDate(record.createdAt)} · {appointment.timeSlot || 'Đang cập nhật'}</p>
         </div>
         <div className="d-flex flex-wrap justify-content-end gap-2">
+          <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => onEdit(record)}>
+            Cập nhật hồ sơ
+          </button>
           <button className="btn btn-sm btn-outline-success" disabled={downloading} type="button" onClick={() => onDownloadPdf(record)}>
             {downloading ? 'Đang tải...' : 'Tải PDF'}
           </button>
@@ -293,10 +297,12 @@ export default function DoctorMedicalRecordsPage() {
   }, []);
   const [records, setRecords] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [editingRecord, setEditingRecord] = useState(null);
   const [loading, setLoading] = useState(false);
   const [clinics, setClinics] = useState([]);
   const [specialties, setSpecialties] = useState([]);
   const [downloadingRecordId, setDownloadingRecordId] = useState('');
+  const [updatingRecordId, setUpdatingRecordId] = useState('');
   const [queryHandled, setQueryHandled] = useState('');
   const [followUpSummary, setFollowUpSummary] = useState({
     total: 0,
@@ -456,11 +462,36 @@ export default function DoctorMedicalRecordsPage() {
     if (!record?._id || downloadingRecordId) return;
     setDownloadingRecordId(record._id);
     try {
-      await downloadPdf(`/medical-records/${record._id}/pdf`);
+      await downloadMedicalRecordPdf(record._id);
     } catch (error) {
       toast.error(error.message || 'Không tải được PDF');
     } finally {
       setDownloadingRecordId('');
+    }
+  }
+
+  async function updateMedicalRecord(data) {
+    const recordId = data.recordId || editingRecord?._id;
+    if (!recordId || updatingRecordId) return;
+
+    setUpdatingRecordId(recordId);
+    try {
+      const payload = await api(`/medical-records/${recordId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+      });
+      const updatedRecord = payload.data;
+      setRecords((current) => current.map((item) => (
+        item._id === recordId ? updatedRecord : item
+      )));
+      setSelected((current) => (current?._id === recordId ? updatedRecord : current));
+      setEditingRecord(null);
+      toast.success(payload.message || 'Cập nhật hồ sơ khám bệnh thành công');
+      loadRecords().catch(() => {});
+    } catch (error) {
+      toast.error(error.message || 'Không cập nhật được hồ sơ khám bệnh');
+    } finally {
+      setUpdatingRecordId('');
     }
   }
 
@@ -665,6 +696,9 @@ export default function DoctorMedicalRecordsPage() {
                               <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => setSelected(record)}>
                                 Xem hồ sơ gốc
                               </button>
+                              <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => setEditingRecord(record)}>
+                                Cập nhật
+                              </button>
                               {linkedFollowUpAppointmentId(record) && (
                                 <button className="btn btn-sm btn-outline-info" type="button" onClick={() => openFollowUpAppointment(record)}>
                                   Xem lịch tái khám
@@ -696,6 +730,9 @@ export default function DoctorMedicalRecordsPage() {
                               <button className="btn btn-sm btn-outline-primary" type="button" onClick={() => setSelected(record)}>
                                 Xem chi tiết
                               </button>
+                              <button className="btn btn-sm btn-outline-secondary" type="button" onClick={() => setEditingRecord(record)}>
+                                Cập nhật
+                              </button>
                               <button className="btn btn-sm btn-outline-success" disabled={downloadingRecordId === record._id} type="button" onClick={() => downloadRecordPdf(record)}>
                                 {downloadingRecordId === record._id ? 'Đang tải...' : 'Tải PDF'}
                               </button>
@@ -722,6 +759,17 @@ export default function DoctorMedicalRecordsPage() {
         record={selected}
         onClose={() => setSelected(null)}
         onDownloadPdf={downloadRecordPdf}
+        onEdit={(record) => {
+          setSelected(null);
+          setEditingRecord(record);
+        }}
+      />
+      <MedicalRecordModal
+        mode="edit"
+        record={editingRecord}
+        submitting={updatingRecordId === editingRecord?._id}
+        onClose={() => setEditingRecord(null)}
+        onSubmit={updateMedicalRecord}
       />
     </div>
   );

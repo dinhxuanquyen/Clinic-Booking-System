@@ -78,6 +78,36 @@ export const createMedicalRecordRules = [
   body('note').optional().trim()
 ];
 
+export const updateMedicalRecordAttachmentsRules = [
+  body('attachments').isArray().withMessage('attachments must be an array'),
+  body('attachments.*.url').trim().notEmpty(),
+  body('attachments.*.name').trim().notEmpty(),
+  body('attachments.*.type').optional().trim()
+];
+
+export const updateMedicalRecordRules = [
+  body('symptoms').optional().trim(),
+  body('vitals').optional().isObject(),
+  body('allergies').optional().trim(),
+  body('icd10Code').optional().trim(),
+  body('diagnosis').trim().notEmpty().withMessage('Chẩn đoán là bắt buộc'),
+  body('conclusion').trim().notEmpty().withMessage('Kết luận là bắt buộc'),
+  body('prescription').optional().isArray().withMessage('prescription must be an array'),
+  body('prescription.*.medicineName').optional().trim(),
+  body('prescription.*.dosage').optional().trim(),
+  body('prescription.*.frequency').optional().trim(),
+  body('prescription.*.duration').optional().trim(),
+  body('prescription.*.note').optional().trim(),
+  body('attachments').optional().isArray(),
+  body('attachments.*.url').optional().trim().notEmpty(),
+  body('attachments.*.name').optional().trim().notEmpty(),
+  body('attachments.*.type').optional().trim(),
+  body('advice').optional().trim(),
+  body('followUpRequired').optional().isBoolean().withMessage('followUpRequired must be boolean'),
+  body('followUpDate').optional({ checkFalsy: true }).isISO8601().withMessage('followUpDate is invalid'),
+  body('note').optional().trim()
+];
+
 export const medicalRecordIdRule = [param('id').isMongoId().withMessage('medical record id is invalid')];
 export const appointmentMedicalRecordRule = [param('appointmentId').isMongoId().withMessage('appointment id is invalid')];
 
@@ -134,6 +164,18 @@ function assertRecordAccess(user, record) {
 
   throw new ApiError(403, 'Bạn không có quyền thực hiện thao tác này');
 }
+
+function normalizeAttachments(items = []) {
+  return items
+    .map((item) => ({
+      name: String(item?.name || '').trim(),
+      url: String(item?.url || '').trim(),
+      type: String(item?.type || 'other').trim() || 'other',
+      uploadedAt: item?.uploadedAt || item?.createdAt || new Date()
+    }))
+    .filter((item) => item.name && item.url);
+}
+
 function streamPdf(res, doc, filename) {
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"; filename*=UTF-8''${encodeURIComponent(filename)}`);
@@ -248,6 +290,32 @@ async function notifyPatientMedicalRecordCreated(record, appointment) {
   emitNotification(payload);
   emitToUser(appointment.patientId, 'medical-record:created', {
     appointmentId: appointment._id,
+    medicalRecordId: record._id
+  });
+}
+
+async function notifyPatientMedicalRecordUpdated(record) {
+  const notification = await Notification.create({
+    userId: record.patientId,
+    role: 'patient',
+    appointmentId: record.appointmentId,
+    type: 'medical_record_updated',
+    title: 'Hồ sơ khám bệnh đã được cập nhật',
+    message: 'Bác sĩ đã điều chỉnh hồ sơ khám bệnh của bạn. Vui lòng kiểm tra lại kết quả và lời dặn.',
+    targetUrl: `/medical-records?recordId=${record._id}`,
+    metadata: {
+      appointmentId: record.appointmentId,
+      medicalRecordId: record._id,
+      doctorId: record.doctorId,
+      clinicId: record.clinicId
+    },
+    isRead: false
+  });
+
+  const payload = notification.toObject();
+  emitNotification(payload);
+  emitToUser(record.patientId, 'medical-record:updated', {
+    appointmentId: record.appointmentId,
     medicalRecordId: record._id
   });
 }
@@ -452,6 +520,94 @@ export const getMedicalRecordById = asyncHandler(async (req, res) => {
     success: true,
     message: 'Medical record fetched successfully',
     data: record
+  });
+});
+
+export const updateMedicalRecordAttachments = asyncHandler(async (req, res) => {
+  const record = await MedicalRecord.findById(req.params.id);
+  if (!record) throw new ApiError(404, 'Không tìm thấy dữ liệu');
+
+  assertRecordAccess(req.user, record);
+
+  record.attachments = normalizeAttachments(req.body.attachments);
+  record.updatedBy = req.user._id;
+  await record.save();
+
+  const populatedRecord = await MedicalRecord.findById(record._id).populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate]);
+
+  res.json({
+    success: true,
+    message: 'Cập nhật file cận lâm sàng thành công',
+    data: populatedRecord
+  });
+});
+
+export const updateMedicalRecord = asyncHandler(async (req, res) => {
+  if (req.user.role !== 'doctor') {
+    throw new ApiError(403, 'Chỉ bác sĩ được cập nhật hồ sơ khám bệnh');
+  }
+
+  if (!req.user.doctorId) {
+    throw new ApiError(400, 'Tài khoản bác sĩ chưa được liên kết hồ sơ bác sĩ');
+  }
+
+  const record = await MedicalRecord.findById(req.params.id);
+  if (!record) throw new ApiError(404, 'Không tìm thấy dữ liệu');
+
+  if (String(record.doctorId?._id || record.doctorId) !== String(req.user.doctorId)) {
+    throw new ApiError(403, 'Bạn không có quyền cập nhật hồ sơ này');
+  }
+
+  const prescription = normalizePrescription(req.body.prescription);
+  assertPrescriptionValid(prescription);
+  const vitals = normalizeVitals(req.body.vitals);
+  const followUpRequired = parseBoolean(req.body.followUpRequired);
+  const followUpDate = followUpRequired && req.body.followUpDate ? req.body.followUpDate : null;
+
+  record.symptoms = req.body.symptoms || '';
+  record.vitals = vitals;
+  record.allergies = req.body.allergies || '';
+  record.icd10Code = req.body.icd10Code || '';
+  record.diagnosis = req.body.diagnosis;
+  record.conclusion = req.body.conclusion;
+  record.prescription = prescription;
+  record.attachments = normalizeAttachments(req.body.attachments || []);
+  record.advice = req.body.advice || '';
+  record.followUpRequired = followUpRequired;
+  record.followUpDate = followUpDate;
+  record.note = req.body.note || '';
+  record.updatedBy = req.user._id;
+
+  if (!followUpRequired) {
+    record.followUpStatus = FOLLOW_UP_STATUSES.NONE;
+  } else if (!record.followUpStatus || record.followUpStatus === FOLLOW_UP_STATUSES.NONE) {
+    record.followUpStatus = FOLLOW_UP_STATUSES.RECOMMENDED;
+  }
+
+  await record.save();
+
+  const populatedRecord = await MedicalRecord.findById(record._id).populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate]);
+  const patientUser = await User.findById(record.patientId).select('name');
+
+  await runMedicalRecordSideEffect('Medical record update audit log', () => createAuditLog({
+    req,
+    action: 'UPDATE_MEDICAL_RECORD',
+    entityType: 'MedicalRecord',
+    entityId: record._id,
+    entityName: `${patientUser?.name || 'Bệnh nhân'} - hồ sơ khám`,
+    description: 'Bác sĩ đã cập nhật nội dung hồ sơ khám bệnh',
+    metadata: {
+      medicalRecordId: String(record._id),
+      appointmentId: String(record.appointmentId),
+      doctorId: String(record.doctorId)
+    }
+  }));
+  await runMedicalRecordSideEffect('Medical record update patient notification', () => notifyPatientMedicalRecordUpdated(record));
+
+  res.json({
+    success: true,
+    message: 'Cập nhật hồ sơ khám bệnh thành công',
+    data: populatedRecord
   });
 });
 

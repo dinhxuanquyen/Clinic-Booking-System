@@ -17,7 +17,9 @@ import {
 function Brand({ to = '/', subtitle = 'Clinic Appointment' }) {
   return (
     <Link className="navbar-brand d-flex align-items-center gap-2 fw-bold text-primary" to={to}>
-      <span className="brand-mark brand-logo">B</span>
+      <span className="brand-mark brand-logo">
+        <img src="/site-logo.webp" alt="" />
+      </span>
       <span className="brand-text">
         <span className="brand-title">BookingCare Mini</span>
         <small className="brand-subtitle">{subtitle}</small>
