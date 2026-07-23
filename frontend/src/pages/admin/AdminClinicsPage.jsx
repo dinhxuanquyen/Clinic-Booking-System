@@ -416,7 +416,7 @@ export default function AdminClinicsPage() {
                   <p>Ảnh đại diện hiển thị ở đầu trang chi tiết cơ sở.</p>
                 </div>
                 <div className="admin-clinic-image-card">
-                  <img src={resolveMediaUrl(form.image, '/placeholder-clinic.svg')} alt="Preview cơ sở" onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')} />
+                  <img src={resolveMediaUrl(form.image, '/placeholder-clinic.svg')} alt="Xem trước ảnh cơ sở" onError={(event) => useImageFallback(event, '/placeholder-clinic.svg')} />
                   <div className="admin-clinic-image-actions">
                     <label className={`admin-clinic-upload-btn ${uploading ? 'disabled' : ''}`}>
                       <input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading} onChange={uploadImage} />

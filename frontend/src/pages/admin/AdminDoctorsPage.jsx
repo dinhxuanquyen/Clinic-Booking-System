@@ -70,6 +70,13 @@ function getDoctorAccountState(account) {
   return { label: 'Đang hoạt động', badgeClass: 'bg-success-subtle text-success' };
 }
 
+function accountRoleLabel(role) {
+  if (role === 'admin') return 'Quản trị viên';
+  if (role === 'doctor') return 'Bác sĩ';
+  if (role === 'patient') return 'Bệnh nhân';
+  return role || 'Chưa cập nhật';
+}
+
 export default function AdminDoctorsPage() {
   const toast = useToast();
   const [clinics, setClinics] = useState([]);
@@ -508,7 +515,7 @@ export default function AdminDoctorsPage() {
                   <p>Ảnh rõ mặt giúp hồ sơ bác sĩ chuyên nghiệp hơn.</p>
                 </div>
                 <div className="admin-doctor-avatar-card">
-                  <img src={resolveMediaUrl(form.avatar, '/placeholder-doctor.svg')} alt="Preview bác sĩ" onError={(event) => useImageFallback(event, '/placeholder-doctor.svg')} />
+                  <img src={resolveMediaUrl(form.avatar, '/placeholder-doctor.svg')} alt="Xem trước ảnh bác sĩ" onError={(event) => useImageFallback(event, '/placeholder-doctor.svg')} />
                   <label className={`admin-doctor-upload-btn ${uploading ? 'disabled' : ''}`}>
                     <input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading} onChange={uploadAvatar} />
                     {uploading ? 'Đang tải ảnh...' : 'Tải ảnh bác sĩ'}
@@ -721,7 +728,7 @@ export default function AdminDoctorsPage() {
                       <span>Email đăng nhập: <strong>{detailDoctor.account.email}</strong></span>
                       <span>Email cá nhân nhận thông báo: <strong>{detailDoctor.doctor?.personalEmail || detailDoctor.doctor?.email || 'Chưa cập nhật'}</strong></span>
                       <span>Tên tài khoản: {detailDoctor.account.name}</span>
-                      <span>Role: {detailDoctor.account.role}</span>
+                      <span>Vai trò: {accountRoleLabel(detailDoctor.account.role)}</span>
                       <span>Ngày tạo tài khoản: {formatDateTime(detailDoctor.account.createdAt)}</span>
                       <span>Ngày đổi mật khẩu lần đầu: {formatDateTime(detailDoctor.account.initialPasswordChangedAt)}</span>
                       <span>Lần đăng nhập cuối: {formatDateTime(detailDoctor.account.lastLoginAt)}</span>

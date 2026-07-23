@@ -298,7 +298,7 @@ export default function AdminSpecialtiesPage() {
                 <div className="admin-specialty-image-card">
                   <img
                     src={resolveMediaUrl(form.image, '/placeholder-specialty.svg')}
-                    alt="Preview chuyên khoa"
+                    alt="Xem trước ảnh chuyên khoa"
                     onError={(event) => useImageFallback(event, '/placeholder-specialty.svg')}
                   />
                   <label className={`admin-specialty-upload-btn ${uploading ? 'disabled' : ''}`}>

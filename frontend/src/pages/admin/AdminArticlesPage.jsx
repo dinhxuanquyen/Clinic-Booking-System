@@ -325,7 +325,7 @@ export default function AdminArticlesPage() {
               <input className="form-control" value={form.coverImage} onChange={(event) => updateForm('coverImage', event.target.value)} placeholder="https://..." />
             </label>
             <label>
-              <span>Tags</span>
+              <span>Thẻ</span>
               <input className="form-control" value={form.tags} onChange={(event) => updateForm('tags', event.target.value)} placeholder="khám bệnh, sức khỏe" />
               <small>Phân tách bằng dấu phẩy hoặc xuống dòng.</small>
             </label>
@@ -371,7 +371,7 @@ export default function AdminArticlesPage() {
           </select>
           <select className="form-select" value={filters.authorRole} onChange={(event) => setFilters((current) => ({ ...current, authorRole: event.target.value }))}>
             <option value="">Tất cả tác giả</option>
-            <option value="admin">Admin</option>
+            <option value="admin">Quản trị viên</option>
             <option value="doctor">Bác sĩ</option>
           </select>
           <button className="btn btn-primary rounded-pill" type="submit">Lọc</button>

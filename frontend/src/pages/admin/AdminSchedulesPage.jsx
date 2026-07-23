@@ -264,7 +264,7 @@ export default function AdminSchedulesPage() {
           <>
             <div className="table-responsive">
               <table className="table table-hover align-middle admin-table">
-                <thead><tr><th>Bác sĩ</th><th>Cơ sở</th><th>Ngày</th><th>Giờ</th><th>Slot</th><th>Làm việc</th><th></th></tr></thead>
+                <thead><tr><th>Bác sĩ</th><th>Cơ sở</th><th>Ngày</th><th>Giờ</th><th>Khung giờ</th><th>Làm việc</th><th></th></tr></thead>
                 <tbody>
                   {pageItems.map((item) => (
                     <tr key={item._id}>
@@ -362,10 +362,10 @@ export default function AdminSchedulesPage() {
                     <div><span>Cơ sở</span><strong>{getName(selectedSlotClinic)}</strong></div>
                     <div><span>Bác sĩ</span><strong>{getName(selectedSlotDoctor)}</strong></div>
                     <div><span>Ngày</span><strong>{slotFilters.date}</strong></div>
-                    <div><span>Tổng slot</span><strong>{slotSummary.total}</strong></div>
+                    <div><span>Tổng khung giờ</span><strong>{slotSummary.total}</strong></div>
                     <div className="success"><span>Trống</span><strong>{slotSummary.available}</strong></div>
                     <div className="info"><span>Đã đặt</span><strong>{slotSummary.booked}</strong></div>
-                    <div className={slotSummary.working ? 'success' : 'info'}><span>Trạng thái ngày</span><strong>{slotSummary.working ? 'Có lịch' : 'Chưa có slot'}</strong></div>
+                    <div className={slotSummary.working ? 'success' : 'info'}><span>Trạng thái ngày</span><strong>{slotSummary.working ? 'Có lịch' : 'Chưa có khung giờ'}</strong></div>
                   </div>
 
                   <div className="admin-schedule-legend">
@@ -394,7 +394,7 @@ export default function AdminSchedulesPage() {
               {!slotLoading && !slotError && slotData.length === 0 && (
                 <div className="admin-schedule-off-empty">
                   <span aria-hidden="true">📅</span>
-                  <strong>Chưa có slot</strong>
+                  <strong>Chưa có khung giờ</strong>
                   <p>{slotMessage || 'Bác sĩ không có lịch làm việc trong ngày này'}</p>
                 </div>
               )}
@@ -453,7 +453,7 @@ export default function AdminSchedulesPage() {
                   <input type="time" className="form-control" value={form.workingHoursEnd} onChange={(event) => setForm({ ...form, workingHoursEnd: event.target.value })} />
                 </div>
                 <div className="col-md-4">
-                  <label className="form-label">Slot duration</label>
+                  <label className="form-label">Thời lượng mỗi khung</label>
                   <input type="number" min="5" step="5" className="form-control" value={form.slotDuration} onChange={(event) => setForm({ ...form, slotDuration: event.target.value })} />
                 </div>
                 <div className="col-md-4 d-flex align-items-end">

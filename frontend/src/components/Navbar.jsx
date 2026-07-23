@@ -338,7 +338,7 @@ export default function Navbar() {
       <header className="app-navbar management-navbar sticky-top">
         <ManagementNavbarContent
           homePath={isAdmin ? '/admin' : '/doctor/queue'}
-          subtitle={isAdmin ? 'Admin Portal' : 'Doctor Portal'}
+          subtitle={isAdmin ? 'Cổng quản trị' : 'Cổng bác sĩ'}
           user={user}
           onLogout={handleLogout}
           activeDropdown={activeDropdown}

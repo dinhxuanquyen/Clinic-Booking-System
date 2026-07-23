@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   buildAssistantFallbackAnalysis,
+  buildGeminiRequestBody,
+  isRetryableGeminiError,
   resolveAssistantContext
 } from './geminiService.js';
 
@@ -71,4 +73,32 @@ test('dấu hiệu nguy hiểm luôn ưu tiên cảnh báo khẩn cấp', () => 
   assert.equal(result.safety.urgencyLevel, 'high');
   assert.equal(specialtyNames(result).includes('Cấp cứu'), true);
   assert.match(result.assistantMessage, /cấp cứu/i);
+});
+
+test('Gemini JSON mode dùng responseMimeType và responseJsonSchema đúng cấu trúc REST', () => {
+  const requestBody = buildGeminiRequestBody('Trả về JSON', 256, {
+    type: 'object',
+    properties: {
+      answer: { type: 'string' }
+    },
+    required: ['answer']
+  });
+
+  assert.equal(requestBody.generationConfig.responseMimeType, 'application/json');
+  assert.deepEqual(requestBody.generationConfig.responseJsonSchema, {
+    type: 'object',
+    properties: {
+      answer: { type: 'string' }
+    },
+    required: ['answer']
+  });
+  assert.equal('responseFormat' in requestBody.generationConfig, false);
+});
+
+test('Gemini HTTP 400 chứa application/json không bị retry như lỗi parse JSON', () => {
+  const error = new Error('Invalid value at generation_config.response_format.text.mime_type, "application/json"');
+  error.fallbackReason = 'gemini_http_error';
+  error.retryable = false;
+
+  assert.equal(isRetryableGeminiError(error), false);
 });

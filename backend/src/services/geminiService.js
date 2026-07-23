@@ -370,14 +370,16 @@ function buildGeminiRequestBody(prompt, maxOutputTokens = 1024, responseSchema =
     generationConfig: {
       temperature: 0.2,
       maxOutputTokens,
-      responseFormat: {
-        text: {
-          mimeType: 'application/json',
-          schema: responseSchema
-        }
-      }
+      responseMimeType: 'application/json',
+      responseJsonSchema: responseSchema
     }
   };
+}
+
+function isRetryableGeminiError(error) {
+  if (error?.retryable) return true;
+  if (error?.fallbackReason) return false;
+  return /JSON|parse|truncat/i.test(error?.message || '');
 }
 
 function classifyHttpError(status, errorText) {
@@ -988,8 +990,7 @@ export async function analyzeSymptomAssistant(input) {
       };
     } catch (error) {
       lastError = error;
-      const isJsonError = /JSON|parse|truncat/i.test(error.message || '');
-      const isRetryable = error.retryable || isJsonError;
+      const isRetryable = isRetryableGeminiError(error);
       console.warn(`[Gemini Assistant] attempt ${attempt} failed:`, error.message);
 
       if (!isRetryable || attempt >= MAX_RETRIES) break;
@@ -1040,8 +1041,8 @@ export async function analyzeSymptoms(input) {
       };
     } catch (error) {
       lastError = error;
-      const isJsonError = /JSON|parse|truncat/i.test(error.message || '');
-      const isRetryable = error.retryable || isJsonError;
+      const isRetryable = isRetryableGeminiError(error);
+      const isJsonError = !error.fallbackReason && /JSON|parse|truncat/i.test(error.message || '');
 
       if (isJsonError) {
         console.warn(`[Gemini] attempt ${attempt} JSON parse failed:`, error.message);
@@ -1070,7 +1071,9 @@ export {
   GEMINI_MODEL,
   MEDICAL_DISCLAIMER,
   buildAssistantFallbackAnalysis,
+  buildGeminiRequestBody,
   hasUsableGeminiKey,
+  isRetryableGeminiError,
   keyPrefix,
   resolveAssistantContext
 };

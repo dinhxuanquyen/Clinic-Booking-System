@@ -4,9 +4,22 @@ import { analyzeSymptomAssistant, analyzeSymptoms } from '../services/geminiServ
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/apiError.js';
 
+function normalizeAgeForRequest(value) {
+  const match = String(value || '').match(/\d{1,3}/);
+  return match ? match[0] : '';
+}
+
+function optionalAgeRule() {
+  return body('age')
+    .customSanitizer(normalizeAgeForRequest)
+    .optional({ checkFalsy: true })
+    .isInt({ min: 0, max: 120 })
+    .withMessage('Tuổi không hợp lệ');
+}
+
 export const symptomCheckerRules = [
   body('symptoms').trim().isLength({ min: 8, max: 2000 }).withMessage('Vui lòng mô tả triệu chứng rõ hơn'),
-  body('age').optional({ checkFalsy: true }).isInt({ min: 0, max: 120 }).withMessage('Tuổi không hợp lệ'),
+  optionalAgeRule(),
   body('gender').optional({ checkFalsy: true }).trim(),
   body('duration').optional({ checkFalsy: true }).trim().isLength({ max: 200 }).withMessage('Thời gian bị quá dài'),
   body('severity').optional({ checkFalsy: true }).trim().isLength({ max: 100 }).withMessage('Mức độ không hợp lệ')
@@ -15,7 +28,7 @@ export const symptomCheckerRules = [
 export const symptomAssistantRules = [
   body('symptoms').optional({ checkFalsy: true }).trim().isLength({ max: 2000 }).withMessage('Mô tả triệu chứng quá dài'),
   body('latestMessage').optional({ checkFalsy: true }).trim().isLength({ max: 2000 }).withMessage('Tin nhắn quá dài'),
-  body('age').optional({ checkFalsy: true }).isInt({ min: 0, max: 120 }).withMessage('Tuổi không hợp lệ'),
+  optionalAgeRule(),
   body('gender').optional({ checkFalsy: true }).trim().isLength({ max: 80 }).withMessage('Giới tính không hợp lệ'),
   body('duration').optional({ checkFalsy: true }).trim().isLength({ max: 200 }).withMessage('Thời gian bị quá dài'),
   body('severity').optional({ checkFalsy: true }).trim().isLength({ max: 100 }).withMessage('Mức độ không hợp lệ'),

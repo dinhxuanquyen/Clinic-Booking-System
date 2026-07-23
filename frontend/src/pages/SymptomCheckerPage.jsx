@@ -50,6 +50,36 @@ const welcomePrompts = [
 const ASSISTANT_BOOKING_CONTEXT_KEY = 'bookingcare:symptom-assistant-context';
 const ASSISTANT_CONVERSATIONS_KEY = 'bookingcare:symptom-assistant-conversations';
 const MAX_SAVED_CONVERSATIONS = 12;
+const MAX_REQUEST_MESSAGES = 10;
+const MAX_REQUEST_MESSAGE_LENGTH = 1000;
+const MAX_REQUEST_SYMPTOMS_LENGTH = 1800;
+const MAX_REQUEST_TEXT_LENGTH = 1200;
+
+function requestText(value, maxLength = MAX_REQUEST_TEXT_LENGTH) {
+  const text = cleanDisplayText(value).trim();
+  return text ? text.slice(0, maxLength) : undefined;
+}
+
+function requestAge(value) {
+  const text = cleanDisplayText(value).trim();
+  if (!text) return undefined;
+
+  const match = text.match(/\d{1,3}/);
+  if (!match) return undefined;
+
+  const age = Number(match[0]);
+  return Number.isInteger(age) && age >= 0 && age <= 120 ? String(age) : undefined;
+}
+
+function requestMessages(messages) {
+  return messages
+    .slice(-MAX_REQUEST_MESSAGES)
+    .map((message) => ({
+      role: ['user', 'assistant'].includes(message.role) ? message.role : 'user',
+      content: requestText(message.content, MAX_REQUEST_MESSAGE_LENGTH)
+    }))
+    .filter((message) => message.content);
+}
 
 function apiErrorMessage(error) {
   return cleanDisplayText(
@@ -166,9 +196,11 @@ function GuidanceList({ title, items }) {
   );
 }
 
-function ChatBubble({ message }) {
+function ChatBubble({ message, onFindDoctors }) {
   const isUser = message.role === 'user';
   const sentAt = message.createdAt ? new Date(message.createdAt) : new Date();
+  const analysis = !isUser ? message.analysis : null;
+  const urgency = urgencyMeta[analysis?.safety?.urgencyLevel] || urgencyMeta.medium;
 
   return (
     <div className={`sc-message ${isUser ? 'user' : 'assistant'}`}>
@@ -178,6 +210,13 @@ function ChatBubble({ message }) {
           <p>{cleanDisplayText(message.content)}</p>
         </div>
         <time>{sentAt.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}</time>
+        {analysis ? (
+          <AssistantAnswerPanel
+            data={analysis}
+            urgency={urgency}
+            onFindDoctors={onFindDoctors}
+          />
+        ) : null}
       </div>
     </div>
   );
@@ -249,7 +288,7 @@ function AssistantAnswerPanel({ data, urgency, onFindDoctors }) {
             <RecommendationCard
               key={`${item.specialtyName || item.specialty?.name || 'specialty'}-${index}`}
               item={item}
-              onFindDoctors={onFindDoctors}
+              onFindDoctors={(recommendation) => onFindDoctors(recommendation, data)}
             />
           ))}
         </div>
@@ -287,16 +326,18 @@ export default function SymptomCheckerPage() {
   const [chatInput, setChatInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(null);
   const chatEndRef = useRef(null);
-
-  const urgency = useMemo(
-    () => urgencyMeta[assistantData?.safety?.urgencyLevel] || urgencyMeta.medium,
-    [assistantData]
-  );
+  const requestInFlightRef = useRef(false);
 
   const conversationTitle = useMemo(() => {
     return buildConversationTitle(messages, form);
   }, [form.symptoms, messages]);
+
+  const deleteDialogTitle = useMemo(() => {
+    if (deleteDialog?.type === 'all') return 'tất cả cuộc trò chuyện';
+    return cleanDisplayText(deleteDialog?.item?.title, 'Cuộc trò chuyện này');
+  }, [deleteDialog]);
 
   useEffect(() => {
     saveConversations(conversations);
@@ -326,11 +367,24 @@ export default function SymptomCheckerPage() {
     }
   }, [messages, loading, assistantData]);
 
+  useEffect(() => {
+    if (!deleteDialog) return undefined;
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setDeleteDialog(null);
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [deleteDialog]);
+
   function update(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
   }
 
-  function findDoctorsForSpecialty(item) {
+  function findDoctorsForSpecialty(item, sourceData = assistantData) {
     const specialty = item?.specialty;
 
     try {
@@ -340,10 +394,10 @@ export default function SymptomCheckerPage() {
         clinicId: entityId(specialty?.clinicId),
         specialtyName: buildSpecialtyName(item),
         clinicName: specialty?.clinicName || '',
-        summary: assistantData?.summary || '',
+        summary: sourceData?.summary || '',
         reason: item?.reason || '',
-        symptoms: assistantData?.updatedContext?.symptoms || form.symptoms || '',
-        urgencyLevel: assistantData?.safety?.urgencyLevel || ''
+        symptoms: sourceData?.updatedContext?.symptoms || form.symptoms || '',
+        urgencyLevel: sourceData?.safety?.urgencyLevel || ''
       }));
     } catch {
       // Navigation still works if session storage is unavailable.
@@ -354,21 +408,25 @@ export default function SymptomCheckerPage() {
 
   function buildRequestBody(nextMessages, latestMessage = '') {
     const context = assistantData?.updatedContext || {};
+    const latest = requestText(latestMessage, MAX_REQUEST_TEXT_LENGTH);
+    const symptoms = requestText(
+      context.symptoms || form.symptoms || latest,
+      MAX_REQUEST_SYMPTOMS_LENGTH
+    );
+
     return {
-      symptoms: context.symptoms || form.symptoms.trim() || latestMessage || undefined,
-      latestMessage: latestMessage || undefined,
-      age: form.age || context.age || undefined,
-      gender: form.gender || context.gender || undefined,
-      duration: form.duration.trim() || context.duration || undefined,
-      severity: form.severity || context.severity || undefined,
-      messages: nextMessages.map((message) => ({
-        role: message.role,
-        content: message.content
-      }))
+      symptoms,
+      latestMessage: latest,
+      age: requestAge(form.age || context.age),
+      gender: requestText(form.gender || context.gender, 80),
+      duration: requestText(form.duration || context.duration, 200),
+      severity: requestText(form.severity || context.severity, 100),
+      messages: requestMessages(nextMessages)
     };
   }
 
   async function askAssistant(nextMessages, latestMessage = '') {
+    requestInFlightRef.current = true;
     setLoading(true);
     try {
       const payload = await api('/ai/symptom-assistant', {
@@ -389,6 +447,7 @@ export default function SymptomCheckerPage() {
           id: messageId(),
           role: 'assistant',
           content: assistantMessage,
+          analysis: data,
           createdAt: Date.now()
         }
       ]);
@@ -404,13 +463,14 @@ export default function SymptomCheckerPage() {
       toast.error(apiErrorMessage(error));
       setMessages(nextMessages);
     } finally {
+      requestInFlightRef.current = false;
       setLoading(false);
     }
   }
 
   async function sendMessage(content) {
     const normalizedContent = cleanDisplayText(content).trim();
-    if (!normalizedContent || loading) return;
+    if (!normalizedContent || loading || requestInFlightRef.current) return;
 
     const nextMessages = [
       ...messages,
@@ -455,16 +515,59 @@ export default function SymptomCheckerPage() {
     setDetailsOpen(false);
   }
 
+  function requestClearConversations() {
+    if (loading || !conversations.length) return;
+    setDeleteDialog({ type: 'all' });
+  }
+
   function clearConversations() {
     setConversations([]);
     startNewConversation();
   }
 
+  function requestDeleteConversation(event, item) {
+    event.stopPropagation();
+    if (!item || loading) return;
+    setDeleteDialog({ type: 'single', item });
+  }
+
+  function closeDeleteDialog() {
+    setDeleteDialog(null);
+  }
+
+  function confirmDeleteConversation() {
+    if (!deleteDialog || loading) return;
+
+    if (deleteDialog.type === 'all') {
+      clearConversations();
+      toast.success('Đã xóa tất cả cuộc trò chuyện.');
+      setDeleteDialog(null);
+      return;
+    }
+
+    const item = deleteDialog.item;
+    setConversations((current) => current.filter((conversation) => conversation.id !== item?.id));
+    if (item?.id === conversationId) {
+      startNewConversation();
+    }
+    toast.success('Đã xóa cuộc trò chuyện.');
+    setDeleteDialog(null);
+  }
+
   function openConversation(item) {
     if (!item || loading) return;
+    const savedMessages = Array.isArray(item.messages) ? item.messages : [];
+    const hasSavedAnalysis = savedMessages.some((message) => message.role === 'assistant' && message.analysis);
+    const messagesWithAnalysis = !hasSavedAnalysis && item.assistantData
+      ? savedMessages.map((message, index, array) => {
+          const lastAssistantIndex = array.map((entry) => entry.role).lastIndexOf('assistant');
+          return index === lastAssistantIndex ? { ...message, analysis: item.assistantData } : message;
+        })
+      : savedMessages;
+
     setConversationId(item.id || messageId());
     setForm({ ...initialForm, ...(item.form || {}) });
-    setMessages(Array.isArray(item.messages) ? item.messages : []);
+    setMessages(messagesWithAnalysis);
     setAssistantData(item.assistantData || null);
     setChatInput('');
     setDetailsOpen(false);
@@ -503,7 +606,7 @@ export default function SymptomCheckerPage() {
         <aside className="sc-modern-sidebar" aria-label="Cuộc trò chuyện">
           <div className="sc-sidebar-title">
             <strong>Cuộc trò chuyện</strong>
-            <button type="button" onClick={clearConversations}>Xóa tất cả</button>
+            <button type="button" onClick={requestClearConversations} disabled={loading || !conversations.length}>Xóa tất cả</button>
           </div>
 
           <button className="sc-new-chat-btn" type="button" onClick={startNewConversation} disabled={loading}>
@@ -515,20 +618,30 @@ export default function SymptomCheckerPage() {
             <span>Gần đây</span>
             <div className="sc-history-list">
               {conversations.length ? conversations.map((item) => (
-                <button
-                  className={item.id === conversationId ? 'active' : ''}
-                  key={item.id}
-                  type="button"
-                  onClick={() => openConversation(item)}
-                  disabled={loading}
-                >
-                  <span>{cleanDisplayText(item.title, 'Cuộc trò chuyện')}</span>
-                  <time>
-                    {item.updatedAt
-                      ? new Date(item.updatedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
-                      : ''}
-                  </time>
-                </button>
+                <div className={`sc-history-row ${item.id === conversationId ? 'active' : ''}`} key={item.id}>
+                  <button
+                    className="sc-history-open"
+                    type="button"
+                    onClick={() => openConversation(item)}
+                    disabled={loading}
+                  >
+                    <span>{cleanDisplayText(item.title, 'Cuộc trò chuyện')}</span>
+                    <time>
+                      {item.updatedAt
+                        ? new Date(item.updatedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+                        : ''}
+                    </time>
+                  </button>
+                  <button
+                    aria-label={`Xóa cuộc trò chuyện ${cleanDisplayText(item.title, '') || 'này'}`}
+                    className="sc-history-delete"
+                    type="button"
+                    onClick={(event) => requestDeleteConversation(event, item)}
+                    disabled={loading}
+                  >
+                    &times;
+                  </button>
+                </div>
               )) : (
                 <p className="sc-history-empty">Chưa có cuộc trò chuyện nào.</p>
               )}
@@ -575,12 +688,13 @@ export default function SymptomCheckerPage() {
             ) : (
               <div className="sc-modern-message-stack">
                 {messages.map((message) => (
-                  <ChatBubble key={message.id} message={message} />
+                  <ChatBubble
+                    key={message.id}
+                    message={message}
+                    onFindDoctors={findDoctorsForSpecialty}
+                  />
                 ))}
                 {loading ? <LoadingPulse /> : null}
-                {!loading ? (
-                  <AssistantAnswerPanel data={assistantData} urgency={urgency} onFindDoctors={findDoctorsForSpecialty} />
-                ) : null}
               </div>
             )}
 
@@ -685,6 +799,39 @@ export default function SymptomCheckerPage() {
           </form>
         </section>
       </section>
+
+      {deleteDialog ? (
+        <div className="sc-delete-dialog-backdrop" role="presentation" onMouseDown={closeDeleteDialog}>
+          <section
+            aria-labelledby="sc-delete-dialog-title"
+            aria-modal="true"
+            className="sc-delete-dialog"
+            role="dialog"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <h2 id="sc-delete-dialog-title">
+              {deleteDialog.type === 'all' ? 'Xóa tất cả cuộc trò chuyện?' : 'Xóa cuộc trò chuyện?'}
+            </h2>
+            <p>
+              Hành động này sẽ xóa <strong>{deleteDialogTitle}</strong>
+              {deleteDialog.type === 'all'
+                ? ' khỏi lịch sử trợ lý sức khỏe trên trình duyệt này.'
+                : ' khỏi lịch sử trợ lý sức khỏe.'}
+            </p>
+            <p className="sc-delete-dialog-note">
+              Nội dung đã xóa sẽ không thể khôi phục từ trang tư vấn triệu chứng.
+            </p>
+            <footer>
+              <button type="button" className="sc-delete-dialog-cancel" onClick={closeDeleteDialog}>
+                Hủy bỏ
+              </button>
+              <button type="button" className="sc-delete-dialog-confirm" onClick={confirmDeleteConversation}>
+                Xóa
+              </button>
+            </footer>
+          </section>
+        </div>
+      ) : null}
     </main>
   );
 }

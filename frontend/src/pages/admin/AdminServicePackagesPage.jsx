@@ -404,7 +404,7 @@ export default function AdminServicePackagesPage() {
                   <div className="service-package-image-uploader">
                     <img
                       src={resolveMediaUrl(form.imageUrl, '/packages-family-banner.webp')}
-                      alt="Preview gói khám"
+                      alt="Xem trước gói khám"
                       onError={(event) => useImageFallback(event, '/packages-family-banner.webp')}
                     />
                     <div>
@@ -424,7 +424,7 @@ export default function AdminServicePackagesPage() {
                 </div>
                 <div className="col-12 service-package-preview-field">
                   <div className="service-package-preview-card">
-                    <span>Preview</span>
+                    <span>Xem trước</span>
                     <strong>{form.name || 'Tên gói khám'}</strong>
                     <em>{form.price !== '' ? formatCurrency(form.price) : 'Giá gói'} · {form.durationMinutes || 30} phút</em>
                     <p>{form.description || 'Mô tả ngắn gọn về gói khám sẽ hiển thị tại đây.'}</p>

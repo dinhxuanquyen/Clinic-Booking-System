@@ -7,5 +7,7 @@ export function validate(req, res, next) {
     return next();
   }
 
-  next(new ApiError(422, 'Validation failed', result.array()));
+  const details = result.array({ onlyFirstError: true });
+  const firstMessage = details[0]?.msg || 'Validation failed';
+  next(new ApiError(422, firstMessage, details));
 }

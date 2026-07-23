@@ -351,7 +351,7 @@ function DashboardLoading() {
   return (
     <div className="dash-loading-state" role="status" aria-live="polite">
       <div className="dash-loading-bar" />
-      <h2>Đang tải Dashboard vận hành</h2>
+      <h2>Đang tải bảng điều khiển vận hành</h2>
       <p>Hệ thống đang tổng hợp lịch hẹn, bác sĩ, cơ sở và tài khoản quản trị.</p>
     </div>
   );
@@ -746,7 +746,7 @@ export default function AdminDashboardPage() {
         <div className="page-heading admin-page-heading">
           <div>
             <span className="eyebrow">Tổng quan</span>
-            <h1 className="h3 mt-2 mb-0">Dashboard vận hành</h1>
+            <h1 className="h3 mt-2 mb-0">Bảng điều khiển vận hành</h1>
           </div>
         </div>
         <DashboardLoading />
@@ -759,7 +759,7 @@ export default function AdminDashboardPage() {
       <div className="page-heading admin-page-heading">
         <div>
           <span className="eyebrow">Tổng quan</span>
-          <h1 className="h3 mt-2 mb-0">Dashboard vận hành</h1>
+          <h1 className="h3 mt-2 mb-0">Bảng điều khiển vận hành</h1>
           <p className="text-secondary mt-1 mb-0">Theo dõi vận hành lịch khám, yêu cầu cần xử lý và dữ liệu quản trị cốt lõi.</p>
         </div>
       </div>
@@ -775,9 +775,9 @@ export default function AdminDashboardPage() {
           <section className="dash-section-block" aria-labelledby="today-operations-heading">
             <div className="dash-section-head dash-section-head-compact">
               <div>
-                <span className="eyebrow">Today Operations</span>
+                <span className="eyebrow">Vận hành hôm nay</span>
                 <h2 id="today-operations-heading">Vận hành hôm nay</h2>
-                <p>Không phụ thuộc bộ lọc thời gian analytics. Phạm vi cơ sở: {selectedClinicLabel}.</p>
+                <p>Không phụ thuộc bộ lọc thời gian phân tích. Phạm vi cơ sở: {selectedClinicLabel}.</p>
               </div>
             </div>
             <div className="dash-kpi-grid dash-kpi-grid-five">
@@ -800,9 +800,9 @@ export default function AdminDashboardPage() {
           <section className="dash-section-card dash-task-center" aria-labelledby="task-center-heading">
             <div className="dash-section-head">
               <div>
-                <span className="eyebrow">Task Center</span>
+                <span className="eyebrow">Trung tâm tác vụ</span>
                 <h2 id="task-center-heading">Việc cần xử lý hiện tại</h2>
-                <p>3 nhóm tác vụ thật từ lịch hẹn, theo phạm vi cơ sở đang chọn và không phụ thuộc analytics time range.</p>
+                <p>3 nhóm tác vụ thật từ lịch hẹn, theo phạm vi cơ sở đang chọn và không phụ thuộc khoảng thời gian phân tích.</p>
               </div>
             </div>
             {immediateTasks.every((item) => item.value === 0) ? (
@@ -825,7 +825,7 @@ export default function AdminDashboardPage() {
 
           <section className="dash-filter-bar" aria-labelledby="analytics-filter-heading">
             <div>
-              <span className="eyebrow">Analytics</span>
+              <span className="eyebrow">Phân tích</span>
               <h2 id="analytics-filter-heading">Phân tích lịch hẹn</h2>
               <p>Bộ lọc thời gian chỉ áp dụng cho biểu đồ, xếp hạng và cập nhật gần đây.</p>
             </div>
@@ -885,7 +885,7 @@ export default function AdminDashboardPage() {
             <div className="dash-section-head">
               <div>
                 <h2 id="action-appointments-heading">Lịch hẹn cần xử lý</h2>
-                <p>Danh sách ưu tiên từ Task Center, sắp theo cập nhật gần nhất.</p>
+                <p>Danh sách ưu tiên từ trung tâm tác vụ, sắp theo cập nhật gần nhất.</p>
               </div>
               <Link className="btn btn-sm btn-outline-primary" to="/admin/appointments">Xem tất cả</Link>
             </div>
@@ -907,7 +907,7 @@ export default function AdminDashboardPage() {
             <section className="dash-section-card dash-secondary-card" aria-labelledby="inventory-heading">
               <div className="dash-section-head">
                 <div>
-                  <h2 id="inventory-heading">System Inventory</h2>
+                  <h2 id="inventory-heading">Kiểm kê hệ thống</h2>
                   <p>Thông tin cấu hình hệ thống, đặt ở mức ưu tiên phụ.</p>
                 </div>
               </div>

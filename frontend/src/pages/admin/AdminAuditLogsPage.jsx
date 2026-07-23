@@ -9,7 +9,7 @@ const limit = 10;
 
 const roleOptions = [
   { value: '', label: 'Tất cả vai trò' },
-  { value: 'admin', label: 'Admin' },
+  { value: 'admin', label: 'Quản trị viên' },
   { value: 'doctor', label: 'Bác sĩ' },
   { value: 'patient', label: 'Bệnh nhân' }
 ];
@@ -86,7 +86,7 @@ function formatDateTime(value) {
 }
 
 function roleLabel(role) {
-  if (role === 'admin') return 'Admin';
+  if (role === 'admin') return 'Quản trị viên';
   if (role === 'doctor') return 'Bác sĩ';
   if (role === 'patient') return 'Bệnh nhân';
   return 'Hệ thống';
@@ -168,7 +168,7 @@ export default function AdminAuditLogsPage() {
       {/* ── Page Heading ── */}
       <div className="d-flex justify-content-between align-items-center page-heading admin-page-heading">
         <div>
-          <span className="eyebrow">Audit log</span>
+          <span className="eyebrow">Nhật ký</span>
           <h1 className="h3 mt-2 mb-0">Nhật ký hệ thống</h1>
           <p className="text-secondary mt-2 mb-0">
             Theo dõi các thao tác quan trọng trong hệ thống Clinic Booking.
@@ -204,7 +204,7 @@ export default function AdminAuditLogsPage() {
             <div>
               <label className="form-label">Loại đối tượng</label>
               <select className="form-select" value={filters.entityType} onChange={(event) => updateFilter('entityType', event.target.value)}>
-                {entityOptions.map((item) => <option key={item || 'all-entity'} value={item}>{item || 'Tất cả đối tượng'}</option>)}
+                {entityOptions.map((item) => <option key={item || 'all-entity'} value={item}>{item ? entityLabel(item) : 'Tất cả đối tượng'}</option>)}
               </select>
             </div>
             <div>
@@ -227,7 +227,7 @@ export default function AdminAuditLogsPage() {
       <div className="management-panel admin-table-card">
         <div className="audit-summary-bar">
           <p className="audit-result-count">
-            <strong>{pagination.total}</strong> bản ghi audit log
+            <strong>{pagination.total}</strong> bản ghi nhật ký
             {hasFilters && <span style={{ marginLeft: 6, color: 'var(--color-primary)' }}>• Đang lọc</span>}
           </p>
           <span style={{ fontSize: '0.82rem', color: 'var(--gray-400)' }}>
@@ -333,7 +333,7 @@ export default function AdminAuditLogsPage() {
           <div className="modal-header-ds">
             <div>
               <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: 'var(--gray-400)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                Audit Detail
+                Chi tiết nhật ký
               </p>
               <h2>Chi tiết nhật ký</h2>
               <p>{formatDateTime(selectedLog.createdAt)}</p>
@@ -353,22 +353,22 @@ export default function AdminAuditLogsPage() {
               <div><span>Loại đối tượng</span><strong>{entityLabel(selectedLog.entityType)}</strong></div>
               <div><span>Tên đối tượng</span><strong>{displayText(selectedLog.entityName, '-')}</strong></div>
               <div>
-                <span>IP</span>
+                <span>Địa chỉ IP</span>
                 <code style={{ fontSize: '0.85rem', background: 'var(--gray-100)', padding: '2px 6px', borderRadius: 4 }}>
                   {selectedLog.ipAddress || '-'}
                 </code>
               </div>
               <div className="audit-detail-wide"><span>Mô tả</span><strong>{displayText(selectedLog.description, '-')}</strong></div>
               <div className="audit-detail-wide">
-                <span>User Agent</span>
+                <span>Trình duyệt/thiết bị</span>
                 <small style={{ color: 'var(--gray-500)', wordBreak: 'break-all' }}>{displayText(selectedLog.userAgent, '-')}</small>
               </div>
             </div>
 
             <div className="audit-metadata-box" style={{ marginTop: 20 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                <strong style={{ fontSize: '0.9rem' }}>Metadata</strong>
-                <span style={{ fontSize: '0.78rem', color: 'var(--gray-400)', fontWeight: 600 }}>JSON</span>
+                <strong style={{ fontSize: '0.9rem' }}>Dữ liệu bổ sung</strong>
+                <span style={{ fontSize: '0.78rem', color: 'var(--gray-400)', fontWeight: 600 }}>Dạng JSON</span>
               </div>
               <pre style={{ fontSize: '0.82rem', background: 'var(--gray-50)', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-md)', padding: '14px', overflow: 'auto', maxHeight: 320, margin: 0 }}>
                 {JSON.stringify(cleanDisplayObject(selectedLog.metadata || {}), null, 2)}
