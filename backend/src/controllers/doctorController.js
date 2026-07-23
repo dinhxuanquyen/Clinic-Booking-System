@@ -313,10 +313,25 @@ export const getDoctorById = asyncHandler(async (req, res) => {
     throw new ApiError(404, 'Doctor not found');
   }
 
+  const [totalAppointments, completedAppointments, servedPatients] = await Promise.all([
+    Appointment.countDocuments({ doctorId: doctor._id }),
+    Appointment.countDocuments({ doctorId: doctor._id, status: 'completed' }),
+    Appointment.distinct('patientId', { doctorId: doctor._id, status: 'completed' })
+  ]);
+
   res.json({
     success: true,
     message: 'Doctor fetched successfully',
-    data: doctor
+    data: {
+      ...doctor.toObject(),
+      stats: {
+        totalAppointments,
+        completedAppointments,
+        servedPatients: servedPatients.length,
+        averageRating: doctor.ratingAverage || 0,
+        ratingCount: doctor.ratingCount || 0
+      }
+    }
   });
 });
 

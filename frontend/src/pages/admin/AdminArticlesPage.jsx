@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
-import { api } from '../../api/client.js';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { api, apiForm } from '../../api/client.js';
 import { useToast } from '../../context/ToastContext.jsx';
+import { resolveMediaUrl } from '../../utils/media.js';
 import { cleanDisplayText } from '../../utils/textEncoding.js';
 
 const defaultForm = {
@@ -50,6 +51,7 @@ function getAuthor(article) {
 
 export default function AdminArticlesPage() {
   const toast = useToast();
+  const coverInputRef = useRef(null);
   const [articles, setArticles] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
   const [specialties, setSpecialties] = useState([]);
@@ -57,6 +59,7 @@ export default function AdminArticlesPage() {
   const [editing, setEditing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
   const [filters, setFilters] = useState({ search: '', status: '', authorRole: '' });
   const [formNotice, setFormNotice] = useState(null);
 
@@ -134,6 +137,40 @@ export default function AdminArticlesPage() {
       message: 'Bạn có thể cập nhật nội dung, đổi trạng thái hoặc lưu thành bản nháp trước khi xuất bản.'
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function uploadCoverImage(event) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    setUploadingCover(true);
+    try {
+      const payload = await apiForm('/uploads/article-cover', formData);
+      const url = payload.data?.url;
+      if (!url) throw new Error('Không nhận được URL ảnh sau khi upload');
+      updateForm('coverImage', url);
+      toast.success('Đã tải ảnh bìa bài viết');
+    } catch (error) {
+      toast.error(error.message || 'Không tải được ảnh bìa');
+    } finally {
+      setUploadingCover(false);
+    }
+  }
+
+  function openCoverFilePicker(event) {
+    if (saving || uploadingCover) return;
+    if (event.target.closest('button, input, label, a')) return;
+    coverInputRef.current?.click();
+  }
+
+  function handleCoverPickerKeyDown(event) {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    openCoverFilePicker(event);
   }
 
   async function submit(event) {
@@ -320,7 +357,42 @@ export default function AdminArticlesPage() {
                 <option value="hidden">Ẩn</option>
               </select>
             </label>
-            <label>
+            <div className="article-admin-cover-field article-admin-cover-picker" role="button" tabIndex={0} onClick={openCoverFilePicker} onKeyDown={handleCoverPickerKeyDown}>
+              <div className="article-admin-cover-preview">
+                {form.coverImage ? (
+                  <img src={resolveMediaUrl(form.coverImage, '/articles-health-banner.webp')} alt="Ảnh bìa bài viết" />
+                ) : (
+                  <span>Chưa có ảnh bìa</span>
+                )}
+              </div>
+              <div className="article-admin-cover-controls">
+                <div className="article-admin-cover-actions">
+                  <input
+                    ref={coverInputRef}
+                    className="article-cover-file-input"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    disabled={uploadingCover || saving}
+                    onChange={uploadCoverImage}
+                  />
+                  <button
+                    className="btn btn-primary article-cover-upload-btn"
+                    disabled={uploadingCover || saving}
+                    type="button"
+                    onClick={() => coverInputRef.current?.click()}
+                  >
+                    {uploadingCover ? 'Đang tải ảnh...' : 'Tải ảnh từ máy'}
+                  </button>
+                  {form.coverImage && (
+                    <button className="btn btn-outline-secondary" disabled={uploadingCover || saving} type="button" onClick={() => updateForm('coverImage', '')}>
+                      Xóa ảnh
+                    </button>
+                  )}
+                </div>
+                <small>Hỗ trợ JPG, PNG, WEBP tối đa 2MB. URL ảnh bìa sẽ tự điền sau khi tải lên.</small>
+              </div>
+            </div>
+            <label className="article-cover-url-field">
               <span>Ảnh bìa URL</span>
               <input className="form-control" value={form.coverImage} onChange={(event) => updateForm('coverImage', event.target.value)} placeholder="https://..." />
             </label>
@@ -347,10 +419,10 @@ export default function AdminArticlesPage() {
           </aside>
         </div>
         <div className="article-admin-actions">
-          <button className="btn btn-outline-secondary rounded-pill px-4" type="button" onClick={resetForm} disabled={saving}>
+          <button className="btn btn-outline-secondary rounded-pill px-4" type="button" onClick={resetForm} disabled={saving || uploadingCover}>
             Làm mới form
           </button>
-          <button className="btn btn-primary rounded-pill px-4" type="submit" disabled={saving}>
+          <button className="btn btn-primary rounded-pill px-4" type="submit" disabled={saving || uploadingCover}>
             {saving ? 'Đang lưu...' : editing ? 'Lưu thay đổi' : 'Tạo bài viết'}
           </button>
         </div>

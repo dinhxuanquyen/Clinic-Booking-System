@@ -4010,24 +4010,40 @@ select:focus {
 
 .dash-secondary-card .dash-system-stat {
   position: relative;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
   min-height: 94px;
-  padding: 15px 16px 15px 18px;
+  padding: 15px;
   text-align: left;
   background: #fbfdff;
 }
 
-.dash-secondary-card .dash-system-stat::before {
-  content: "";
-  position: absolute;
-  inset: 14px auto 14px 0;
-  width: 3px;
-  border-radius: 999px;
-  background: var(--dash-system-accent, var(--color-primary));
+.dash-secondary-card .dash-system-stat:hover .dash-system-stat-icon {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(15, 43, 91, 0.12);
+}
+
+.dash-secondary-card .dash-system-stat-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid color-mix(in srgb, var(--dash-system-accent, var(--color-primary)) 22%, white);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--dash-system-accent, var(--color-primary)) 14%, white);
+  color: color-mix(in srgb, var(--dash-system-accent, var(--color-primary)) 70%, #0f172a);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.dash-secondary-card .dash-system-stat-icon svg {
+  width: 22px;
+  height: 22px;
 }
 
 .dash-secondary-card .dash-system-stat-value {
-  margin-top: 8px;
+  margin-top: 0;
   font-size: 1.55rem;
 }
 
@@ -4045,13 +4061,6 @@ select:focus {
 .dash-system-stat.tone-success { --dash-system-accent: var(--color-success); }
 .dash-system-stat.tone-neutral { --dash-system-accent: var(--gray-300); }
 .dash-system-stat.tone-danger { --dash-system-accent: var(--color-danger); }
-
-.dash-system-stat-marker {
-  width: 26px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--dash-system-accent, var(--color-primary));
-}
 
 .dash-secondary-card .dash-quick-actions-grid {
   display: flex;
@@ -14743,6 +14752,7 @@ a {
 .doctor-profile-hero-clinic strong {
   display: inline-flex;
   align-items: center;
+  gap: 7px;
   min-height: 38px;
   padding: 8px 13px;
   border: 1px solid #d8ecff;
@@ -14756,6 +14766,46 @@ a {
 .doctor-profile-hero-clinic strong {
   border-color: #bbf7d0;
   background: #ecfdf5;
+  color: #15803d;
+}
+
+.doctor-profile-hero-meta .doctor-profile-mini-icon,
+.doctor-profile-hero-clinic .doctor-profile-mini-icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.doctor-profile-mini-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.doctor-profile-mini-icon.tone-warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.doctor-profile-mini-icon.tone-info {
+  background: #dff4ff;
+  color: #0284c7;
+}
+
+.doctor-profile-mini-icon.tone-primary {
+  background: #e0edff;
+  color: #0756b8;
+}
+
+.doctor-profile-mini-icon.tone-success {
+  background: #dcfce7;
   color: #15803d;
 }
 
@@ -14794,6 +14844,41 @@ a {
 
 .doctor-highlight-item span {
   font-size: 1.25rem;
+}
+
+.doctor-highlight-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.doctor-highlight-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.doctor-highlight-item.tone-warning .doctor-highlight-icon {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.doctor-highlight-item.tone-info .doctor-highlight-icon {
+  background: #dff4ff;
+  color: #0284c7;
+}
+
+.doctor-highlight-item.tone-primary .doctor-highlight-icon {
+  background: #e0edff;
+  color: #0756b8;
+}
+
+.doctor-highlight-item.tone-success .doctor-highlight-icon {
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .doctor-highlight-item strong {
@@ -24605,6 +24690,24 @@ html, body, #root {
   border: 1px solid #dbeafe;
   border-radius: 16px;
   background: #f8fcff;
+}
+
+.article-admin-editor-side .article-admin-cover-field {
+  grid-template-columns: 1fr;
+}
+
+.article-admin-editor-side .article-admin-cover-preview,
+.article-admin-editor-side .article-admin-cover-preview img {
+  min-height: 140px;
+}
+
+.article-admin-editor-side .article-admin-cover-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.article-admin-editor-side .article-admin-cover-actions .btn {
+  width: 100%;
 }
 
 .article-admin-cover-picker {
@@ -36532,6 +36635,16 @@ body.modal-open.doctor-portal-open {
   min-height: 34px;
   padding: 7px 11px;
   font-size: 0.86rem;
+}
+
+.public-main .doctor-profile-hero-meta .doctor-profile-mini-icon,
+.public-main .doctor-profile-hero-clinic .doctor-profile-mini-icon {
+  width: 22px;
+  height: 22px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  font-size: inherit;
 }
 
 .public-main .doctor-highlights-card {

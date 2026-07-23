@@ -611,6 +611,79 @@ function RankingCard({ title, items, emptyMessage, type }) {
   );
 }
 
+function SystemInventoryIcon({ name }) {
+  const commonProps = {
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    strokeWidth: 2,
+    viewBox: '0 0 24 24',
+    'aria-hidden': 'true'
+  };
+
+  if (name === 'clinic') {
+    return (
+      <svg {...commonProps}>
+        <path d="M4 21V7l8-4 8 4v14" />
+        <path d="M9 21v-6h6v6" />
+        <path d="M9 10h6" />
+        <path d="M12 7v6" />
+      </svg>
+    );
+  }
+
+  if (name === 'doctor') {
+    return (
+      <svg {...commonProps}>
+        <path d="M12 13a5 5 0 1 0-5-5 5 5 0 0 0 5 5Z" />
+        <path d="M4 21a8 8 0 0 1 16 0" />
+        <path d="M19 14v4" />
+        <path d="M17 16h4" />
+      </svg>
+    );
+  }
+
+  if (name === 'specialty') {
+    return (
+      <svg {...commonProps}>
+        <path d="M12 3v18" />
+        <path d="M5 10h14" />
+        <path d="M7 6h10a2 2 0 0 1 2 2v10H5V8a2 2 0 0 1 2-2Z" />
+      </svg>
+    );
+  }
+
+  if (name === 'account-issued') {
+    return (
+      <svg {...commonProps}>
+        <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+        <path d="M2 21a7 7 0 0 1 12.4-4.4" />
+        <path d="m16 19 2 2 4-5" />
+      </svg>
+    );
+  }
+
+  if (name === 'account-missing') {
+    return (
+      <svg {...commonProps}>
+        <path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+        <path d="M2 21a7 7 0 0 1 12.4-4.4" />
+        <path d="M18 16v.01" />
+        <path d="M18 21v-2" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...commonProps}>
+      <rect height="11" rx="2" width="14" x="5" y="10" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+      <path d="M12 14v3" />
+    </svg>
+  );
+}
+
 export default function AdminDashboardPage() {
   const [clinics, setClinics] = useState([]);
   const [specialties, setSpecialties] = useState([]);
@@ -798,12 +871,12 @@ export default function AdminDashboardPage() {
   ];
 
   const systemInventoryStats = [
-    { label: 'Tổng cơ sở', value: clinics.length, tone: 'info' },
-    { label: 'Tổng bác sĩ', value: doctors.length, tone: 'primary' },
-    { label: 'Tổng chuyên khoa', value: specialties.length, tone: 'cyan' },
-    { label: 'Đã cấp tài khoản', value: doctorAccountStats.issued, tone: 'success' },
-    { label: 'Chưa cấp tài khoản', value: doctorAccountStats.unissued, tone: 'neutral' },
-    { label: 'Tài khoản bị khóa', value: doctorAccountStats.locked, tone: 'danger' }
+    { label: 'Tổng cơ sở', value: clinics.length, tone: 'info', icon: 'clinic' },
+    { label: 'Tổng bác sĩ', value: doctors.length, tone: 'primary', icon: 'doctor' },
+    { label: 'Tổng chuyên khoa', value: specialties.length, tone: 'cyan', icon: 'specialty' },
+    { label: 'Đã cấp tài khoản', value: doctorAccountStats.issued, tone: 'success', icon: 'account-issued' },
+    { label: 'Chưa cấp tài khoản', value: doctorAccountStats.unissued, tone: 'neutral', icon: 'account-missing' },
+    { label: 'Tài khoản bị khóa', value: doctorAccountStats.locked, tone: 'danger', icon: 'account-locked' }
   ];
 
   const quickActions = [
@@ -999,9 +1072,13 @@ export default function AdminDashboardPage() {
               <div className="dash-system-grid">
                 {systemInventoryStats.map((item) => (
                   <div className={`dash-system-stat tone-${item.tone}`} key={item.label}>
-                    <span className={`dash-system-stat-marker ${item.tone}`} aria-hidden="true" />
-                    <div className="dash-system-stat-value">{item.value}</div>
-                    <div className="dash-system-stat-label">{item.label}</div>
+                    <span className="dash-system-stat-icon">
+                      <SystemInventoryIcon name={item.icon} />
+                    </span>
+                    <span>
+                      <div className="dash-system-stat-value">{item.value}</div>
+                      <div className="dash-system-stat-label">{item.label}</div>
+                    </span>
                   </div>
                 ))}
               </div>

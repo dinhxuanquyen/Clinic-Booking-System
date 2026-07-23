@@ -53,6 +53,86 @@ function patientDisplayName(patient) {
   return `Bệnh nhân ${parts.map((part) => part[0]).join('.')}`;
 }
 
+function DoctorMetricIcon({ name }) {
+  const props = {
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    strokeWidth: 2,
+    viewBox: '0 0 24 24',
+    'aria-hidden': 'true'
+  };
+
+  if (name === 'rating') {
+    return (
+      <svg {...props}>
+        <path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6-5.4-2.8-5.4 2.8 1-6-4.4-4.3 6.1-.9L12 3Z" />
+      </svg>
+    );
+  }
+
+  if (name === 'visits') {
+    return (
+      <svg {...props}>
+        <rect height="16" rx="3" width="16" x="4" y="5" />
+        <path d="M8 3v4" />
+        <path d="M16 3v4" />
+        <path d="M8 12h8" />
+        <path d="M8 16h5" />
+      </svg>
+    );
+  }
+
+  if (name === 'experience') {
+    return (
+      <svg {...props}>
+        <rect height="14" rx="2" width="18" x="3" y="7" />
+        <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+        <path d="M3 13h18" />
+      </svg>
+    );
+  }
+
+  if (name === 'satisfaction') {
+    return (
+      <svg {...props}>
+        <path d="M20.4 5.6a5.2 5.2 0 0 0-7.4 0L12 6.6l-1-1a5.2 5.2 0 0 0-7.4 7.4l1 1L12 21l7.4-7 1-1a5.2 5.2 0 0 0 0-7.4Z" />
+      </svg>
+    );
+  }
+
+  if (name === 'clinic') {
+    return (
+      <svg {...props}>
+        <path d="M4 21V7l8-4 8 4v14" />
+        <path d="M9 21v-6h6v6" />
+        <path d="M9 10h6" />
+        <path d="M12 7v6" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...props}>
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
+function formatMetricNumber(value) {
+  const number = Number(value || 0);
+  if (!number) return '0';
+  if (number >= 1000) return `${Math.round(number / 100) / 10}k`;
+  return String(number);
+}
+
+function formatRatingNumber(value) {
+  const number = Number(value || 0);
+  if (!number) return '0.0';
+  return Number.isInteger(number) ? `${number}.0` : number.toFixed(1);
+}
+
 function practiceAreasForSpecialty(name = '') {
   const normalized = cleanDisplayText(name, '').toLowerCase();
 
@@ -390,7 +470,13 @@ export default function DoctorDetail() {
   const experienceYears = doctor.experienceYears || 10;
   const averageRating = reviewData.summary.averageRating || doctor.ratingAverage || 0;
   const ratingCount = reviewData.summary.ratingCount || doctor.ratingCount || 0;
-  const ratingText = ratingCount ? `${averageRating}/5` : 'Chưa có đánh giá';
+  const formattedRating = formatRatingNumber(averageRating);
+  const ratingText = ratingCount ? `${formattedRating}/5` : 'Chưa có đánh giá';
+  const completedAppointments = doctor.stats?.completedAppointments ?? doctor.completedAppointments ?? 0;
+  const totalAppointments = doctor.stats?.totalAppointments ?? doctor.totalAppointments ?? completedAppointments;
+  const visitCountText = totalAppointments ? formatMetricNumber(totalAppointments) : '0';
+  const satisfactionScore = ratingCount ? Math.round((Number(averageRating || 0) / 5) * 100) : 0;
+  const satisfactionText = ratingCount ? `${satisfactionScore}%` : '—';
   const doctorName = cleanDisplayText(doctor.name, 'Bác sĩ');
   const doctorDegree = cleanDisplayText(doctor.degree, '');
   const doctorTitle = doctorDegree ? `${doctorDegree} ${doctorName}` : doctorName;
@@ -400,10 +486,10 @@ export default function DoctorDetail() {
   const workExperience = cleanDisplayText(doctor.workplace, '') || clinicName(doctor);
   const doctorPracticeAreas = practiceAreasForSpecialty(specialtyName(doctor));
   const highlights = [
-    { icon: '⭐', value: ratingCount ? averageRating : '-', label: 'Đánh giá' },
-    { icon: '👥', value: '500+', label: 'Lượt khám' },
-    { icon: '💼', value: `${experienceYears}`, label: 'Năm kinh nghiệm' },
-    { icon: '😊', value: '98%', label: 'Hài lòng' }
+    { icon: 'rating', value: ratingCount ? formattedRating : '-', label: 'Đánh giá', tone: 'warning' },
+    { icon: 'visits', value: visitCountText, label: 'Lượt khám', tone: 'info' },
+    { icon: 'experience', value: `${experienceYears}`, label: 'Năm kinh nghiệm', tone: 'primary' },
+    { icon: 'satisfaction', value: satisfactionText, label: 'Hài lòng', tone: 'success' }
   ];
   const visitSteps = [
     { icon: '📅', title: 'Đặt lịch', description: 'Chọn ngày và khung giờ phù hợp.' },
@@ -431,13 +517,13 @@ export default function DoctorDetail() {
                 <h1>{doctorTitle}</h1>
                 <p>Chuyên khoa {specialtyName(doctor)}</p>
                 <div className="doctor-profile-hero-meta">
-                  <span>⭐ {ratingText}</span>
-                  <span>👥 500+ lượt khám</span>
-                  <span>💼 {experienceYears} năm kinh nghiệm</span>
+                  <span><span className="doctor-profile-mini-icon tone-warning"><DoctorMetricIcon name="rating" /></span>{ratingText}</span>
+                  <span><span className="doctor-profile-mini-icon tone-info"><DoctorMetricIcon name="visits" /></span>{visitCountText} lượt khám</span>
+                  <span><span className="doctor-profile-mini-icon tone-primary"><DoctorMetricIcon name="experience" /></span>{experienceYears} năm kinh nghiệm</span>
                 </div>
                 <div className="doctor-profile-hero-clinic">
-                  <span>📍 {clinicName(doctor)}</span>
-                  <strong>✔ Đang nhận lịch</strong>
+                  <span><span className="doctor-profile-mini-icon tone-info"><DoctorMetricIcon name="clinic" /></span>{clinicName(doctor)}</span>
+                  <strong><span className="doctor-profile-mini-icon tone-success"><DoctorMetricIcon name="check" /></span>Đang nhận lịch</strong>
                 </div>
               </div>
             </div>
@@ -449,8 +535,8 @@ export default function DoctorDetail() {
               </div>
               <div className="doctor-highlights-list">
                 {highlights.map((item) => (
-                  <div className="doctor-highlight-item" key={item.label}>
-                    <span>{item.icon}</span>
+                  <div className={`doctor-highlight-item tone-${item.tone}`} key={item.label}>
+                    <span className="doctor-highlight-icon"><DoctorMetricIcon name={item.icon} /></span>
                     <strong>{item.value}</strong>
                     <small>{item.label}</small>
                   </div>
@@ -535,7 +621,7 @@ export default function DoctorDetail() {
               <div className="doctor-reviews-heading">
                 <div>
                   <span className="eyebrow">Đánh giá từ bệnh nhân</span>
-                  <h2>⭐ {ratingCount ? averageRating : '0.0'}</h2>
+                  <h2>⭐ {ratingCount ? formattedRating : '0.0'}</h2>
                 </div>
                 <span>{ratingCount ? `${ratingCount} đánh giá` : 'Chưa có đánh giá'}</span>
               </div>
