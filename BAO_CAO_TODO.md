@@ -48,11 +48,15 @@ Quy uoc trang thai:
 - [x] 2.2.3. YouMed
 - [x] 2.2.4. Bang so sanh va nhan xet
 - [x] 2.3. Quy trinh nghiep vu cua he thong
-- [x] 2.3.1. Quy trinh benh nhan dat lich kham
-- [x] 2.3.2. Quy trinh bac si xu ly lich hen
-- [x] 2.3.3. Quy trinh nhap va cap nhat ho so kham benh
-- [x] 2.3.4. Quy trinh quan tri he thong
-- [x] 2.3.5. So do quy trinh nghiep vu tong quat
+- [x] 2.3.1. So do quy trinh nghiep vu tong quat
+- [x] 2.3.2. Quy trinh benh nhan dat lich kham
+  - [x] Activity Diagram quy trinh benh nhan dat lich kham
+- [x] 2.3.3. Quy trinh bac si xu ly lich hen
+  - [x] Activity Diagram quy trinh bac si xu ly lich hen
+- [x] 2.3.4. Quy trinh nhap va cap nhat ho so kham benh
+  - [x] Activity Diagram quy trinh nhap va cap nhat ho so kham benh
+- [x] 2.3.5. Quy trinh quan tri he thong
+  - [x] Activity Diagram quy trinh quan tri he thong
 - [x] 2.4. Xac dinh tac nhan he thong
 - [x] 2.4.1. Khach truy cap
 - [x] 2.4.2. Benh nhan
@@ -75,11 +79,11 @@ Quy uoc trang thai:
 - [x] 2.6.5. Tinh mo rong
 - [x] 2.6.6. Tinh tuong thich thiet bi
 - [x] 2.7. Bieu do Use Case tong quan
-- [ ] 2.8. Bieu do Use Case phan ra theo tac nhan
+- [x] 2.8. Bieu do Use Case phan ra theo tac nhan
 - [x] 2.8.1. Use Case cua benh nhan
 - [x] 2.8.2. Use Case cua bac si
 - [x] 2.8.3. Use Case cua quan tri vien
-- [ ] 2.8.4. Use Case cua khach truy cap
+- [x] 2.8.4. Use Case cua khach truy cap
 - [ ] 2.9. Dac ta Use Case chi tiet
 
 ## 4. Chuong 3: Co So Ly Thuyet Va Cong Nghe Su Dung
@@ -205,4 +209,5 @@ Quy uoc trang thai:
 
 - [x] Chot muc luc chinh thuc phien ban 1
 - [x] Viet Chuong 1
-- [ ] Cap nhat checklist sau khi hoan thanh tung muc
+- [x] Cap nhat checklist sau khi hoan thanh tung muc
+- [x] Tao file tong hop noi dung bao cao: BAO_CAO_DO_AN_TOT_NGHIEP.md
