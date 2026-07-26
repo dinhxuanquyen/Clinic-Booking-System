@@ -28,7 +28,14 @@ export const env = {
     secure: process.env.SMTP_SECURE === 'true',
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
-    from: process.env.EMAIL_FROM || `${process.env.EMAIL_FROM_NAME || 'BookingCare Mini'} <no-reply@example.com>`
+    from: process.env.EMAIL_FROM || `${process.env.EMAIL_FROM_NAME || 'BookingCare Mini'} <no-reply@example.com>`,
+    timeoutMs: Number(process.env.SMTP_TIMEOUT_MS || 5000)
+  },
+  brevo: {
+    apiKey: cleanEnvValue(process.env.BREVO_API_KEY),
+    senderEmail: cleanEnvValue(process.env.BREVO_SENDER_EMAIL),
+    senderName: cleanEnvValue(process.env.BREVO_SENDER_NAME) || process.env.EMAIL_FROM_NAME || 'BookingCare Mini',
+    replyTo: cleanEnvValue(process.env.BREVO_REPLY_TO) || process.env.EMAIL_REPLY_TO || process.env.EMAIL_SUPPORT || ''
   },
   email: {
     fromName: process.env.EMAIL_FROM_NAME || 'BookingCare Mini',

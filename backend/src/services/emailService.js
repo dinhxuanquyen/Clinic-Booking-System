@@ -28,6 +28,11 @@ function isSmtpConfigured() {
   return Boolean(env.smtp.host && env.smtp.user && env.smtp.pass);
 }
 
+function isBrevoConfigured() {
+  if (env.nodeEnv === 'test') return false;
+  return Boolean(env.brevo.apiKey && env.brevo.senderEmail);
+}
+
 function getTransporter() {
   if (transporter) return transporter;
 
@@ -35,6 +40,9 @@ function getTransporter() {
     host: env.smtp.host,
     port: env.smtp.port,
     secure: env.smtp.secure,
+    connectionTimeout: env.smtp.timeoutMs,
+    greetingTimeout: env.smtp.timeoutMs,
+    socketTimeout: env.smtp.timeoutMs,
     auth: {
       user: env.smtp.user,
       pass: env.smtp.pass
@@ -53,14 +61,54 @@ function doctorNotificationEmail(doctor) {
 }
 
 function fromAddress() {
+  if (env.brevo.senderEmail) return `${env.brevo.senderName} <${env.brevo.senderEmail}>`;
   if (env.smtp.from) return env.smtp.from;
   return `${env.email.fromName} <no-reply@example.com>`;
+}
+
+async function sendViaBrevo(template) {
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': env.brevo.apiKey,
+      accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      sender: {
+        name: env.brevo.senderName,
+        email: env.brevo.senderEmail
+      },
+      to: [
+        {
+          email: template.to,
+          name: template.to
+        }
+      ],
+      subject: template.subject,
+      htmlContent: template.html,
+      textContent: template.text,
+      replyTo: env.brevo.replyTo || env.email.replyTo || env.email.support || undefined
+    })
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(`Brevo email failed with ${response.status}: ${details}`);
+  }
+
+  return response.json();
 }
 
 async function sendBusinessEmail(template, missingRecipientLog) {
   if (!template?.to) {
     if (missingRecipientLog) console.warn(missingRecipientLog);
     return { skipped: true };
+  }
+
+  if (isBrevoConfigured()) {
+    await sendViaBrevo(template);
+    return { skipped: false, provider: 'brevo' };
   }
 
   if (!isSmtpConfigured()) {
@@ -264,5 +312,6 @@ export async function sendWaitingListOffer({ to, patientName, doctorName, date, 
 export const __emailInternals = {
   patientEmail,
   doctorNotificationEmail,
-  isSmtpConfigured
+  isSmtpConfigured,
+  isBrevoConfigured
 };
