@@ -37,6 +37,8 @@ function formatDuration(totalSeconds) {
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
+const PENDING_VERIFICATION_EMAIL_KEY = 'clinic-booking.pendingVerificationEmail';
+
 export default function AuthPage({ mode }) {
   const isLogin = mode === 'login';
   const navigate = useNavigate();
@@ -56,7 +58,8 @@ export default function AuthPage({ mode }) {
   const phoneRef = useRef(null);
 
   const returnUrl = searchParams.get('returnUrl') || location.state?.returnUrl || location.state?.returnTo || '';
-  const isVerifyingEmail = Boolean(verificationEmail);
+  const activeVerificationEmail = verificationEmail || unverifiedEmail;
+  const isVerifyingEmail = Boolean(activeVerificationEmail);
   const passwordUserInfo = { name: form.name, email: form.email, phone: form.phone };
   const registerPasswordPolicy = validatePasswordStrength(form.password, passwordUserInfo);
 
@@ -69,7 +72,18 @@ export default function AuthPage({ mode }) {
     setOtpExpiresIn(0);
     setResendCooldown(0);
     setSubmitting(false);
+
+    const pendingEmail = window.sessionStorage.getItem(PENDING_VERIFICATION_EMAIL_KEY);
+    if (pendingEmail) {
+      setVerificationEmail(pendingEmail);
+      setUnverifiedEmail(pendingEmail);
+    }
   }, [mode]);
+
+  useEffect(() => {
+    if (!activeVerificationEmail) return;
+    window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, activeVerificationEmail);
+  }, [activeVerificationEmail]);
 
   useEffect(() => {
     if (resendCooldown <= 0 && otpExpiresIn <= 0) return undefined;
@@ -115,6 +129,7 @@ export default function AuthPage({ mode }) {
     try {
       if (isLogin) {
         const loggedInUser = await login(form.email, form.password);
+        window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
         toast.success('Đăng nhập thành công');
         navigate(defaultRedirectFor(loggedInUser, returnUrl), { replace: true });
         return;
@@ -130,6 +145,7 @@ export default function AuthPage({ mode }) {
       setOtp('');
       setOtpExpiresIn(result?.expiresInSeconds || 600);
       setResendCooldown(result?.cooldownSeconds || 60);
+      window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email);
       toast.success('Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.');
     } catch (err) {
       const message = errorMessage(err);
@@ -142,6 +158,7 @@ export default function AuthPage({ mode }) {
         setOtp('');
         setOtpExpiresIn(err.payload?.data?.expiresInSeconds || 600);
         setResendCooldown(0);
+        window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, pendingEmail);
         toast.warning(message);
       } else {
         toast.error(message);
@@ -180,8 +197,9 @@ export default function AuthPage({ mode }) {
     try {
       await api('/auth/verify-email', {
         method: 'POST',
-        body: JSON.stringify({ email: verificationEmail, otp })
+        body: JSON.stringify({ email: activeVerificationEmail, otp })
       });
+      window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
       toast.success('Xác nhận email thành công. Bạn có thể đăng nhập.');
       navigate('/login', { replace: true, state: { returnUrl } });
     } catch (err) {
@@ -193,7 +211,7 @@ export default function AuthPage({ mode }) {
     }
   }
 
-  async function resendVerificationOtp(email = verificationEmail) {
+  async function resendVerificationOtp(email = activeVerificationEmail) {
     if (!email) {
       toast.warning('Vui lòng nhập email để gửi lại mã xác nhận');
       return;
@@ -216,6 +234,7 @@ export default function AuthPage({ mode }) {
       setOtp('');
       setOtpExpiresIn(payload?.expiresInSeconds || 600);
       setResendCooldown(payload?.cooldownSeconds || 60);
+      window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, nextEmail);
       toast.success(payload?.message || 'Nếu email tồn tại, mã xác nhận đã được gửi');
     } catch (err) {
       if (err.status === 429) {
@@ -230,13 +249,24 @@ export default function AuthPage({ mode }) {
     }
   }
 
+  function backToLogin(event) {
+    event.preventDefault();
+    window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
+    setVerificationEmail('');
+    setUnverifiedEmail('');
+    setOtp('');
+    setOtpExpiresIn(0);
+    setResendCooldown(0);
+    navigate('/login', { replace: true, state: { returnUrl } });
+  }
+
   if (isVerifyingEmail) {
     return (
       <main className="container py-5 auth-page">
         <form className="auth-card" onSubmit={verifyEmail}>
           <span className="eyebrow">XÁC NHẬN EMAIL</span>
           <h1 className="h3 mt-2 mb-3">Nhập mã OTP</h1>
-          <p className="text-muted mb-4">Chúng tôi đã gửi mã OTP tới email {verificationEmail}.</p>
+          <p className="text-muted mb-4">Chúng tôi đã gửi mã OTP tới email {activeVerificationEmail}.</p>
           {error && <div className="alert alert-danger">{error}</div>}
           <label className="form-label">Mã OTP</label>
           <input
@@ -261,12 +291,12 @@ export default function AuthPage({ mode }) {
             className="btn btn-outline-primary w-100 mt-3"
             disabled={submitting || resendCooldown > 0}
             type="button"
-            onClick={() => resendVerificationOtp()}
+            onClick={() => resendVerificationOtp(activeVerificationEmail)}
           >
             {resendCooldown > 0 ? `Gửi lại mã sau ${resendCooldown}s` : 'Gửi lại mã'}
           </button>
           <p className="small mt-3 mb-0">
-            <Link to="/login" state={{ returnUrl }}>
+            <Link to="/login" state={{ returnUrl }} onClick={backToLogin}>
               Quay lại đăng nhập
             </Link>
           </p>
@@ -284,6 +314,13 @@ export default function AuthPage({ mode }) {
         {unverifiedEmail && (
           <div className="alert alert-warning">
             <div className="fw-semibold">Tài khoản chưa xác nhận email</div>
+            <button
+              className="btn btn-link p-0 mt-1 me-3 fw-semibold"
+              type="button"
+              onClick={() => setVerificationEmail(unverifiedEmail)}
+            >
+              Nhập mã OTP
+            </button>
             <button
               className="btn btn-link p-0 mt-1 fw-semibold"
               disabled={submitting || resendCooldown > 0}
