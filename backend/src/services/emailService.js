@@ -66,7 +66,36 @@ function fromAddress() {
   return `${env.email.fromName} <no-reply@example.com>`;
 }
 
+function buildBrevoReplyTo() {
+  const candidate = env.brevo.replyTo || env.email.replyTo || env.email.support || env.brevo.senderEmail;
+  if (!candidate || !String(candidate).includes('@')) return undefined;
+
+  return {
+    email: candidate,
+    name: env.brevo.senderName || env.email.fromName || 'BookingCare Mini'
+  };
+}
+
 async function sendViaBrevo(template) {
+  const payload = {
+    sender: {
+      name: env.brevo.senderName,
+      email: env.brevo.senderEmail
+    },
+    to: [
+      {
+        email: template.to,
+        name: template.to
+      }
+    ],
+    subject: template.subject,
+    htmlContent: template.html,
+    textContent: template.text
+  };
+
+  const replyTo = buildBrevoReplyTo();
+  if (replyTo) payload.replyTo = replyTo;
+
   const response = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {
@@ -74,22 +103,7 @@ async function sendViaBrevo(template) {
       accept: 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      sender: {
-        name: env.brevo.senderName,
-        email: env.brevo.senderEmail
-      },
-      to: [
-        {
-          email: template.to,
-          name: template.to
-        }
-      ],
-      subject: template.subject,
-      htmlContent: template.html,
-      textContent: template.text,
-      replyTo: env.brevo.replyTo || env.email.replyTo || env.email.support || undefined
-    })
+    body: JSON.stringify(payload)
   });
 
   if (!response.ok) {
