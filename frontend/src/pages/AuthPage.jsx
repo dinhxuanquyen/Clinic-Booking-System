@@ -38,6 +38,36 @@ function formatDuration(totalSeconds) {
 }
 
 const PENDING_VERIFICATION_EMAIL_KEY = 'clinic-booking.pendingVerificationEmail';
+const PENDING_VERIFICATION_EXPIRES_AT_KEY = 'clinic-booking.pendingVerificationExpiresAt';
+const PENDING_VERIFICATION_RESEND_AT_KEY = 'clinic-booking.pendingVerificationResendAt';
+
+function getRemainingSeconds(targetTimestamp) {
+  const numericTimestamp = Number(targetTimestamp);
+  if (!Number.isFinite(numericTimestamp) || numericTimestamp <= 0) return 0;
+  return Math.max(Math.ceil((numericTimestamp - Date.now()) / 1000), 0);
+}
+
+function saveVerificationWindow(email, expiresInSeconds, cooldownSeconds) {
+  window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email);
+  if (expiresInSeconds > 0) {
+    window.sessionStorage.setItem(
+      PENDING_VERIFICATION_EXPIRES_AT_KEY,
+      String(Date.now() + expiresInSeconds * 1000)
+    );
+  }
+  if (cooldownSeconds > 0) {
+    window.sessionStorage.setItem(
+      PENDING_VERIFICATION_RESEND_AT_KEY,
+      String(Date.now() + cooldownSeconds * 1000)
+    );
+  }
+}
+
+function clearVerificationWindow() {
+  window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
+  window.sessionStorage.removeItem(PENDING_VERIFICATION_EXPIRES_AT_KEY);
+  window.sessionStorage.removeItem(PENDING_VERIFICATION_RESEND_AT_KEY);
+}
 
 export default function AuthPage({ mode }) {
   const isLogin = mode === 'login';
@@ -74,10 +104,14 @@ export default function AuthPage({ mode }) {
     setSubmitting(false);
 
     const pendingEmail = window.sessionStorage.getItem(PENDING_VERIFICATION_EMAIL_KEY);
+    const pendingExpiresAt = window.sessionStorage.getItem(PENDING_VERIFICATION_EXPIRES_AT_KEY);
+    const pendingResendAt = window.sessionStorage.getItem(PENDING_VERIFICATION_RESEND_AT_KEY);
     if (pendingEmail) {
       setVerificationEmail(pendingEmail);
       setUnverifiedEmail(pendingEmail);
     }
+    setOtpExpiresIn(getRemainingSeconds(pendingExpiresAt));
+    setResendCooldown(getRemainingSeconds(pendingResendAt));
   }, [mode]);
 
   useEffect(() => {
@@ -129,7 +163,7 @@ export default function AuthPage({ mode }) {
     try {
       if (isLogin) {
         const loggedInUser = await login(form.email, form.password);
-        window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
+        clearVerificationWindow();
         toast.success('Đăng nhập thành công');
         navigate(defaultRedirectFor(loggedInUser, returnUrl), { replace: true });
         return;
@@ -145,20 +179,30 @@ export default function AuthPage({ mode }) {
       setOtp('');
       setOtpExpiresIn(result?.expiresInSeconds || 600);
       setResendCooldown(result?.cooldownSeconds || 60);
-      window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email);
+      saveVerificationWindow(email, result?.expiresInSeconds || 600, result?.cooldownSeconds || 60);
       toast.success('Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.');
     } catch (err) {
       const message = errorMessage(err);
       setError(message);
 
       if (err.status === 403 && message.toLowerCase().includes('xác nhận email')) {
-        const pendingEmail = err.payload?.details?.email || err.payload?.data?.email || form.email;
+        const errorDetails = Array.isArray(err.payload?.details) ? null : err.payload?.details;
+        const verificationDetails = errorDetails?.needsVerification ? errorDetails : err.payload?.data || {};
+        const parsedExpiresIn = Number(verificationDetails.expiresInSeconds);
+        const parsedCooldown = Number(verificationDetails.cooldownSeconds);
+        const nextExpiresIn = Number.isFinite(parsedExpiresIn)
+          ? parsedExpiresIn
+          : otpExpiresIn || getRemainingSeconds(window.sessionStorage.getItem(PENDING_VERIFICATION_EXPIRES_AT_KEY)) || 600;
+        const nextCooldown = Number.isFinite(parsedCooldown)
+          ? parsedCooldown
+          : resendCooldown || getRemainingSeconds(window.sessionStorage.getItem(PENDING_VERIFICATION_RESEND_AT_KEY));
+        const pendingEmail = verificationDetails.email || form.email;
         setVerificationEmail(pendingEmail);
         setUnverifiedEmail(pendingEmail);
         setOtp('');
-        setOtpExpiresIn(err.payload?.data?.expiresInSeconds || 600);
-        setResendCooldown(0);
-        window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, pendingEmail);
+        setOtpExpiresIn(nextExpiresIn);
+        setResendCooldown(nextCooldown);
+        saveVerificationWindow(pendingEmail, nextExpiresIn, nextCooldown);
         toast.warning(message);
       } else {
         toast.error(message);
@@ -201,7 +245,7 @@ export default function AuthPage({ mode }) {
       });
 
       if (!form.password) {
-        window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
+        clearVerificationWindow();
         setVerificationEmail('');
         setUnverifiedEmail('');
         setOtp('');
@@ -213,7 +257,7 @@ export default function AuthPage({ mode }) {
       }
 
       const loggedInUser = await login(activeVerificationEmail, form.password);
-      window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
+      clearVerificationWindow();
       setVerificationEmail('');
       setUnverifiedEmail('');
       setOtp('');
@@ -253,7 +297,7 @@ export default function AuthPage({ mode }) {
       setOtp('');
       setOtpExpiresIn(payload?.expiresInSeconds || 600);
       setResendCooldown(payload?.cooldownSeconds || 60);
-      window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, nextEmail);
+      saveVerificationWindow(nextEmail, payload?.expiresInSeconds || 600, payload?.cooldownSeconds || 60);
       toast.success(payload?.message || 'Nếu email tồn tại, mã xác nhận đã được gửi');
     } catch (err) {
       if (err.status === 429) {
@@ -270,7 +314,7 @@ export default function AuthPage({ mode }) {
 
   function backToLogin(event) {
     event.preventDefault();
-    window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
+    clearVerificationWindow();
     setVerificationEmail('');
     setUnverifiedEmail('');
     setOtp('');
@@ -415,4 +459,3 @@ export default function AuthPage({ mode }) {
     </main>
   );
 }
-

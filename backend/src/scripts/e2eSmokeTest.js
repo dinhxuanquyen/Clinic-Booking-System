@@ -254,6 +254,17 @@ async function main() {
     assert(register.data.data.needsVerification, 'Register should require email verification');
     const patientAUser = await User.findOne({ email: registerEmail }).select('+emailVerificationOtp');
     created.users.push(patientAUser);
+
+    const forgotWhileUnverified = await request(baseUrl, '/api/auth/forgot-password', {
+      method: 'POST',
+      body: { email: registerEmail }
+    });
+    assert(forgotWhileUnverified.response.status === 403, 'Forgot password for unverified account should return 403');
+    assert(Boolean(forgotWhileUnverified.data?.details?.needsVerification), 'Unverified account should require email verification');
+    assert(Number.isFinite(forgotWhileUnverified.data?.details?.expiresInSeconds), 'Verification response should include OTP expiry');
+    assert(Number.isFinite(forgotWhileUnverified.data?.details?.cooldownSeconds), 'Verification response should include resend cooldown');
+    record('AUTH forgot password blocked for unverified account', true);
+
     await request(baseUrl, '/api/auth/verify-email', {
       method: 'POST',
       body: { email: registerEmail, otp: patientAUser.emailVerificationOtp },
@@ -262,16 +273,17 @@ async function main() {
     const patientToken = await login(registerEmail);
     record('AUTH register -> verify OTP -> login', true);
 
-    const forgotDuringRegisterCooldown = await request(baseUrl, '/api/auth/forgot-password', {
+    const forgotAfterVerify = await request(baseUrl, '/api/auth/forgot-password', {
       method: 'POST',
-      body: { email: registerEmail }
+      body: { email: registerEmail },
+      expect: 200
     });
-    assert(forgotDuringRegisterCooldown.response.status === 429, 'Forgot password should respect OTP cooldown after register');
-    record('AUTH shared OTP cooldown after register', true);
+    assert(forgotAfterVerify.data.cooldownSeconds === 60, 'Forgot password should return cooldown metadata');
+    record('AUTH forgot password independent of verification cooldown', true);
 
     await User.updateOne(
       { _id: patientAUser._id },
-      { $set: { lastOtpSentAt: new Date(Date.now() - 61 * 1000) } }
+      { $set: { lastResetPasswordOtpSentAt: new Date(Date.now() - 61 * 1000) } }
     );
 
     const forgot = await request(baseUrl, '/api/auth/forgot-password', {

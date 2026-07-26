@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+﻿import jwt from 'jsonwebtoken';
 import { body } from 'express-validator';
 import { env } from '../config/env.js';
 import User from '../models/central/User.js';
@@ -84,17 +84,32 @@ function generateOtp() {
 const OTP_COOLDOWN_SECONDS = 60;
 const OTP_EXPIRES_IN_SECONDS = 10 * 60;
 
-function getOtpRetryAfter(user) {
-  if (!user?.lastOtpSentAt) return 0;
+function getOtpRetryAfter(user, sentAtField = 'lastOtpSentAt') {
+  const sentAt = user?.[sentAtField];
+  if (!sentAt) return 0;
 
-  const elapsedSeconds = Math.floor((Date.now() - user.lastOtpSentAt.getTime()) / 1000);
+  const elapsedSeconds = Math.floor((Date.now() - sentAt.getTime()) / 1000);
   return Math.max(OTP_COOLDOWN_SECONDS - elapsedSeconds, 0);
+}
+
+function getRemainingSecondsUntil(date) {
+  if (!date) return 0;
+  return Math.max(Math.ceil((date.getTime() - Date.now()) / 1000), 0);
+}
+
+function emailVerificationRequiredPayload(user) {
+  return {
+    email: user.email,
+    needsVerification: true,
+    expiresInSeconds: getRemainingSecondsUntil(user.emailVerificationExpires),
+    cooldownSeconds: getOtpRetryAfter(user, 'lastEmailVerificationOtpSentAt')
+  };
 }
 
 function sendOtpCooldownResponse(res, retryAfter) {
   return res.status(429).json({
     success: false,
-    message: 'Vui lòng chờ trước khi gửi lại mã OTP',
+    message: 'Vui lÃ²ng chá» trÆ°á»›c khi gá»­i láº¡i mÃ£ OTP',
     data: null,
     retryAfter
   });
@@ -114,6 +129,7 @@ async function issueEmailVerificationOtp(user, logPrefix = 'Send email verificat
   const otp = generateOtp();
   user.emailVerificationOtp = otp;
   user.emailVerificationExpires = new Date(Date.now() + OTP_EXPIRES_IN_SECONDS * 1000);
+  user.lastEmailVerificationOtpSentAt = new Date();
   user.lastOtpSentAt = new Date();
   await user.save();
 
@@ -158,14 +174,14 @@ export const register = asyncHandler(async (req, res) => {
   }
 
   const existingEmail = await User.findOne({ email: req.body.email }).select(
-    '+emailVerificationOtp +emailVerificationExpires +lastOtpSentAt'
+    '+emailVerificationOtp +emailVerificationExpires +lastEmailVerificationOtpSentAt +lastOtpSentAt'
   );
   if (existingEmail?.role === 'patient' && existingEmail.isEmailVerified === false) {
     await issueEmailVerificationOtp(existingEmail, 'Resend email verification OTP for pending registration failed');
 
     return res.status(200).json({
       success: true,
-      message: 'Email này đã được đăng ký nhưng chưa xác nhận. Hệ thống đã gửi mã OTP mới.',
+      message: 'Email nÃ y Ä‘Ã£ Ä‘Æ°á»£c Ä‘Äƒng kÃ½ nhÆ°ng chÆ°a xÃ¡c nháº­n. Há»‡ thá»‘ng Ä‘Ã£ gá»­i mÃ£ OTP má»›i.',
       data: {
         email: existingEmail.email,
         needsVerification: true
@@ -176,12 +192,12 @@ export const register = asyncHandler(async (req, res) => {
   }
 
   if (existingEmail) {
-    throw new ApiError(409, 'Email này đã được sử dụng');
+    throw new ApiError(409, 'Email nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng');
   }
 
   const existingPhone = await User.exists({ phone: req.body.phone });
   if (existingPhone) {
-    throw new ApiError(409, 'Số điện thoại này đã được sử dụng');
+    throw new ApiError(409, 'Sá»‘ Ä‘iá»‡n thoáº¡i nÃ y Ä‘Ã£ Ä‘Æ°á»£c sá»­ dá»¥ng');
   }
 
   const user = await User.create({
@@ -197,7 +213,7 @@ export const register = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: 'Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản.',
+    message: 'ÄÄƒng kÃ½ thÃ nh cÃ´ng. Vui lÃ²ng kiá»ƒm tra email Ä‘á»ƒ xÃ¡c nháº­n tÃ i khoáº£n.',
     data: {
       email: user.email,
       needsVerification: true
@@ -208,14 +224,16 @@ export const register = asyncHandler(async (req, res) => {
 });
 
 export const login = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ email: req.body.email }).select('+password');
+  const user = await User.findOne({ email: req.body.email }).select(
+    '+password +emailVerificationExpires +lastEmailVerificationOtpSentAt'
+  );
   if (!user || !(await user.comparePassword(req.body.password))) {
     await createAuditLog({
       req,
       action: 'LOGIN_FAILED',
       entityType: 'User',
       entityName: req.body.email,
-      description: `Đăng nhập thất bại với email ${req.body.email}`,
+      description: `ÄÄƒng nháº­p tháº¥t báº¡i vá»›i email ${req.body.email}`,
       metadata: { email: req.body.email }
     });
     throw new ApiError(401, 'Invalid email or password');
@@ -228,10 +246,10 @@ export const login = asyncHandler(async (req, res) => {
       entityType: 'User',
       entityId: user._id,
       entityName: user.email,
-      description: `Đăng nhập thất bại vì tài khoản bị khóa: ${user.email}`,
+      description: `ÄÄƒng nháº­p tháº¥t báº¡i vÃ¬ tÃ i khoáº£n bá»‹ khÃ³a: ${user.email}`,
       metadata: { email: user.email, role: user.role, reason: 'inactive' }
     });
-    throw new ApiError(403, 'Tài khoản đã bị khóa. Vui lòng liên hệ quản trị viên.');
+    throw new ApiError(403, 'TÃ i khoáº£n Ä‘Ã£ bá»‹ khÃ³a. Vui lÃ²ng liÃªn há»‡ quáº£n trá»‹ viÃªn.');
   }
 
   if (user.role === 'patient' && user.isEmailVerified === false) {
@@ -241,13 +259,14 @@ export const login = asyncHandler(async (req, res) => {
       entityType: 'User',
       entityId: user._id,
       entityName: user.email,
-      description: `Đăng nhập thất bại vì tài khoản chưa xác nhận email: ${user.email}`,
+      description: `ÄÄƒng nháº­p tháº¥t báº¡i vÃ¬ tÃ i khoáº£n chÆ°a xÃ¡c nháº­n email: ${user.email}`,
       metadata: { email: user.email, role: user.role, reason: 'email_not_verified' }
     });
-    throw new ApiError(403, 'Tài khoản chưa xác nhận email. Vui lòng kiểm tra email để xác nhận.', {
-      email: user.email,
-      needsVerification: true
-    });
+    throw new ApiError(
+      403,
+      'TÃ i khoáº£n chÆ°a xÃ¡c nháº­n email. Vui lÃ²ng kiá»ƒm tra email Ä‘á»ƒ xÃ¡c nháº­n.',
+      emailVerificationRequiredPayload(user)
+    );
   }
 
   user.lastLoginAt = new Date();
@@ -260,13 +279,13 @@ export const login = asyncHandler(async (req, res) => {
     entityType: 'User',
     entityId: user._id,
     entityName: user.email,
-    description: `${user.name || user.email} đăng nhập thành công`,
+    description: `${user.name || user.email} Ä‘Äƒng nháº­p thÃ nh cÃ´ng`,
     metadata: { email: user.email, role: user.role }
   });
 
   res.json({
     success: true,
-    message: 'Đăng nhập thành công',
+    message: 'ÄÄƒng nháº­p thÃ nh cÃ´ng',
     data: {
       token: signToken(user),
       user: userResponse(user)
@@ -276,15 +295,15 @@ export const login = asyncHandler(async (req, res) => {
 
 export const verifyEmail = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.body.email }).select(
-    '+emailVerificationOtp +emailVerificationExpires +lastOtpSentAt'
+    '+emailVerificationOtp +emailVerificationExpires +lastEmailVerificationOtpSentAt +lastOtpSentAt'
   );
 
   if (!user || !user.emailVerificationOtp || user.emailVerificationOtp !== req.body.otp) {
-    throw new ApiError(400, 'Mã OTP không hợp lệ');
+    throw new ApiError(400, 'MÃ£ OTP khÃ´ng há»£p lá»‡');
   }
 
   if (!user.emailVerificationExpires || user.emailVerificationExpires.getTime() < Date.now()) {
-    throw new ApiError(400, 'Mã OTP đã hết hạn');
+    throw new ApiError(400, 'MÃ£ OTP Ä‘Ã£ háº¿t háº¡n');
   }
 
   user.isEmailVerified = true;
@@ -294,15 +313,15 @@ export const verifyEmail = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    message: 'Xác nhận email thành công. Bạn có thể đăng nhập.',
+    message: 'XÃ¡c nháº­n email thÃ nh cÃ´ng. Báº¡n cÃ³ thá»ƒ Ä‘Äƒng nháº­p.',
     data: null
   });
 });
 
 export const resendVerificationOtp = asyncHandler(async (req, res) => {
-  const genericMessage = 'Nếu email tồn tại, hệ thống đã gửi mã xác nhận email';
+  const genericMessage = 'Náº¿u email tá»“n táº¡i, há»‡ thá»‘ng Ä‘Ã£ gá»­i mÃ£ xÃ¡c nháº­n email';
   const user = await User.findOne({ email: req.body.email }).select(
-    '+emailVerificationOtp +emailVerificationExpires +lastOtpSentAt'
+    '+emailVerificationOtp +emailVerificationExpires +lastEmailVerificationOtpSentAt +lastOtpSentAt'
   );
 
   if (!user) {
@@ -316,19 +335,19 @@ export const resendVerificationOtp = asyncHandler(async (req, res) => {
   if (user.isEmailVerified) {
     return res.json({
       success: true,
-      message: 'Tài khoản đã được xác nhận email',
+      message: 'TÃ i khoáº£n Ä‘Ã£ Ä‘Æ°á»£c xÃ¡c nháº­n email',
       data: null
     });
   }
 
-  const retryAfter = getOtpRetryAfter(user);
+  const retryAfter = getOtpRetryAfter(user, 'lastEmailVerificationOtpSentAt');
   if (retryAfter > 0) {
     return sendOtpCooldownResponse(res, retryAfter);
   }
 
   await issueEmailVerificationOtp(user, 'Resend email verification OTP failed');
 
-  res.json(otpSuccessPayload('Mã OTP đã được gửi', {
+  res.json(otpSuccessPayload('MÃ£ OTP Ä‘Ã£ Ä‘Æ°á»£c gá»­i', {
     email: user.email,
     needsVerification: true
   }));
@@ -336,7 +355,10 @@ export const resendVerificationOtp = asyncHandler(async (req, res) => {
 
 export const forgotPassword = asyncHandler(async (req, res) => {
   const genericMessage = 'Nếu email tồn tại, hệ thống đã gửi mã đặt lại mật khẩu';
-  const { user, doctor } = await findPasswordResetUserByEmail(req.body.email, '+lastOtpSentAt');
+  const { user, doctor } = await findPasswordResetUserByEmail(
+    req.body.email,
+    '+lastResetPasswordOtpSentAt +isEmailVerified +role +emailVerificationExpires +lastEmailVerificationOtpSentAt'
+  );
 
   if (user) {
     const recipientEmail = await resolvePasswordResetRecipient(user, doctor);
@@ -344,7 +366,15 @@ export const forgotPassword = asyncHandler(async (req, res) => {
       return res.json({ success: true, message: genericMessage, data: null });
     }
 
-    const retryAfter = getOtpRetryAfter(user);
+    if (user.role === 'patient' && user.isEmailVerified === false) {
+      throw new ApiError(
+        403,
+        'Tài khoản chưa xác nhận email. Vui lòng xác nhận email trước khi đặt lại mật khẩu.',
+        emailVerificationRequiredPayload(user)
+      );
+    }
+
+    const retryAfter = getOtpRetryAfter(user, 'lastResetPasswordOtpSentAt');
     if (retryAfter > 0) {
       return sendOtpCooldownResponse(res, retryAfter);
     }
@@ -352,6 +382,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
     const otp = generateOtp();
     user.resetPasswordOtp = otp;
     user.resetPasswordExpires = new Date(Date.now() + OTP_EXPIRES_IN_SECONDS * 1000);
+    user.lastResetPasswordOtpSentAt = new Date();
     user.lastOtpSentAt = new Date();
     await user.save();
 
@@ -372,11 +403,11 @@ export const resetPassword = asyncHandler(async (req, res) => {
   );
 
   if (!user || !user.resetPasswordOtp || user.resetPasswordOtp !== req.body.otp) {
-    throw new ApiError(400, 'Mã OTP không hợp lệ');
+    throw new ApiError(400, 'MÃ£ OTP khÃ´ng há»£p lá»‡');
   }
 
   if (!user.resetPasswordExpires || user.resetPasswordExpires.getTime() < Date.now()) {
-    throw new ApiError(400, 'Mã OTP đã hết hạn');
+    throw new ApiError(400, 'MÃ£ OTP Ä‘Ã£ háº¿t háº¡n');
   }
 
   const passwordPolicy = validatePasswordStrength(req.body.newPassword, user);
@@ -392,27 +423,27 @@ export const resetPassword = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    message: 'Đặt lại mật khẩu thành công',
+    message: 'Äáº·t láº¡i máº­t kháº©u thÃ nh cÃ´ng',
     data: null
   });
 });
 
 export const changeInitialPassword = asyncHandler(async (req, res) => {
   if (req.body.newPassword !== req.body.confirmPassword) {
-    throw new ApiError(422, 'Mật khẩu nhập lại không khớp');
+    throw new ApiError(422, 'Máº­t kháº©u nháº­p láº¡i khÃ´ng khá»›p');
   }
 
   const user = await User.findById(req.user._id).select('+password');
   if (!user) {
-    throw new ApiError(404, 'Không tìm thấy tài khoản');
+    throw new ApiError(404, 'KhÃ´ng tÃ¬m tháº¥y tÃ i khoáº£n');
   }
 
   if (!user.mustChangePassword) {
-    throw new ApiError(400, 'Tài khoản không yêu cầu đổi mật khẩu lần đầu');
+    throw new ApiError(400, 'TÃ i khoáº£n khÃ´ng yÃªu cáº§u Ä‘á»•i máº­t kháº©u láº§n Ä‘áº§u');
   }
 
   if (await user.comparePassword(req.body.newPassword)) {
-    throw new ApiError(422, 'Mật khẩu mới không được giống mật khẩu tạm');
+    throw new ApiError(422, 'Máº­t kháº©u má»›i khÃ´ng Ä‘Æ°á»£c giá»‘ng máº­t kháº©u táº¡m');
   }
 
   const passwordPolicy = validatePasswordStrength(req.body.newPassword, user);
@@ -429,30 +460,30 @@ export const changeInitialPassword = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    message: 'Đổi mật khẩu thành công',
+    message: 'Äá»•i máº­t kháº©u thÃ nh cÃ´ng',
     data: { user: userResponse(user) }
   });
 });
 
 export const changePassword = asyncHandler(async (req, res) => {
   if (req.body.newPassword !== req.body.confirmPassword) {
-    throw new ApiError(422, 'Mật khẩu nhập lại không khớp');
+    throw new ApiError(422, 'Máº­t kháº©u nháº­p láº¡i khÃ´ng khá»›p');
   }
 
   const user = await User.findById(req.user._id).select(
     '+password +resetPasswordOtp +resetPasswordExpires'
   );
   if (!user) {
-    throw new ApiError(404, 'Không tìm thấy tài khoản');
+    throw new ApiError(404, 'KhÃ´ng tÃ¬m tháº¥y tÃ i khoáº£n');
   }
 
   const currentPasswordValid = await user.comparePassword(req.body.currentPassword);
   if (!currentPasswordValid) {
-    throw new ApiError(400, 'Mật khẩu hiện tại không đúng');
+    throw new ApiError(400, 'Máº­t kháº©u hiá»‡n táº¡i khÃ´ng Ä‘Ãºng');
   }
 
   if (await user.comparePassword(req.body.newPassword)) {
-    throw new ApiError(422, 'Mật khẩu mới không được trùng mật khẩu hiện tại');
+    throw new ApiError(422, 'Máº­t kháº©u má»›i khÃ´ng Ä‘Æ°á»£c trÃ¹ng máº­t kháº©u hiá»‡n táº¡i');
   }
 
   const passwordPolicy = validatePasswordStrength(req.body.newPassword, user);
@@ -474,13 +505,13 @@ export const changePassword = asyncHandler(async (req, res) => {
     entityType: 'User',
     entityId: user._id,
     entityName: user.email,
-    description: `${user.name || user.email} đã đổi mật khẩu`,
+    description: `${user.name || user.email} Ä‘Ã£ Ä‘á»•i máº­t kháº©u`,
     metadata: {}
   });
 
   res.json({
     success: true,
-    message: 'Đổi mật khẩu thành công',
+    message: 'Äá»•i máº­t kháº©u thÃ nh cÃ´ng',
     data: { user: userResponse(user) }
   });
 });

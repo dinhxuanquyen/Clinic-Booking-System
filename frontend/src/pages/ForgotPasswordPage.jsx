@@ -12,6 +12,26 @@ const initialForm = {
   confirmPassword: ''
 };
 
+const PENDING_VERIFICATION_EMAIL_KEY = 'clinic-booking.pendingVerificationEmail';
+const PENDING_VERIFICATION_EXPIRES_AT_KEY = 'clinic-booking.pendingVerificationExpiresAt';
+const PENDING_VERIFICATION_RESEND_AT_KEY = 'clinic-booking.pendingVerificationResendAt';
+
+function saveVerificationWindow(email, expiresInSeconds, cooldownSeconds) {
+  window.sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email);
+  if (expiresInSeconds > 0) {
+    window.sessionStorage.setItem(
+      PENDING_VERIFICATION_EXPIRES_AT_KEY,
+      String(Date.now() + expiresInSeconds * 1000)
+    );
+  }
+  if (cooldownSeconds > 0) {
+    window.sessionStorage.setItem(
+      PENDING_VERIFICATION_RESEND_AT_KEY,
+      String(Date.now() + cooldownSeconds * 1000)
+    );
+  }
+}
+
 function formatDuration(totalSeconds) {
   const safeSeconds = Math.max(Number(totalSeconds) || 0, 0);
   const minutes = Math.floor(safeSeconds / 60);
@@ -88,6 +108,21 @@ export default function ForgotPasswordPage() {
     } catch (err) {
       const errorMessage = err.message || 'Không gửi được mã OTP';
       setError(errorMessage);
+
+      const errorDetails = Array.isArray(err.payload?.details) ? null : err.payload?.details;
+      const verificationDetails = errorDetails?.needsVerification ? errorDetails : err.payload?.data;
+      if (err.status === 403 && verificationDetails?.needsVerification) {
+        const pendingEmail = verificationDetails.email || form.email.trim();
+        saveVerificationWindow(
+          pendingEmail,
+          verificationDetails.expiresInSeconds || 0,
+          verificationDetails.cooldownSeconds || 0
+        );
+        toast.warning('Tài khoản chưa xác nhận email. Hệ thống sẽ mở màn xác nhận email.');
+        navigate('/login', { replace: true, state: { returnUrl: '' } });
+        return;
+      }
+
       if (err.status === 429) {
         setResendCooldown(err.payload?.retryAfter || 60);
         toast.warning(errorMessage);
