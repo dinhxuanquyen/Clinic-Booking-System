@@ -54,6 +54,10 @@ export const updateDoctorAccountStatusRules = [
   param('doctorId').isMongoId().withMessage('doctorId is invalid'),
   body('isActive').isBoolean().withMessage('isActive must be boolean')
 ];
+export const updateUserAccountStatusRules = [
+  param('userId').isMongoId().withMessage('userId is invalid'),
+  body('isActive').isBoolean().withMessage('isActive must be boolean')
+];
 export const auditLogIdParamRule = [param('id').isMongoId().withMessage('Audit log id is invalid')];
 
 function generateTemporaryPassword(length = 12, userInfo = {}) {
@@ -96,6 +100,7 @@ function userResponse(user) {
     phone: user.phone || '',
     avatar: user.avatar || '',
     role: user.role,
+    isEmailVerified: user.isEmailVerified !== false,
     mustChangePassword: Boolean(user.mustChangePassword),
     isActive: user.isActive !== false,
     clinicId: user.clinicId,
@@ -119,8 +124,76 @@ export const dashboard = asyncHandler(async (req, res) => {
 });
 
 export const listUsers = asyncHandler(async (req, res) => {
-  const users = await User.find().select('-password').sort({ createdAt: -1 });
-  res.json({ data: users });
+  const filter = {};
+  const role = String(req.query.role || '').trim();
+  const status = String(req.query.status || '').trim();
+  const keyword = String(req.query.keyword || '').trim();
+
+  if (['admin', 'doctor', 'patient'].includes(role)) {
+    filter.role = role;
+  }
+
+  if (status === 'active') {
+    filter.isActive = { $ne: false };
+  } else if (status === 'locked') {
+    filter.isActive = false;
+  }
+
+  if (keyword) {
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedKeyword, 'i');
+    filter.$or = [
+      { name: regex },
+      { email: regex },
+      { phone: regex }
+    ];
+  }
+
+  const [users, summary] = await Promise.all([
+    User.find(filter)
+      .select('-password')
+      .populate('clinicId', 'name clinicCode')
+      .populate('doctorId', 'name doctorCode personalEmail')
+      .sort({ createdAt: -1 }),
+    User.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+          active: { $sum: { $cond: [{ $ne: ['$isActive', false] }, 1, 0] } },
+          locked: { $sum: { $cond: [{ $eq: ['$isActive', false] }, 1, 0] } },
+          admins: { $sum: { $cond: [{ $eq: ['$role', 'admin'] }, 1, 0] } },
+          doctors: { $sum: { $cond: [{ $eq: ['$role', 'doctor'] }, 1, 0] } },
+          patients: { $sum: { $cond: [{ $eq: ['$role', 'patient'] }, 1, 0] } },
+          unverified: {
+            $sum: {
+              $cond: [
+                { $and: [{ $eq: ['$role', 'patient'] }, { $eq: ['$isEmailVerified', false] }] },
+                1,
+                0
+              ]
+            }
+          }
+        }
+      }
+    ])
+  ]);
+
+  res.json({
+    success: true,
+    data: {
+      users: users.map(userResponse),
+      summary: summary[0] || {
+        total: 0,
+        active: 0,
+        locked: 0,
+        admins: 0,
+        doctors: 0,
+        patients: 0,
+        unverified: 0
+      }
+    }
+  });
 });
 
 export const listDoctorUsers = asyncHandler(async (req, res) => {
@@ -456,6 +529,58 @@ export const updateDoctorAccountStatus = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     message: user.isActive ? 'Mở khóa tài khoản bác sĩ thành công' : 'Khóa tài khoản bác sĩ thành công',
+    data: { user: userResponse(user) }
+  });
+});
+
+export const updateUserAccountStatus = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.userId)
+    .select('-password')
+    .populate('clinicId', 'name clinicCode')
+    .populate('doctorId', 'name doctorCode personalEmail');
+
+  if (!user) {
+    throw new ApiError(404, 'Không tìm thấy tài khoản');
+  }
+
+  const nextIsActive = Boolean(req.body.isActive);
+
+  if (!nextIsActive && String(user._id) === String(req.user._id || req.user.id)) {
+    throw new ApiError(400, 'Bạn không thể khóa tài khoản đang đăng nhập');
+  }
+
+  if (!nextIsActive && user.role === 'admin') {
+    const remainingActiveAdmins = await User.countDocuments({
+      _id: { $ne: user._id },
+      role: 'admin',
+      isActive: { $ne: false }
+    });
+
+    if (remainingActiveAdmins === 0) {
+      throw new ApiError(400, 'Không thể khóa quản trị viên hoạt động cuối cùng');
+    }
+  }
+
+  user.isActive = nextIsActive;
+  await user.save();
+
+  await createAuditLog({
+    req,
+    action: user.isActive ? 'UNLOCK_USER_ACCOUNT' : 'LOCK_USER_ACCOUNT',
+    entityType: 'User',
+    entityId: user._id,
+    entityName: user.email,
+    description: `${user.isActive ? 'Mở khóa' : 'Khóa'} tài khoản ${user.email}`,
+    metadata: {
+      role: user.role,
+      clinicId: user.clinicId?._id || user.clinicId,
+      doctorId: user.doctorId?._id || user.doctorId
+    }
+  });
+
+  res.json({
+    success: true,
+    message: user.isActive ? 'Mở khóa tài khoản thành công' : 'Khóa tài khoản thành công',
     data: { user: userResponse(user) }
   });
 });

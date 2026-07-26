@@ -28,6 +28,8 @@ import {
   updateDoctorAccountStatus,
   updateDoctorAccountStatusRules,
   updateDoctor,
+  updateUserAccountStatus,
+  updateUserAccountStatusRules,
   updateService,
   updateSpecialty,
   upsertSchedule
@@ -42,6 +44,7 @@ router.use(auth, roleMiddleware('admin'));
 
 router.get('/dashboard', dashboard);
 router.get('/users', listUsers);
+router.patch('/users/:userId/status', updateUserAccountStatusRules, validate, updateUserAccountStatus);
 router.get('/doctor-users', listDoctorUsers);
 router.get('/audit-logs', listAuditLogs);
 router.get('/audit-logs/:id', auditLogIdParamRule, validate, getAuditLogDetail);

@@ -7,6 +7,7 @@ const links = [
   { to: '/admin/queue', label: 'Hàng đợi khám' },
   { to: '/admin/schedules', label: 'Lịch làm việc' },
   { to: '/admin/doctors', label: 'Bác sĩ' },
+  { to: '/admin/accounts', label: 'Tài khoản' },
   { to: '/admin/clinics', label: 'Cơ sở' },
   { to: '/admin/specialties', label: 'Chuyên khoa' },
   { to: '/admin/service-packages', label: 'Gói khám' },

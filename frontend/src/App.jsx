@@ -34,6 +34,7 @@ const AdminDashboard = lazy(() => import('./pages/AdminDashboard.jsx'));
 const AdminAppointmentsPage = lazy(() => import('./pages/admin/AdminAppointmentsPage.jsx'));
 const AdminClinicsPage = lazy(() => import('./pages/admin/AdminClinicsPage.jsx'));
 const AdminDoctorsPage = lazy(() => import('./pages/admin/AdminDoctorsPage.jsx'));
+const AdminAccountsPage = lazy(() => import('./pages/admin/AdminAccountsPage.jsx'));
 const AdminAuditLogsPage = lazy(() => import('./pages/admin/AdminAuditLogsPage.jsx'));
 const AdminArticlesPage = lazy(() => import('./pages/admin/AdminArticlesPage.jsx'));
 const AdminSchedulesPage = lazy(() => import('./pages/admin/AdminSchedulesPage.jsx'));
@@ -183,6 +184,7 @@ export default function App() {
             <Route path="clinics" element={<AdminClinicsPage />} />
             <Route path="specialties" element={<AdminSpecialtiesPage />} />
             <Route path="doctors" element={<AdminDoctorsPage />} />
+            <Route path="accounts" element={<AdminAccountsPage />} />
             <Route path="articles" element={<AdminArticlesPage />} />
             <Route path="service-packages" element={<AdminServicePackagesPage />} />
             <Route path="schedules" element={<AdminSchedulesPage />} />
