@@ -400,7 +400,12 @@
           <mxGeometry height="22" width="22" x="634" y="1157" as="geometry" />
         </mxCell>
         <mxCell id="em1" edge="1" parent="1" source="m_start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=block;endFill=1;fontSize=11;fontFamily=Times New Roman;fontColor=#000000;" target="m1" value="">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="154.78" y="137" />
+              <mxPoint x="154.78" y="137" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="em2" edge="1" parent="1" source="m1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=block;endFill=1;fontSize=11;fontFamily=Times New Roman;fontColor=#000000;" target="m2" value="">
           <mxGeometry relative="1" as="geometry" />

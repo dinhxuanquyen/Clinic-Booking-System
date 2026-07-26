@@ -120,7 +120,27 @@ async function sendBusinessEmail(template, missingRecipientLog) {
     return { skipped: true };
   }
 
-  if (isBrevoConfigured()) {
+  const preferSmtp = env.nodeEnv !== 'production';
+
+  if (!preferSmtp && isBrevoConfigured()) {
+    await sendViaBrevo(template);
+    return { skipped: false, provider: 'brevo' };
+  }
+
+  if (isSmtpConfigured()) {
+    await getTransporter().sendMail({
+      from: fromAddress(),
+      to: template.to,
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+      replyTo: env.email.replyTo || env.email.support || undefined
+    });
+
+    return { skipped: false, provider: 'smtp' };
+  }
+
+  if (preferSmtp && isBrevoConfigured()) {
     await sendViaBrevo(template);
     return { skipped: false, provider: 'brevo' };
   }
@@ -130,17 +150,6 @@ async function sendBusinessEmail(template, missingRecipientLog) {
     console.log(`Business email target: ${template.to}`);
     return { skipped: true };
   }
-
-  await getTransporter().sendMail({
-    from: fromAddress(),
-    to: template.to,
-    subject: template.subject,
-    html: template.html,
-    text: template.text,
-    replyTo: env.email.replyTo || env.email.support || undefined
-  });
-
-  return { skipped: false };
 }
 
 export async function sendAppointmentConfirmation(payload) {

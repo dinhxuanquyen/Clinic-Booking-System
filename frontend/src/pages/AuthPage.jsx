@@ -56,7 +56,7 @@ export default function AuthPage({ mode }) {
   const phoneRef = useRef(null);
 
   const returnUrl = searchParams.get('returnUrl') || location.state?.returnUrl || location.state?.returnTo || '';
-  const isVerifyingRegister = !isLogin && Boolean(verificationEmail);
+  const isVerifyingEmail = Boolean(verificationEmail);
   const passwordUserInfo = { name: form.name, email: form.email, phone: form.phone };
   const registerPasswordPolicy = validatePasswordStrength(form.password, passwordUserInfo);
 
@@ -136,7 +136,12 @@ export default function AuthPage({ mode }) {
       setError(message);
 
       if (err.status === 403 && message.toLowerCase().includes('xác nhận email')) {
-        setUnverifiedEmail(form.email);
+        const pendingEmail = err.payload?.details?.email || err.payload?.data?.email || form.email;
+        setVerificationEmail(pendingEmail);
+        setUnverifiedEmail(pendingEmail);
+        setOtp('');
+        setOtpExpiresIn(err.payload?.data?.expiresInSeconds || 600);
+        setResendCooldown(0);
         toast.warning(message);
       } else {
         toast.error(message);
@@ -205,6 +210,10 @@ export default function AuthPage({ mode }) {
         method: 'POST',
         body: JSON.stringify({ email })
       });
+      const nextEmail = payload?.data?.email || email;
+      setVerificationEmail(nextEmail);
+      setUnverifiedEmail('');
+      setOtp('');
       setOtpExpiresIn(payload?.expiresInSeconds || 600);
       setResendCooldown(payload?.cooldownSeconds || 60);
       toast.success(payload?.message || 'Nếu email tồn tại, mã xác nhận đã được gửi');
@@ -221,7 +230,7 @@ export default function AuthPage({ mode }) {
     }
   }
 
-  if (isVerifyingRegister) {
+  if (isVerifyingEmail) {
     return (
       <main className="container py-5 auth-page">
         <form className="auth-card" onSubmit={verifyEmail}>

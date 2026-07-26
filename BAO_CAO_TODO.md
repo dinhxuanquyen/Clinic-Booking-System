@@ -84,7 +84,7 @@ Quy uoc trang thai:
 - [x] 2.8.2. Use Case cua bac si
 - [x] 2.8.3. Use Case cua quan tri vien
 - [x] 2.8.4. Use Case cua khach truy cap
-- [ ] 2.9. Dac ta Use Case chi tiet
+- [x] 2.9. Dac ta Use Case chi tiet
 
 ## 4. Chuong 3: Co So Ly Thuyet Va Cong Nghe Su Dung
 
@@ -114,11 +114,12 @@ Quy uoc trang thai:
 - [ ] 3.7.1. Xac thuc nguoi dung
 - [ ] 3.7.2. Phan quyen theo vai tro
 - [ ] 3.7.3. Bao ve du lieu nguoi dung
-- [ ] 3.8. Cac cong nghe ho tro khac
-- [ ] 3.8.1. Upload file va xu ly anh
-- [ ] 3.8.2. Xuat phieu ket qua kham PDF
-- [ ] 3.8.3. Bieu do thong ke
-- [ ] 3.8.4. Thong bao he thong
+- [~] 3.8. Cac cong nghe ho tro khac
+- [x] 3.8.1. Upload file va xu ly anh
+- [x] 3.8.2. Xuat phieu ket qua kham PDF
+- [x] 3.8.3. Tu van trieu chung bang AI
+- [x] 3.8.4. Thong bao he thong
+- [ ] 3.8.5. Bieu do thong ke
 - [ ] 3.9. Cong cu phat trien
 
 ## 5. Chuong 4: Thiet Ke, Phat Trien Va Trien Khai He Thong

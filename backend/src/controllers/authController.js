@@ -100,14 +100,28 @@ function sendOtpCooldownResponse(res, retryAfter) {
   });
 }
 
-function otpSuccessPayload(message) {
+function otpSuccessPayload(message, data = null) {
   return {
     success: true,
     message,
-    data: null,
+    data,
     cooldownSeconds: OTP_COOLDOWN_SECONDS,
     expiresInSeconds: OTP_EXPIRES_IN_SECONDS
   };
+}
+
+async function issueEmailVerificationOtp(user, logPrefix = 'Send email verification OTP failed') {
+  const otp = generateOtp();
+  user.emailVerificationOtp = otp;
+  user.emailVerificationExpires = new Date(Date.now() + OTP_EXPIRES_IN_SECONDS * 1000);
+  user.lastOtpSentAt = new Date();
+  await user.save();
+
+  try {
+    await sendEmailVerificationOtp({ to: user.email, otp });
+  } catch (error) {
+    console.error(`${logPrefix}:`, error);
+  }
 }
 
 async function findPasswordResetUserByEmail(email, select = '') {
@@ -143,7 +157,24 @@ export const register = asyncHandler(async (req, res) => {
     throw new ApiError(422, passwordPolicy.message);
   }
 
-  const existingEmail = await User.exists({ email: req.body.email });
+  const existingEmail = await User.findOne({ email: req.body.email }).select(
+    '+emailVerificationOtp +emailVerificationExpires +lastOtpSentAt'
+  );
+  if (existingEmail?.role === 'patient' && existingEmail.isEmailVerified === false) {
+    await issueEmailVerificationOtp(existingEmail, 'Resend email verification OTP for pending registration failed');
+
+    return res.status(200).json({
+      success: true,
+      message: 'Email này đã được đăng ký nhưng chưa xác nhận. Hệ thống đã gửi mã OTP mới.',
+      data: {
+        email: existingEmail.email,
+        needsVerification: true
+      },
+      cooldownSeconds: OTP_COOLDOWN_SECONDS,
+      expiresInSeconds: OTP_EXPIRES_IN_SECONDS
+    });
+  }
+
   if (existingEmail) {
     throw new ApiError(409, 'Email này đã được sử dụng');
   }
@@ -153,24 +184,16 @@ export const register = asyncHandler(async (req, res) => {
     throw new ApiError(409, 'Số điện thoại này đã được sử dụng');
   }
 
-  const otp = generateOtp();
   const user = await User.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
     phone: req.body.phone,
     role: 'patient',
-    isEmailVerified: false,
-    emailVerificationOtp: otp,
-    emailVerificationExpires: new Date(Date.now() + OTP_EXPIRES_IN_SECONDS * 1000),
-    lastOtpSentAt: new Date()
+    isEmailVerified: false
   });
 
-  try {
-    await sendEmailVerificationOtp({ to: user.email, otp });
-  } catch (error) {
-    console.error('Send email verification OTP failed:', error);
-  }
+  await issueEmailVerificationOtp(user);
 
   res.status(201).json({
     success: true,
@@ -221,7 +244,10 @@ export const login = asyncHandler(async (req, res) => {
       description: `Đăng nhập thất bại vì tài khoản chưa xác nhận email: ${user.email}`,
       metadata: { email: user.email, role: user.role, reason: 'email_not_verified' }
     });
-    throw new ApiError(403, 'Tài khoản chưa xác nhận email. Vui lòng kiểm tra email để xác nhận.');
+    throw new ApiError(403, 'Tài khoản chưa xác nhận email. Vui lòng kiểm tra email để xác nhận.', {
+      email: user.email,
+      needsVerification: true
+    });
   }
 
   user.lastLoginAt = new Date();
@@ -300,19 +326,12 @@ export const resendVerificationOtp = asyncHandler(async (req, res) => {
     return sendOtpCooldownResponse(res, retryAfter);
   }
 
-  const otp = generateOtp();
-  user.emailVerificationOtp = otp;
-  user.emailVerificationExpires = new Date(Date.now() + OTP_EXPIRES_IN_SECONDS * 1000);
-  user.lastOtpSentAt = new Date();
-  await user.save();
+  await issueEmailVerificationOtp(user, 'Resend email verification OTP failed');
 
-  try {
-    await sendEmailVerificationOtp({ to: user.email, otp });
-  } catch (error) {
-    console.error('Resend email verification OTP failed:', error);
-  }
-
-  res.json(otpSuccessPayload('Mã OTP đã được gửi'));
+  res.json(otpSuccessPayload('Mã OTP đã được gửi', {
+    email: user.email,
+    needsVerification: true
+  }));
 });
 
 export const forgotPassword = asyncHandler(async (req, res) => {
