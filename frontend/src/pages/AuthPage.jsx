@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../api/client.js';
 import PasswordPolicyMeter from '../components/PasswordPolicyMeter.jsx';
@@ -199,9 +199,28 @@ export default function AuthPage({ mode }) {
         method: 'POST',
         body: JSON.stringify({ email: activeVerificationEmail, otp })
       });
+
+      if (!form.password) {
+        window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
+        setVerificationEmail('');
+        setUnverifiedEmail('');
+        setOtp('');
+        setOtpExpiresIn(0);
+        setResendCooldown(0);
+        toast.success('Xác nhận email thành công. Vui lòng đăng nhập.');
+        navigate('/login', { replace: true, state: { returnUrl } });
+        return;
+      }
+
+      const loggedInUser = await login(activeVerificationEmail, form.password);
       window.sessionStorage.removeItem(PENDING_VERIFICATION_EMAIL_KEY);
-      toast.success('Xác nhận email thành công. Bạn có thể đăng nhập.');
-      navigate('/login', { replace: true, state: { returnUrl } });
+      setVerificationEmail('');
+      setUnverifiedEmail('');
+      setOtp('');
+      setOtpExpiresIn(0);
+      setResendCooldown(0);
+      toast.success('Xác nhận email thành công. Bạn đã được đăng nhập.');
+      navigate(defaultRedirectFor(loggedInUser, returnUrl), { replace: true });
     } catch (err) {
       const message = errorMessage(err);
       setError(message);
@@ -213,7 +232,7 @@ export default function AuthPage({ mode }) {
 
   async function resendVerificationOtp(email = activeVerificationEmail) {
     if (!email) {
-      toast.warning('Vui lòng nhập email để gửi lại mã xác nhận');
+      toast.warning('Vui lòng nhập email để gửi lại mã OTP');
       return;
     }
 
@@ -396,3 +415,4 @@ export default function AuthPage({ mode }) {
     </main>
   );
 }
+
