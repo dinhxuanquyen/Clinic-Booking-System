@@ -11,7 +11,12 @@ const covers = {
   pediatric: 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=1200&q=80',
   ent: 'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=80',
   cardio: 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=1200&q=80',
-  bone: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80'
+  bone: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80',
+  women: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=80',
+  eye: 'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?auto=format&fit=crop&w=1200&q=80',
+  nutrition: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=80',
+  diabetes: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1200&q=80',
+  sleep: 'https://images.unsplash.com/photo-1511295742362-92c96b1cf484?auto=format&fit=crop&w=1200&q=80'
 };
 
 function toSlug(value) {
@@ -336,6 +341,116 @@ const articleSeeds = [
         paragraphs: [
           'Điều chỉnh tư thế làm việc, nghỉ giải lao khi ngồi lâu, khởi động trước vận động và duy trì cân nặng hợp lý giúp giảm áp lực lên cột sống và khớp. Người bệnh không nên quay lại vận động mạnh quá sớm khi cơn đau chưa hồi phục.',
           'Với đau mạn tính, bác sĩ có thể tư vấn bài tập, vật lý trị liệu, thuốc hoặc hướng điều trị khác tùy nguyên nhân. Việc tuân thủ kế hoạch theo dõi giúp hạn chế tái phát và cải thiện chất lượng sống.'
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Khám phụ khoa định kỳ: những điều phụ nữ nên chuẩn bị trước khi đi khám',
+    category: 'Sản phụ khoa',
+    summary: 'Các lưu ý giúp phụ nữ chuẩn bị thông tin, giấy tờ và câu hỏi cần thiết trước buổi khám phụ khoa định kỳ.',
+    tags: ['sản phụ khoa', 'khám định kỳ', 'sức khỏe phụ nữ'],
+    isFeatured: false,
+    specialty: 'Sản phụ khoa',
+    coverImage: covers.women,
+    sections: [
+      {
+        heading: 'Vì sao nên khám phụ khoa định kỳ?',
+        paragraphs: [
+          'Khám phụ khoa định kỳ giúp phát hiện sớm các vấn đề viêm nhiễm, rối loạn kinh nguyệt hoặc những dấu hiệu bất thường cần theo dõi. Việc đặt lịch trước giúp người bệnh chủ động thời gian và trao đổi với bác sĩ đầy đủ hơn.'
+        ],
+        bullets: [
+          'Ghi lại chu kỳ kinh nguyệt và triệu chứng bất thường nếu có.',
+          'Mang theo kết quả khám hoặc xét nghiệm trước đó.',
+          'Trao đổi rõ với bác sĩ về thuốc đang dùng và tiền sử dị ứng.'
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Mỏi mắt, nhìn mờ khi làm việc nhiều với máy tính: khi nào nên đi khám Mắt?',
+    category: 'Mắt',
+    summary: 'Gợi ý nhận biết các dấu hiệu cần khám mắt khi thường xuyên làm việc với máy tính hoặc thiết bị điện tử.',
+    tags: ['mắt', 'mỏi mắt', 'thị lực', 'làm việc máy tính'],
+    isFeatured: false,
+    specialty: 'Mắt',
+    coverImage: covers.eye,
+    sections: [
+      {
+        heading: 'Các dấu hiệu không nên bỏ qua',
+        paragraphs: [
+          'Mỏi mắt, khô mắt hoặc nhìn mờ có thể xuất hiện khi làm việc nhiều với màn hình. Nếu triệu chứng kéo dài, tái phát thường xuyên hoặc kèm đau đầu, người bệnh nên đặt lịch khám chuyên khoa Mắt để được đánh giá thị lực và tư vấn phù hợp.'
+        ],
+        bullets: [
+          'Nhìn mờ hoặc phải nheo mắt khi đọc.',
+          'Khô mắt, cộm mắt, chảy nước mắt nhiều.',
+          'Đau đầu sau thời gian dài nhìn màn hình.'
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Dinh dưỡng cho trẻ em: khi nào cần tư vấn bác sĩ Nhi?',
+    category: 'Nhi khoa',
+    summary: 'Một số tình huống phụ huynh nên đưa trẻ đi khám hoặc tư vấn dinh dưỡng để theo dõi phát triển.',
+    tags: ['nhi khoa', 'dinh dưỡng', 'tăng trưởng', 'trẻ em'],
+    isFeatured: false,
+    specialty: 'Nhi',
+    coverImage: covers.nutrition,
+    sections: [
+      {
+        heading: 'Khi nào nên tư vấn dinh dưỡng?',
+        paragraphs: [
+          'Trẻ biếng ăn kéo dài, chậm tăng cân, thừa cân hoặc có rối loạn tiêu hóa tái phát nên được bác sĩ đánh giá. Thông tin về cân nặng, chiều cao và thói quen ăn uống giúp bác sĩ đưa ra hướng tư vấn phù hợp.'
+        ],
+        bullets: [
+          'Theo dõi cân nặng và chiều cao theo từng tháng.',
+          'Ghi lại thực đơn thường ngày của trẻ.',
+          'Không tự ý bổ sung thuốc hoặc thực phẩm chức năng khi chưa được tư vấn.'
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Đường huyết cao: dấu hiệu cần theo dõi và thời điểm nên khám Nội tổng quát',
+    category: 'Nội tổng quát',
+    summary: 'Hướng dẫn người bệnh nhận biết dấu hiệu đường huyết bất thường và chuẩn bị thông tin trước khi khám.',
+    tags: ['nội tổng quát', 'đường huyết', 'đái tháo đường', 'khám định kỳ'],
+    isFeatured: false,
+    specialty: 'Nội tổng quát',
+    coverImage: covers.diabetes,
+    sections: [
+      {
+        heading: 'Dấu hiệu cần theo dõi',
+        paragraphs: [
+          'Khát nước nhiều, tiểu nhiều, mệt mỏi, sụt cân không rõ nguyên nhân hoặc vết thương lâu lành có thể liên quan đến rối loạn đường huyết. Người bệnh nên khám sớm để được kiểm tra và tư vấn theo dõi.'
+        ],
+        bullets: [
+          'Mang theo kết quả xét nghiệm gần nhất nếu có.',
+          'Ghi lại thuốc đang dùng và bệnh nền liên quan.',
+          'Tái khám đúng hẹn để bác sĩ điều chỉnh kế hoạch theo dõi.'
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Mất ngủ kéo dài: cách theo dõi triệu chứng trước khi đi khám',
+    category: 'Sức khỏe tổng quát',
+    summary: 'Các thông tin nên ghi lại khi mất ngủ kéo dài để bác sĩ đánh giá nguyên nhân và hướng xử lý.',
+    tags: ['mất ngủ', 'sức khỏe tổng quát', 'căng thẳng', 'theo dõi triệu chứng'],
+    isFeatured: false,
+    specialty: '',
+    coverImage: covers.sleep,
+    sections: [
+      {
+        heading: 'Cần ghi lại những gì?',
+        paragraphs: [
+          'Mất ngủ kéo dài ảnh hưởng đến sinh hoạt, công việc và sức khỏe tinh thần. Trước khi đi khám, người bệnh nên ghi lại thời gian bắt đầu mất ngủ, thói quen sinh hoạt, mức độ căng thẳng và các thuốc hoặc đồ uống kích thích đã sử dụng.'
+        ],
+        bullets: [
+          'Thời gian ngủ và số lần thức giấc trong đêm.',
+          'Căng thẳng, lo âu hoặc thay đổi sinh hoạt gần đây.',
+          'Cà phê, rượu bia, thuốc đang dùng hoặc bệnh lý đi kèm.'
         ]
       }
     ]

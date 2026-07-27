@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api, apiForm } from '../../api/client.js';
 import BaseModal from '../../components/BaseModal.jsx';
+import { FaArrowDown, FaArrowUp } from '../../components/icons/FaIcons.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
 import { resolveMediaUrl, useImageFallback } from '../../utils/media.js';
 import { AdminAlert, AdminEmptyState, AdminPagination, ConfirmDialog, normalizeText, paginate } from './adminUtils.jsx';
@@ -86,6 +87,7 @@ export default function AdminClinicsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [reordering, setReordering] = useState('');
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -97,6 +99,7 @@ export default function AdminClinicsPage() {
   }, [clinics, search]);
 
   const { currentPage: safePage, pageItems, totalPages } = useMemo(() => paginate(filteredClinics, currentPage), [currentPage, filteredClinics]);
+  const isSearching = Boolean(normalizeText(search));
   const visibleGalleryImages = useMemo(
     () => normalizeGalleryImages(form.galleryImages).filter((url) => !isSameImage(url, form.image)),
     [form.galleryImages, form.image]
@@ -303,6 +306,33 @@ export default function AdminClinicsPage() {
     }
   }
 
+  async function moveClinic(item, direction) {
+    const currentIndex = clinics.findIndex((clinic) => clinic._id === item._id);
+    const nextIndex = currentIndex + direction;
+
+    if (isSearching || currentIndex < 0 || nextIndex < 0 || nextIndex >= clinics.length) {
+      return;
+    }
+
+    const nextClinics = [...clinics];
+    [nextClinics[currentIndex], nextClinics[nextIndex]] = [nextClinics[nextIndex], nextClinics[currentIndex]];
+
+    setReordering(item._id);
+    setClinics(nextClinics);
+    try {
+      await api('/clinics/reorder', {
+        method: 'PATCH',
+        body: JSON.stringify({ orderedIds: nextClinics.map((clinic) => clinic._id) })
+      });
+      toast.success('Cập nhật thứ tự cơ sở thành công');
+    } catch (err) {
+      setClinics(clinics);
+      toast.error(err.message);
+    } finally {
+      setReordering('');
+    }
+  }
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center page-heading admin-page-heading">
@@ -320,7 +350,11 @@ export default function AdminClinicsPage() {
               <table className="table table-hover align-middle admin-table admin-clinics-table">
                 <thead><tr><th>Cơ sở</th><th>Địa chỉ</th><th>Điện thoại</th><th>Email</th><th></th></tr></thead>
                 <tbody>
-                  {pageItems.map((item) => (
+                  {pageItems.map((item) => {
+                    const clinicIndex = clinics.findIndex((clinic) => clinic._id === item._id);
+                    const orderDisabled = isSearching || Boolean(reordering);
+
+                    return (
                     <tr key={item._id}>
                       <td>
                         <div className="admin-media-cell">
@@ -345,13 +379,34 @@ export default function AdminClinicsPage() {
                       <td><span className="admin-table-text">{item.phone}</span></td>
                       <td><span className="admin-table-text admin-table-email" title={item.email}>{item.email}</span></td>
                       <td className="text-end">
-                        <div className="admin-table-actions">
+                        <div className="admin-table-actions admin-table-actions--clinics">
+                          <div className="admin-order-actions" aria-label="Sắp xếp cơ sở">
+                            <button
+                              className="btn btn-sm btn-outline-secondary admin-order-btn"
+                              disabled={orderDisabled || clinicIndex <= 0}
+                              title={isSearching ? 'Xóa tìm kiếm để sắp xếp' : 'Đưa cơ sở lên'}
+                              type="button"
+                              onClick={() => moveClinic(item, -1)}
+                            >
+                              <FaArrowUp aria-hidden="true" size={12} />
+                            </button>
+                            <button
+                              className="btn btn-sm btn-outline-secondary admin-order-btn"
+                              disabled={orderDisabled || clinicIndex >= clinics.length - 1}
+                              title={isSearching ? 'Xóa tìm kiếm để sắp xếp' : 'Đưa cơ sở xuống'}
+                              type="button"
+                              onClick={() => moveClinic(item, 1)}
+                            >
+                              <FaArrowDown aria-hidden="true" size={12} />
+                            </button>
+                          </div>
                           <button className="btn btn-sm btn-outline-primary" onClick={() => openEdit(item)}>Sửa</button>
                           <button className="btn btn-sm btn-outline-danger" onClick={() => setDeleting(item)}>Xóa</button>
                         </div>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

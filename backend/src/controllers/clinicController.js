@@ -27,8 +27,13 @@ export const clinicRules = [
   body('workingHours').optional().isArray().withMessage('workingHours must be an array')
 ];
 
+export const clinicReorderRules = [
+  body('orderedIds').isArray({ min: 1 }).withMessage('orderedIds must be a non-empty array'),
+  body('orderedIds.*').isMongoId().withMessage('Clinic id is invalid')
+];
+
 export const getClinics = asyncHandler(async (req, res) => {
-  const clinics = await Clinic.find(activeClinicFilter).populate('specialtyIds').sort({ createdAt: -1 });
+  const clinics = await Clinic.find(activeClinicFilter).populate('specialtyIds').sort({ displayOrder: 1, createdAt: -1 });
 
   res.json({
     success: true,
@@ -71,6 +76,14 @@ function buildClinicPayload(body) {
     image,
     galleryImages: normalizeGalleryImages(body.galleryImages)
   };
+}
+
+async function getNextClinicOrder() {
+  const count = await Clinic.countDocuments(activeClinicFilter);
+  const lastClinic = await Clinic.findOne(activeClinicFilter).sort({ displayOrder: -1, createdAt: -1 }).select('displayOrder');
+  const lastOrder = Number(lastClinic?.displayOrder || 0);
+
+  return Math.max(count, lastOrder) + 1;
 }
 
 async function assertUniqueClinic({ name, clinicCode, email, phone, excludeId = null }) {
@@ -118,6 +131,7 @@ async function assertUniqueClinic({ name, clinicCode, email, phone, excludeId = 
 export const createClinic = asyncHandler(async (req, res) => {
   const payload = buildClinicPayload(req.body);
   await assertUniqueClinic(payload);
+  payload.displayOrder = await getNextClinicOrder();
 
   const clinic = await Clinic.create(payload);
 
@@ -135,6 +149,42 @@ export const createClinic = asyncHandler(async (req, res) => {
     success: true,
     message: 'Clinic created successfully',
     data: clinic
+  });
+});
+
+export const reorderClinics = asyncHandler(async (req, res) => {
+  const orderedIds = req.body.orderedIds.map((id) => String(id));
+  const uniqueIds = Array.from(new Set(orderedIds));
+
+  if (uniqueIds.length !== orderedIds.length) {
+    throw new ApiError(422, 'Clinic ids must be unique');
+  }
+
+  const existingClinics = await Clinic.find({ _id: { $in: uniqueIds }, ...activeClinicFilter }).select('_id');
+  if (existingClinics.length !== uniqueIds.length) {
+    throw new ApiError(404, 'Clinic not found');
+  }
+
+  await Promise.all(
+    uniqueIds.map((id, index) =>
+      Clinic.updateOne({ _id: id, ...activeClinicFilter }, { $set: { displayOrder: index + 1 } })
+    )
+  );
+
+  const clinics = await Clinic.find(activeClinicFilter).populate('specialtyIds').sort({ displayOrder: 1, createdAt: -1 });
+
+  await createAuditLog({
+    req,
+    action: 'REORDER_CLINICS',
+    entityType: 'Clinic',
+    description: 'Cap nhat thu tu hien thi co so',
+    metadata: { orderedIds: uniqueIds }
+  });
+
+  res.json({
+    success: true,
+    message: 'Clinic order updated successfully',
+    data: clinics
   });
 });
 

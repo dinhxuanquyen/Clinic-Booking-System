@@ -61,7 +61,7 @@ async function seed() {
       clinicCode: 'HN',
       address: '12 Tran Duy Hung, Cau Giay, Ha Noi',
       phone: '02430000001',
-      email: 'hanoi@clinic.test',
+      email: 'hanoi@clinicbooking.vn',
       description: 'Phong kham da khoa tai Ha Noi, ho tro dat lich kham truc tuyen.',
       image: '/placeholder-clinic.svg',
       workingHours: defaultWorkingHours
@@ -71,7 +71,7 @@ async function seed() {
       clinicCode: 'BN',
       address: '25 Ly Thai To, Bac Ninh',
       phone: '02223000002',
-      email: 'bacninh@clinic.test',
+      email: 'bacninh@clinicbooking.vn',
       description: 'Chi nhanh Bac Ninh phuc vu kham tong quat va tim mach.',
       image: '/placeholder-clinic.svg',
       workingHours: defaultWorkingHours
@@ -81,7 +81,7 @@ async function seed() {
       clinicCode: 'HP',
       address: '88 Le Hong Phong, Ngo Quyen, Hai Phong',
       phone: '02253000003',
-      email: 'haiphong@clinic.test',
+      email: 'haiphong@clinicbooking.vn',
       description: 'Chi nhanh Hai Phong voi lich kham linh hoat trong tuan.',
       image: '/placeholder-clinic.svg',
       workingHours: defaultWorkingHours
@@ -91,7 +91,7 @@ async function seed() {
       clinicCode: 'PK',
       address: 'Phenikaa University, Hà Nội',
       phone: '02430000004',
-      email: 'phenikaa@clinic.test',
+      email: 'phenikaa@clinicbooking.vn',
       description: 'Phòng khám Phenikaa hỗ trợ đặt lịch khám trực tuyến.',
       image: '/placeholder-clinic.svg',
       workingHours: defaultWorkingHours
@@ -112,55 +112,55 @@ async function seed() {
     {
       name: 'Tim mach',
       description: 'Kham va theo doi cac benh ly tim mach thuong gap.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-cardiology.svg',
       clinicId: haNoiClinic._id
     },
     {
       name: 'Da lieu',
       description: 'Kham va dieu tri cac van de ve da.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-dermatology.svg',
       clinicId: haNoiClinic._id
     },
     {
       name: 'Nhi khoa',
       description: 'Kham va tu van suc khoe cho tre em.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-pediatrics.svg',
       clinicId: haNoiClinic._id
     },
     {
       name: 'Tim mach',
       description: 'Kham tim mach tai chi nhanh Bac Ninh.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-cardiology.svg',
       clinicId: bacNinhClinic._id
     },
     {
       name: 'Tai mui hong',
       description: 'Kham tai, mui, hong va cac benh ly lien quan.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-ent.svg',
       clinicId: bacNinhClinic._id
     },
     {
       name: 'Nhi khoa',
       description: 'Kham va tu van suc khoe tre em tai chi nhanh Bac Ninh.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-pediatrics.svg',
       clinicId: bacNinhClinic._id
     },
     {
       name: 'Da lieu',
       description: 'Kham da lieu tai chi nhanh Hai Phong.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-dermatology.svg',
       clinicId: haiPhongClinic._id
     },
     {
       name: 'Nhi khoa',
       description: 'Dich vu nhi khoa tai chi nhanh Hai Phong.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-pediatrics.svg',
       clinicId: haiPhongClinic._id
     },
     {
       name: 'Tai mui hong',
       description: 'Kham tai mui hong tai chi nhanh Hai Phong.',
-      image: '/placeholder-specialty.svg',
+      image: '/specialties/illustrations/specialty-ent.svg',
       clinicId: haiPhongClinic._id
     }
   ]);
@@ -185,19 +185,19 @@ async function seed() {
   ]);
 
   const [, staffUser, patientUser] = await User.create([
-    { name: 'Admin', email: 'admin@example.com', password: '123456', role: 'admin', isEmailVerified: true },
+    { name: 'Quản trị hệ thống', email: 'quantri@clinicbooking.vn', password: 'Clinic@2026', role: 'admin', isEmailVerified: true },
     {
       name: 'Bac si chi nhanh',
-      email: 'staff@example.com',
-      password: '123456',
+      email: 'bacsi.chinhanh@clinicbooking.vn',
+      password: 'Clinic@2026',
       role: 'doctor',
       isEmailVerified: true,
       clinicId: clinic._id
     },
     {
       name: 'Nguyen Van An',
-      email: 'patient@example.com',
-      password: '123456',
+      email: 'benhnhan01@clinicbooking.vn',
+      password: 'Clinic@2026',
       role: 'patient',
       phone: '0900000000',
       isEmailVerified: true
@@ -207,7 +207,7 @@ async function seed() {
   const doctorSeeds = [
     {
       name: 'BS. Nguyen Minh Khoa',
-      email: 'khoa.hanoi@clinic.test',
+      email: 'khoa.hanoi@clinicbooking.vn',
       phone: '0901000001',
       avatar: '/placeholder-doctor.svg',
       degree: 'Thac si, Bac si',
@@ -220,7 +220,7 @@ async function seed() {
     },
     {
       name: 'BS. Tran Thu Ha',
-      email: 'ha.hanoi@clinic.test',
+      email: 'ha.hanoi@clinicbooking.vn',
       phone: '0901000002',
       avatar: '/placeholder-doctor.svg',
       degree: 'Bac si chuyen khoa I',
@@ -233,7 +233,7 @@ async function seed() {
     },
     {
       name: 'BS. Pham Hoang Nam',
-      email: 'nam.bacninh@clinic.test',
+      email: 'nam.bacninh@clinicbooking.vn',
       phone: '0902000001',
       avatar: '/placeholder-doctor.svg',
       degree: 'Bac si chuyen khoa I',
@@ -246,7 +246,7 @@ async function seed() {
     },
     {
       name: 'BS. Le Minh Anh',
-      email: 'anh.bacninh@clinic.test',
+      email: 'anh.bacninh@clinicbooking.vn',
       phone: '0902000002',
       avatar: '/placeholder-doctor.svg',
       degree: 'Bac si',
@@ -259,7 +259,7 @@ async function seed() {
     },
     {
       name: 'BS. Do Quang Huy',
-      email: 'huy.haiphong@clinic.test',
+      email: 'huy.haiphong@clinicbooking.vn',
       phone: '0903000001',
       avatar: '/placeholder-doctor.svg',
       degree: 'Bac si chuyen khoa II',
@@ -272,7 +272,7 @@ async function seed() {
     },
     {
       name: 'BS. Vu Lan Chi',
-      email: 'chi.haiphong@clinic.test',
+      email: 'chi.haiphong@clinicbooking.vn',
       phone: '0903000002',
       avatar: '/placeholder-doctor.svg',
       degree: 'Bac si',
@@ -451,7 +451,7 @@ async function seed() {
   console.log(`Ha Noi Clinic ID: ${haNoiClinic._id}`);
   console.log(`Bac Ninh Clinic ID: ${bacNinhClinic._id}`);
   console.log(`Hai Phong Clinic ID: ${haiPhongClinic._id}`);
-  console.log('Accounts: admin@example.com / staff@example.com / patient@example.com, password 123456');
+  console.log('Accounts: quantri@clinicbooking.vn / bacsi.chinhanh@clinicbooking.vn / benhnhan01@clinicbooking.vn, password Clinic@2026');
   await mongoose.disconnect();
   await Promise.all([...clinicConnections.values()].map((item) => item.close()));
 }

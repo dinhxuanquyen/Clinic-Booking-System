@@ -269,6 +269,12 @@ export const login = asyncHandler(async (req, res) => {
     );
   }
 
+  const currentPasswordPolicy = validatePasswordStrength(req.body.password, user);
+  if (!currentPasswordPolicy.valid) {
+    user.mustChangePassword = true;
+    user.temporaryPasswordCreatedAt = user.temporaryPasswordCreatedAt || new Date();
+  }
+
   user.lastLoginAt = new Date();
   await user.save();
 

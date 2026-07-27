@@ -16,6 +16,30 @@ function getClinicName(value) {
   return typeof value === 'object' ? value.name : '';
 }
 
+function rotateClinicNames(clinicNames, offset = 0) {
+  const names = Array.from(clinicNames).filter(Boolean);
+  if (names.length <= 1) return names;
+
+  const start = Math.abs(offset) % names.length;
+  return [...names.slice(start), ...names.slice(0, start)];
+}
+
+function getSpecialtyDescription(name, clinicNames, index = 0) {
+  const clinics = rotateClinicNames(clinicNames, index);
+  const specialtyName = String(name || 'chuyên khoa').toLowerCase();
+
+  if (clinics.length === 0) {
+    return `Khám và tư vấn ${specialtyName} tại các cơ sở phù hợp.`;
+  }
+
+  const displayedClinics = clinics.slice(0, 2).join(', ');
+  const remainingClinics = clinics.length - 2;
+
+  return `Khám và tư vấn ${specialtyName} tại ${displayedClinics}${
+    remainingClinics > 0 ? ` và ${remainingClinics} cơ sở khác` : ''
+  }.`;
+}
+
 function SpecialtyVisual({ item, content }) {
   const hasImage = !hasPlaceholderSpecialtyImage(item.image);
   const fallbackImage = content.image || '/placeholder-specialty.svg';
@@ -85,7 +109,12 @@ export default function SpecialtiesPage() {
       }
     });
 
-    return Array.from(map.values()).sort((left, right) => left.name.localeCompare(right.name, 'vi'));
+    return Array.from(map.values())
+      .sort((left, right) => left.name.localeCompare(right.name, 'vi'))
+      .map((item, index) => ({
+        ...item,
+        description: getSpecialtyDescription(item.name, item.clinicNames, index)
+      }));
   }, [specialties]);
 
   const filteredSpecialties = useMemo(() => {

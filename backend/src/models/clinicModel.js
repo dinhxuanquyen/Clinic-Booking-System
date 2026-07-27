@@ -37,6 +37,7 @@ const clinicSchema = new mongoose.Schema(
     galleryImages: { type: [String], default: [] },
     workingHours: { type: [workingHoursSchema], default: [] },
     specialtyIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Specialty' }],
+    displayOrder: { type: Number, default: 0, index: true },
     isActive: { type: Boolean, default: true }
   },
   { timestamps: true }

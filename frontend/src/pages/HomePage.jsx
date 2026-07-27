@@ -86,12 +86,12 @@ const fallbackDoctors = [
 ];
 
 const fallbackSpecialties = [
-  { _id: 'sp-internal', name: 'Nội tổng quát', image: '/specialties/photos/specialty-internal.jpg' },
-  { _id: 'sp-pediatric', name: 'Nhi khoa', image: '/specialties/photos/specialty-pediatrics.jpg' },
-  { _id: 'sp-ent', name: 'Tai Mũi Họng', image: '/specialties/photos/specialty-ent.jpg' },
-  { _id: 'sp-cardio', name: 'Tim mạch', image: '/specialties/photos/specialty-cardiology.jpg' },
-  { _id: 'sp-dental', name: 'Răng Hàm Mặt', image: '/specialties/photos/specialty-dental.jpg' },
-  { _id: 'sp-derma', name: 'Da liễu', image: '/specialties/photos/specialty-dermatology.jpg' }
+  { _id: 'sp-internal', name: 'Nội tổng quát', image: '/specialties/illustrations/specialty-internal.svg' },
+  { _id: 'sp-pediatric', name: 'Nhi khoa', image: '/specialties/illustrations/specialty-pediatrics.svg' },
+  { _id: 'sp-ent', name: 'Tai Mũi Họng', image: '/specialties/illustrations/specialty-ent.svg' },
+  { _id: 'sp-cardio', name: 'Tim mạch', image: '/specialties/illustrations/specialty-cardiology.svg' },
+  { _id: 'sp-dental', name: 'Răng Hàm Mặt', image: '/specialties/illustrations/specialty-dental.svg' },
+  { _id: 'sp-derma', name: 'Da liễu', image: '/specialties/illustrations/specialty-dermatology.svg' }
 ];
 
 const fallbackArticles = [

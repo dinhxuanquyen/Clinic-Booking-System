@@ -136,7 +136,10 @@ Quy uoc trang thai:
 - [ ] 4.2.8. Thiet ke ServicePackages
 - [ ] 4.2.9. Thiet ke Articles
 - [ ] 4.2.10. Thiet ke Notifications
-- [ ] 4.2.11. So do du lieu tong quan
+- [ ] 4.2.11. Thiet ke WaitingLists
+- [ ] 4.2.12. Thiet ke DoctorReviews
+- [ ] 4.2.13. Thiet ke AuditLogs
+- [ ] 4.2.14. So do du lieu tong quan
 - [ ] 4.3. Thiet ke API chinh
 - [ ] 4.3.1. API xac thuc
 - [ ] 4.3.2. API bac si/chuyen khoa/co so
@@ -144,6 +147,8 @@ Quy uoc trang thai:
 - [ ] 4.3.4. API ho so kham benh
 - [ ] 4.3.5. API quan tri
 - [ ] 4.3.6. API upload va xuat PDF
+- [ ] 4.3.7. API thong bao he thong
+- [ ] 4.3.8. API tu van trieu chung bang AI
 - [ ] 4.4. Thiet ke giao dien nguoi dung
 - [ ] 4.4.1. Nguyen tac thiet ke giao dien
 - [ ] 4.4.2. Giao dien phia benh nhan
@@ -157,6 +162,7 @@ Quy uoc trang thai:
 - [ ] 4.5.5. Xem ho so kham benh
 - [ ] 4.5.6. Theo doi lich tai kham
 - [ ] 4.5.7. Nhan thong bao cap nhat ho so
+- [ ] 4.5.8. Tu van trieu chung bang AI
 - [ ] 4.6. Xay dung chuc nang phia bac si
 - [ ] 4.6.1. Tong quan lich kham
 - [ ] 4.6.2. Quan ly hang doi kham
@@ -176,7 +182,8 @@ Quy uoc trang thai:
 - [ ] 4.7.7. Quan ly chuyen khoa
 - [ ] 4.7.8. Quan ly goi kham
 - [ ] 4.7.9. Quan ly cam nang
-- [ ] 4.7.10. Nhat ky he thong
+- [ ] 4.7.10. Quan ly tai khoan nguoi dung
+- [ ] 4.7.11. Nhat ky he thong
 - [ ] 4.8. Ket qua giao dien he thong
 - [ ] 4.9. Kiem thu phan mem
 - [ ] 4.9.1. Muc tieu kiem thu

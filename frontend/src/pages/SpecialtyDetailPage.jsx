@@ -38,6 +38,27 @@ function getObjectId(value) {
   return typeof value === 'object' ? value._id : value;
 }
 
+function getClinicName(value) {
+  if (!value) return '';
+  return cleanDisplayText(typeof value === 'object' ? value.name : value, '');
+}
+
+function getRelatedClinicDescription(name, clinicNames) {
+  const clinics = clinicNames.filter(Boolean);
+  const specialtyName = String(name || 'chuyên khoa').toLowerCase();
+
+  if (clinics.length === 0) {
+    return `Khám và tư vấn ${specialtyName} tại các cơ sở phù hợp.`;
+  }
+
+  const displayedClinics = clinics.slice(0, 3).join(', ');
+  const remainingClinics = clinics.length - 3;
+
+  return `Khám và tư vấn ${specialtyName} tại ${displayedClinics}${
+    remainingClinics > 0 ? ` và ${remainingClinics} cơ sở khác` : ''
+  }.`;
+}
+
 export function formatSpecialtyName(name = '') {
   const cleaned = cleanDisplayText(name, '');
   return getSpecialtyContent(cleaned).displayName || cleaned;
@@ -121,6 +142,11 @@ export default function SpecialtyDetailPage() {
     return clinics.filter((clinic) => clinicIds.has(clinic._id));
   }, [clinics, specialties, specialtyKey]);
 
+  const relatedClinicNames = useMemo(() => relatedClinics.map(getClinicName), [relatedClinics]);
+  const heroDescription = relatedClinicNames.length > 0
+    ? getRelatedClinicDescription(displayName, relatedClinicNames)
+    : description;
+
   function handleNavClick(sectionId) {
     setActiveSection(sectionId);
   }
@@ -147,7 +173,7 @@ export default function SpecialtyDetailPage() {
           <div className="specialty-detail-hero-content">
             <span className="specialty-detail-label">CHUYÊN KHOA</span>
             <h1>{displayName}</h1>
-            <p>{description || content.overview}</p>
+            <p>{heroDescription || content.overview}</p>
             <div className="specialty-highlight-list">
               <span><FaCheckCircle size={15} />Bác sĩ chuyên môn</span>
               <span><FaCheckCircle size={15} />Đặt lịch nhanh chóng</span>

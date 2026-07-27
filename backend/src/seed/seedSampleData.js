@@ -14,7 +14,7 @@ import Notification from '../models/notificationModel.js';
 import { getClinicModels } from '../models/clinic/models.js';
 import { syncDoctorCodeCounter } from '../services/doctorCodeService.js';
 
-const PASSWORD = '123456';
+const PASSWORD = 'Clinic@2026';
 const DAY_MS = 24 * 60 * 60 * 1000;
 const BASE_DATE = new Date('2026-07-20T00:00:00.000Z');
 const TIME_SLOTS = [
@@ -39,6 +39,69 @@ const DEFAULT_WORKING_HOURS = [
   { dayOfWeek: 'sunday', open: '08:00', close: '12:00', isClosed: true }
 ];
 
+const CLINIC_IMAGES = [
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/5-14-2025/38e1d909-5654-4058-b72d-093375226581-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/5-15-2025/09f20d6c-5d67-4b7a-b852-63675cb10c68b-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/4-14-2025/7f9ddfee-3eb4-412b-8a12-735991616b8e-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/6-20-2025/15-158e1e64-e4f0-4763-8993-0db6e75dd6bf-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/6-24-2025/1f9dedaa-f220-4797-b036-b047026f33a4-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/6-24-2025/166-62ac563f-9306-4937-a7cd-99c83ee7e525-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/6-24-2025/15-87f6166e-80c2-442e-89e1-e5bbdaea7c9-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/6-24-2025/132-21794695-04f7-4f4e-9c8d-60815ee4e3e0-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/6-24-2025/ct-4ced2d3d-087e-4c6d-b804-137750c89c56-image.webp',
+  'https://cdn.phenikaamec.com/phenikaa-mec/image/5-14-2025/38e1d909-5654-4058-b72d-093375226581-image.webp'
+];
+
+const CLINIC_GALLERY_IMAGES = [
+  [CLINIC_IMAGES[0], CLINIC_IMAGES[3], CLINIC_IMAGES[8]],
+  [CLINIC_IMAGES[1], CLINIC_IMAGES[4], CLINIC_IMAGES[6]],
+  [CLINIC_IMAGES[2], CLINIC_IMAGES[5], CLINIC_IMAGES[7]],
+  [CLINIC_IMAGES[3], CLINIC_IMAGES[8], CLINIC_IMAGES[0]],
+  [CLINIC_IMAGES[4], CLINIC_IMAGES[6], CLINIC_IMAGES[1]],
+  [CLINIC_IMAGES[5], CLINIC_IMAGES[7], CLINIC_IMAGES[2]],
+  [CLINIC_IMAGES[6], CLINIC_IMAGES[1], CLINIC_IMAGES[4]],
+  [CLINIC_IMAGES[7], CLINIC_IMAGES[2], CLINIC_IMAGES[5]],
+  [CLINIC_IMAGES[8], CLINIC_IMAGES[0], CLINIC_IMAGES[3]],
+  [CLINIC_IMAGES[0], CLINIC_IMAGES[8], CLINIC_IMAGES[6]]
+];
+
+const DOCTOR_AVATARS = [
+  'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1584467735871-8e85353a8413?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1622902046580-2b47f47f5471?auto=format&fit=crop&w=800&q=80'
+];
+
+const SPECIALTY_IMAGES = {
+  nhi: '/specialties/photos/specialty-pediatrics.jpg',
+  'nhi khoa': '/specialties/photos/specialty-pediatrics.jpg',
+  'tim mach': '/specialties/photos/specialty-cardiology.jpg',
+  'da lieu': '/specialties/photos/specialty-dermatology.jpg',
+  'tai mui hong': '/specialties/photos/specialty-ent.jpg',
+  'co xuong khop': '/specialties/photos/specialty-musculoskeletal.jpg',
+  'san phu khoa': '/specialties/photos/specialty-obgyn.jpg',
+  'noi tong quat': '/specialties/photos/specialty-internal.jpg',
+  mat: '/specialties/photos/specialty-ophthalmology.jpg',
+  'rang ham mat': '/specialties/photos/specialty-dental.png',
+  'than kinh': '/specialties/photos/specialty-neurology.jpg'
+};
+
+function normalizeVietnameseKey(value) {
+  return String(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .toLowerCase()
+    .trim();
+}
+
 function dateOffset(offset) {
   return new Date(BASE_DATE.getTime() + offset * DAY_MS).toISOString().slice(0, 10);
 }
@@ -48,11 +111,19 @@ function pick(items, index) {
 }
 
 async function ensureUser(seed) {
-  const existing = await User.findOne({ email: seed.email });
+  const lookupConditions = [{ email: seed.email }];
+  if (seed.phone) {
+    lookupConditions.push({ phone: seed.phone });
+  }
+
+  const existing = await User.findOne({ $or: lookupConditions });
   if (existing) {
     const profile = { ...seed };
-    delete profile.password;
-    await User.updateOne({ _id: existing._id }, { $set: profile });
+    if (!profile.password) {
+      delete profile.password;
+    }
+    Object.assign(existing, profile);
+    await existing.save();
     return User.findById(existing._id);
   }
   return User.create({ ...seed, password: PASSWORD, isEmailVerified: true });
@@ -129,6 +200,19 @@ function appointmentTimestamps(status, actorId) {
     };
   }
   return payload;
+}
+
+async function ensureAppointment(seed) {
+  return Appointment.findOneAndUpdate(
+    {
+      clinicId: seed.clinicId,
+      doctorId: seed.doctorId,
+      date: seed.date,
+      timeSlot: seed.timeSlot
+    },
+    { $set: seed },
+    { new: true, upsert: true, setDefaultsOnInsert: true }
+  );
 }
 
 async function mirrorClinicData({ appointments, doctors, patients }) {
@@ -216,34 +300,54 @@ async function seedSampleData() {
   await connectCentralDb();
 
   const admin = await ensureUser({
-    name: 'Quan tri he thong',
-    email: 'admin@example.com',
+    name: 'Quản trị hệ thống',
+    email: 'quantri@clinicbooking.vn',
+    phone: '0901000000',
+    avatar: '/avatars/admin-avatar.svg',
+    address: 'Bộ phận quản trị hệ thống phòng khám',
+    password: 'ClinicAdmin@2026',
     role: 'admin',
     isEmailVerified: true,
-    isActive: true
+    isActive: true,
+    mustChangePassword: false
   });
 
-  const clinics = await Promise.all([
-    ensureClinic({ name: 'Ha Noi Clinic', clinicCode: 'HN', address: '12 Tran Duy Hung, Ha Noi', phone: '02430000001', email: 'hanoi@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở khám đa khoa tại Hà Nội.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Phong kham Phenikaa', clinicCode: 'PK', address: 'Phenikaa University, Ha Noi', phone: '02430000004', email: 'phenikaa@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở tiêu biểu hỗ trợ đặt lịch, khám và quản lý hồ sơ sức khỏe.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Da Nang Clinic', clinicCode: 'DN', address: '02 Bach Dang, Da Nang', phone: '02363000005', email: 'danang@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở miền Trung.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Sai Gon Clinic', clinicCode: 'SG', address: '99 Nguyen Thi Minh Khai, TP HCM', phone: '02830000006', email: 'saigon@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở miền Nam.', workingHours: DEFAULT_WORKING_HOURS }),
-    ensureClinic({ name: 'Can Tho Clinic', clinicCode: 'CT', address: '15 Hoa Binh, Can Tho', phone: '02923000007', email: 'cantho@clinic.test', image: '/placeholder-clinic.svg', description: 'Cơ sở miền Tây.', workingHours: DEFAULT_WORKING_HOURS })
-  ]);
+  const clinicSeeds = [
+    { name: 'Phòng khám Hải Phòng Care', clinicCode: 'HP', address: '88 Lê Hồng Phong, Ngô Quyền, Hải Phòng', phone: '02253000004', email: 'haiphongcare@clinicbooking.vn', description: 'Cơ sở khám Nhi, Tai Mũi Họng và Da liễu tại Hải Phòng.' },
+    { name: 'Phòng khám Từ Sơn', clinicCode: 'MT', address: '25 Lý Thái Tổ, Bắc Ninh', phone: '02223000003', email: 'tuson@clinicbooking.vn', description: 'Cơ sở khám tổng quát và theo dõi bệnh mạn tính tại Bắc Ninh.' },
+    { name: 'Phòng khám Phenikaa', clinicCode: 'PK', address: 'Đường Nguyễn Trác, Yên Nghĩa, Hà Nội', phone: '02430000001', email: 'phenikaa@clinicbooking.vn', description: 'Cơ sở chính hỗ trợ đặt lịch, khám chuyên khoa và quản lý hồ sơ sức khỏe.' },
+    { name: 'Phòng khám An Khang Hà Nội', clinicCode: 'AK', address: '12 Trần Duy Hưng, Cầu Giấy, Hà Nội', phone: '02430000002', email: 'ankhang@clinicbooking.vn', description: 'Phòng khám đa khoa phục vụ bệnh nhân nội thành Hà Nội.' },
+    { name: 'Phòng khám Sông Hàn', clinicCode: 'SH', address: '02 Bạch Đằng, Hải Châu, Đà Nẵng', phone: '02363000005', email: 'songhan@clinicbooking.vn', description: 'Phòng khám miền Trung với lịch khám linh hoạt trong tuần.' },
+    { name: 'Phòng khám Sài Gòn Plus', clinicCode: 'SG', address: '99 Nguyễn Thị Minh Khai, Quận 3, TP. Hồ Chí Minh', phone: '02830000006', email: 'saigonplus@clinicbooking.vn', description: 'Cơ sở khám chuyên khoa và tư vấn sức khỏe tại TP. Hồ Chí Minh.' },
+    { name: 'Phòng khám Cửu Long', clinicCode: 'CL', address: '15 Hòa Bình, Ninh Kiều, Cần Thơ', phone: '02923000007', email: 'cuulong@clinicbooking.vn', description: 'Cơ sở miền Tây phục vụ khám tổng quát và tái khám định kỳ.' },
+    { name: 'Phòng khám Green Health', clinicCode: 'GH', address: '36 Nguyễn Văn Linh, Thanh Khê, Đà Nẵng', phone: '02363000008', email: 'greenhealth@clinicbooking.vn', description: 'Cơ sở tập trung chăm sóc sức khỏe gia đình và dự phòng.' },
+    { name: 'Phòng khám Tâm An', clinicCode: 'TA', address: '41 Nguyễn Huệ, Huế', phone: '02343000009', email: 'taman@clinicbooking.vn', description: 'Phòng khám thân thiện, hỗ trợ đặt lịch và theo dõi hồ sơ điện tử.' },
+    { name: 'Phòng khám Bình Minh', clinicCode: 'BM', address: '18 Quang Trung, Nha Trang, Khánh Hòa', phone: '02583000010', email: 'binhminh@clinicbooking.vn', description: 'Cơ sở khám ngoại trú dành cho bệnh nhân đặt lịch trước.' }
+  ];
+  const clinics = await Promise.all(clinicSeeds.map((clinic, index) => ensureClinic({
+    ...clinic,
+    image: CLINIC_IMAGES[index],
+    galleryImages: CLINIC_GALLERY_IMAGES[index],
+    workingHours: DEFAULT_WORKING_HOURS,
+    displayOrder: index + 1
+  })));
 
-  const specialtyNames = ['Nhi', 'Tim mạch', 'Da liễu', 'Tai mũi họng', 'Cơ xương khớp', 'Sản phụ khoa', 'Nội tổng quát', 'Mắt'];
+  const specialtyNames = ['Nhi', 'Tim mạch', 'Da liễu', 'Tai mũi họng', 'Cơ xương khớp', 'Sản phụ khoa', 'Nội tổng quát', 'Mắt', 'Răng hàm mặt', 'Thần kinh'];
   const specialties = [];
   for (const clinic of clinics) {
+    const clinicSpecialtyIds = [];
     for (const name of specialtyNames) {
-      specialties.push(await ensureSpecialty({
+      const specialty = await ensureSpecialty({
         clinicId: clinic._id,
         name,
         description: `Khám và tư vấn ${name.toLowerCase()} tại ${clinic.name}.`,
-        image: '/placeholder-specialty.svg'
-      }));
+        image: SPECIALTY_IMAGES[normalizeVietnameseKey(name)] || CLINIC_IMAGES[0]
+      });
+      specialties.push(specialty);
+      clinicSpecialtyIds.push(specialty._id);
     }
     await Clinic.findByIdAndUpdate(clinic._id, {
-      specialtyIds: specialties.filter((item) => item.clinicId.equals(clinic._id)).map((item) => item._id)
+      specialtyIds: clinicSpecialtyIds
     });
   }
 
@@ -257,12 +361,7 @@ async function seedSampleData() {
     'Vũ Lan Chi',
     'Nguyễn Bảo Châu',
     'Hoàng Đức Anh',
-    'Phan Mai Linh',
-    'Võ Thanh Tâm',
-    'Đặng Ngọc Tuệ',
-    'Bùi Khánh Vy',
-    'Lê Quốc Việt',
-    'Trương An Nhiên'
+    'Phan Mai Linh'
   ];
 
   const patientNames = [
@@ -320,7 +419,7 @@ async function seedSampleData() {
     const clinic = pick(clinics, index);
     const specialty = specialties.find((item) => item.clinicId.equals(clinic._id) && item.name === pick(specialtyNames, index));
     const doctorCode = `DR${String(9001 + index).padStart(4, '0')}`;
-    const email = `doctor${String(index + 1).padStart(2, '0')}@clinic.test`;
+    const email = `bacsi${String(index + 1).padStart(2, '0')}@clinicbooking.vn`;
     const user = await ensureUser({
       name: doctorNames[index],
       email,
@@ -336,7 +435,7 @@ async function seedSampleData() {
       loginEmail: email,
       doctorCode,
       phone: `0909${String(index + 1).padStart(6, '0')}`,
-      avatar: '/placeholder-doctor.svg',
+      avatar: DOCTOR_AVATARS[index],
       degree: index % 3 === 0 ? 'Thạc sĩ, Bác sĩ' : index % 3 === 1 ? 'Bác sĩ chuyên khoa I' : 'Bác sĩ',
       position: index % 4 === 0 ? 'Trưởng khoa' : 'Bác sĩ điều trị',
       workplace: clinic.name,
@@ -360,7 +459,7 @@ async function seedSampleData() {
   for (let index = 0; index < 30; index += 1) {
     patients.push(await ensureUser({
       name: patientNames[index],
-      email: `patient${String(index + 1).padStart(2, '0')}@clinic.test`,
+      email: `benhnhan${String(index + 1).padStart(2, '0')}@clinicbooking.vn`,
       phone: `0918${String(index + 1).padStart(6, '0')}`,
       role: 'patient',
       gender: index % 2 === 0 ? 'male' : 'female',
@@ -384,8 +483,8 @@ async function seedSampleData() {
   ]);
 
   const packages = [];
-  await ServicePackage.deleteMany({ code: new RegExp(`^PKG-${['DE', 'MO'].join('')}-`, 'i') });
-  for (let index = 0; index < 20; index += 1) {
+  await ServicePackage.deleteMany({ code: /^PKG-CARE-/i });
+  for (let index = 0; index < 10; index += 1) {
     const specialty = pick(specialties, index);
     const doctor = doctors.find((item) => item.specialtyId.equals(specialty._id));
     const packageCode = `PKG-CARE-${String(index + 1).padStart(3, '0')}`;
@@ -458,7 +557,7 @@ async function seedSampleData() {
     }
     usedSlots.add(slotKey);
 
-    appointments.push(await Appointment.create({
+    const appointment = await ensureAppointment({
       patientId: patient._id,
       doctorId: doctor._id,
       clinicId: doctor.clinicId,
@@ -497,7 +596,8 @@ async function seedSampleData() {
       paymentStatus: status === 'cancelled' ? 'cancelled' : index % 5 === 0 ? 'paid_at_clinic' : 'unpaid',
       paymentMethod: 'clinic',
       ...appointmentTimestamps(status, admin._id)
-    }));
+    });
+    appointments.push(appointment);
   }
 
   const completedAppointments = appointments.filter((item) => item.status === 'completed');
@@ -537,13 +637,24 @@ async function seedSampleData() {
     const record = records[index];
     const doctor = doctors.find((item) => item._id.equals(record.doctorId));
     const patient = patients.find((item) => item._id.equals(record.patientId));
-    const followUp = await Appointment.create({
+    let followUpDate = dateOffset(8 + index);
+    let followUpTimeSlot = pick(TIME_SLOTS, index + 4);
+    let followUpSlotKey = `${doctor?._id || record.doctorId}-${followUpDate}-${followUpTimeSlot}`;
+    let followUpGuard = 0;
+    while (usedSlots.has(followUpSlotKey)) {
+      followUpGuard += 1;
+      followUpDate = dateOffset(8 + index + followUpGuard);
+      followUpTimeSlot = pick(TIME_SLOTS, index + 4 + followUpGuard);
+      followUpSlotKey = `${doctor?._id || record.doctorId}-${followUpDate}-${followUpTimeSlot}`;
+    }
+
+    const followUp = await ensureAppointment({
       patientId: record.patientId,
       doctorId: record.doctorId,
       clinicId: record.clinicId,
       specialtyId: record.specialtyId,
-      date: dateOffset(8 + index),
-      timeSlot: pick(TIME_SLOTS, index + 4),
+      date: followUpDate,
+      timeSlot: followUpTimeSlot,
       reason: 'Tai kham theo chi dinh bac si',
       status: 'confirmed',
       queueNumber: index + 1,
@@ -564,7 +675,7 @@ async function seedSampleData() {
     record.followUpAppointmentId = followUp._id;
     await record.save();
     appointments.push(followUp);
-    if (doctor) usedSlots.add(`${doctor._id}-${followUp.date}-${followUp.timeSlot}`);
+    usedSlots.add(followUpSlotKey);
   }
 
   for (let index = 0; index < Math.min(30, completedAppointments.length); index += 1) {
@@ -647,7 +758,7 @@ async function seedSampleData() {
   console.log(`Schedules: ${schedules.length}`);
   console.log(`Appointments: ${appointments.length}`);
   console.log(`Medical records: ${records.length}`);
-  console.log('Sample accounts: admin@example.com, doctor01@clinic.test, patient01@clinic.test / 123456');
+  console.log(`Accounts: quantri@clinicbooking.vn, bacsi01@clinicbooking.vn, benhnhan01@clinicbooking.vn / ${PASSWORD}`);
 
   await mongoose.disconnect();
 }

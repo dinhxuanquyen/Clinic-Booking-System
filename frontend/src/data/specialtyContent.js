@@ -288,7 +288,6 @@ const LEGACY_SPECIALTY_IMAGE_PATHS = new Set([
 
 const LEGACY_SPECIALTY_IMAGE_PATTERNS = [
   '/specialties/abstract/',
-  '/specialties/illustrations/',
   '/specialties/icons/',
   'data:image/svg'
 ];
@@ -317,13 +316,16 @@ export function getSpecialtyContent(name = '') {
 export function hasPlaceholderSpecialtyImage(image = '') {
   const value = String(image || '').trim();
   const lowerValue = value.toLowerCase();
+  const isCuratedSpecialtyIllustration =
+    lowerValue.includes('/specialties/illustrations/specialty-') && lowerValue.endsWith('.svg');
+
   return (
     !value ||
     lowerValue.includes('placeholder-specialty') ||
     lowerValue.startsWith('data:image/svg') ||
     LEGACY_SPECIALTY_IMAGE_PATHS.has(value) ||
     LEGACY_SPECIALTY_IMAGE_PATHS.has(lowerValue) ||
-    (lowerValue.includes('/specialties/') && lowerValue.endsWith('.svg')) ||
+    (!isCuratedSpecialtyIllustration && lowerValue.includes('/specialties/') && lowerValue.endsWith('.svg')) ||
     LEGACY_SPECIALTY_IMAGE_PATTERNS.some((pattern) => lowerValue.includes(pattern))
   );
 }

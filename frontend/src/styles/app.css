@@ -35850,37 +35850,62 @@ button.doctor-record-follow-up-card:focus-visible {
 }
 
 .public-package-market-body {
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
   padding: 17px 18px 18px;
 }
 
 .public-package-card-market h2 {
-  min-height: auto;
+  display: -webkit-box;
+  min-height: 2.6em;
+  overflow: hidden;
   font-size: 1.1rem;
   line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .public-package-card-market p {
-  min-height: 2.85em;
+  display: -webkit-box;
+  min-height: 2.75em;
+  max-height: 2.75em;
+  overflow: hidden;
   font-size: 0.93rem;
+  line-height: 1.38;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .public-package-card-meta {
   display: flex;
-  flex-wrap: wrap;
+  min-width: 0;
+  min-height: 1.45em;
+  flex-wrap: nowrap;
   gap: 8px;
   align-items: center;
   color: #61728b;
   font-size: 0.88rem;
   font-weight: 800;
-  line-height: 1.35;
+  line-height: 1.32;
 }
 
 .public-package-card-meta span {
   display: inline-flex;
   min-width: 0;
-  max-width: 100%;
   align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.public-package-card-meta span:first-child {
+  max-width: calc(100% - 76px);
+  white-space: nowrap;
+}
+
+.public-package-card-meta span:last-child {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .public-package-card-meta span + span::before {
@@ -39337,6 +39362,32 @@ body.modal-open.doctor-portal-open {
 .admin-table-actions .btn {
   min-width: 62px;
   white-space: nowrap;
+}
+
+.admin-table-actions--clinics {
+  align-items: center;
+}
+
+.admin-order-actions {
+  display: inline-flex;
+  gap: 6px;
+  margin-right: 2px;
+}
+
+.admin-table-actions .admin-order-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.admin-order-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
 }
 
 .public-main .clinic-detail-page .clinic-hero-carousel {
