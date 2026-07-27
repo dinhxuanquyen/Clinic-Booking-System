@@ -103,10 +103,10 @@ export default function ForgotPasswordPage() {
       });
       setOtpExpiresIn(payload?.expiresInSeconds || 600);
       setResendCooldown(payload?.cooldownSeconds || 60);
-      toast.success('Nếu email tồn tại, mã đặt lại mật khẩu đã được gửi');
+      toast.success(payload?.message || 'Mã OTP đặt lại mật khẩu đã được gửi');
       setStep(2);
     } catch (err) {
-      const errorMessage = err.message || 'Không gửi được mã OTP';
+      const errorMessage = err.message || 'Không gửi được mã OTP. Vui lòng kiểm tra lại email.';
       setError(errorMessage);
 
       const errorDetails = Array.isArray(err.payload?.details) ? null : err.payload?.details;

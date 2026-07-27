@@ -360,46 +360,47 @@ export const resendVerificationOtp = asyncHandler(async (req, res) => {
 });
 
 export const forgotPassword = asyncHandler(async (req, res) => {
-  const genericMessage = 'Nếu email tồn tại, hệ thống đã gửi mã đặt lại mật khẩu';
   const { user, doctor } = await findPasswordResetUserByEmail(
     req.body.email,
     '+lastResetPasswordOtpSentAt +isEmailVerified +role +emailVerificationExpires +lastEmailVerificationOtpSentAt'
   );
 
-  if (user) {
-    const recipientEmail = await resolvePasswordResetRecipient(user, doctor);
-    if (!recipientEmail) {
-      return res.json({ success: true, message: genericMessage, data: null });
-    }
-
-    if (user.role === 'patient' && user.isEmailVerified === false) {
-      throw new ApiError(
-        403,
-        'Tài khoản chưa xác nhận email. Vui lòng xác nhận email trước khi đặt lại mật khẩu.',
-        emailVerificationRequiredPayload(user)
-      );
-    }
-
-    const retryAfter = getOtpRetryAfter(user, 'lastResetPasswordOtpSentAt');
-    if (retryAfter > 0) {
-      return sendOtpCooldownResponse(res, retryAfter);
-    }
-
-    const otp = generateOtp();
-    user.resetPasswordOtp = otp;
-    user.resetPasswordExpires = new Date(Date.now() + OTP_EXPIRES_IN_SECONDS * 1000);
-    user.lastResetPasswordOtpSentAt = new Date();
-    user.lastOtpSentAt = new Date();
-    await user.save();
-
-    try {
-      await sendResetPasswordOtp({ to: recipientEmail, otp });
-    } catch (error) {
-      console.error('Send reset password OTP email failed:', error);
-    }
+  if (!user) {
+    throw new ApiError(404, 'Không tìm thấy tài khoản trong hệ thống. Vui lòng kiểm tra lại email.');
   }
 
-  res.json(user ? otpSuccessPayload('Mã OTP đã được gửi') : { success: true, message: genericMessage, data: null });
+  const recipientEmail = await resolvePasswordResetRecipient(user, doctor);
+  if (!recipientEmail) {
+    throw new ApiError(400, 'Tài khoản chưa có email nhận mã OTP. Vui lòng liên hệ quản trị viên.');
+  }
+
+  if (user.role === 'patient' && user.isEmailVerified === false) {
+    throw new ApiError(
+      403,
+      'Tài khoản chưa xác nhận email. Vui lòng xác nhận email trước khi đặt lại mật khẩu.',
+      emailVerificationRequiredPayload(user)
+    );
+  }
+
+  const retryAfter = getOtpRetryAfter(user, 'lastResetPasswordOtpSentAt');
+  if (retryAfter > 0) {
+    return sendOtpCooldownResponse(res, retryAfter);
+  }
+
+  const otp = generateOtp();
+  user.resetPasswordOtp = otp;
+  user.resetPasswordExpires = new Date(Date.now() + OTP_EXPIRES_IN_SECONDS * 1000);
+  user.lastResetPasswordOtpSentAt = new Date();
+  user.lastOtpSentAt = new Date();
+  await user.save();
+
+  try {
+    await sendResetPasswordOtp({ to: recipientEmail, otp });
+  } catch (error) {
+    console.error('Send reset password OTP email failed:', error);
+  }
+
+  res.json(otpSuccessPayload('Mã OTP đã được gửi'));
 });
 
 export const resetPassword = asyncHandler(async (req, res) => {

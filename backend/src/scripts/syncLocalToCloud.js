@@ -26,7 +26,16 @@ function sanitizeIndex(index) {
     'expireAfterSeconds',
     'partialFilterExpression',
     'collation',
-    'background'
+    'background',
+    'weights',
+    'default_language',
+    'language_override',
+    'textIndexVersion',
+    'wildcardProjection',
+    '2dsphereIndexVersion',
+    'bits',
+    'min',
+    'max'
   ];
 
   return Object.fromEntries(Object.entries(index).filter(([key]) => allowedKeys.includes(key)));
