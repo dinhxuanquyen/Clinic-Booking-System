@@ -16,10 +16,12 @@ export function resolveMediaUrl(path, placeholder = '/placeholder-clinic.svg') {
   const value = String(path).trim();
   if (!value) return placeholder;
   if (/^https?:\/\//i.test(value)) return value;
-  if (value.startsWith('/uploads')) return `${API_BASE_URL}${value}`;
+  if (value.startsWith('/static-assets/')) return value;
+  if (value === '/uploads' || value.startsWith('/uploads/')) return `${API_BASE_URL}${value}`;
+  if (value.startsWith('uploads/')) return `${API_BASE_URL}/${value}`;
   if (value.startsWith('/placeholder')) return value;
 
-  return value;
+  return value.startsWith('/') ? value : `/${value}`;
 }
 
 export function useImageFallback(event, placeholder) {
