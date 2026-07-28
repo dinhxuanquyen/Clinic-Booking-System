@@ -24,6 +24,7 @@
     "cleanup:sample-labels": "node src/scripts/cleanupSampleLabels.js",
     "fix:specialty-images": "node src/scripts/fixSpecialtyImages.js",
     "migrate:clinic-doctor-images": "node src/scripts/migrateClinicDoctorImages.js",
+    "restore:missing-doctor-avatars": "node src/scripts/restoreMissingDoctorAvatars.js",
     "migrate:clinic-doctor-codes": "node src/scripts/fixDoctorClinicCodes.js",
     "fix:doctor-clinic-codes": "node src/scripts/fixDoctorClinicCodes.js",
     "sync:follow-ups": "node src/scripts/syncFollowUpStatuses.js"

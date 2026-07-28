@@ -3,7 +3,18 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client.js';
 import DoctorCard from '../components/DoctorCard.jsx';
 import PageSkeleton from '../components/PageSkeleton.jsx';
-import { FaChevronLeft, FaChevronRight } from '../components/icons/FaIcons.jsx';
+import {
+  FaCalendarAlt,
+  FaCheckCircle,
+  FaChevronLeft,
+  FaChevronRight,
+  FaHospital,
+  FaInfoCircle,
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaStethoscope,
+  FaUser
+} from '../components/icons/FaIcons.jsx';
 import { resolveMediaUrl, useImageFallback } from '../utils/media.js';
 import { cleanDisplayText } from '../utils/textEncoding.js';
 import {
@@ -12,6 +23,17 @@ import {
 } from '../data/specialtyContent.js';
 
 const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+const clinicDetailNavItems = [
+  { id: 'overview', icon: FaInfoCircle, label: 'Tổng quan' },
+  { id: 'specialties', icon: FaStethoscope, label: 'Chuyên khoa' },
+  { id: 'doctors', icon: FaUser, label: 'Bác sĩ' },
+  { id: 'gallery', icon: FaHospital, label: 'Hình ảnh' },
+  { id: 'hours', icon: FaCalendarAlt, label: 'Giờ làm việc' },
+  { id: 'map', icon: FaMapMarkerAlt, label: 'Bản đồ' },
+  { id: 'support', icon: FaPhoneAlt, label: 'Hỗ trợ' }
+];
+
 function formatDayOfWeek(dayOfWeek) {
   const mapping = {
     monday: 'Thứ 2',
@@ -76,6 +98,7 @@ export default function ClinicDetail() {
   const [doctors, setDoctors] = useState([]);
   const [selectedSpecialtyId, setSelectedSpecialtyId] = useState('all');
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [activeSection, setActiveSection] = useState('overview');
   const [error, setError] = useState('');
 
   const workingHours = useMemo(() => normalizeWorkingHours(clinic?.workingHours), [clinic]);
@@ -120,6 +143,10 @@ export default function ClinicDetail() {
 
   function scrollToDoctors() {
     document.getElementById('doctors')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function handleNavClick(sectionId) {
+    setActiveSection(sectionId);
   }
 
   function showPreviousImage() {
@@ -198,7 +225,18 @@ export default function ClinicDetail() {
             <button className="clinic-hero-nav next" type="button" onClick={showNextImage} aria-label="Ảnh tiếp theo">
               <FaChevronRight size={17} />
             </button>
-            <span className="clinic-hero-image-count">{activeImageIndex + 1}/{clinicImages.length}</span>
+            <div className="clinic-hero-dots" aria-label="Chọn ảnh cơ sở">
+              {clinicImages.map((image, index) => (
+                <button
+                  aria-label={`Xem ảnh ${index + 1}`}
+                  aria-current={index === activeImageIndex ? 'true' : undefined}
+                  className={index === activeImageIndex ? 'active' : ''}
+                  key={image}
+                  type="button"
+                  onClick={() => setActiveImageIndex(index)}
+                />
+              ))}
+            </div>
           </div>
         )}
         </div>
@@ -227,8 +265,25 @@ export default function ClinicDetail() {
       </section>
 
       <div className="container clinic-detail-shell">
+        <aside className="clinic-detail-nav" aria-label="Danh mục cơ sở khám bệnh">
+          {clinicDetailNavItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <a
+                className={activeSection === item.id ? 'active' : ''}
+                href={`#${item.id}`}
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+              >
+                <Icon size={15} />
+                {item.label}
+              </a>
+            );
+          })}
+        </aside>
+
         <div className="clinic-detail-main">
-          <section className="clinic-about-section">
+          <section className="clinic-about-section" id="overview">
             <div className="clinic-section-head">
               <div>
                 <span className="clinic-section-label">Giới thiệu chung</span>
@@ -271,7 +326,7 @@ export default function ClinicDetail() {
             </div>
           </section>
 
-          <section className="clinic-specialties-section clinic-specialties-rich-section">
+          <section className="clinic-specialties-section clinic-specialties-rich-section" id="specialties">
             <div className="clinic-section-head clinic-specialties-rich-head">
               <div>
                 <span className="clinic-section-label">Chuyên khoa nổi bật</span>
@@ -361,7 +416,7 @@ export default function ClinicDetail() {
             </div>
           </section>
 
-          <section className="clinic-gallery-section">
+          <section className="clinic-gallery-section" id="gallery">
             <div className="clinic-section-head">
               <div>
                 <span className="clinic-section-label">Cơ sở vật chất & Trang thiết bị</span>
@@ -396,7 +451,7 @@ export default function ClinicDetail() {
         </div>
 
         <aside className="clinic-detail-sidebar" aria-label="Thông tin hỗ trợ cơ sở">
-          <section className="clinic-side-card">
+          <section className="clinic-side-card" id="hours">
             <h2>Giờ làm việc</h2>
             <div className="clinic-hours-list">
               {workingHours.length ? (
@@ -414,7 +469,7 @@ export default function ClinicDetail() {
             </div>
           </section>
 
-          <section className="clinic-side-card">
+          <section className="clinic-side-card" id="map">
             <h2>Vị trí bản đồ</h2>
             <div className="clinic-map-preview">
               <iframe
@@ -437,7 +492,7 @@ export default function ClinicDetail() {
             </a>
           </section>
 
-          <section className="clinic-side-card clinic-support-card">
+          <section className="clinic-side-card clinic-support-card" id="support">
             <h2>Bạn cần hỗ trợ?</h2>
             <p>Liên hệ tổng đài để được tư vấn và hỗ trợ đặt lịch nhanh.</p>
             <a className="clinic-support-phone" href={`tel:${clinic.phone || ''}`}>

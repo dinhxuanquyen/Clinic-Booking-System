@@ -8,6 +8,26 @@ import { useToast } from '../context/ToastContext.jsx';
 import { getVietnamToday, isPastDate, isPastOrCurrentSlot } from '../utils/dateTime.js';
 import { resolveMediaUrl, useImageFallback } from '../utils/media.js';
 import { cleanDisplayText } from '../utils/textEncoding.js';
+import {
+  FaCalendarAlt,
+  FaCheckCircle,
+  FaHospital,
+  FaInfoCircle,
+  FaStar,
+  FaStethoscope,
+  FaUser
+} from '../components/icons/FaIcons.jsx';
+
+const doctorDetailNavItems = [
+  { id: 'overview', icon: FaInfoCircle, label: 'Giới thiệu chung' },
+  { id: 'highlights', icon: FaStar, label: 'Điểm nổi bật' },
+  { id: 'schedule', icon: FaCalendarAlt, label: 'Lịch khám' },
+  { id: 'experience', icon: FaHospital, label: 'Kinh nghiệm công tác' },
+  { id: 'services', icon: FaStethoscope, label: 'Dịch vụ thăm khám' },
+  { id: 'packages', icon: FaCheckCircle, label: 'Gói khám' },
+  { id: 'process', icon: FaUser, label: 'Quy trình khám' },
+  { id: 'reviews', icon: FaStar, label: 'Đánh giá' }
+];
 
 function objectId(value) {
   if (!value) return '';
@@ -243,6 +263,7 @@ export default function DoctorDetail() {
   const [doctor, setDoctor] = useState(null);
   const today = getVietnamToday();
   const [date, setDate] = useState(() => getVietnamToday());
+  const [activeSection, setActiveSection] = useState('overview');
   const [slots, setSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState('');
   const [servicePackages, setServicePackages] = useState([]);
@@ -353,6 +374,10 @@ export default function DoctorDetail() {
   function requireLogin() {
     const returnUrl = `${location.pathname}${location.search}`;
     navigate(`/login?returnUrl=${encodeURIComponent(returnUrl)}`);
+  }
+
+  function handleNavClick(sectionId) {
+    setActiveSection(sectionId);
   }
 
   function selectSlot(slot) {
@@ -503,6 +528,23 @@ export default function DoctorDetail() {
     <main className="doctor-detail-page">
       <div className="container">
         <div className="doctor-detail-layout">
+          <aside className="doctor-detail-nav" aria-label="Danh mục hồ sơ bác sĩ">
+            {doctorDetailNavItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <a
+                  className={activeSection === item.id ? 'active' : ''}
+                  href={`#${item.id}`}
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                >
+                  <Icon size={15} />
+                  {item.label}
+                </a>
+              );
+            })}
+          </aside>
+
           <section className="doctor-detail-main">
             <div className="doctor-profile-hero">
               <div className="doctor-profile-hero-photo">
@@ -528,7 +570,7 @@ export default function DoctorDetail() {
               </div>
             </div>
 
-            <section className="doctor-highlights-card">
+            <section className="doctor-highlights-card" id="highlights">
               <div>
                 <span className="eyebrow">Điểm nổi bật</span>
                 <h2>Năng lực và mức độ tin cậy</h2>
@@ -544,14 +586,14 @@ export default function DoctorDetail() {
               </div>
             </section>
 
-            <section className="doctor-content-card">
+            <section className="doctor-content-card" id="overview">
               <span className="eyebrow">Giới thiệu bác sĩ</span>
               <h2>Thông tin chuyên môn</h2>
               <p className="doctor-introduction-text">{doctorIntroduction}</p>
             </section>
 
             <section className="doctor-content-grid">
-              <article className="doctor-content-card">
+              <article className="doctor-content-card" id="experience">
                 <span className="eyebrow">Kinh nghiệm công tác</span>
                 <h2>Quá trình làm việc</h2>
                 <p>
@@ -562,7 +604,7 @@ export default function DoctorDetail() {
                 {doctor.position && <p>Chức vụ: {cleanDisplayText(doctor.position)}.</p>}
               </article>
 
-              <article className="doctor-content-card">
+              <article className="doctor-content-card" id="services">
                 <span className="eyebrow">Lĩnh vực chuyên môn</span>
                 <h2>Dịch vụ thăm khám</h2>
                 <ul className="doctor-specialty-list">
@@ -573,7 +615,7 @@ export default function DoctorDetail() {
               </article>
             </section>
 
-            <section className="doctor-content-card doctor-service-reference-section">
+            <section className="doctor-content-card doctor-service-reference-section" id="packages">
               <div className="doctor-service-reference-heading">
                 <div>
                   <span className="eyebrow">Dịch vụ khám áp dụng</span>
@@ -604,7 +646,7 @@ export default function DoctorDetail() {
               </div>
             </section>
 
-            <section className="doctor-process-card">
+            <section className="doctor-process-card" id="process">
               <span className="eyebrow">Quy trình khám</span>
               <div className="doctor-process-timeline">
                 {visitSteps.map((item) => (
@@ -617,7 +659,7 @@ export default function DoctorDetail() {
               </div>
             </section>
 
-            <section className="doctor-reviews-card">
+            <section className="doctor-reviews-card" id="reviews">
               <div className="doctor-reviews-heading">
                 <div>
                   <span className="eyebrow">Đánh giá từ bệnh nhân</span>
@@ -668,7 +710,7 @@ export default function DoctorDetail() {
             </section>
           </section>
 
-          <aside className="doctor-booking-aside">
+          <aside className="doctor-booking-aside" id="schedule">
             <div className="booking-panel doctor-booking-panel">
               <span className="eyebrow">Đặt lịch khám</span>
               <h2>Chọn lịch khám phù hợp</h2>
