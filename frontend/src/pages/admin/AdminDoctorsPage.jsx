@@ -563,8 +563,8 @@ export default function AdminDoctorsPage() {
 
             <section className="admin-doctor-form-section">
               <h3>Giới thiệu chuyên môn</h3>
-              <label className="admin-doctor-textarea"><span>Giới thiệu</span><textarea className="form-control" value={form.bio} onChange={(event) => setForm({ ...form, bio: event.target.value })} placeholder="Nhập giới thiệu chuyên môn" /></label>
-              <label className="admin-doctor-textarea"><span>Mô tả</span><textarea className="form-control" rows="3" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} placeholder="Nhập mô tả ngắn" /></label>
+              <label className="admin-doctor-textarea"><span>Giới thiệu</span><textarea className="form-control admin-doctor-introduction-input" rows="7" value={form.bio} onChange={(event) => setForm({ ...form, bio: event.target.value })} placeholder="Nhập giới thiệu chuyên môn..." /></label>
+              <label className="admin-doctor-textarea"><span>Mô tả</span><textarea className="form-control admin-doctor-introduction-input" rows="4" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} placeholder="Nhập mô tả ngắn..." /></label>
             </section>
 
             <section className="admin-doctor-form-section admin-doctor-account-section">

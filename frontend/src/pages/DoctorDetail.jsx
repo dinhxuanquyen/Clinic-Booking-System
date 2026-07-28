@@ -547,7 +547,7 @@ export default function DoctorDetail() {
             <section className="doctor-content-card">
               <span className="eyebrow">Giới thiệu bác sĩ</span>
               <h2>Thông tin chuyên môn</h2>
-              <p>{doctorIntroduction}</p>
+              <p className="doctor-introduction-text">{doctorIntroduction}</p>
             </section>
 
             <section className="doctor-content-grid">

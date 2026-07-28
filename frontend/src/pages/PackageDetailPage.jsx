@@ -107,7 +107,7 @@ export default function PackageDetailPage() {
         <div className="package-detail-summary-copy">
           <span className="package-detail-specialty-badge">{specialtyName}</span>
           <h1>{packageName}</h1>
-          <p>{packageDescription}</p>
+          <p className="package-detail-description">{packageDescription}</p>
 
           <div className="package-detail-key-facts">
             <span>{duration} phút</span>

@@ -29,6 +29,12 @@ const FILTER_TABS = [
   { key: 'overdue', label: 'Quá hạn' }
 ];
 
+function tabFromSearch(search) {
+  const tab = new URLSearchParams(search).get('tab');
+  if (tab === 'follow-ups') return 'needs_follow_up';
+  return FILTER_TABS.some((item) => item.key === tab) ? tab : 'all';
+}
+
 function recordMatchesTab(record, tab) {
   if (tab === 'needs_follow_up') {
     return record.followUpRequired && ['recommended', 'cancelled', undefined, ''].includes(record.followUpStatus || 'recommended');
@@ -66,7 +72,7 @@ export default function MedicalRecordsPage() {
   const [recordsLoaded, setRecordsLoaded] = useState(false);
   const [loadError, setLoadError] = useState('');
   const [queryHandled, setQueryHandled] = useState('');
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState(() => tabFromSearch(location.search));
   const [search, setSearch] = useState('');
   const [specialty, setSpecialty] = useState('all');
   const [year, setYear] = useState('all');
@@ -125,8 +131,7 @@ export default function MedicalRecordsPage() {
     const params = new URLSearchParams(location.search);
     const recordId = params.get('recordId');
     const appointmentId = params.get('appointmentId');
-    const tab = params.get('tab');
-    if (tab === 'follow-ups') setActiveTab('needs_follow_up');
+    setActiveTab(tabFromSearch(location.search));
 
     const queryKey = recordId ? `record:${recordId}` : appointmentId ? `appointment:${appointmentId}` : '';
     if (!queryKey || loading || !recordsLoaded || queryHandled === queryKey) return;
@@ -198,8 +203,25 @@ export default function MedicalRecordsPage() {
     setYear('all');
   }
 
+  function handleTabChange(tab) {
+    setActiveTab(tab);
+
+    const params = new URLSearchParams(location.search);
+    if (tab === 'all') params.delete('tab');
+    else params.set('tab', tab === 'needs_follow_up' ? 'follow-ups' : tab);
+
+    const searchParams = params.toString();
+    navigate(
+      {
+        pathname: location.pathname,
+        search: searchParams ? `?${searchParams}` : ''
+      },
+      { replace: true }
+    );
+  }
+
   function showFollowUps() {
-    setActiveTab('needs_follow_up');
+    handleTabChange('needs_follow_up');
     window.requestAnimationFrame(() => {
       recordsTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -212,7 +234,11 @@ export default function MedicalRecordsPage() {
           <MedicalRecordsLoadingState />
         ) : (
           <>
-            <HealthRecordPageHeader patientName={user?.name} latestDate={latestExamDate(records)} />
+            <HealthRecordPageHeader
+              patientName={user?.name}
+              latestDate={latestExamDate(records)}
+              followUpMode={new URLSearchParams(location.search).get('tab') === 'follow-ups'}
+            />
 
             <HealthSummaryBar metrics={metrics} />
 
@@ -239,7 +265,7 @@ export default function MedicalRecordsPage() {
                 onSearchChange={setSearch}
                 onSortChange={setSortOrder}
                 onSpecialtyChange={setSpecialty}
-                onTabChange={setActiveTab}
+                onTabChange={handleTabChange}
                 onYearChange={setYear}
                 search={search}
                 sortOrder={sortOrder}

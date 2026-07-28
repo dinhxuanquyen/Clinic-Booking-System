@@ -236,7 +236,9 @@ export default function ClinicDetail() {
               </div>
             </div>
             <div className="clinic-about-card">
-              <p>{clinic.description || 'Thông tin cơ sở đang được cập nhật.'}</p>
+              <p className="clinic-about-description">
+                {clinic.description || 'Thông tin cơ sở đang được cập nhật.'}
+              </p>
               <div className="clinic-about-highlights">
                 <article>
                   <strong>Sứ mệnh</strong>

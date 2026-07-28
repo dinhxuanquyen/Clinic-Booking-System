@@ -389,15 +389,15 @@ export default function AdminServicePackagesPage() {
                   <div className="service-package-form-grid service-package-form-grid-content">
                     <div className="col-12">
                   <label className="form-label">Mô tả</label>
-                  <textarea className="form-control" rows="4" value={form.description} onChange={(event) => updateForm('description', event.target.value)} placeholder="Mô tả ngắn về quyền lợi hoặc nội dung gói khám" />
+                  <textarea className="form-control package-description-input" rows="7" value={form.description} onChange={(event) => updateForm('description', event.target.value)} placeholder="Nhập phần giới thiệu gói khám..." />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Phù hợp với ai</label>
-                  <textarea className="form-control" rows="4" value={form.targetPatients} onChange={(event) => updateForm('targetPatients', event.target.value)} placeholder="Mỗi dòng một nhóm bệnh nhân phù hợp" />
+                  <textarea className="form-control package-description-input" rows="4" value={form.targetPatients} onChange={(event) => updateForm('targetPatients', event.target.value)} placeholder="Mỗi dòng một nhóm bệnh nhân phù hợp" />
                 </div>
                 <div className="col-md-6">
                   <label className="form-label">Quyền lợi / bao gồm</label>
-                  <textarea className="form-control" rows="4" value={form.includes} onChange={(event) => updateForm('includes', event.target.value)} placeholder="Mỗi dòng một quyền lợi hoặc nội dung gói" />
+                  <textarea className="form-control package-description-input" rows="4" value={form.includes} onChange={(event) => updateForm('includes', event.target.value)} placeholder="Mỗi dòng một quyền lợi hoặc nội dung gói" />
                 </div>
                 <div className="col-12 service-package-image-field">
                   <label className="form-label">Ảnh gói khám</label>

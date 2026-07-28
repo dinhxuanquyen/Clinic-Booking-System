@@ -514,7 +514,14 @@ export default function AdminClinicsPage() {
                 <h3>Mô tả cơ sở</h3>
                 <label className="admin-clinic-textarea">
                   <span>Mô tả</span>
-                  <textarea className="form-control" placeholder="Nhập mô tả cơ sở" rows="4" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} />
+                  <textarea
+                    aria-label="Mô tả cơ sở"
+                    className="form-control admin-clinic-description-input"
+                    placeholder="Nhập phần giới thiệu cơ sở..."
+                    rows="7"
+                    value={form.description}
+                    onChange={(event) => setForm({ ...form, description: event.target.value })}
+                  />
                 </label>
               </section>
 
