@@ -51,7 +51,7 @@ services:
 
   - type: web
     runtime: static
-    name: clinic-booking-frontend
+    name: clinic-booking
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
