@@ -26,6 +26,8 @@ import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 
 const app = express();
 
+app.set('trust proxy', process.env.NODE_ENV === 'production' ? 1 : false);
+
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
