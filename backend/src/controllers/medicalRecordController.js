@@ -3,8 +3,6 @@ import Appointment from '../models/appointmentModel.js';
 import MedicalRecord from '../models/medicalRecordModel.js';
 import Notification from '../models/notificationModel.js';
 import User from '../models/central/User.js';
-import { getClinicConnection } from '../config/db.js';
-import { getClinicModels } from '../models/clinic/models.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/apiError.js';
 import { createAuditLog } from '../utils/auditLogger.js';
@@ -13,6 +11,7 @@ import { sendMedicalRecordUpdatedEmail } from '../services/emailService.js';
 import { generateMedicalRecordPdf } from '../services/pdfService.js';
 import { FOLLOW_UP_STATUSES } from '../constants/followUpStatus.js';
 import { syncFollowUpStatusForAppointment } from '../services/followUpService.js';
+import { queueClinicAppointmentSync } from '../services/clinicSyncOutboxService.js';
 import { medicalRecordPdfFilename } from '../utils/pdfFilename.js';
 
 const medicalRecordPopulate = [
@@ -181,70 +180,6 @@ function streamPdf(res, doc, filename) {
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"; filename*=UTF-8''${encodeURIComponent(filename)}`);
   doc.pipe(res);
   doc.end();
-}
-
-async function syncClinicAppointment(appointment, patientUser) {
-  if (!patientUser) return;
-
-  const connection = await getClinicConnection(appointment.clinicId);
-  const { Patient, Appointment: ClinicAppointment } = getClinicModels(connection);
-
-  const patient = await Patient.findOneAndUpdate(
-    { clinicId: appointment.clinicId, userId: patientUser._id },
-    {
-      $setOnInsert: {
-        clinicId: appointment.clinicId,
-        userId: patientUser._id,
-        name: patientUser.name,
-        email: patientUser.email,
-        phone: patientUser.phone
-      }
-    },
-    { upsert: true, new: true }
-  );
-
-  await ClinicAppointment.findByIdAndUpdate(
-    appointment._id,
-    {
-      _id: appointment._id,
-      clinicId: appointment.clinicId,
-      doctorId: appointment.doctorId,
-      patientId: patient._id,
-      specialtyId: appointment.specialtyId,
-      date: appointment.date,
-      timeSlot: appointment.timeSlot,
-      reason: appointment.reason,
-      cancelRequest: appointment.cancelRequest,
-      rescheduleRequest: appointment.rescheduleRequest,
-      confirmedAt: appointment.confirmedAt,
-      startedAt: appointment.startedAt,
-      startedBy: appointment.startedBy,
-      completedAt: appointment.completedAt,
-      completedBy: appointment.completedBy,
-      noShowAt: appointment.noShowAt,
-      noShowAuto: appointment.noShowAuto,
-      cancelRequestedAt: appointment.cancelRequestedAt,
-      cancelApprovedAt: appointment.cancelApprovedAt,
-      rescheduleRequestedAt: appointment.rescheduleRequestedAt,
-      rescheduleApprovedAt: appointment.rescheduleApprovedAt,
-      notificationSentAt: appointment.notificationSentAt,
-      emailConfirmationSentAt: appointment.emailConfirmationSentAt,
-      servicePackageId: appointment.servicePackageId,
-      servicePackageSnapshot: appointment.servicePackageSnapshot,
-      paymentStatus: appointment.paymentStatus,
-      paymentMethod: appointment.paymentMethod,
-      isFollowUp: appointment.isFollowUp,
-      followUpRecordId: appointment.followUpRecordId,
-      originalAppointmentId: appointment.originalAppointmentId,
-      queueNumber: appointment.queueNumber,
-      consultationStatus: appointment.consultationStatus,
-      checkInAt: appointment.checkInAt,
-      startConsultationAt: appointment.startConsultationAt,
-      finishConsultationAt: appointment.finishConsultationAt,
-      status: appointment.status
-    },
-    { upsert: true, new: true }
-  );
 }
 
 async function emitAppointmentUpdated(appointment) {
@@ -472,9 +407,10 @@ export const createMedicalRecord = asyncHandler(async (req, res) => {
   }
 
   const patientUser = await User.findById(appointment.patientId).select('name email phone');
-  if (patientUser) {
-    await runMedicalRecordSideEffect('Medical record clinic sync', () => syncClinicAppointment(appointment, patientUser));
-  }
+  await runMedicalRecordSideEffect(
+    'Medical record clinic sync enqueue',
+    () => queueClinicAppointmentSync(appointment)
+  );
 
   const populatedRecord = await MedicalRecord.findById(record._id).populate([...medicalRecordPopulate, followUpAppointmentPopulate, followUpCompletedRecordPopulate]);
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);

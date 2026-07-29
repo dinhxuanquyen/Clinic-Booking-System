@@ -6,8 +6,6 @@ import DoctorReview from '../models/doctorReviewModel.js';
 import Notification from '../models/notificationModel.js';
 import User from '../models/central/User.js';
 import WaitingList from '../models/waitingListModel.js';
-import { getClinicConnection } from '../config/db.js';
-import { getClinicModels } from '../models/clinic/models.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/apiError.js';
 import {
@@ -26,6 +24,7 @@ import { syncFollowUpStatusForAppointment } from '../services/followUpService.js
 import { createAuditLog } from '../utils/auditLogger.js';
 import { generateAppointmentPdf, generateQueueTicketPdf } from '../services/pdfService.js';
 import { resolveServicePackageForAppointment } from '../services/servicePackageService.js';
+import { queueClinicAppointmentSync } from '../services/clinicSyncOutboxService.js';
 import { buildInsuranceSnapshot } from '../utils/insurance.js';
 import { appointmentPdfFilename, queueTicketPdfFilename } from '../utils/pdfFilename.js';
 import {
@@ -631,71 +630,6 @@ function getLinkedDoctorId(user) {
   return user.doctorId;
 }
 
-async function syncClinicAppointment(appointment, patientUser) {
-  const connection = await getClinicConnection(appointment.clinicId);
-  const { Patient, Appointment: ClinicAppointment } = getClinicModels(connection);
-  await ClinicAppointment.syncIndexes();
-
-  const patient = await Patient.findOneAndUpdate(
-    { clinicId: appointment.clinicId, userId: patientUser._id },
-    {
-      $setOnInsert: {
-        clinicId: appointment.clinicId,
-        userId: patientUser._id,
-        name: patientUser.name,
-        email: patientUser.email,
-        phone: patientUser.phone
-      }
-    },
-    { upsert: true, new: true }
-  );
-
-  await ClinicAppointment.findByIdAndUpdate(
-    appointment._id,
-    {
-      _id: appointment._id,
-      clinicId: appointment.clinicId,
-      doctorId: appointment.doctorId,
-      patientId: patient._id,
-      specialtyId: appointment.specialtyId,
-      date: appointment.date,
-      timeSlot: appointment.timeSlot,
-      reason: appointment.reason,
-      cancelRequest: appointment.cancelRequest,
-      rescheduleRequest: appointment.rescheduleRequest,
-      confirmedAt: appointment.confirmedAt,
-      completedAt: appointment.completedAt,
-      cancelRequestedAt: appointment.cancelRequestedAt,
-      cancelApprovedAt: appointment.cancelApprovedAt,
-      noShowAt: appointment.noShowAt,
-      noShowAuto: appointment.noShowAuto,
-      rescheduleRequestedAt: appointment.rescheduleRequestedAt,
-      rescheduleApprovedAt: appointment.rescheduleApprovedAt,
-      startedAt: appointment.startedAt,
-      startedBy: appointment.startedBy,
-      completedBy: appointment.completedBy,
-      notificationSentAt: appointment.notificationSentAt,
-      emailConfirmationSentAt: appointment.emailConfirmationSentAt,
-      servicePackageId: appointment.servicePackageId,
-      servicePackageSnapshot: appointment.servicePackageSnapshot,
-      insuranceSnapshot: appointment.insuranceSnapshot,
-      paymentStatus: appointment.paymentStatus,
-      paymentMethod: appointment.paymentMethod,
-      isFollowUp: appointment.isFollowUp,
-      followUpRecordId: appointment.followUpRecordId,
-      followUpType: appointment.followUpType,
-      originalAppointmentId: appointment.originalAppointmentId,
-      queueNumber: appointment.queueNumber,
-      consultationStatus: appointment.consultationStatus,
-      checkInAt: appointment.checkInAt,
-      startConsultationAt: appointment.startConsultationAt,
-      finishConsultationAt: appointment.finishConsultationAt,
-      status: appointment.status
-    },
-    { upsert: true, new: true }
-  );
-}
-
 export const createAppointment = asyncHandler(async (req, res) => {
   assertBookableDateTime(req.body.date, req.body.timeSlot);
   const doctor = await validateDoctorBooking(req.body);
@@ -808,7 +742,10 @@ export const createAppointment = asyncHandler(async (req, res) => {
     ));
   }
 
-  await syncClinicAppointment(appointment, req.user);
+  await runAppointmentSideEffect(
+    'Appointment clinic sync enqueue',
+    () => queueClinicAppointmentSync(appointment)
+  );
 
   const { patientName, doctorName } = adminAppointmentNames(populatedAppointment);
   await createAdminNotification({
@@ -858,7 +795,10 @@ export const createAppointment = asyncHandler(async (req, res) => {
     });
     appointment.emailConfirmationSentAt = new Date();
     await appointment.save();
-    await syncClinicAppointment(appointment, req.user);
+    await runAppointmentSideEffect(
+      'Appointment email state clinic sync enqueue',
+      () => queueClinicAppointmentSync(appointment)
+    );
   } catch (error) {
     console.error('Email confirmation error:', error.stack || error);
   }
@@ -1112,9 +1052,10 @@ export const updateAppointmentStatus = asyncHandler(async (req, res) => {
   await appointment.save();
 
   const patientUser = await User.findById(appointment.patientId);
-  if (patientUser) {
-    await runAppointmentSideEffect('Appointment clinic sync', () => syncClinicAppointment(appointment, patientUser));
-  }
+  await runAppointmentSideEffect(
+    'Appointment clinic sync enqueue',
+    () => queueClinicAppointmentSync(appointment)
+  );
 
   let populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
   await runAppointmentSideEffect('Follow-up appointment status sync', () => (
@@ -1128,9 +1069,10 @@ export const updateAppointmentStatus = asyncHandler(async (req, res) => {
   if (notificationCreated) {
     appointment.notificationSentAt = new Date();
     await appointment.save();
-    if (patientUser) {
-      await runAppointmentSideEffect('Appointment notification clinic sync', () => syncClinicAppointment(appointment, patientUser));
-    }
+    await runAppointmentSideEffect(
+      'Appointment notification clinic sync enqueue',
+      () => queueClinicAppointmentSync(appointment)
+    );
     populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
   }
 
@@ -1311,7 +1253,10 @@ export const cancelAppointment = asyncHandler(async (req, res) => {
     requestedAt: nextStatus === 'cancel_requested' ? requestedAt : appointment.cancelRequest?.requestedAt
   };
   await appointment.save();
-  await syncClinicAppointment(appointment, req.user);
+  await runAppointmentSideEffect(
+    'Appointment cancellation clinic sync enqueue',
+    () => queueClinicAppointmentSync(appointment)
+  );
 
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
 
@@ -1422,7 +1367,10 @@ export const requestAppointmentReschedule = asyncHandler(async (req, res) => {
   };
 
   await appointment.save();
-  await syncClinicAppointment(appointment, req.user);
+  await runAppointmentSideEffect(
+    'Appointment reschedule clinic sync enqueue',
+    () => queueClinicAppointmentSync(appointment)
+  );
 
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
 
@@ -1492,7 +1440,10 @@ export const cancelAppointmentRescheduleRequest = asyncHandler(async (req, res) 
   };
 
   await appointment.save();
-  await syncClinicAppointment(appointment, req.user);
+  await runAppointmentSideEffect(
+    'Appointment reschedule cancellation clinic sync enqueue',
+    () => queueClinicAppointmentSync(appointment)
+  );
 
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
 
@@ -1582,9 +1533,10 @@ export const updateConsultationStatus = asyncHandler(async (req, res) => {
   await appointment.save();
 
   const patientUser = await User.findById(appointment.patientId);
-  if (patientUser) {
-    await syncClinicAppointment(appointment, patientUser);
-  }
+  await runAppointmentSideEffect(
+    'Appointment consultation clinic sync enqueue',
+    () => queueClinicAppointmentSync(appointment)
+  );
 
   let populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
 

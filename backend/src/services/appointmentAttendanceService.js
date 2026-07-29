@@ -1,12 +1,11 @@
 import Appointment from '../models/appointmentModel.js';
 import Notification from '../models/notificationModel.js';
 import User from '../models/central/User.js';
-import { getClinicConnection } from '../config/db.js';
-import { getClinicModels } from '../models/clinic/models.js';
 import { APPOINTMENT_STATUSES } from '../constants/appointmentStatus.js';
 import { createAuditLog } from '../utils/auditLogger.js';
 import { emitNotification, emitToRole, emitToUser } from './socketService.js';
 import { syncFollowUpStatusForAppointment } from './followUpService.js';
+import { queueClinicAppointmentSync } from './clinicSyncOutboxService.js';
 
 const NO_SHOW_GRACE_MINUTES = 120;
 const NO_SHOW_GRACE_MS = NO_SHOW_GRACE_MINUTES * 60 * 1000;
@@ -28,17 +27,6 @@ function isNoShowCandidate(appointment, now) {
   const startAt = parseAppointmentStart(appointment.date, appointment.timeSlot);
   if (!startAt) return false;
   return startAt.getTime() + NO_SHOW_GRACE_MS < now.getTime();
-}
-
-async function syncClinicAppointmentNoShow(appointment) {
-  const connection = await getClinicConnection(appointment.clinicId);
-  const { Appointment: ClinicAppointment } = getClinicModels(connection);
-
-  await ClinicAppointment.findByIdAndUpdate(appointment._id, {
-    status: appointment.status,
-    noShowAt: appointment.noShowAt,
-    noShowAuto: appointment.noShowAuto
-  });
 }
 
 async function notifyPatientNoShow(appointment) {
@@ -109,7 +97,7 @@ export async function processNoShowAppointments(now = new Date()) {
     await appointment.save();
     updated += 1;
 
-    await safeSideEffect('No-show clinic sync', () => syncClinicAppointmentNoShow(appointment));
+    await safeSideEffect('No-show clinic sync enqueue', () => queueClinicAppointmentSync(appointment));
     await safeSideEffect('No-show follow-up sync', () => syncFollowUpStatusForAppointment(appointment, now));
     await safeSideEffect('No-show patient notification', () => notifyPatientNoShow(appointment));
     await safeSideEffect('No-show realtime emit', () => emitAppointmentNoShow(appointment));

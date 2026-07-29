@@ -8,6 +8,7 @@ import Clinic from '../models/clinicModel.js';
 import Specialty from '../models/specialtyModel.js';
 import Doctor from '../models/doctorModel.js';
 import Appointment from '../models/appointmentModel.js';
+import ClinicSyncOutbox from '../models/clinicSyncOutboxModel.js';
 import MedicalRecord from '../models/medicalRecordModel.js';
 import DoctorReview from '../models/doctorReviewModel.js';
 import WaitingList from '../models/waitingListModel.js';
@@ -79,6 +80,7 @@ async function cleanup() {
   const waitingIds = created.waitingList.map((item) => item._id).filter(Boolean);
 
   await Promise.all([
+    ClinicSyncOutbox.deleteMany({ entityId: { $in: appointmentIds } }),
     DoctorReview.deleteMany({ $or: [{ _id: { $in: reviewIds } }, { appointmentId: { $in: appointmentIds } }, { patientId: { $in: userIds } }] }),
     MedicalRecord.deleteMany({ $or: [{ _id: { $in: recordIds } }, { appointmentId: { $in: appointmentIds } }, { patientId: { $in: userIds } }] }),
     WaitingList.deleteMany({ $or: [{ _id: { $in: waitingIds } }, { patientId: { $in: userIds } }, { doctorId: { $in: doctorIds } }] }),
@@ -203,6 +205,7 @@ async function main() {
   await connectDatabase();
   await Promise.all([
     Appointment.syncIndexes(),
+    ClinicSyncOutbox.syncIndexes(),
     WaitingList.syncIndexes()
   ]);
 

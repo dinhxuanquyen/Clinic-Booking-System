@@ -8,11 +8,10 @@ import Schedule from '../models/scheduleModel.js';
 import ScheduleException from '../models/scheduleExceptionModel.js';
 import User from '../models/central/User.js';
 import WaitingList from '../models/waitingListModel.js';
-import { getClinicConnection } from '../config/db.js';
-import { getClinicModels } from '../models/clinic/models.js';
 import { sendAppointmentConfirmation } from '../services/emailService.js';
 import { emitNotification } from '../services/socketService.js';
 import { safelyOfferNextWaitingPatient } from '../services/waitingListService.js';
+import { queueClinicAppointmentSync } from '../services/clinicSyncOutboxService.js';
 import { SLOT_HOLDING_APPOINTMENT_STATUSES } from '../constants/appointmentStatus.js';
 import { ApiError } from '../utils/apiError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -134,44 +133,6 @@ async function nextPosition(payload) {
     { upsert: true, new: true, setDefaultsOnInsert: true }
   );
   return counter.sequence;
-}
-
-async function syncAcceptedAppointmentToClinic(appointment, patientUser) {
-  const connection = await getClinicConnection(appointment.clinicId);
-  const { Patient, Appointment: ClinicAppointment } = getClinicModels(connection);
-  await ClinicAppointment.syncIndexes();
-
-  const patient = await Patient.findOneAndUpdate(
-    { clinicId: appointment.clinicId, userId: patientUser._id },
-    {
-      $setOnInsert: {
-        clinicId: appointment.clinicId,
-        userId: patientUser._id,
-        name: patientUser.name,
-        email: patientUser.email,
-        phone: patientUser.phone
-      }
-    },
-    { upsert: true, new: true }
-  );
-
-  await ClinicAppointment.findByIdAndUpdate(
-    appointment._id,
-    {
-      _id: appointment._id,
-      clinicId: appointment.clinicId,
-      doctorId: appointment.doctorId,
-      patientId: patient._id,
-      specialtyId: appointment.specialtyId,
-      date: appointment.date,
-      timeSlot: appointment.timeSlot,
-      reason: appointment.reason,
-      insuranceSnapshot: appointment.insuranceSnapshot,
-      consultationStatus: appointment.consultationStatus,
-      status: appointment.status
-    },
-    { upsert: true, new: true }
-  );
 }
 
 async function offerNextForEntry(entry) {
@@ -359,7 +320,11 @@ export const acceptWaitingListOffer = asyncHandler(async (req, res) => {
     { $set: { status: 'expired', expiredAt: new Date() } }
   );
 
-  await syncAcceptedAppointmentToClinic(appointment, req.user);
+  try {
+    await queueClinicAppointmentSync(appointment);
+  } catch (error) {
+    console.warn('Waiting list appointment clinic sync enqueue failed:', error.stack || error);
+  }
   const populatedAppointment = await Appointment.findById(appointment._id).populate(appointmentPopulate);
 
   try {
