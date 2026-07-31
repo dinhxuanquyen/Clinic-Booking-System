@@ -5,6 +5,7 @@ import PasswordPolicyMeter from '../components/PasswordPolicyMeter.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { validatePasswordStrength } from '../utils/passwordPolicy.js';
+import { cleanDisplayText } from '../utils/textEncoding.js';
 
 function defaultRedirectFor(user, returnUrl) {
   if (user?.mustChangePassword) return '/change-password-first-login';
@@ -15,7 +16,7 @@ function defaultRedirectFor(user, returnUrl) {
 }
 
 function errorMessage(error) {
-  return error?.message || 'Đã xảy ra lỗi, vui lòng thử lại';
+  return cleanDisplayText(error?.message, 'Đã xảy ra lỗi, vui lòng thử lại');
 }
 
 function isValidEmail(email) {
@@ -298,7 +299,7 @@ export default function AuthPage({ mode }) {
       setOtpExpiresIn(payload?.expiresInSeconds || 600);
       setResendCooldown(payload?.cooldownSeconds || 60);
       saveVerificationWindow(nextEmail, payload?.expiresInSeconds || 600, payload?.cooldownSeconds || 60);
-      toast.success(payload?.message || 'Nếu email tồn tại, mã xác nhận đã được gửi');
+      toast.success(cleanDisplayText(payload?.message, 'Nếu email tồn tại, mã xác nhận đã được gửi'));
     } catch (err) {
       if (err.status === 429) {
         const retryAfter = err.payload?.retryAfter || 60;

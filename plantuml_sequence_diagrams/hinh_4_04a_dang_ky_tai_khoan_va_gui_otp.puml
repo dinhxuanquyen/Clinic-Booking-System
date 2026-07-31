@@ -1,0 +1,58 @@
+@startuml
+title Hình 4.4a. Sơ đồ trình tự đăng ký tài khoản và gửi OTP
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Khách truy cập" as Guest
+boundary "AuthPage.jsx\n(Register)" as UI
+control "AuthContext\nregister()" as Context
+control "API Client" as API
+control "authRoutes\nPOST /api/auth/register" as Route
+control "authRateLimiter\n+ validate" as Validate
+control "AuthController\nregister()" as Controller
+database "MongoDB\nUser" as UserDB
+control "EmailService" as Email
+control "SMTP Provider" as SMTP
+
+Guest -> UI : Nhập họ tên, email,\nsố điện thoại, mật khẩu
+UI -> Context : register(form)
+Context -> API : POST /auth/register
+API -> Route : POST /api/auth/register
+Route -> Validate : Rate limit + validate dữ liệu
+
+alt Request bị giới hạn hoặc dữ liệu không hợp lệ
+  Validate --> API : 429 / 422\nThông báo lỗi
+  API --> UI : Hiển thị lỗi
+else Request hợp lệ
+  Validate -> Controller : Chuyển request đăng ký
+  Controller -> Controller : Kiểm tra chính sách mật khẩu
+  alt Mật khẩu không hợp lệ
+    Controller --> UI : 422\nThông báo lỗi mật khẩu
+  else Hợp lệ
+    Controller -> UserDB : exists({ email })
+    UserDB --> Controller : kết quả
+    alt Email đã tồn tại
+      Controller --> UI : 409\nEmail đã được sử dụng
+    else Email chưa tồn tại
+      Controller -> UserDB : exists({ phone })
+      UserDB --> Controller : kết quả
+      alt Số điện thoại đã tồn tại
+        Controller --> UI : 409\nSố điện thoại đã được sử dụng
+      else Tạo tài khoản
+        Controller -> UserDB : create({ name, email, phone,\npassword hash, role='patient',\nisEmailVerified=false })
+        UserDB --> Controller : user
+        Controller -> Email : sendEmailVerificationOtp(user)
+        Email -> SMTP : Gửi email OTP
+        SMTP --> Email : Trạng thái gửi
+        Controller --> UI : 201 Created\nverificationEmail, otpExpiresIn,\nresendCooldown
+        UI -> Guest : Chuyển sang màn hình nhập OTP
+      end
+    end
+  end
+end
+
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+title Hình 4.17. Sơ đồ trình tự quản trị dữ liệu hệ thống và ghi AuditLog
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Quản trị viên" as Admin
+boundary "Admin Management UI" as UI
+control "API Client" as API
+control "adminRoutes" as Route
+control "auth + roleMiddleware\n(admin)" as Auth
+control "validate" as Validate
+control "AdminController\n(quản lý dữ liệu)" as Controller
+database "MongoDB\nEntity dữ liệu hệ thống" as DataDB
+control "auditLogger.createAuditLog()" as AuditLogger
+database "MongoDB\nAuditLog" as AuditDB
+
+Admin -> UI : Thực hiện tạo / cập nhật / xóa dữ liệu
+UI -> API : Gửi request quản trị
+API -> Route : Chuyển request
+Route -> Auth : Kiểm tra JWT và quyền admin
+Auth -> Validate : Kiểm tra dữ liệu đầu vào
+Validate -> Controller : Xử lý nghiệp vụ
+
+alt Tạo mới / Cập nhật / Xóa thành công
+  Controller -> DataDB : Ghi nhận thay đổi dữ liệu
+  DataDB --> Controller : Kết quả lưu thành công
+
+  Controller -> AuditLogger : createAuditLog({\nreq, action,\nentityType, entityId,\nentityName,\ndescription, metadata\n})
+  AuditLogger -> AuditDB : Lưu bản ghi AuditLog
+  AuditDB --> AuditLogger : Đã lưu
+  AuditLogger --> Controller : audit log
+
+  Controller --> UI : 200/201 OK\nTrả dữ liệu đã cập nhật
+else Dữ liệu không hợp lệ / không tìm thấy
+  Controller --> UI : 4xx Error\nThông báo lỗi
+end
+
+@enduml

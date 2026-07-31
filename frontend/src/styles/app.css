@@ -33291,6 +33291,101 @@ button.doctor-record-follow-up-card:focus-visible {
   overflow-x: clip;
 }
 
+.admin-appointments-page.doctor-appointments-page {
+  gap: 24px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointment-stats {
+  grid-template-columns: repeat(6, minmax(150px, 1fr));
+  gap: 14px;
+  align-items: stretch;
+  margin-top: 28px;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card {
+  position: relative;
+  min-height: 132px;
+  padding: 18px 18px 16px 22px;
+  align-items: center;
+  border: 1px solid #dbeafe;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card::before {
+  position: absolute;
+  inset: 16px auto 16px 0;
+  width: 4px;
+  border-radius: 0 999px 999px 0;
+  background: #0ea5e9;
+  content: "";
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card > div:last-child {
+  min-width: 0;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 16px;
+  font-size: 1rem;
+  box-shadow: none;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card span {
+  color: #334155;
+  font-size: 0.92rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card strong {
+  margin-top: 3px;
+  color: #0f2f63;
+  font-size: clamp(1.85rem, 2.6vw, 2.4rem);
+  line-height: 1;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card small {
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card.urgent::before {
+  background: #f59e0b;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card.today::before {
+  background: #0ea5e9;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card.active::before {
+  background: #2563eb;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card.done::before {
+  background: #22c55e;
+}
+
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card.cancelled::before,
+.admin-appointments-page.doctor-appointments-page .doctor-stat-card.no-show::before {
+  background: #ef4444;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-table-card {
+  padding: 24px;
+  border: 1px solid #dbeafe;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+}
+
 .admin-appointments-heading,
 .admin-schedules-heading {
   align-items: flex-start;
@@ -33315,6 +33410,18 @@ button.doctor-record-follow-up-card:focus-visible {
   grid-template-columns: minmax(160px, 0.75fr) minmax(220px, 1fr) minmax(220px, 1fr) auto auto;
   gap: 0.75rem;
   align-items: end;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-filter-panel {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8f2fb;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-filter-panel .form-control,
+.admin-appointments-page.doctor-appointments-page .admin-appointments-filter-panel .form-select {
+  min-height: 42px;
+  border-color: #dbeafe;
+  border-radius: 14px;
 }
 
 .admin-schedules-filter-panel {
@@ -33345,13 +33452,13 @@ button.doctor-record-follow-up-card:focus-visible {
 .admin-appointments-result-bar,
 .admin-schedules-result-bar {
   align-items: center;
-  border-top: 1px solid var(--gray-100);
+  border-top: 1px solid #e8f2fb;
   color: var(--gray-500);
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin-top: 1rem;
-  padding-top: 0.85rem;
+  margin-top: 0.95rem;
+  padding-top: 0.95rem;
 }
 
 .admin-appointments-result-bar strong,
@@ -33403,7 +33510,18 @@ button.doctor-record-follow-up-card:focus-visible {
 }
 
 .admin-appointments-table {
-  min-width: 980px;
+  min-width: 1080px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.admin-appointments-page.doctor-appointments-page .table-responsive {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table {
+  min-width: 1080px;
 }
 
 .admin-appointments-time-chip {
@@ -33430,6 +33548,64 @@ button.doctor-record-follow-up-card:focus-visible {
   white-space: normal;
 }
 
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th {
+  padding: 15px 18px;
+  border: 0;
+  background: #eef8ff;
+  color: #0f2f63;
+  font-size: 0.78rem;
+  letter-spacing: 0.025em;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:first-child {
+  border-radius: 16px 0 0 16px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:last-child {
+  border-radius: 0 16px 16px 0;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td {
+  padding: 16px 18px;
+  border-top: 1px solid #e8f2fb;
+  border-bottom: 1px solid #e8f2fb;
+  background: #fff;
+  vertical-align: middle;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:first-child {
+  border-left: 1px solid #e8f2fb;
+  border-radius: 16px 0 0 16px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:last-child {
+  border-right: 1px solid #e8f2fb;
+  border-radius: 0 16px 16px 0;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody tr {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody tr:hover {
+  transform: translateY(-1px);
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-time-chip {
+  min-width: 108px;
+  justify-content: center;
+  background: #dff0ff;
+  color: #0f79bd;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-status-badge {
+  border-radius: 999px;
+  padding: 0.42rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
 .admin-appointments-request-actions,
 .admin-appointments-utility-actions {
   display: flex;
@@ -33451,6 +33627,31 @@ button.doctor-record-follow-up-card:focus-visible {
 .admin-appointments-utility-actions {
   justify-content: flex-end;
   min-width: 220px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-status-control {
+  min-width: 190px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-status-control .form-select {
+  min-height: 42px;
+  border-color: #dbeafe;
+  border-radius: 14px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-request-actions {
+  min-width: 240px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-utility-actions {
+  min-width: 280px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-request-actions .btn,
+.admin-appointments-page.doctor-appointments-page .admin-appointments-utility-actions .btn {
+  min-height: 36px;
+  padding: 7px 12px;
+  font-size: 0.82rem;
 }
 
 .admin-schedules-heading .btn {
@@ -33481,6 +33682,10 @@ button.doctor-record-follow-up-card:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .admin-appointments-page.doctor-appointments-page .admin-appointment-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .admin-appointments-filter-actions {
     grid-column: 1 / -1;
   }
@@ -33496,6 +33701,15 @@ button.doctor-record-follow-up-card:focus-visible {
   .admin-appointments-filter-panel,
   .admin-schedules-filter-panel {
     grid-template-columns: 1fr;
+  }
+
+  .admin-appointments-page.doctor-appointments-page .admin-appointment-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-appointments-page.doctor-appointments-page .admin-table-card {
+    padding: 16px;
+    border-radius: 20px;
   }
 
   .admin-appointments-filter-actions,

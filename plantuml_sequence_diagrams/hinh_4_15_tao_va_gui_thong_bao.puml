@@ -1,0 +1,37 @@
+@startuml
+title Hình 4.15. Sơ đồ trình tự tạo và gửi thông báo
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Chức năng nghiệp vụ\n(đặt lịch / hồ sơ / chờ khám)" as Feature
+control "Controller / Service nghiệp vụ" as Business
+database "MongoDB\nNotification" as NotificationDB
+control "SocketService" as Socket
+boundary "Frontend\nNotificationBell / Trang thông báo" as UI
+actor "Người nhận" as User
+
+Feature -> Business : Phát sinh sự kiện cần thông báo
+Business -> NotificationDB : Notification.create({...})
+NotificationDB --> Business : notification
+
+Business -> Socket : emitNotification(notification.toObject())
+Socket -> UI : notification:new
+UI -> User : Hiển thị thông báo realtime
+
+opt Có gửi theo vai trò / người dùng cụ thể
+  Socket -> UI : Đẩy đúng userId hoặc role
+end
+
+opt Người dùng mở danh sách thông báo
+  User -> UI : Xem thông báo
+  UI -> Business : GET /api/notifications
+  Business -> NotificationDB : Tìm danh sách theo userScope
+  NotificationDB --> Business : notifications
+  Business --> UI : Danh sách thông báo
+end
+
+@enduml

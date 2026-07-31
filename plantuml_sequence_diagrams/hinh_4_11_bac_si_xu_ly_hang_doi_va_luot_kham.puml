@@ -1,0 +1,55 @@
+@startuml
+title Hình 4.11. Sơ đồ trình tự bác sĩ xử lý hàng đợi và lượt khám
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Bác sĩ" as Doctor
+boundary "DoctorQueuePage.jsx" as UI
+control "API Client" as API
+control "appointmentRoutes\n/doctor/queue" as Route
+control "auth + roleMiddleware\n(doctor/admin)" as Auth
+control "AppointmentController" as Controller
+database "MongoDB\nAppointment" as AppointmentDB
+control "NotificationService" as Notify
+control "SocketService" as Socket
+
+Doctor -> UI : Mở hàng đợi khám hôm nay
+UI -> API : GET /api/doctor/queue/today
+API -> Route : Chuyển request
+Route -> Auth : Kiểm tra quyền bác sĩ
+Auth -> Controller : getTodayQueue()
+Controller -> AppointmentDB : Tìm lịch confirmed/in_progress\ncủa bác sĩ trong ngày
+AppointmentDB --> Controller : queue list
+Controller --> UI : 200 OK\nDanh sách hàng đợi
+
+Doctor -> UI : Gọi bệnh nhân vào khám
+UI -> API : PATCH /api/appointments/:id/consultation-status\nin_progress
+API -> Controller : Kiểm tra quyền + trạng thái
+Controller -> AppointmentDB : Cập nhật consultationStatus=in_progress\nstatus=in_progress
+AppointmentDB --> Controller : saved
+Controller -> Notify : Thông báo bệnh nhân được gọi
+Controller -> Socket : emit queue:called / appointment:updated
+Controller --> UI : 200 OK\nLượt khám đang diễn ra
+
+alt Bỏ qua lượt khám
+  Doctor -> UI : Chọn bỏ qua
+  UI -> API : PATCH /api/appointments/:id/consultation-status\nskipped
+  API -> Controller : Cập nhật trạng thái lượt
+  Controller -> AppointmentDB : consultationStatus=skipped
+  Controller -> Socket : emit queue:updated
+  Controller --> UI : 200 OK
+else Hoàn tất khám
+  Doctor -> UI : Hoàn tất / tạo hồ sơ khám
+  UI -> API : POST /api/medical-records
+  API -> Controller : Tạo hồ sơ và hoàn tất lịch
+  Controller -> AppointmentDB : status=completed\nconsultationStatus=completed
+  Controller -> Notify : Thông báo kết quả khám
+  Controller -> Socket : emit queue:completed
+  Controller --> UI : 201 Created\nmedicalRecord + appointment
+end
+
+@enduml

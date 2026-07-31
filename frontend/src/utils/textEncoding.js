@@ -35,6 +35,22 @@ const WINDOWS_1252_SPECIAL_BYTES = new Map([
 
 const PHRASE_REPAIRS = [
   {
+    pattern: /M.{0,4}\s*OTP.{0,8}kh.{0,4}ng.{0,8}h.{0,4}p.{0,8}l.{0,4}/i,
+    replacement: 'M\u00e3 OTP kh\u00f4ng h\u1ee3p l\u1ec7'
+  },
+  {
+    pattern: /M.{0,4}\s*OTP.{0,8}(?:Ä‘|\u00c4.|d).{0,4}h.{0,4}t.{0,8}h.{0,4}n/i,
+    replacement: 'M\u00e3 OTP \u0111\u00e3 h\u1ebft h\u1ea1n'
+  },
+  {
+    pattern: /M.{0,4}\s*OTP.{0,8}(?:Ä‘|\u00c4.|d).{0,8}(?:Ä‘|\u00c4.|d).{0,8}c.{0,8}g.{0,4}i/i,
+    replacement: 'M\u00e3 OTP \u0111\u00e3 \u0111\u01b0\u1ee3c g\u1eedi'
+  },
+  {
+    pattern: /X.{0,4}c.{0,4}nh.{0,4}n.{0,8}email.{0,8}th.{0,4}nh.{0,8}c.{0,4}ng/i,
+    replacement: 'X\u00e1c nh\u1eadn email th\u00e0nh c\u00f4ng'
+  },
+  {
     pattern: /(?:Đ|\u00c4.|D)?(?:ã|\u00c3\u00a3)?.{0,8}g.{0,4}i.{0,6}y.{0,4}u.{0,6}c.{0,6}u.{0,8}h.{0,4}y.{0,8}l.{0,4}ch\.?\s*Vui.{0,8}l.{0,4}ng.{0,8}ch.{0,4}ph.{0,4}ng.{0,8}kh.{0,4}m.{0,8}x.{0,4}c.{0,8}nh.{0,4}n\.?/i,
     replacement: 'Đã gửi yêu cầu hủy lịch. Vui lòng chờ phòng khám xác nhận.'
   },

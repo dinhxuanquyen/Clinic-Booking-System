@@ -1,0 +1,111 @@
+<mxfile host="Electron" agent="Codex">
+  <diagram id="hinh-4-3-api-processing" name="Hình 4.3">
+    <mxGraphModel dx="1664" dy="1058" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=28;fontStyle=1;fontFamily=Times New Roman;fontColor=#111827;" value="Sơ đồ kiến trúc xử lý API tổng quan" vertex="1">
+          <mxGeometry height="45" width="880" x="360" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="layer-ui" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFDF7;strokeColor=#D8C8A6;strokeWidth=2;fontFamily=Times New Roman;fontSize=20;fontStyle=1;fontColor=#111827;align=center;verticalAlign=top;spacingTop=12;" value="Tầng giao diện người dùng" vertex="1">
+          <mxGeometry height="625" width="310" x="70" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="layer-api" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFDF7;strokeColor=#D8C8A6;strokeWidth=2;fontFamily=Times New Roman;fontSize=20;fontStyle=1;fontColor=#111827;align=center;verticalAlign=top;spacingTop=12;" value="Tầng xử lý API / Backend" vertex="1">
+          <mxGeometry height="625" width="770" x="430" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="layer-data" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFDF7;strokeColor=#D8C8A6;strokeWidth=2;fontFamily=Times New Roman;fontSize=20;fontStyle=1;fontColor=#111827;align=center;verticalAlign=top;spacingTop=12;" value="Tầng dữ liệu" vertex="1">
+          <mxGeometry height="625" width="280" x="1250" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="user" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EEF2FF;strokeColor=#818CF8;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#1E1B4B;align=center;verticalAlign=middle;spacing=8;" value="&lt;b&gt;Người dùng&lt;/b&gt;&lt;br&gt;Bệnh nhân / Bác sĩ&lt;br&gt;Quản trị viên" vertex="1">
+          <mxGeometry height="105" width="240" x="105" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="frontend" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECFEFF;strokeColor=#06B6D4;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#164E63;align=center;verticalAlign=middle;spacing=8;" value="&lt;b&gt;Frontend ReactJS&lt;/b&gt;&lt;br&gt;Gửi request API&lt;br&gt;Hiển thị kết quả" vertex="1">
+          <mxGeometry height="115" width="240" x="105" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="router" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#A78BFA;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#4C1D95;align=center;verticalAlign=middle;spacing=8;" value="&lt;b&gt;Express Router&lt;/b&gt;&lt;br&gt;Định tuyến endpoint&lt;br&gt;/api/..." vertex="1">
+          <mxGeometry height="105" width="260" x="480" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="middleware" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EEF2FF;strokeColor=#818CF8;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#1E1B4B;align=center;verticalAlign=middle;spacing=8;" value="&lt;b&gt;Middleware&lt;/b&gt;&lt;br&gt;Xác thực JWT&lt;br&gt;Phân quyền vai trò&lt;br&gt;Kiểm tra dữ liệu" vertex="1">
+          <mxGeometry height="125" width="280" x="889" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="controller" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#FB923C;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#7C2D12;align=center;verticalAlign=middle;spacing=8;" value="&lt;b&gt;Controller&lt;/b&gt;&lt;br&gt;Nhận request&lt;br&gt;Gọi xử lý nghiệp vụ&lt;br&gt;Tạo response" vertex="1">
+          <mxGeometry height="125" width="260" x="480" y="405" as="geometry" />
+        </mxCell>
+        <mxCell id="service" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#A78BFA;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#4C1D95;align=center;verticalAlign=middle;spacing=8;" value="&lt;b&gt;Service / Business Logic&lt;/b&gt;&lt;br&gt;Xử lý nghiệp vụ&lt;br&gt;Đặt lịch, hồ sơ khám&lt;br&gt;Thông báo, PDF, AI" vertex="1">
+          <mxGeometry height="145" width="280" x="865" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="model" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECFEFF;strokeColor=#06B6D4;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#164E63;align=center;verticalAlign=middle;spacing=8;" value="&lt;b&gt;Mongoose Model&lt;/b&gt;&lt;br&gt;User, Doctor&lt;br&gt;Appointment&lt;br&gt;MedicalRecord..." vertex="1">
+          <mxGeometry height="115" width="300" x="650" y="599" as="geometry" />
+        </mxCell>
+        <mxCell id="mongodb" parent="1" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=18;fillColor=#F0FDF4;strokeColor=#22C55E;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#166534;align=center;verticalAlign=middle;spacing=8;" value="&lt;b&gt;MongoDB&lt;/b&gt;&lt;br&gt;Lưu trữ document&lt;br&gt;Collection dữ liệu" vertex="1">
+          <mxGeometry height="140" width="170" x="1305" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="response-note" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=2;fontFamily=Times New Roman;fontSize=17;fontColor=#334155;align=center;verticalAlign=middle;spacing=6;" value="JSON Response&lt;br&gt;dữ liệu / thông báo / lỗi" vertex="1">
+          <mxGeometry height="80" width="240" x="105" y="637" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-user-front" edge="1" parent="1" source="user" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;" target="frontend" value="thao tác trên giao diện">
+          <mxGeometry height="50" relative="1" width="50" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-front-router" edge="1" parent="1" source="frontend" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;" target="router" value="HTTP Request / JSON / JWT Token">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="498" />
+              <mxPoint x="400" y="238" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-router-middle" edge="1" parent="1" source="router" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;" target="middleware" value="định tuyến request">
+          <mxGeometry height="50" relative="1" width="50" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-middle-controller" edge="1" parent="1" source="middleware" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;" target="controller" value="hợp lệ / đủ quyền">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="1033.93" y="350" />
+              <mxPoint x="610.07" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-controller-service" edge="1" parent="1" source="controller" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;" target="service" value="xử lý nghiệp vụ">
+          <mxGeometry height="50" relative="1" width="50" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-service-model" edge="1" parent="1" source="service" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;" target="model" value="gọi model dữ liệu">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="1005" y="635" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-model-db" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;entryX=0.233;entryY=1.014;entryDx=0;entryDy=0;entryPerimeter=0;" target="mongodb" value="truy vấn / cập nhật dữ liệu">
+          <mxGeometry height="50" relative="1" width="50" x="-0.0701" y="4" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1344.69" y="669.89" />
+              <mxPoint x="1344.69" y="536.01" />
+            </Array>
+            <mxPoint x="950" y="669.93" as="sourcePoint" />
+            <mxPoint x="1305" y="544.46" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-db-model" edge="1" parent="1" source="mongodb" style="endArrow=block;html=1;rounded=0;dashed=1;strokeColor=#475569;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#475569;edgeStyle=orthogonalEdgeStyle;" target="model" value="dữ liệu trả về">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="1392.89" y="690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-response" edge="1" parent="1" style="endArrow=block;html=1;rounded=0;dashed=1;strokeColor=#475569;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#475569;edgeStyle=orthogonalEdgeStyle;" value="JSON Response">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="650.07" y="665.07" />
+            </Array>
+            <mxPoint x="650" y="660" as="sourcePoint" />
+            <mxPoint x="345" y="665" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-note-front" edge="1" parent="1" source="response-note" style="endArrow=block;html=1;rounded=0;dashed=1;strokeColor=#475569;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#475569;edgeStyle=orthogonalEdgeStyle;" target="frontend" value="hiển thị kết quả">
+          <mxGeometry height="50" relative="1" width="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

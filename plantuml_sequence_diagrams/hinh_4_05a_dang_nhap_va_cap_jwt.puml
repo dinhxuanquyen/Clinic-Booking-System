@@ -1,0 +1,61 @@
+@startuml
+title Hình 4.5a. Sơ đồ trình tự đăng nhập và cấp JWT
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Người dùng\nPatient/Doctor/Admin" as User
+boundary "AuthPage.jsx\n(Login)" as UI
+control "AuthContext\nlogin()" as Context
+control "API Client" as API
+control "authRoutes\nPOST /api/auth/login" as Route
+control "loginRateLimiter\n+ validate" as Validate
+control "AuthController\nlogin()" as Controller
+database "MongoDB\nUser" as UserDB
+control "PasswordPolicy" as Password
+control "JWT Service" as JWT
+control "AuditLogger" as Audit
+
+User -> UI : Nhập email và mật khẩu
+UI -> Context : login(email, password)
+Context -> API : POST /auth/login
+API -> Route : POST /api/auth/login
+Route -> Validate : Rate limit + validate dữ liệu
+
+alt Request bị giới hạn hoặc dữ liệu không hợp lệ
+  Validate --> UI : 429 / 422\nHiển thị lỗi
+else Request hợp lệ
+  Validate -> Controller : Chuyển request đăng nhập
+  Controller -> UserDB : findOne({ email })\nselect password + trạng thái
+  UserDB --> Controller : user hoặc null
+
+  alt Không tìm thấy user hoặc sai mật khẩu
+    Controller -> Audit : LOGIN_FAILED
+    Controller --> UI : 401\nEmail/mật khẩu không đúng
+  else Tài khoản bị khóa
+    Controller -> Audit : LOGIN_FAILED\nreason=inactive
+    Controller --> UI : 403\nTài khoản bị khóa
+  else Patient chưa xác thực email
+    Controller -> Audit : LOGIN_FAILED\nreason=email_not_verified
+    Controller --> UI : 403\nneedsVerification
+    UI -> User : Chuyển sang màn hình nhập OTP
+  else Hợp lệ
+    Controller -> Password : Kiểm tra chính sách mật khẩu
+    opt Phải đổi mật khẩu lần đầu
+      Controller --> UI : 200 OK\nmustChangePassword=true
+      UI -> User : Điều hướng đổi mật khẩu ban đầu
+    end
+    Controller -> UserDB : lastLoginAt = now
+    UserDB --> Controller : saved
+    Controller -> Audit : LOGIN_SUCCESS
+    Controller -> JWT : signToken({ id, role })
+    JWT --> Controller : JWT token
+    Controller --> UI : 200 OK\ntoken + userResponse
+    UI -> User : Điều hướng theo role
+  end
+end
+
+@enduml

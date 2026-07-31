@@ -1,0 +1,61 @@
+@startuml
+title Hình 4.13. Sơ đồ trình tự cập nhật hồ sơ và tệp đính kèm
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.9
+
+actor "Bác sĩ" as Doctor
+boundary "DoctorMedicalRecordsPage.jsx" as UI
+control "API Client" as API
+control "medicalRecordRoutes" as Route
+control "auth + roleMiddleware" as Auth
+control "validate" as Validate
+control "MedicalRecordController" as Controller
+database "MongoDB\nMedicalRecord" as RecordDB
+control "AuditLogger" as Audit
+control "NotificationService" as Notify
+
+Doctor -> UI : Chỉnh sửa hồ sơ hoặc tệp đính kèm
+UI -> API : PATCH /api/medical-records/:id\nhoặc /attachments
+API -> Route : Chuyển request
+Route -> Auth : Kiểm tra JWT và quyền
+Auth -> Validate : Kiểm tra dữ liệu đầu vào
+Validate -> Controller : updateMedicalRecord()\nhoặc updateMedicalRecordAttachments()
+
+alt Cập nhật nội dung hồ sơ
+  Controller -> Controller : Kiểm tra role doctor\ngiải liên kết doctorId
+  alt Không phải bác sĩ / thiếu doctorId
+    Controller --> UI : 403 / 400\nThông báo lỗi
+  else Hợp lệ
+    Controller -> RecordDB : findById(id)
+    RecordDB --> Controller : medical record
+
+    alt Không tìm thấy / không thuộc bác sĩ
+      Controller --> UI : 404 / 403\nThông báo lỗi
+    else Hợp lệ
+      Controller -> RecordDB : cập nhật symptoms, vitals,\ndiagnosis, conclusion,\nprescription, attachments,\nadvice, followUp...
+      RecordDB --> Controller : saved
+
+      Controller -> Audit : UPDATE_MEDICAL_RECORD
+      Controller -> Notify : notifyPatientMedicalRecordUpdated()
+      Controller --> UI : 200 OK\nTrả hồ sơ đã cập nhật
+    end
+  end
+
+else Cập nhật tệp đính kèm
+  Controller -> RecordDB : findById(id)
+  RecordDB --> Controller : medical record
+
+  alt Không tìm thấy hoặc không có quyền truy cập
+    Controller --> UI : 404 / 403\nThông báo lỗi
+  else Hợp lệ
+    Controller -> RecordDB : record.attachments = attachments\nrecord.updatedBy = user
+    RecordDB --> Controller : saved
+    Controller --> UI : 200 OK\nTrả hồ sơ đã cập nhật
+  end
+end
+
+@enduml

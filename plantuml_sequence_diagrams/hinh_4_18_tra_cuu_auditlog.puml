@@ -1,0 +1,51 @@
+@startuml
+title Hình 4.18. Sơ đồ trình tự tra cứu AuditLog
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Quản trị viên" as Admin
+boundary "AuditLog Management UI" as UI
+control "API Client" as API
+control "adminRoutes" as Route
+control "auth + roleMiddleware\n(admin)" as Auth
+control "validate" as Validate
+control "AdminController" as Controller
+database "MongoDB\nAuditLog" as AuditDB
+
+Admin -> UI : Mở trang nhật ký hệ thống
+UI -> API : GET /api/admin/audit-logs\n?page&limit&actorRole&action&entityType&startDate&endDate&keyword
+API -> Route : Chuyển request
+Route -> Auth : Kiểm tra JWT và quyền admin
+Auth -> Controller : listAuditLogs()
+
+Controller -> Controller : Tạo filter theo query
+Controller -> AuditDB : find(filter)\nsort(createdAt desc)\nskip, limit
+Controller -> AuditDB : countDocuments(filter)
+AuditDB --> Controller : logs + total
+
+Controller --> UI : 200 OK\n{ logs, pagination }
+
+opt Xem chi tiết một AuditLog
+  Admin -> UI : Chọn một bản ghi nhật ký
+  UI -> API : GET /api/admin/audit-logs/:id
+  API -> Route : Chuyển request
+  Route -> Auth : Kiểm tra JWT và quyền admin
+  Auth -> Validate : Kiểm tra id hợp lệ
+  Validate -> Controller : getAuditLogDetail()
+
+  Controller -> AuditDB : findById(id)
+
+  alt Không tìm thấy bản ghi
+    AuditDB --> Controller : null
+    Controller --> UI : 404 Audit log not found
+  else Tìm thấy bản ghi
+    AuditDB --> Controller : auditLog
+    Controller --> UI : 200 OK\nChi tiết AuditLog
+  end
+end
+
+@enduml

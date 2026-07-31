@@ -12,7 +12,7 @@ Quy uoc trang thai:
 
 ## 1. Phan Dau Bao Cao
 
-- [ ] Trang bia
+- [x] Trang bia
 - [ ] Nhiem vu do an / Nhan xet giang vien huong dan neu truong yeu cau
 - [ ] Loi cam doan
 - [x] Loi cam on
@@ -88,110 +88,191 @@ Quy uoc trang thai:
 
 ## 4. Chuong 3: Co So Ly Thuyet Va Cong Nghe Su Dung
 
-- [ ] 3.1. Tong quan kien truc ung dung web
-- [ ] 3.2. Mo hinh Client - Server
-- [ ] 3.3. Kien truc he thong de xuat
-- [ ] 3.3.1. Frontend
-- [ ] 3.3.2. Backend
-- [ ] 3.3.3. Database
-- [ ] 3.3.4. File storage/upload
-- [ ] 3.3.5. Notification/PDF export
-- [ ] 3.4. Cong nghe Frontend
-- [ ] 3.4.1. ReactJS
-- [ ] 3.4.2. Vite
-- [ ] 3.4.3. React Router
-- [ ] 3.4.4. CSS va Responsive UI
-- [ ] 3.5. Cong nghe Backend
-- [ ] 3.5.1. Node.js
-- [ ] 3.5.2. Express.js
-- [ ] 3.5.3. RESTful API
-- [ ] 3.5.4. Middleware va xu ly loi
-- [ ] 3.6. Co so du lieu
-- [ ] 3.6.1. MongoDB
-- [ ] 3.6.2. Mongoose
-- [ ] 3.6.3. Ly do lua chon co so du lieu NoSQL
-- [ ] 3.7. Xac thuc va phan quyen
-- [ ] 3.7.1. Xac thuc nguoi dung
-- [ ] 3.7.2. Phan quyen theo vai tro
-- [ ] 3.7.3. Bao ve du lieu nguoi dung
-- [~] 3.8. Cac cong nghe ho tro khac
+- [x] 3.1. Tong quan kien truc ung dung web
+- [x] 3.2. Mo hinh Client - Server
+- [x] 3.3. Kien truc he thong de xuat
+- [x] 3.3.1. Frontend
+- [x] 3.3.2. Backend
+- [x] 3.3.3. Database
+- [x] 3.3.4. File storage/upload
+- [x] 3.3.5. Notification/PDF export
+- [x] 3.4. Cong nghe Frontend
+- [x] 3.4.1. ReactJS
+- [x] 3.4.2. Vite
+- [x] 3.4.3. React Router
+- [x] 3.4.4. CSS va Responsive UI
+- [x] 3.5. Cong nghe Backend
+- [x] 3.5.1. Node.js
+- [x] 3.5.2. Express.js
+- [x] 3.5.3. RESTful API
+- [x] 3.5.4. Middleware va xu ly loi
+- [x] 3.6. Co so du lieu
+- [x] 3.6.1. MongoDB
+- [x] 3.6.2. Mongoose
+- [x] 3.6.3. Ly do lua chon co so du lieu NoSQL
+- [x] 3.7. Xac thuc va phan quyen
+- [x] 3.7.1. Xac thuc nguoi dung
+- [x] 3.7.2. Phan quyen theo vai tro
+- [x] 3.7.3. Bao ve du lieu nguoi dung
+- [x] 3.8. Cac cong nghe ho tro khac
 - [x] 3.8.1. Upload file va xu ly anh
 - [x] 3.8.2. Xuat phieu ket qua kham PDF
 - [x] 3.8.3. Tu van trieu chung bang AI
 - [x] 3.8.4. Thong bao he thong
-- [ ] 3.8.5. Bieu do thong ke
-- [ ] 3.9. Cong cu phat trien
+- [x] 3.8.5. Bieu do thong ke
+- [x] 3.9. Cong cu phat trien
 
 ## 5. Chuong 4: Thiet Ke, Phat Trien Va Trien Khai He Thong
 
-- [ ] 4.1. Thiet ke kien truc tong the he thong
-- [ ] 4.2. Thiet ke co so du lieu
-- [ ] 4.2.1. Danh sach collection/bang du lieu
-- [ ] 4.2.2. Thiet ke collection Users
-- [ ] 4.2.3. Thiet ke Doctors
-- [ ] 4.2.4. Thiet ke Clinics
-- [ ] 4.2.5. Thiet ke Specialties
-- [ ] 4.2.6. Thiet ke Appointments
-- [ ] 4.2.7. Thiet ke MedicalRecords
-- [ ] 4.2.8. Thiet ke ServicePackages
-- [ ] 4.2.9. Thiet ke Articles
-- [ ] 4.2.10. Thiet ke Notifications
-- [ ] 4.2.11. Thiet ke WaitingLists
-- [ ] 4.2.12. Thiet ke DoctorReviews
-- [ ] 4.2.13. Thiet ke AuditLogs
-- [ ] 4.2.14. So do du lieu tong quan
-- [ ] 4.3. Thiet ke API chinh
-- [ ] 4.3.1. API xac thuc
-- [ ] 4.3.2. API bac si/chuyen khoa/co so
-- [ ] 4.3.3. API dat lich kham
-- [ ] 4.3.4. API ho so kham benh
-- [ ] 4.3.5. API quan tri
-- [ ] 4.3.6. API upload va xuat PDF
-- [ ] 4.3.7. API thong bao he thong
-- [ ] 4.3.8. API tu van trieu chung bang AI
-- [ ] 4.4. Thiet ke giao dien nguoi dung
-- [ ] 4.4.1. Nguyen tac thiet ke giao dien
-- [ ] 4.4.2. Giao dien phia benh nhan
-- [ ] 4.4.3. Giao dien phia bac si
-- [ ] 4.4.4. Giao dien phia quan tri vien
-- [ ] 4.5. Xay dung chuc nang phia benh nhan
-- [ ] 4.5.1. Xem trang chu va danh sach bac si
-- [ ] 4.5.2. Xem chi tiet bac si
-- [ ] 4.5.3. Dat lich kham
-- [ ] 4.5.4. Quan ly lich hen cua toi
-- [ ] 4.5.5. Xem ho so kham benh
-- [ ] 4.5.6. Theo doi lich tai kham
-- [ ] 4.5.7. Nhan thong bao cap nhat ho so
-- [ ] 4.5.8. Tu van trieu chung bang AI
-- [ ] 4.6. Xay dung chuc nang phia bac si
-- [ ] 4.6.1. Tong quan lich kham
-- [ ] 4.6.2. Quan ly hang doi kham
-- [ ] 4.6.3. Quan ly lich lam viec
-- [ ] 4.6.4. Quan ly lich hen
-- [ ] 4.6.5. Nhap ho so kham benh
-- [ ] 4.6.6. Cap nhat ho so kham benh
-- [ ] 4.6.7. Dinh kem ket qua can lam sang
-- [ ] 4.6.8. Quan ly bai viet cua bac si
-- [ ] 4.7. Xay dung chuc nang phia quan tri vien
-- [ ] 4.7.1. Tong quan van hanh he thong
-- [ ] 4.7.2. Quan ly lich hen
-- [ ] 4.7.3. Quan ly hang doi kham
-- [ ] 4.7.4. Quan ly lich lam viec
-- [ ] 4.7.5. Quan ly bac si
-- [ ] 4.7.6. Quan ly co so
-- [ ] 4.7.7. Quan ly chuyen khoa
-- [ ] 4.7.8. Quan ly goi kham
-- [ ] 4.7.9. Quan ly cam nang
-- [ ] 4.7.10. Quan ly tai khoan nguoi dung
-- [ ] 4.7.11. Nhat ky he thong
-- [ ] 4.8. Ket qua giao dien he thong
-- [ ] 4.9. Kiem thu phan mem
-- [ ] 4.9.1. Muc tieu kiem thu
-- [ ] 4.9.2. Pham vi kiem thu
-- [ ] 4.9.3. Moi truong kiem thu
-- [ ] 4.9.4. Bang test case
-- [ ] 4.9.5. Ket qua kiem thu
-- [ ] 4.10. Trien khai he thong
+- [x] 4.1. Thiet ke kien truc tong the cua he thong
+- [x] 4.2. Thiet ke co so du lieu
+- [x] 4.2.1. Danh sach cac collection chinh
+- [x] 4.2.2. Thiet ke cac collection nen tang
+- [x] 4.2.3. Thiet ke cac collection nghiep vu kham benh
+- [x] 4.2.4. Thiet ke cac collection ho tro van hanh
+- [x] Hinh 4.2. So do du lieu tong quan cua he thong da gop vao phan mo dau 4.2
+- [x] 4.3. Thiet ke API
+- [x] 4.3.1. Nguyen tac thiet ke API
+- [x] 4.3.2. Nhom API xac thuc va phan quyen
+- [x] 4.3.3. Nhom API du lieu nen tang
+- [x] 4.3.4. Nhom API dat lich, hang doi va ho so kham benh
+- [x] 4.3.5. Nhom API thong bao, upload, PDF va AI
+- [x] 4.3.6. Nhom API quan tri he thong
+- [x] Hinh 4.3. So do kien truc xu ly API tong quan
+- [x] 4.4. Thiet ke luong trinh tu
+  - [x] Viet phan gioi thieu sequence diagram, quy uoc actor/boundary/control/entity/database
+  - [x] Mo ta luong chung ReactJS -> Router/Middleware -> Controller/Service -> Model -> MongoDB
+  - [x] Quy uoc mui ten request/response, mui ten net dut, khoi alt/else va opt
+  - [x] Danh dau cac nhanh loi va ket qua tra ve trong tung so do
+- [x] 4.4.1. Luong dang ky, dang nhap va phan quyen
+  - [x] 4.4.1.1. Luong dang ky tai khoan va xac thuc email bang OTP
+    - [x] POST /api/auth/register
+    - [x] Validate, kiem tra email/so dien thoai trung
+    - [x] Tao tai khoan, tao OTP va gui email
+    - [x] POST /api/auth/verify-email
+    - [x] Nhanh OTP sai/het han va gui lai OTP
+  - [x] 4.4.1.2. Luong dang nhap va cap JWT
+    - [x] POST /api/auth/login
+    - [x] So sanh mat khau, kiem tra tai khoan bi khoa
+    - [x] Kiem tra email da xac thuc
+    - [x] Tao JWT va ghi AuditLog dang nhap
+    - [x] Dieu huong theo role patient/doctor/admin
+    - [x] Nhanh sai mat khau, tai khoan bi khoa, can doi mat khau ban dau
+  - [x] 4.4.1.3. Luong xac thuc va phan quyen request
+    - [x] JWT authMiddleware
+    - [x] roleMiddleware
+    - [x] Nhanh token thieu, het han, khong hop le, khong dung role
+- [x] 4.4.2. Luong tu van trieu chung bang AI
+  - [x] POST /api/ai/symptom-checker
+  - [x] Rate limit va validate du lieu dau vao
+  - [x] Goi Gemini service va mapSpecialties
+  - [x] Tra ket qua phan tich, matchedSpecialties va isFallback
+  - [x] Nhanh thieu trieu chung, AI timeout/het quota/thieu API key
+  - [x] Ghi chu ket qua AI chi mang tinh tham khao
+- [x] 4.4.3. Luong dat lich, doi lich, huy lich va hang cho
+  - [x] 4.4.3.1. Luong dat lich kham
+    - [x] POST /api/appointments
+    - [x] Kiem tra bac si, co so, chuyen khoa, ngay va khung gio
+    - [x] Kiem tra lich trung cua benh nhan va bac si
+    - [x] Kiem tra WaitingList offer, goi kham va lich tai kham
+    - [x] Tao Appointment va xu ly loi unique index
+    - [x] Tao thong bao, gui email/socket va tra ket qua
+    - [x] Bo sung nhanh slot da duoc dat, du lieu khong hop le, loi he thong
+  - [x] 4.4.3.2. Luong yeu cau va duyet doi lich
+    - [x] PATCH /api/appointments/:id/reschedule-request
+    - [x] Kiem tra quyen so huu, trang thai confirmed va slot moi
+    - [x] Chuyen reschedule_requested
+    - [x] Bac si/admin duyet hoac tu choi
+    - [x] Cap nhat ngay/gio, khoi phuc lich cu va thong bao benh nhan
+  - [x] 4.4.3.3. Luong huy lich
+    - [x] PATCH /api/appointments/:id/cancel
+    - [x] pending: huy ngay; confirmed: chuyen cancel_requested
+    - [x] Bac si/admin xu ly yeu cau huy
+    - [x] Tu choi neu lich completed/cancelled/no_show
+    - [x] Giai phong slot va goi benh nhan tiep theo trong hang cho
+  - [x] 4.4.3.4. Luong tham gia va xu ly danh sach cho
+    - [x] POST/GET/DELETE /api/waiting-list
+    - [x] POST /api/waiting-list/:id/accept
+    - [x] POST /api/waiting-list/:id/decline
+    - [x] Tao offer khi slot trong va gui thong bao
+- [x] 4.4.4. Luong bac si xu ly luot kham va ho so kham benh
+  - [x] 4.4.4.1. Luong bac si xem hang doi va cap nhat trang thai
+    - [x] GET /api/doctor/queue/today
+    - [x] PATCH /api/appointments/:id/consultation-status
+    - [x] waiting -> in_progress -> completed/skipped
+    - [x] Goi benh nhan, tao thong bao va phat su kien Socket
+  - [x] 4.4.4.2. Luong tao ho so kham benh
+    - [x] POST /api/medical-records
+    - [x] Kiem tra bac si so huu lich va lich dang in_progress
+    - [x] Validate trieu chung, chan doan, don thuoc, tai kham
+    - [x] Tao MedicalRecord va cap nhat Appointment = completed
+    - [x] Dong bo follow-up, thong bao benh nhan va ghi AuditLog
+    - [x] Nhanh lich khong ton tai, khong dung bac si, trang thai khong hop le
+  - [x] 4.4.4.3. Luong cap nhat ho so va tep dinh kem
+    - [x] PATCH /api/medical-records/:id
+    - [x] POST /api/uploads/medical-record-attachments
+    - [x] PATCH /api/medical-records/:id/attachments
+    - [x] Kiem tra quyen, luu file URL, thong bao cap nhat
+  - [x] 4.4.4.4. Luong xuat phieu ket qua kham PDF
+    - [x] GET /api/medical-records/:id/pdf
+    - [x] Kiem tra quyen truy cap ho so
+    - [x] Lay du lieu, ghi AuditLog, tao va stream file PDF
+    - [x] Nhanh khong tim thay ho so, khong co quyen, loi tao PDF
+- [x] 4.4.5. Luong thong bao va quan tri du lieu he thong
+  - [x] 4.4.5.1. Luong tao va gui thong bao khi co su kien
+    - [x] Dat lich, doi/huy lich, goi kham, hoan tat ho so, tai kham
+    - [x] Notification.create, MongoDB, Socket va Email service
+  - [x] 4.4.5.2. Luong xem va danh dau thong bao
+    - [x] GET /api/notifications/my
+    - [x] PATCH /api/notifications/:id/read
+    - [x] PATCH /api/notifications/read-all
+    - [x] Loc pham vi thong bao theo user va role
+  - [x] 4.4.5.3. Luong quan tri du lieu nen
+    - [x] JWT auth, role admin va validate
+    - [x] CRUD co so, chuyen khoa, bac si, goi dich vu, lich lam viec
+    - [x] Nhanh du lieu khong hop le, khong ton tai, dang duoc tham chieu
+  - [x] 4.4.5.4. Luong ghi va tra cuu AuditLog
+    - [x] Ghi log sau cac thao tac quan trong
+    - [x] GET /api/admin/audit-logs
+    - [x] Xem chi tiet audit log
+- [x] Hoan thien machine trang thai Appointment trong phan 4.4
+  - [x] pending -> confirmed -> in_progress -> completed
+  - [x] pending -> cancelled
+  - [x] confirmed -> cancelled
+  - [x] cancel_requested -> cancelled/confirmed
+  - [x] reschedule_requested -> confirmed/reschedule_rejected
+- [x] Tao va chen cac hinh sequence diagram vao bao cao
+  - [x] Danh so hinh lien tuc tu Hinh 4.4 tro di
+  - [x] Moi hinh co chu thich va doan giai thich ngay ben duoi
+  - [x] Kiem tra ten endpoint trong hinh khop voi backend
+  - [x] Kiem tra cac nhanh alt/opt va ket qua response
+- [x] 4.5. Thiet ke giao dien nguoi dung
+- [x] 4.5.1. Nguyen tac thiet ke giao dien
+- [x] 4.5.2. Giao dien phia benh nhan
+- [x] 4.5.3. Giao dien phia bac si
+- [x] 4.5.4. Giao dien phia quan tri vien
+- [x] 4.6. Xay dung ung dung va ket qua dat duoc
+- [x] 4.6.1. Ket qua chuc nang xac thuc va phan quyen
+- [x] 4.6.2. Ket qua chuc nang phia benh nhan
+- [x] 4.6.3. Ket qua chuc nang phia bac si
+- [x] 4.6.4. Ket qua chuc nang phia quan tri vien
+- [x] 4.6.5. Ket qua chuc nang thong bao, upload, PDF va AI
+- [x] 4.6.6. Danh gia ket qua xay dung he thong
+- [ ] 4.7. Kiem thu phan mem
+- [ ] 4.7.1. Muc tieu kiem thu
+- [ ] 4.7.2. Pham vi kiem thu
+- [ ] 4.7.3. Phuong phap kiem thu
+- [ ] 4.7.4. Moi truong kiem thu
+- [ ] 4.7.5. Kich ban kiem thu
+- [ ] 4.7.6. Ket qua kiem thu
+- [ ] 4.7.7. Nhan xet ket qua kiem thu
+- [ ] 4.8. Trien khai he thong
+- [ ] 4.8.1. Mo hinh trien khai he thong
+- [ ] 4.8.2. Chuan bi ma nguon va moi truong trien khai
+- [ ] 4.8.3. Trien khai backend, frontend va co so du lieu
+- [ ] 4.8.4. Cau hinh bien moi truong va dich vu ho tro
+- [ ] 4.8.5. Ket qua trien khai thuc te
+- [ ] 4.8.6. Han che cua moi truong trien khai
 
 ## 6. Chuong 5: Cac Giai Phap Va Dong Gop Noi Bat
 

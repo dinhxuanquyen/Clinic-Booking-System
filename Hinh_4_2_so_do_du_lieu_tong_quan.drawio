@@ -1,0 +1,96 @@
+<mxfile host="Electron" agent="Codex">
+  <diagram id="hinh-4-2-database-overview" name="Hình 4.2">
+    <mxGraphModel dx="1600" dy="950" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Sơ đồ dữ liệu tổng quan của hệ thống" style="text;html=1;align=center;verticalAlign=middle;fontSize=28;fontStyle=1;fontFamily=Times New Roman;fontColor=#111827;" vertex="1" parent="1">
+          <mxGeometry x="360" y="25" width="880" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="group-platform" value="Dữ liệu nền tảng" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFDF7;strokeColor=#D8C8A6;strokeWidth=2;fontFamily=Times New Roman;fontSize=21;fontStyle=1;fontColor=#111827;align=center;verticalAlign=top;spacingTop=14;" vertex="1" parent="1">
+          <mxGeometry x="55" y="100" width="1490" height="230" as="geometry" />
+        </mxCell>
+
+        <mxCell id="users" value="&lt;b&gt;Users&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;name, email, phone&lt;br&gt;role, clinicId, doctorId" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EEF2FF;strokeColor=#818CF8;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#1E1B4B;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="115" y="175" width="225" height="115" as="geometry" />
+        </mxCell>
+
+        <mxCell id="clinics" value="&lt;b&gt;Clinics&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;name, clinicCode&lt;br&gt;address, specialtyIds[]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECFEFF;strokeColor=#06B6D4;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#164E63;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="405" y="175" width="235" height="115" as="geometry" />
+        </mxCell>
+
+        <mxCell id="specialties" value="&lt;b&gt;Specialties&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;name, description&lt;br&gt;clinicId" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECFEFF;strokeColor=#06B6D4;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#164E63;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="700" y="175" width="235" height="115" as="geometry" />
+        </mxCell>
+
+        <mxCell id="doctors" value="&lt;b&gt;Doctors&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;name, doctorCode&lt;br&gt;clinicId, specialtyId" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#A78BFA;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#4C1D95;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="995" y="175" width="235" height="115" as="geometry" />
+        </mxCell>
+
+        <mxCell id="packages" value="&lt;b&gt;ServicePackages&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;name, code, price&lt;br&gt;clinicId, specialtyId, doctorId" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#FB923C;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#7C2D12;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="170" width="240" height="125" as="geometry" />
+        </mxCell>
+
+        <mxCell id="platform-note" value="Collection nền tảng dùng chung cho các nghiệp vụ chính" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontFamily=Times New Roman;fontColor=#475569;" vertex="1" parent="1">
+          <mxGeometry x="510" y="294" width="580" height="28" as="geometry" />
+        </mxCell>
+
+        <mxCell id="group-business" value="Dữ liệu nghiệp vụ khám bệnh" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFDF7;strokeColor=#D8C8A6;strokeWidth=2;fontFamily=Times New Roman;fontSize=21;fontStyle=1;fontColor=#111827;align=center;verticalAlign=top;spacingTop=14;" vertex="1" parent="1">
+          <mxGeometry x="210" y="405" width="1180" height="225" as="geometry" />
+        </mxCell>
+
+        <mxCell id="appointments" value="&lt;b&gt;Appointments&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;patientId, doctorId, clinicId&lt;br&gt;specialtyId, servicePackageId&lt;br&gt;date, timeSlot, status" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EEF2FF;strokeColor=#818CF8;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#1E1B4B;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="310" y="485" width="305" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="records" value="&lt;b&gt;MedicalRecords&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;appointmentId, patientId&lt;br&gt;doctorId, clinicId, specialtyId&lt;br&gt;diagnosis, conclusion&lt;br&gt;prescription, attachments" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#A78BFA;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#4C1D95;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="660" y="475" width="315" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="waiting" value="&lt;b&gt;WaitingLists&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;patientId, doctorId&lt;br&gt;clinicId, specialtyId&lt;br&gt;date, position, status" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECFEFF;strokeColor=#06B6D4;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#164E63;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="485" width="295" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="business-note" value="Collection nghiệp vụ chính phát sinh trong quá trình đặt lịch, khám bệnh và theo dõi hàng chờ" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontFamily=Times New Roman;fontColor=#475569;" vertex="1" parent="1">
+          <mxGeometry x="430" y="604" width="740" height="28" as="geometry" />
+        </mxCell>
+
+        <mxCell id="group-support" value="Dữ liệu hỗ trợ vận hành" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFDF7;strokeColor=#D8C8A6;strokeWidth=2;fontFamily=Times New Roman;fontSize=21;fontStyle=1;fontColor=#111827;align=center;verticalAlign=top;spacingTop=14;" vertex="1" parent="1">
+          <mxGeometry x="95" y="705" width="1410" height="205" as="geometry" />
+        </mxCell>
+
+        <mxCell id="notifications" value="&lt;b&gt;Notifications&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;userId, doctorId&lt;br&gt;appointmentId, waitingListId&lt;br&gt;title, type, isRead" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#A78BFA;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#4C1D95;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="155" y="780" width="290" height="115" as="geometry" />
+        </mxCell>
+
+        <mxCell id="reviews" value="&lt;b&gt;DoctorReviews&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;appointmentId, doctorId&lt;br&gt;patientId, rating, comment" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EEF2FF;strokeColor=#818CF8;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#1E1B4B;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="520" y="785" width="280" height="105" as="geometry" />
+        </mxCell>
+
+        <mxCell id="articles" value="&lt;b&gt;Articles&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;title, slug, authorId&lt;br&gt;specialtyId, doctorId&lt;br&gt;status" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#FB923C;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#7C2D12;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="875" y="780" width="280" height="115" as="geometry" />
+        </mxCell>
+
+        <mxCell id="logs" value="&lt;b&gt;AuditLogs&lt;/b&gt;&lt;br&gt;_id&lt;br&gt;actorId, actorRole&lt;br&gt;action, entityType, entityId" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=3;fontFamily=Times New Roman;fontSize=18;fontColor=#334155;align=center;verticalAlign=middle;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="785" width="280" height="105" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow-1" value="tham chiếu dữ liệu nền tảng" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="800" y="330" as="sourcePoint" />
+            <mxPoint x="800" y="405" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="arrow-2" value="thông tin vận hành" style="endArrow=block;html=1;rounded=0;strokeColor=#111827;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=14;fontColor=#111827;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="800" y="630" as="sourcePoint" />
+            <mxPoint x="800" y="705" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

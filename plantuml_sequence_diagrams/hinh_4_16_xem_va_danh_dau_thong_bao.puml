@@ -1,0 +1,56 @@
+@startuml
+title Hình 4.16. Sơ đồ trình tự xem và đánh dấu thông báo
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Người dùng\n(Patient/Doctor/Admin)" as User
+boundary "Notification UI" as UI
+control "API Client" as API
+control "notificationRoutes" as Route
+control "authMiddleware" as Auth
+control "NotificationController" as Controller
+database "MongoDB\nNotification" as NotificationDB
+
+User -> UI : Mở trang thông báo
+UI -> API : GET /api/notifications
+API -> Route : Chuyển request
+Route -> Auth : Kiểm tra JWT
+Auth -> Controller : myNotifications()
+
+Controller -> NotificationDB : Tìm theo notificationScope(user)
+NotificationDB --> Controller : danh sách thông báo
+Controller --> UI : 200 OK\nnotifications
+
+opt Đánh dấu một thông báo đã đọc
+  User -> UI : Chọn một thông báo
+  UI -> API : PATCH /api/notifications/:id/read
+  API -> Route : Chuyển request
+  Route -> Auth : Kiểm tra JWT
+  Auth -> Controller : markNotificationRead()
+
+  Controller -> NotificationDB : findOneAndUpdate(..., isRead=true)
+  alt Không tìm thấy hoặc không thuộc phạm vi
+    Controller --> UI : 404 Not Found
+  else Hợp lệ
+    NotificationDB --> Controller : notification đã cập nhật
+    Controller --> UI : 200 OK\nTrả thông báo đã đọc
+  end
+end
+
+opt Đánh dấu tất cả đã đọc
+  User -> UI : Chọn "Đánh dấu tất cả đã đọc"
+  UI -> API : PATCH /api/notifications/read-all
+  API -> Route : Chuyển request
+  Route -> Auth : Kiểm tra JWT
+  Auth -> Controller : markAllNotificationsRead()
+
+  Controller -> NotificationDB : updateMany(..., isRead=true)
+  NotificationDB --> Controller : cập nhật xong
+  Controller --> UI : 200 OK\nAll notifications marked as read
+end
+
+@enduml

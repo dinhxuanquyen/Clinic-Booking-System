@@ -1,0 +1,40 @@
+@startuml
+title Hình 4.10. Sơ đồ trình tự xử lý danh sách chờ khám
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Nhân viên / Admin" as Staff
+boundary "Queue Management UI" as UI
+control "API Client" as API
+control "WaitingListController / Service" as Controller
+database "MongoDB\nWaitingList" as WaitingDB
+database "MongoDB\nAppointment" as AppointmentDB
+control "NotificationService" as Notify
+control "SocketService" as Socket
+
+Staff -> UI : Mở danh sách chờ khám
+UI -> API : GET /api/waiting-list
+API -> Controller : Kiểm tra quyền + truy vấn
+Controller -> WaitingDB : Tìm danh sách chờ theo điều kiện
+WaitingDB --> Controller : waiting items
+Controller --> UI : 200 OK\nDanh sách chờ
+
+opt Có slot trống hoặc admin chọn xử lý
+  Staff -> UI : Chọn bệnh nhân trong danh sách chờ
+  UI -> API : POST /api/waiting-list/:id/convert\nhoặc xử lý phù hợp
+  API -> Controller : Kiểm tra dữ liệu
+  Controller -> WaitingDB : findById(waitingItem)
+  WaitingDB --> Controller : waiting item
+  Controller -> AppointmentDB : Tạo / cập nhật lịch hẹn
+  AppointmentDB --> Controller : appointment
+  Controller -> WaitingDB : Cập nhật trạng thái đã xử lý
+  Controller -> Notify : Thông báo bệnh nhân
+  Controller -> Socket : emit queue/waiting-list updated
+  Controller --> UI : 200 OK\nKết quả xử lý
+end
+
+@enduml

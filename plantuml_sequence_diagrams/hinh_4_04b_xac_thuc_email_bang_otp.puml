@@ -1,0 +1,45 @@
+@startuml
+title Hình 4.4b. Sơ đồ trình tự xác thực email bằng OTP
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Người dùng" as User
+boundary "AuthPage.jsx\n(Verify OTP)" as UI
+control "AuthContext" as Context
+control "API Client" as API
+control "authRoutes\nPOST /api/auth/verify-email" as Route
+control "otpVerificationRateLimiter\n+ validate" as Validate
+control "AuthController\nverifyEmail()" as Controller
+database "MongoDB\nUser" as UserDB
+
+User -> UI : Nhập mã OTP 6 số
+UI -> Context : verifyEmail(email, otp)
+Context -> API : POST /auth/verify-email
+API -> Route : POST /api/auth/verify-email
+Route -> Validate : Rate limit + validate email/OTP
+
+alt Request bị giới hạn hoặc dữ liệu không hợp lệ
+  Validate --> API : 429 / 422\nThông báo lỗi
+  API --> UI : Hiển thị lỗi
+else Request hợp lệ
+  Validate -> Controller : Chuyển request xác thực
+  Controller -> UserDB : findOne({ email })
+  UserDB --> Controller : user
+
+  alt Không tìm thấy user hoặc OTP không hợp lệ
+    Controller --> UI : 400\nOTP không hợp lệ
+  else OTP hết hạn
+    Controller --> UI : 400\nOTP đã hết hạn
+  else OTP hợp lệ
+    Controller -> UserDB : isEmailVerified=true\nclear OTP + expires
+    UserDB --> Controller : user đã xác thực
+    Controller --> UI : 200 OK\nXác thực email thành công
+    UI -> User : Điều hướng đăng nhập
+  end
+end
+
+@enduml

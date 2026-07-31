@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getToken, logout as clearAuth } from '../utils/auth.js';
+import { cleanDisplayObject, cleanDisplayText } from '../utils/textEncoding.js';
 
 export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 export const API_BASE_URL = API_URL.replace(/\/api\/?$/, '');
@@ -42,7 +43,11 @@ axiosClient.interceptors.response.use(
       }
     }
 
-    throw new ApiError(payload?.message || error.message || 'Request failed', status, payload);
+    throw new ApiError(
+      cleanDisplayText(payload?.message || error.message, 'Request failed'),
+      status,
+      cleanDisplayObject(payload)
+    );
   }
 );
 
@@ -55,7 +60,7 @@ export async function api(path, options = {}) {
     headers: options.headers
   });
 
-  return response.data;
+  return cleanDisplayObject(response.data);
 }
 
 export async function apiForm(path, formData) {
@@ -68,5 +73,5 @@ export async function apiForm(path, formData) {
     }
   });
 
-  return response.data;
+  return cleanDisplayObject(response.data);
 }

@@ -1,0 +1,47 @@
+@startuml
+title Hình 4.7. Sơ đồ trình tự đặt lịch khám
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Bệnh nhân" as Patient
+boundary "Booking UI" as UI
+control "API Client" as API
+control "appointmentRoutes\nPOST /api/appointments" as Route
+control "auth + roleMiddleware\n(patient)" as Auth
+control "validate" as Validate
+control "AppointmentController\ncreateAppointment()" as Controller
+database "MongoDB\nDoctor/Schedule" as ScheduleDB
+database "MongoDB\nAppointment" as AppointmentDB
+control "NotificationService" as Notify
+control "EmailService" as Email
+control "AuditLogger" as Audit
+
+Patient -> UI : Chọn bác sĩ, ngày,\nkhung giờ, lý do khám
+UI -> API : POST /api/appointments
+API -> Route : Chuyển request
+Route -> Auth : Kiểm tra JWT bệnh nhân
+Auth -> Validate : Kiểm tra dữ liệu đặt lịch
+Validate -> Controller : createAppointment()
+
+Controller -> ScheduleDB : Kiểm tra bác sĩ,\nlịch làm việc và slot
+ScheduleDB --> Controller : thông tin hợp lệ
+Controller -> AppointmentDB : Kiểm tra trùng lịch / giới hạn slot
+AppointmentDB --> Controller : kết quả
+
+alt Slot không hợp lệ hoặc đã kín
+  Controller --> UI : 400 / 409\nThông báo lỗi
+else Đặt lịch thành công
+  Controller -> AppointmentDB : create appointment\nstatus=pending/confirmed
+  AppointmentDB --> Controller : appointment
+  Controller -> Notify : Tạo thông báo cho bệnh nhân,\nbác sĩ/admin khi cần
+  Controller -> Email : Gửi email xác nhận khi có cấu hình
+  Controller -> Audit : CREATE_APPOINTMENT
+  Controller --> UI : 201 Created\nappointment
+  UI -> Patient : Hiển thị lịch hẹn
+end
+
+@enduml

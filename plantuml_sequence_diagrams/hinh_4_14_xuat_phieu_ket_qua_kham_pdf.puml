@@ -1,0 +1,42 @@
+@startuml
+title Hình 4.14. Sơ đồ trình tự xuất phiếu kết quả khám PDF
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Bác sĩ / Bệnh nhân / Admin" as User
+boundary "MedicalRecordDetail / List UI" as UI
+control "API Client" as API
+control "medicalRecordRoutes" as Route
+control "auth + roleMiddleware" as Auth
+control "validate" as Validate
+control "MedicalRecordController\nexportMedicalRecordPdf()" as Controller
+database "MongoDB\nMedicalRecord" as RecordDB
+control "PDF Service" as PDF
+control "AuditLogger" as Audit
+
+User -> UI : Chọn "Tải PDF"
+UI -> API : GET /api/medical-records/:id/pdf
+API -> Route : Chuyển request
+Route -> Auth : Kiểm tra JWT và quyền
+Auth -> Validate : Kiểm tra id hợp lệ
+Validate -> Controller : exportMedicalRecordPdf()
+
+Controller -> RecordDB : findById(id)
+RecordDB --> Controller : medical record
+
+alt Không tìm thấy hồ sơ
+  Controller --> UI : 404 Not Found
+else Không có quyền truy cập
+  Controller --> UI : 403 Forbidden
+else Hợp lệ
+  Controller -> Audit : EXPORT_MEDICAL_RECORD_PDF
+  Controller -> PDF : generateMedicalRecordPdf(record)
+  PDF --> Controller : PDF stream / buffer
+  Controller --> UI : 200 OK\nFile PDF kết quả khám
+end
+
+@enduml

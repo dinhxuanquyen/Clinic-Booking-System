@@ -1,0 +1,40 @@
+@startuml
+title Hình 4.9. Sơ đồ trình tự hủy lịch hẹn
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Bệnh nhân / Admin" as User
+boundary "Appointment UI" as UI
+control "API Client" as API
+control "AppointmentController" as Controller
+database "MongoDB\nAppointment" as AppointmentDB
+control "NotificationService" as Notify
+control "AuditLogger" as Audit
+
+User -> UI : Chọn hủy lịch hẹn\nvà nhập lý do
+UI -> API : PATCH /api/appointments/:id/cancel\nhoặc /status
+API -> Controller : Kiểm tra JWT, quyền và dữ liệu
+Controller -> AppointmentDB : findById(id)
+AppointmentDB --> Controller : appointment
+
+alt Không tìm thấy / không có quyền / trạng thái không cho hủy
+  Controller --> UI : 400 / 403 / 404\nThông báo lỗi
+else Bệnh nhân gửi yêu cầu hủy
+  Controller -> AppointmentDB : status=cancel_requested\ncancelRequest.reason
+  AppointmentDB --> Controller : saved
+  Controller -> Notify : Thông báo admin/bác sĩ
+  Controller -> Audit : REQUEST_CANCEL_APPOINTMENT
+  Controller --> UI : 200 OK\nYêu cầu hủy đã gửi
+else Admin xác nhận hủy
+  Controller -> AppointmentDB : status=cancelled\ncancelledAt, cancelledBy
+  AppointmentDB --> Controller : saved
+  Controller -> Notify : Thông báo bệnh nhân
+  Controller -> Audit : CANCEL_APPOINTMENT
+  Controller --> UI : 200 OK\nLịch hẹn đã hủy
+end
+
+@enduml

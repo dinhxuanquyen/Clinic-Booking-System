@@ -52,6 +52,17 @@ export default function AdminAppointmentsPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { currentPage: safePage, pageItems, totalPages } = useMemo(() => paginate(appointments, currentPage), [appointments, currentPage]);
+  const summary = useMemo(() => {
+    const today = todayString();
+    return {
+      total: appointments.length,
+      action: appointments.filter((item) => ['pending', 'cancel_requested', 'reschedule_requested'].includes(item.status)).length,
+      today: appointments.filter((item) => item.date === today).length,
+      confirmed: appointments.filter((item) => item.status === 'confirmed').length,
+      completed: appointments.filter((item) => item.status === 'completed').length,
+      cancelled: appointments.filter((item) => ['cancelled', 'no_show'].includes(item.status)).length
+    };
+  }, [appointments]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -165,13 +176,64 @@ export default function AdminAppointmentsPage() {
   }
 
   return (
-    <div className="admin-appointments-page">
+    <div className="admin-appointments-page doctor-appointments-page">
       <div className="page-heading admin-page-heading admin-appointments-heading">
         <span className="eyebrow">Quản lý</span>
         <h1 className="h3 mt-2 mb-0">Lịch hẹn</h1>
       </div>
 
-      <div className="management-panel admin-table-card mb-3 admin-appointments-card">
+      <div className="doctor-appointment-stats admin-appointment-stats">
+        <article className="doctor-stat-card urgent">
+          <div className="doctor-stat-icon">!</div>
+          <div>
+            <span>Cần xử lý</span>
+            <strong>{summary.action}</strong>
+            <small>Lịch chờ xác nhận / xử lý yêu cầu</small>
+          </div>
+        </article>
+        <article className="doctor-stat-card today">
+          <div className="doctor-stat-icon">•</div>
+          <div>
+            <span>Lịch hôm nay</span>
+            <strong>{summary.today}</strong>
+            <small>Toàn bộ lịch trong ngày</small>
+          </div>
+        </article>
+        <article className="doctor-stat-card active">
+          <div className="doctor-stat-icon">✓</div>
+          <div>
+            <span>Đã xác nhận</span>
+            <strong>{summary.confirmed}</strong>
+            <small>Lịch đang được giữ chỗ</small>
+          </div>
+        </article>
+        <article className="doctor-stat-card done">
+          <div className="doctor-stat-icon">↗</div>
+          <div>
+            <span>Hoàn thành</span>
+            <strong>{summary.completed}</strong>
+            <small>Lịch đã có kết quả khám</small>
+          </div>
+        </article>
+        <article className="doctor-stat-card cancelled">
+          <div className="doctor-stat-icon">×</div>
+          <div>
+            <span>Đã hủy / vắng</span>
+            <strong>{summary.cancelled}</strong>
+            <small>Lịch không còn hiệu lực</small>
+          </div>
+        </article>
+        <article className="doctor-stat-card no-show">
+          <div className="doctor-stat-icon">#</div>
+          <div>
+            <span>Tổng lịch</span>
+            <strong>{summary.total}</strong>
+            <small>Tất cả lịch theo bộ lọc hiện tại</small>
+          </div>
+        </article>
+      </div>
+
+      <div className="management-panel admin-table-card mb-3 admin-appointments-card doctor-appointments-table-card">
         <div className="admin-table-toolbar admin-appointments-filter-panel">
           <input type="date" className="form-control" value={filters.date} onChange={(event) => setFilters({ ...filters, date: event.target.value })} />
           <select className="form-select" value={filters.doctorId} onChange={(event) => setFilters({ ...filters, doctorId: event.target.value })}>

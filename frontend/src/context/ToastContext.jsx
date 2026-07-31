@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { cleanDisplayText } from '../utils/textEncoding.js';
 
 const ToastContext = createContext(null);
 
@@ -31,7 +32,7 @@ export function ToastProvider({ children }) {
     if (!message) return;
 
     const id = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    setToasts((current) => [...current, { id, type, message }]);
+    setToasts((current) => [...current, { id, type, message: cleanDisplayText(message) }]);
     window.setTimeout(() => removeToast(id), 3000);
   }, [removeToast]);
 

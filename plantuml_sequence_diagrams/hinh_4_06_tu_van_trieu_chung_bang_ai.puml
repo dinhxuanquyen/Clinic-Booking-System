@@ -1,0 +1,36 @@
+@startuml
+title Hình 4.6. Sơ đồ trình tự tư vấn triệu chứng bằng AI
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Người dùng" as User
+boundary "SymptomCheckerPage.jsx" as UI
+control "API Client" as API
+control "aiRoutes\nPOST /api/ai/symptom-checker" as Route
+control "validate" as Validate
+control "AI Controller / Service" as AIService
+control "Gemini API" as Gemini
+database "MongoDB\nSpecialty/Doctor" as DB
+
+User -> UI : Nhập triệu chứng,\nthời gian, mức độ
+UI -> API : POST /api/ai/symptom-checker
+API -> Route : Chuyển request
+Route -> Validate : Kiểm tra dữ liệu
+
+alt Dữ liệu không hợp lệ
+  Validate --> UI : 422\nThông báo lỗi
+else Hợp lệ
+  Validate -> AIService : Phân tích triệu chứng
+  AIService -> Gemini : Gửi prompt tư vấn y tế\nvà phân loại chuyên khoa
+  Gemini --> AIService : Kết quả gợi ý
+  AIService -> DB : Truy vấn chuyên khoa / bác sĩ phù hợp
+  DB --> AIService : danh sách gợi ý
+  AIService --> UI : 200 OK\nTư vấn + chuyên khoa + bác sĩ
+  UI -> User : Hiển thị kết quả\nvà gợi ý đặt lịch
+end
+
+@enduml

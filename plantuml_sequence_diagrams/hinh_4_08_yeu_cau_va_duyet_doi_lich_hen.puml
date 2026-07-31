@@ -1,0 +1,54 @@
+@startuml
+title Hình 4.8. Sơ đồ trình tự yêu cầu và duyệt đổi lịch hẹn
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Bệnh nhân" as Patient
+actor "Quản trị viên" as Admin
+boundary "MyAppointments UI" as PatientUI
+boundary "AdminAppointments UI" as AdminUI
+control "API Client" as API
+control "AppointmentController" as Controller
+database "MongoDB\nAppointment" as AppointmentDB
+control "NotificationService" as Notify
+control "AuditLogger" as Audit
+
+Patient -> PatientUI : Gửi yêu cầu đổi lịch
+PatientUI -> API : PATCH /api/appointments/:id/reschedule-request
+API -> Controller : Kiểm tra quyền + validate
+Controller -> AppointmentDB : Tìm lịch hẹn
+AppointmentDB --> Controller : appointment
+
+alt Lịch không hợp lệ để đổi
+  Controller --> PatientUI : 400 / 403\nThông báo lỗi
+else Tạo yêu cầu đổi lịch
+  Controller -> AppointmentDB : status=reschedule_requested\nrescheduleRequest={date,timeSlot,reason}
+  AppointmentDB --> Controller : saved
+  Controller -> Notify : Thông báo admin/bác sĩ
+  Controller -> Audit : REQUEST_RESCHEDULE_APPOINTMENT
+  Controller --> PatientUI : 200 OK\nYêu cầu đã gửi
+end
+
+Admin -> AdminUI : Duyệt yêu cầu đổi lịch
+AdminUI -> API : PATCH /api/appointments/:id/status\nconfirmed hoặc reschedule_rejected
+API -> Controller : Kiểm tra quyền admin + validate
+Controller -> AppointmentDB : Tìm lịch hẹn
+AppointmentDB --> Controller : appointment
+
+alt Từ chối đổi lịch
+  Controller -> AppointmentDB : status=reschedule_rejected\nlưu adminNote
+  Controller -> Notify : Thông báo bệnh nhân bị từ chối
+  Controller -> Audit : REJECT_RESCHEDULE_APPOINTMENT
+  Controller --> AdminUI : 200 OK
+else Chấp nhận đổi lịch
+  Controller -> AppointmentDB : Cập nhật ngày/giờ mới\nstatus=confirmed
+  Controller -> Notify : Thông báo bệnh nhân đổi lịch thành công
+  Controller -> Audit : APPROVE_RESCHEDULE_APPOINTMENT
+  Controller --> AdminUI : 200 OK
+end
+
+@enduml

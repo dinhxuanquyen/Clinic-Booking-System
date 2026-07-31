@@ -1,0 +1,56 @@
+@startuml
+title Hình 4.5b. Sơ đồ trình tự phân quyền khi truy cập chức năng bảo vệ
+hide footbox
+autonumber
+skinparam dpi 220
+skinparam shadowing false
+skinparam defaultFontName Arial
+scale 0.92
+
+actor "Người dùng\nPatient/Doctor/Admin" as User
+boundary "ProtectedRoute.jsx" as ProtectedRoute
+boundary "Frontend Page" as Page
+control "API Client" as API
+control "Backend API\nProtected endpoint" as Endpoint
+control "authMiddleware" as Auth
+control "roleMiddleware" as Role
+control "validate" as Validate
+database "MongoDB\nUser" as UserDB
+control "Controller nghiệp vụ" as Controller
+
+User -> ProtectedRoute : Mở route cần đăng nhập
+ProtectedRoute -> ProtectedRoute : isAuthenticated()\ngetToken() + getUser()
+
+alt Chưa đăng nhập
+  ProtectedRoute --> User : Điều hướng /login?returnUrl=...
+else Đã đăng nhập
+  alt User phải đổi mật khẩu lần đầu
+    ProtectedRoute --> User : Điều hướng\n/change-password-first-login
+  else Role frontend không phù hợp
+    ProtectedRoute --> User : Hiển thị 403\nkhông có quyền truy cập
+  else Role frontend phù hợp
+    ProtectedRoute -> Page : Hiển thị chức năng
+    User -> Page : Thao tác gọi API bảo vệ
+    Page -> API : Request kèm header\nAuthorization: Bearer token
+    API -> Endpoint : Chuyển request
+    Endpoint -> Auth : verify(token)
+
+    alt Token thiếu, sai hoặc hết hạn
+      Auth --> UI : 401\nInvalid authentication token
+    else Token hợp lệ
+      Auth -> UserDB : findById(payload.id)
+      UserDB --> Auth : user
+      Auth -> Role : Gắn req.user\nkiểm tra role backend
+
+      alt Role backend không được phép
+        Role --> Page : 403\nYou do not have permission
+      else Role backend được phép
+        Role -> Validate : Kiểm tra dữ liệu request
+        Validate -> Controller : Chuyển request nghiệp vụ
+        Controller --> Page : 200 OK\nDữ liệu kết quả
+      end
+    end
+  end
+end
+
+@enduml
