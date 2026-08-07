@@ -1,0 +1,714 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/8w481k",
+    "id": "8w481k",
+    "slide": 1,
+    "layoutId": "267563b0-03a7-4ac1-a7e7-943a104d2f65",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "f773ae7b-f7c4-4921-b3a6-0c66f75cface",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#08243A",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "267563b0-03a7-4ac1-a7e7-943a104d2f65",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "f773ae7b-f7c4-4921-b3a6-0c66f75cface",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "f773ae7b-f7c4-4921-b3a6-0c66f75cface",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/kbu5ojm1",
+      "id": "1",
+      "bbox": [
+        646,
+        72,
+        548,
+        420
+      ],
+      "alt": "Trang chủ hệ thống",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "715ffabc-7c55-4f25-8569-a1715712852d",
+        "contentType": "image/png",
+        "byteLength": 1390965
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/21g3et8b",
+      "id": "2",
+      "bbox": [
+        612,
+        112,
+        616,
+        418
+      ],
+      "geometry": "roundRect",
+      "lineColor": "#0FB9B1",
+      "lineWidth": 1
+    },
+    {
+      "order": 3,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/y9snmt4b",
+      "id": "3",
+      "bbox": [
+        82,
+        54,
+        250,
+        88
+      ],
+      "alt": "Phenikaa University",
+      "contentType": "image/jpeg",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "32f3b330-85d9-41e6-b505-a764ec97b766",
+        "contentType": "image/jpeg",
+        "byteLength": 29074
+      }
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gzylcjq5",
+      "id": "4",
+      "bbox": [
+        82,
+        194,
+        170,
+        30
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#E8FAF8",
+      "lineColor": "#E8FAF8",
+      "lineWidth": 1
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h072lo7q",
+      "id": "5",
+      "bbox": [
+        96,
+        201,
+        142,
+        16
+      ],
+      "geometry": "rect",
+      "text": "ĐỒ ÁN TỐT NGHIỆP",
+      "textPreview": "ĐỒ ÁN TỐT NGHIỆP",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#073763",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ĐỒ ÁN TỐT NGHIỆP"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ĐỒ ÁN TỐT NGHIỆP",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#073763",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "ĐỒ ÁN TỐT NGHIỆP",
+              "fontSize": 13,
+              "color": "#073763",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uxg3a98z",
+      "id": "6",
+      "bbox": [
+        82,
+        246,
+        520,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking",
+      "textPreview": "Clinic Booking",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking",
+          "resolvedTextStyle": {
+            "fontSize": 58,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking",
+              "fontSize": 58,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fypkjepk",
+      "id": "7",
+      "bbox": [
+        86,
+        328,
+        510,
+        72
+      ],
+      "geometry": "rect",
+      "text": "Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến",
+      "textPreview": "Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 25,
+        "typeface": "+mn-lt",
+        "color": "#DCECF4",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Hệ thống đặt lịch khám và quản lý hồ sơ khám"
+          },
+          {
+            "index": 2,
+            "text": "trực tuyến"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "color": "#DCECF4",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến",
+              "fontSize": 25,
+              "color": "#DCECF4",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svylojq9",
+      "id": "8",
+      "bbox": [
+        86,
+        462,
+        560,
+        26
+      ],
+      "geometry": "rect",
+      "text": "Sinh viên: Đinh Xuân Quyền   |   Mã SV: 22010342",
+      "textPreview": "Sinh viên: Đinh Xuân Quyền   |   Mã SV: 22010342",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Sinh viên: Đinh Xuân Quyền   |   Mã SV: 22010342"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Sinh viên: Đinh Xuân Quyền   |   Mã SV: 22010342",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#FFFFFF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Sinh viên: Đinh Xuân Quyền   |   Mã SV: 22010342",
+              "fontSize": 18,
+              "color": "#FFFFFF",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tw72ho7u",
+      "id": "9",
+      "bbox": [
+        86,
+        506,
+        150,
+        34
+      ],
+      "geometry": "rect",
+      "text": "08/2026",
+      "textPreview": "08/2026",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "color": "#0FB9B1",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "08/2026"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "08/2026",
+          "resolvedTextStyle": {
+            "fontSize": 27,
+            "color": "#0FB9B1",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "08/2026",
+              "fontSize": 27,
+              "color": "#0FB9B1",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/10zmlcr2",
+      "id": "10",
+      "bbox": [
+        0,
+        674,
+        1280,
+        46
+      ],
+      "geometry": "rect",
+      "fillColor": "#08243A",
+      "lineColor": "#08243A",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gzq5s7ax",
+      "id": "11",
+      "bbox": [
+        0,
+        666,
+        1280,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#0FB9B1",
+      "lineColor": "#0FB9B1",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyh4j29c",
+      "id": "12",
+      "bbox": [
+        0,
+        666,
+        166,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF6B57",
+      "lineColor": "#FF6B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex8nqhsr",
+      "id": "13",
+      "bbox": [
+        64,
+        686,
+        180,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking",
+      "textPreview": "Clinic Booking",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking",
+              "fontSize": 13,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twfmhcr6",
+      "id": "14",
+      "bbox": [
+        485,
+        686,
+        310,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Đồ án tốt nghiệp - Đinh Xuân Quyền",
+      "textPreview": "Đồ án tốt nghiệp - Đinh Xuân Quyền",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Đồ án tốt nghiệp - Đinh Xuân Quyền"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Đồ án tốt nghiệp - Đinh Xuân Quyền",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#FFFFFF",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Đồ án tốt nghiệp - Đinh Xuân Quyền",
+              "fontSize": 13,
+              "color": "#FFFFFF",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sv65o7al",
+      "id": "15",
+      "bbox": [
+        1205,
+        684,
+        34,
+        20
+      ],
+      "geometry": "rect",
+      "text": "01",
+      "textPreview": "01",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "01",
+              "fontSize": 15,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

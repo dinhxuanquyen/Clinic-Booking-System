@@ -1,0 +1,532 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/fezd84",
+    "id": "fezd84",
+    "slide": 7,
+    "layoutId": "47530b1e-3118-4e22-9533-77edda8d2f81",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "47530b1e-3118-4e22-9533-77edda8d2f81",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/761g3ydo",
+      "id": "1",
+      "bbox": [
+        72,
+        44,
+        1060,
+        86
+      ],
+      "geometry": "rect",
+      "text": "Use case Doctor xoay quanh hàng đợi, trạng thái khám và hồ sơ",
+      "textPreview": "Use case Doctor xoay quanh hàng đợi, trạng thái khám và hồ sơ",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Use case Doctor xoay quanh hàng đợi, trạng thái khám và hồ sơ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Use case Doctor xoay quanh hàng đợi, trạng thái khám và hồ sơ",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#101827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Use case Doctor xoay quanh hàng đợi, trạng thái khám và hồ sơ",
+              "fontSize": 36,
+              "color": "#101827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87uhc3u9",
+      "id": "2",
+      "bbox": [
+        72,
+        126,
+        950,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Bác sĩ cần thao tác nhanh trong ngày nhưng vẫn phải bảo đảm đúng luồng nghiệp vụ.",
+      "textPreview": "Bác sĩ cần thao tác nhanh trong ngày nhưng vẫn phải bảo đảm đúng luồng nghiệp vụ.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Bác sĩ cần thao tác nhanh trong ngày nhưng vẫn phải bảo đảm đúng luồng nghiệp vụ."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Bác sĩ cần thao tác nhanh trong ngày nhưng vẫn phải bảo đảm đúng luồng nghiệp vụ.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Bác sĩ cần thao tác nhanh trong ngày nhưng vẫn phải bảo đảm đúng luồng nghiệp vụ.",
+              "fontSize": 19,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t83y5ovu",
+      "id": "3",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2E8F0",
+      "lineColor": "#E2E8F0",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9czetcf",
+      "id": "4",
+      "bbox": [
+        72,
+        668,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 07",
+      "textPreview": "Clinic Booking | 07",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 07"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 07",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 07",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/val07ydk",
+      "id": "5",
+      "bbox": [
+        68,
+        204,
+        440,
+        356
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/pgbmd0v6",
+      "id": "6",
+      "bbox": [
+        78,
+        214,
+        420,
+        336
+      ],
+      "alt": "Use case bác sĩ",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "ea0da2b2-d100-4639-bc2a-01a1425c6d30",
+        "contentType": "image/png",
+        "byteLength": 252452
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hc3i98vq",
+      "id": "7",
+      "bbox": [
+        78,
+        558,
+        420,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Use case bác sĩ",
+      "textPreview": "Use case bác sĩ",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Use case bác sĩ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Use case bác sĩ",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Use case bác sĩ",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ad8z29wv",
+      "id": "8",
+      "bbox": [
+        590,
+        226,
+        526,
+        254
+      ],
+      "geometry": "rect",
+      "fillColor": "#ECFDF5",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/behgvedg",
+      "id": "9",
+      "bbox": [
+        624,
+        260,
+        450,
+        166
+      ],
+      "geometry": "rect",
+      "text": "• Xem dashboard và danh sách bệnh nhân hôm nay.\n• Xác nhận lịch, bắt đầu khám, hoàn thành hoặc đánh dấu không đến.\n• Tạo hồ sơ khám gồm chẩn đoán, kết luận, đơn thuốc, tái khám.\n• Quản lý lịch làm việc và xem đánh giá từ bệnh nhân.",
+      "textPreview": "• Xem dashboard và danh sách bệnh nhân hôm nay. | • Xác nhận lịch, bắt đầu khám, hoàn thành hoặc đánh dấu không đến. | • Tạo hồ sơ khám g...",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Xem dashboard và danh sách bệnh nhân hôm nay."
+          },
+          {
+            "index": 2,
+            "text": "• Xác nhận lịch, bắt đầu khám, hoàn thành hoặc đánh dấu"
+          },
+          {
+            "index": 3,
+            "text": "không đến."
+          },
+          {
+            "index": 4,
+            "text": "• Tạo hồ sơ khám gồm chẩn đoán, kết luận, đơn thuốc, tái"
+          },
+          {
+            "index": 5,
+            "text": "khám."
+          },
+          {
+            "index": 6,
+            "text": "• Quản lý lịch làm việc và xem đánh giá từ bệnh nhân."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Xem dashboard và danh sách bệnh nhân hôm nay.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Xem dashboard và danh sách bệnh nhân hôm nay.",
+              "fontSize": 19,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Xác nhận lịch, bắt đầu khám, hoàn thành hoặc đánh dấu không đến.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Xác nhận lịch, bắt đầu khám, hoàn thành hoặc đánh dấu không đến.",
+              "fontSize": 19,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• Tạo hồ sơ khám gồm chẩn đoán, kết luận, đơn thuốc, tái khám.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Tạo hồ sơ khám gồm chẩn đoán, kết luận, đơn thuốc, tái khám.",
+              "fontSize": 19,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• Quản lý lịch làm việc và xem đánh giá từ bệnh nhân.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Quản lý lịch làm việc và xem đánh giá từ bệnh nhân.",
+              "fontSize": 19,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

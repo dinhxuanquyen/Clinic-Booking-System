@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   availableSlotsRules,
+  approveScheduleException,
   createScheduleException,
   createSchedule,
   deleteScheduleException,
@@ -11,12 +12,14 @@ import {
   getSchedules,
   scheduleIdRule,
   scheduleExceptionIdRule,
+  scheduleExceptionReviewRules,
   scheduleExceptionRules,
   scheduleRules,
   scheduleTemplateRules,
   updateDoctorScheduleTemplate,
   updateScheduleException,
-  updateSchedule
+  updateSchedule,
+  rejectScheduleException
 } from '../controllers/scheduleController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import { roleMiddleware } from '../middleware/roleMiddleware.js';
@@ -37,6 +40,8 @@ doctorScheduleRouter.get('/schedule-template', authMiddleware, roleMiddleware('d
 doctorScheduleRouter.put('/schedule-template', authMiddleware, roleMiddleware('doctor', 'admin'), scheduleTemplateRules, validate, updateDoctorScheduleTemplate);
 doctorScheduleRouter.get('/schedule-exceptions', authMiddleware, roleMiddleware('doctor', 'admin'), getScheduleExceptions);
 doctorScheduleRouter.post('/schedule-exceptions', authMiddleware, roleMiddleware('doctor', 'admin'), scheduleExceptionRules, validate, createScheduleException);
+doctorScheduleRouter.patch('/schedule-exceptions/:id/approve', authMiddleware, roleMiddleware('admin'), scheduleExceptionReviewRules, validate, approveScheduleException);
+doctorScheduleRouter.patch('/schedule-exceptions/:id/reject', authMiddleware, roleMiddleware('admin'), scheduleExceptionReviewRules, validate, rejectScheduleException);
 doctorScheduleRouter.put('/schedule-exceptions/:id', authMiddleware, roleMiddleware('doctor', 'admin'), scheduleExceptionIdRule, scheduleExceptionRules, validate, updateScheduleException);
 doctorScheduleRouter.delete('/schedule-exceptions/:id', authMiddleware, roleMiddleware('doctor', 'admin'), scheduleExceptionIdRule, validate, deleteScheduleException);
 

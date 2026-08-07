@@ -1,0 +1,924 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/aak5zo",
+    "id": "aak5zo",
+    "slide": 11,
+    "layoutId": "f00e8f1c-99da-460d-9aeb-60e9032e97c6",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "9f7ac7bf-f594-4485-9843-46410783e06c",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f00e8f1c-99da-460d-9aeb-60e9032e97c6",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "9f7ac7bf-f594-4485-9843-46410783e06c",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "9f7ac7bf-f594-4485-9843-46410783e06c",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lovup4fy",
+      "id": "1",
+      "bbox": [
+        72,
+        48,
+        980,
+        88
+      ],
+      "geometry": "rect",
+      "text": "Bảo mật dựa trên xác thực, vai trò và quyền sở hữu dữ liệu",
+      "textPreview": "Bảo mật dựa trên xác thực, vai trò và quyền sở hữu dữ liệu",
+      "resolvedFontSize": 38,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 38,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Bảo mật dựa trên xác thực, vai trò và quyền sở hữu dữ liệu"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Bảo mật dựa trên xác thực, vai trò và quyền sở hữu dữ liệu",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "color": "#111827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Bảo mật dựa trên xác thực, vai trò và quyền sở hữu dữ liệu",
+              "fontSize": 38,
+              "color": "#111827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yl4bepg7",
+      "id": "2",
+      "bbox": [
+        72,
+        132,
+        820,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Giao diện chỉ là lớp đầu; backend vẫn kiểm tra token, role và phạm vi dữ liệu cho từng nghiệp vụ.",
+      "textPreview": "Giao diện chỉ là lớp đầu; backend vẫn kiểm tra token, role và phạm vi dữ liệu cho từng nghiệp vụ.",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Giao diện chỉ là lớp đầu; backend vẫn kiểm tra token, role và phạm vi dữ liệu cho từng nghiệp vụ."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Giao diện chỉ là lớp đầu; backend vẫn kiểm tra token, role và phạm vi dữ liệu cho từng nghiệp vụ.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Giao diện chỉ là lớp đầu; backend vẫn kiểm tra token, role và phạm vi dữ liệu cho từng nghiệp vụ.",
+              "fontSize": 20,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zmdcnuxs",
+      "id": "3",
+      "bbox": [
+        72,
+        668,
+        240,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 11",
+      "textPreview": "Clinic Booking | 11",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 11"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 11",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 11",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj2tcfyh",
+      "id": "4",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E5E7EB",
+      "lineColor": "#E5E7EB",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xkbulkfm",
+      "id": "5",
+      "bbox": [
+        92,
+        218,
+        320,
+        260
+      ],
+      "geometry": "rect",
+      "fillColor": "#EAF6FB",
+      "lineColor": "#D6DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/axkbapgb",
+      "id": "6",
+      "bbox": [
+        124,
+        250,
+        240,
+        44
+      ],
+      "geometry": "rect",
+      "text": "JWT",
+      "textPreview": "JWT",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#0284C7",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "JWT"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "JWT",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#0284C7",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "JWT",
+              "fontSize": 34,
+              "color": "#0284C7",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bitcjaxw",
+      "id": "7",
+      "bbox": [
+        124,
+        318,
+        238,
+        100
+      ],
+      "geometry": "rect",
+      "text": "• Token cho API bảo vệ.\n• Đổi mật khẩu ban đầu.\n• OTP email khi đăng ký.",
+      "textPreview": "• Token cho API bảo vệ. | • Đổi mật khẩu ban đầu. | • OTP email khi đăng ký.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Token cho API bảo vệ."
+          },
+          {
+            "index": 2,
+            "text": "• Đổi mật khẩu ban đầu."
+          },
+          {
+            "index": 3,
+            "text": "• OTP email khi đăng ký."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Token cho API bảo vệ.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Token cho API bảo vệ.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Đổi mật khẩu ban đầu.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Đổi mật khẩu ban đầu.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• OTP email khi đăng ký.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• OTP email khi đăng ký.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gf6dojel",
+      "id": "8",
+      "bbox": [
+        480,
+        218,
+        320,
+        260
+      ],
+      "geometry": "rect",
+      "fillColor": "#F0FDF4",
+      "lineColor": "#D6DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hgfuxof6",
+      "id": "9",
+      "bbox": [
+        512,
+        250,
+        240,
+        44
+      ],
+      "geometry": "rect",
+      "text": "Role",
+      "textPreview": "Role",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#16A34A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Role"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Role",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#16A34A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Role",
+              "fontSize": 34,
+              "color": "#16A34A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwned0ra",
+      "id": "10",
+      "bbox": [
+        512,
+        318,
+        238,
+        100
+      ],
+      "geometry": "rect",
+      "text": "• Patient, Doctor, Admin.\n• ProtectedRoute ở frontend.\n• roleMiddleware ở backend.",
+      "textPreview": "• Patient, Doctor, Admin. | • ProtectedRoute ở frontend. | • roleMiddleware ở backend.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Patient, Doctor, Admin."
+          },
+          {
+            "index": 2,
+            "text": "• ProtectedRoute ở frontend."
+          },
+          {
+            "index": 3,
+            "text": "• roleMiddleware ở backend."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Patient, Doctor, Admin.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Patient, Doctor, Admin.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• ProtectedRoute ở frontend.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• ProtectedRoute ở frontend.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• roleMiddleware ở backend.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• roleMiddleware ở backend.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wved4vap",
+      "id": "11",
+      "bbox": [
+        868,
+        218,
+        320,
+        260
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFF7ED",
+      "lineColor": "#D6DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vu5cbq9k",
+      "id": "12",
+      "bbox": [
+        900,
+        250,
+        240,
+        44
+      ],
+      "geometry": "rect",
+      "text": "Ownership",
+      "textPreview": "Ownership",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#EA580C",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Ownership"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Ownership",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#EA580C",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Ownership",
+              "fontSize": 34,
+              "color": "#EA580C",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/utcv2lsz",
+      "id": "13",
+      "bbox": [
+        900,
+        318,
+        238,
+        112
+      ],
+      "geometry": "rect",
+      "text": "• Patient chỉ xem dữ liệu của mình.\n• Doctor chỉ xử lý lịch thuộc phạm vi.\n• Admin quản trị và audit.",
+      "textPreview": "• Patient chỉ xem dữ liệu của mình. | • Doctor chỉ xử lý lịch thuộc phạm vi. | • Admin quản trị và audit.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Patient chỉ xem dữ liệu của"
+          },
+          {
+            "index": 2,
+            "text": "mình."
+          },
+          {
+            "index": 3,
+            "text": "• Doctor chỉ xử lý lịch thuộc"
+          },
+          {
+            "index": 4,
+            "text": "phạm vi."
+          },
+          {
+            "index": 5,
+            "text": "• Admin quản trị và audit."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Patient chỉ xem dữ liệu của mình.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Patient chỉ xem dữ liệu của mình.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Doctor chỉ xử lý lịch thuộc phạm vi.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Doctor chỉ xử lý lịch thuộc phạm vi.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• Admin quản trị và audit.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Admin quản trị và audit.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9s3u9gre",
+      "id": "14",
+      "bbox": [
+        156,
+        548,
+        960,
+        36
+      ],
+      "geometry": "rect",
+      "text": "Kết quả: giảm nguy cơ truy cập sai vai trò và bảo vệ dữ liệu khám bệnh nhạy cảm.",
+      "textPreview": "Kết quả: giảm nguy cơ truy cập sai vai trò và bảo vệ dữ liệu khám bệnh nhạy cảm.",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Kết quả: giảm nguy cơ truy cập sai vai trò và bảo vệ dữ liệu khám bệnh nhạy cảm."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Kết quả: giảm nguy cơ truy cập sai vai trò và bảo vệ dữ liệu khám bệnh nhạy cảm.",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#111827",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Kết quả: giảm nguy cơ truy cập sai vai trò và bảo vệ dữ liệu khám bệnh nhạy cảm.",
+              "fontSize": 22,
+              "color": "#111827",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

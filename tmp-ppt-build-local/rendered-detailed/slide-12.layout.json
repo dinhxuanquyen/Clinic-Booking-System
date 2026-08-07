@@ -1,0 +1,680 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/w4hzzd",
+    "id": "w4hzzd",
+    "slide": 12,
+    "layoutId": "47530b1e-3118-4e22-9533-77edda8d2f81",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "47530b1e-3118-4e22-9533-77edda8d2f81",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fapwjahg",
+      "id": "1",
+      "bbox": [
+        72,
+        44,
+        1060,
+        86
+      ],
+      "geometry": "rect",
+      "text": "Frontend được chia theo cổng sử dụng để giảm rối khi thao tác",
+      "textPreview": "Frontend được chia theo cổng sử dụng để giảm rối khi thao tác",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Frontend được chia theo cổng sử dụng để giảm rối khi thao tác"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Frontend được chia theo cổng sử dụng để giảm rối khi thao tác",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#101827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Frontend được chia theo cổng sử dụng để giảm rối khi thao tác",
+              "fontSize": 36,
+              "color": "#101827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbyxcfil",
+      "id": "2",
+      "bbox": [
+        72,
+        126,
+        950,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Public, Patient, Doctor và Admin có layout riêng, nhưng dùng chung API client, auth context và các component nền.",
+      "textPreview": "Public, Patient, Doctor và Admin có layout riêng, nhưng dùng chung API client, auth context và các component nền.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Public, Patient, Doctor và Admin có layout riêng, nhưng dùng chung API client, auth context và các component nền."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Public, Patient, Doctor và Admin có layout riêng, nhưng dùng chung API client, auth context và các component nền.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Public, Patient, Doctor và Admin có layout riêng, nhưng dùng chung API client, auth context và các component nền.",
+              "fontSize": 19,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1c7elkz6",
+      "id": "3",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2E8F0",
+      "lineColor": "#E2E8F0",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2dgfe50r",
+      "id": "4",
+      "bbox": [
+        72,
+        668,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 12",
+      "textPreview": "Clinic Booking | 12",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 12"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 12",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 12",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3epwnahc",
+      "id": "5",
+      "bbox": [
+        68,
+        202,
+        360,
+        218
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/h4zi5c3q",
+      "id": "6",
+      "bbox": [
+        78,
+        212,
+        340,
+        198
+      ],
+      "alt": "Public portal",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "cfb69c8d-6007-4476-ae09-ebce892752f8",
+        "contentType": "image/png",
+        "byteLength": 1390965
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p0repkzi",
+      "id": "7",
+      "bbox": [
+        78,
+        418,
+        340,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Public portal",
+      "textPreview": "Public portal",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Public portal"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Public portal",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Public portal",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ihwv2l0n",
+      "id": "8",
+      "bbox": [
+        460,
+        202,
+        360,
+        218
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/mdoz6xk3",
+      "id": "9",
+      "bbox": [
+        470,
+        212,
+        340,
+        198
+      ],
+      "alt": "Patient portal",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "3f9f0a45-7e75-4e70-90e4-f7b9edf38ab5",
+        "contentType": "image/png",
+        "byteLength": 441574
+      }
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r6987i90",
+      "id": "10",
+      "bbox": [
+        470,
+        418,
+        340,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Patient portal",
+      "textPreview": "Patient portal",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Patient portal"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Patient portal",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Patient portal",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6507ydsf",
+      "id": "11",
+      "bbox": [
+        852,
+        202,
+        360,
+        218
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/ipcryhwn",
+      "id": "12",
+      "bbox": [
+        862,
+        212,
+        340,
+        198
+      ],
+      "alt": "Doctor portal",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "046e5d5e-5358-4dba-96cb-c23d5dbfe815",
+        "contentType": "image/png",
+        "byteLength": 572564
+      }
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s7ip0na5",
+      "id": "13",
+      "bbox": [
+        862,
+        418,
+        340,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Doctor portal",
+      "textPreview": "Doctor portal",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Doctor portal"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Doctor portal",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Doctor portal",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2983y9o",
+      "id": "14",
+      "bbox": [
+        140,
+        492,
+        1000,
+        74
+      ],
+      "geometry": "rect",
+      "fillColor": "#F6F8FB",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i107uts3",
+      "id": "15",
+      "bbox": [
+        170,
+        512,
+        930,
+        38
+      ],
+      "geometry": "rect",
+      "text": "• PublicLayout, DoctorLayout, AdminLayout định hình trải nghiệm từng vai trò.\n• Các tiện ích chung: auth, dateTime, status, downloadFile, medicalRecordPdf, appointmentView.",
+      "textPreview": "• PublicLayout, DoctorLayout, AdminLayout định hình trải nghiệm từng vai trò. | • Các tiện ích chung: auth, dateTime, status, downloadFil...",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• PublicLayout, DoctorLayout, AdminLayout định hình trải nghiệm từng vai trò."
+          },
+          {
+            "index": 2,
+            "text": "• Các tiện ích chung: auth, dateTime, status, downloadFile, medicalRecordPdf, appointmentView."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• PublicLayout, DoctorLayout, AdminLayout định hình trải nghiệm từng vai trò.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• PublicLayout, DoctorLayout, AdminLayout định hình trải nghiệm từng vai trò.",
+              "fontSize": 17,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Các tiện ích chung: auth, dateTime, status, downloadFile, medicalRecordPdf, appointmentView.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Các tiện ích chung: auth, dateTime, status, downloadFile, medicalRecordPdf, appointmentView.",
+              "fontSize": 17,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

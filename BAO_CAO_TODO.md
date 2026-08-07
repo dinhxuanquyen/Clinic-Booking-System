@@ -258,43 +258,48 @@ Quy uoc trang thai:
 - [x] 4.6.4. Ket qua chuc nang phia quan tri vien
 - [x] 4.6.5. Ket qua chuc nang thong bao, upload, PDF va AI
 - [x] 4.6.6. Danh gia ket qua xay dung he thong
-- [ ] 4.7. Kiem thu phan mem
-- [ ] 4.7.1. Muc tieu kiem thu
-- [ ] 4.7.2. Pham vi kiem thu
-- [ ] 4.7.3. Phuong phap kiem thu
-- [ ] 4.7.4. Moi truong kiem thu
-- [ ] 4.7.5. Kich ban kiem thu
-- [ ] 4.7.6. Ket qua kiem thu
-- [ ] 4.7.7. Nhan xet ket qua kiem thu
-- [ ] 4.8. Trien khai he thong
-- [ ] 4.8.1. Mo hinh trien khai he thong
-- [ ] 4.8.2. Chuan bi ma nguon va moi truong trien khai
-- [ ] 4.8.3. Trien khai backend, frontend va co so du lieu
-- [ ] 4.8.4. Cau hinh bien moi truong va dich vu ho tro
-- [ ] 4.8.5. Ket qua trien khai thuc te
-- [ ] 4.8.6. Han che cua moi truong trien khai
+- [x] 4.7. Kiem thu phan mem
+- [x] 4.7.1. Muc tieu kiem thu
+- [x] 4.7.2. Pham vi kiem thu
+- [x] 4.7.3. Phuong phap kiem thu
+- [x] 4.7.4. Moi truong kiem thu
+- [x] 4.7.5. Kich ban kiem thu
+- [x] 4.7.6. Ket qua kiem thu
+- [x] 4.7.7. Nhan xet ket qua kiem thu
+- [x] 4.8. Trien khai he thong
+- [x] 4.8.1. Mo hinh trien khai he thong
+  - [x] Tao anh Hinh_4_49_mo_hinh_trien_khai_he_thong.png
+  - [ ] Chen Hinh 4.49 vao bao cao thay dong "Ten anh de xuat"
+- [x] 4.8.2. Chuan bi ma nguon va moi truong trien khai
+- [x] 4.8.3. Trien khai backend, frontend va co so du lieu
+- [x] 4.8.4. Cau hinh bien moi truong va dich vu ho tro
+- [x] 4.8.5. Ket qua trien khai thuc te
+- [x] 4.8.6. Han che cua moi truong trien khai
 
 ## 6. Chuong 5: Cac Giai Phap Va Dong Gop Noi Bat
 
-- [ ] 5.1. Kho khan trong qua trinh thuc hien
-- [ ] 5.2. Giai phap quan ly lich hen theo trang thai
-- [ ] 5.3. Giai phap quan ly ho so kham benh
-- [ ] 5.4. Giai phap phan quyen theo vai tro
-- [ ] 5.5. Giai phap thong bao cho nguoi dung
-- [ ] 5.6. Giai phap dashboard va thong ke
-- [ ] 5.7. Giai phap nang cao trai nghiem nguoi dung
-- [ ] 5.8. Dong gop chinh cua de tai
+- [x] 5.1. Kho khan trong qua trinh thuc hien
+- [x] 5.2. Giai phap quan ly lich hen theo trang thai
+- [x] 5.3. Giai phap quan ly ho so kham benh
+- [x] 5.4. Giai phap phan quyen theo vai tro
+- [x] 5.5. Giai phap thong bao cho nguoi dung
+- [x] 5.6. Giai phap dashboard va thong ke
+- [x] 5.7. Giai phap nang cao trai nghiem nguoi dung
+- [x] 5.8. Dong gop chinh cua de tai
 
-## 7. Phan Ket Thuc
+## 7. Ket Luan Va Huong Phat Trien
 
-- [ ] Ket luan
-- [ ] Ket qua dat duoc
-- [ ] Han che cua de tai
-- [ ] Huong phat trien
-- [ ] Tai lieu tham khao
+- [x] 7.1. Ket luan
+- [x] 7.2. Ket qua dat duoc
+- [x] 7.3. Han che cua de tai
+- [x] 7.4. Huong phat trien
+
+## 8. Tai Lieu Tham Khao Va Phu Luc
+
+- [x] Tai lieu tham khao
 - [ ] Phu luc neu co
 
-## 8. Viec Can Lam Gan Nhat
+## 9. Viec Can Lam Gan Nhat
 
 - [x] Chot muc luc chinh thuc phien ban 1
 - [x] Viet Chuong 1

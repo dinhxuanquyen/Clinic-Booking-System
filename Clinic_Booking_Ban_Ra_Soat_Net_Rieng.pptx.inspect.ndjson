@@ -1,0 +1,517 @@
+{"kind":"deck","id":"pr/si1cjl","name":"Deck"}
+{"kind":"layout","layoutId":"73075815-98e1-4f2b-936f-29b966bda216","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"3016dc0c-12a9-4837-9c37-55c9fac66953","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/2k548v","slide":1,"title":"Clinic Booking","textShapes":8}
+{"kind":"textbox","id":"sh/xkved4r6","slide":1,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[124,228,1030,84]}
+{"kind":"textbox","id":"sh/cjmd4zal","slide":1,"text":"Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến","textPreview":"Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến","textChars":55,"textLines":1,"bbox":[150,320,980,88]}
+{"kind":"textbox","id":"sh/netw7a94","slide":1,"text":"Sinh viên thực hiện: Đinh Xuân Quyền  |  Mã SV: 22010342  |  GVHD: ...","textPreview":"Sinh viên thực hiện: Đinh Xuân Quyền  |  Mã SV: 22010342  |  GVHD: ...","textChars":70,"textLines":1,"bbox":[120,470,1040,36]}
+{"kind":"textbox","id":"sh/2dkvy5sj","slide":1,"text":"08/2026","textPreview":"08/2026","textChars":7,"textLines":1,"bbox":[520,536,220,40]}
+{"kind":"textbox","id":"sh/pgve9kra","slide":1,"text":"Hà Nội 2026","textPreview":"Hà Nội 2026","textChars":11,"textLines":1,"bbox":[530,630,200,26]}
+{"kind":"shape","id":"sh/ofmd0fap","slide":1,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/fqtc3a98","slide":1,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/epkvu5sn","slide":1,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/ojydoza1","slide":1,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/p47ex4bm","slide":1,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/2hgvmpsb","slide":1,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"image","id":"im/nqd8f21k","slide":1,"name":"","alt":"Phenikaa University","bbox":[420,48,440,130]}
+{"kind":"notes","id":"nt/2k548v","slide":1,"text":"[Sources]\nBáo cáo Word và ảnh logo Phenikaa University trong file báo cáo."}
+{"kind":"slide","id":"sl/kl385h","slide":2,"title":"CLINIC BOOKING","textShapes":15}
+{"kind":"textbox","id":"sh/10v2xcve","slide":2,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[430,52,220,18]}
+{"kind":"textbox","id":"sh/ex43mhcn","slide":2,"text":"Nội dung trình bày","textPreview":"Nội dung trình bày","textChars":18,"textLines":1,"bbox":[430,76,920,62]}
+{"kind":"shape","id":"sh/zydkv2d8","slide":2,"bbox":[430,148,310,5]}
+{"kind":"shape","id":"sh/cv2lk7uh","slide":2,"bbox":[750,148,70,5]}
+{"kind":"shape","id":"sh/qtkjixcr","slide":2,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/rutkr2dc","slide":2,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/4721gnul","slide":2,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/p8b2psv6","slide":2,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/9ozipwnu","slide":2,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/8nqhgr69","slide":2,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"shape","id":"sh/7mh0n65o","slide":2,"bbox":[-10,-10,380,680]}
+{"kind":"shape","id":"sh/lkzilwni","slide":2,"bbox":[0,666,360,24]}
+{"kind":"shape","id":"sh/kzqhcr6x","slide":2,"bbox":[374,182,64,64]}
+{"kind":"textbox","id":"sh/zyh0jm5c","slide":2,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[374,194,64,28]}
+{"kind":"textbox","id":"sh/yx8zaho7","slide":2,"text":"Mở đầu","textPreview":"Mở đầu","textChars":6,"textLines":1,"bbox":[458,182,700,50]}
+{"kind":"shape","id":"sh/xwfihcnm","slide":2,"bbox":[458,246,700,1]}
+{"kind":"shape","id":"sh/cv6h8761","slide":2,"bbox":[374,278,64,64]}
+{"kind":"textbox","id":"sh/obu9kbi9","slide":2,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[374,290,64,28]}
+{"kind":"textbox","id":"sh/pc3qdgje","slide":2,"text":"Phân tích thiết kế hệ thống","textPreview":"Phân tích thiết kế hệ thống","textChars":27,"textLines":1,"bbox":[458,278,700,50]}
+{"kind":"shape","id":"sh/2pcri103","slide":2,"bbox":[458,342,700,1]}
+{"kind":"shape","id":"sh/nql8b61o","slide":2,"bbox":[374,374,64,64]}
+{"kind":"textbox","id":"sh/0na9gbix","slide":2,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[374,386,64,28]}
+{"kind":"textbox","id":"sh/1o3q9gji","slide":2,"text":"Kiến trúc triển khai","textPreview":"Kiến trúc triển khai","textChars":20,"textLines":1,"bbox":[458,374,700,50]}
+{"kind":"shape","id":"sh/elsre10r","slide":2,"bbox":[458,438,700,1]}
+{"kind":"shape","id":"sh/fm18761c","slide":2,"bbox":[374,470,64,64]}
+{"kind":"textbox","id":"sh/kje9svi1","slide":2,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[374,482,64,28]}
+{"kind":"textbox","id":"sh/lknal0zm","slide":2,"text":"Triển khai hệ thống","textPreview":"Triển khai hệ thống","textChars":19,"textLines":1,"bbox":[458,470,700,50]}
+{"kind":"shape","id":"sh/vepcbu14","slide":2,"bbox":[458,534,700,1]}
+{"kind":"shape","id":"sh/udgbipkj","slide":2,"bbox":[374,566,64,64]}
+{"kind":"textbox","id":"sh/hgrud4ju","slide":2,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[374,578,64,28]}
+{"kind":"textbox","id":"sh/wfitkz29","slide":2,"text":"Kết luận","textPreview":"Kết luận","textChars":8,"textLines":1,"bbox":[458,566,700,50]}
+{"kind":"shape","id":"sh/j29cfe10","slide":2,"bbox":[458,630,700,1]}
+{"kind":"image","id":"im/on2h8bet","slide":2,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/d4ji143q","slide":2,"name":"","bbox":[0,0,360,660]}
+{"kind":"notes","id":"nt/kl385h","slide":2,"text":"[Sources]\nCấu trúc agenda rút từ mẫu Slide_DATN_BuyTheBest_Mac_Duc_Dung.pptx."}
+{"kind":"slide","id":"sl/lw56v4","slide":3,"title":"03","textShapes":7}
+{"kind":"shape","id":"sh/5sj6h0fu","slide":3,"bbox":[0,0,380,662]}
+{"kind":"shape","id":"sh/vmhobqxs","slide":3,"bbox":[0,0,380,662]}
+{"kind":"shape","id":"sh/ul8nilg7","slide":3,"bbox":[76,92,112,112]}
+{"kind":"textbox","id":"sh/hoj6dgfi","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[76,119,112,42]}
+{"kind":"textbox","id":"sh/wnapkbyx","slide":3,"text":"SECTION","textPreview":"SECTION","textChars":7,"textLines":1,"bbox":[210,126,110,20]}
+{"kind":"textbox","id":"sh/nyho76xg","slide":3,"text":"Mở đầu","textPreview":"Mở đầu","textChars":6,"textLines":1,"bbox":[448,228,650,84]}
+{"kind":"shape","id":"sh/mx8ne1gv","slide":3,"bbox":[450,332,330,6]}
+{"kind":"shape","id":"sh/4bapgjed","slide":3,"bbox":[792,332,74,6]}
+{"kind":"textbox","id":"sh/pcj69ovy","slide":3,"text":"Bối cảnh bài toán và mục tiêu đồ án","textPreview":"Bối cảnh bài toán và mục tiêu đồ án","textChars":35,"textLines":1,"bbox":[450,368,650,70]}
+{"kind":"shape","id":"sh/2987etw7","slide":3,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/3a1o7yds","slide":3,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/g7qpcjeh","slide":3,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/h8z65ovm","slide":3,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/ul87a9wb","slide":3,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/f6ho3exw","slide":3,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"image","id":"im/j6tsr6hs","slide":3,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/58batgzy","slide":3,"name":"","alt":"Mở đầu","bbox":[54,150,300,350]}
+{"kind":"notes","id":"nt/lw56v4","slide":3,"text":"[Sources]\nMẫu slide divider trong deck tham chiếu."}
+{"kind":"slide","id":"sl/k1myzm","slide":4,"title":"CLINIC BOOKING","textShapes":10}
+{"kind":"textbox","id":"sh/v6lona50","slide":4,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/grupgf6l","slide":4,"text":"Lý do chọn đề tài","textPreview":"Lý do chọn đề tài","textChars":17,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/hs36pknq","slide":4,"bbox":[64,136,290,5]}
+{"kind":"shape","id":"sh/itc7ipob","slide":4,"bbox":[364,136,70,5]}
+{"kind":"shape","id":"sh/4vepkf6h","slide":4,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/pwn6tkn2","slide":4,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/yxsn6lo7","slide":4,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/jy1ofq5s","slide":4,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/3mlgnuhw","slide":4,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/2lcfep0b","slide":4,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"textbox","id":"sh/po3yp4z2","slide":4,"text":"• Đặt lịch thủ công dễ trùng slot và khó kiểm soát.\n• Lịch hẹn, hồ sơ và PDF tách rời nhau.\n• Bác sĩ và admin thiếu dashboard vận hành.\n• Hệ thống cần phân quyền rõ và có thể mở rộng.","textPreview":"• Đặt lịch thủ công dễ trùng slot và khó kiểm soát. | • Lịch hẹn, hồ sơ và PDF tách rời nhau. | • Bác sĩ và admin thiếu dashboard vận hàn...","textChars":183,"textLines":4,"bbox":[78,230,500,320]}
+{"kind":"shape","id":"sh/onuxgzih","slide":4,"bbox":[660,102,430,135]}
+{"kind":"textbox","id":"sh/ehsfap0f","slide":4,"text":"Trang chủ / giới thiệu","textPreview":"Trang chủ / giới thiệu","textChars":22,"textLines":1,"bbox":[670,233,410,24]}
+{"kind":"shape","id":"sh/1k3ylkzq","slide":4,"bbox":[660,232,430,118]}
+{"kind":"textbox","id":"sh/ru1wfaho","slide":4,"text":"Đăng nhập","textPreview":"Đăng nhập","textChars":9,"textLines":1,"bbox":[670,346,410,24]}
+{"kind":"shape","id":"sh/6tsf6503","slide":4,"bbox":[660,346,430,118]}
+{"kind":"textbox","id":"sh/vqhgralg","slide":4,"text":"Đặt lịch","textPreview":"Đặt lịch","textChars":8,"textLines":1,"bbox":[670,460,410,24]}
+{"kind":"shape","id":"sh/wrahkf21","slide":4,"bbox":[660,460,430,140]}
+{"kind":"textbox","id":"sh/itszm5k7","slide":4,"text":"Dashboard bác sĩ","textPreview":"Dashboard bác sĩ","textChars":16,"textLines":1,"bbox":[670,596,410,24]}
+{"kind":"image","id":"im/e94zy54z","slide":4,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/cvy98fi5","slide":4,"name":"","alt":"Trang chủ / giới thiệu","bbox":[670,112,410,115]}
+{"kind":"image","id":"im/rup8zuhk","slide":4,"name":"","alt":"Đăng nhập","bbox":[670,242,410,98]}
+{"kind":"image","id":"im/9gnqp4rq","slide":4,"name":"","alt":"Đặt lịch","bbox":[670,356,410,98]}
+{"kind":"image","id":"im/mdc7epsz","slide":4,"name":"","alt":"Dashboard bác sĩ","bbox":[670,470,410,120]}
+{"kind":"notes","id":"nt/k1myzm","slide":4,"text":"[Sources]\nBáo cáo: phần mở đầu, lợi ích hệ thống, ảnh giao diện chính."}
+{"kind":"slide","id":"sl/jw7rbp","slide":5,"title":"CLINIC BOOKING","textShapes":17}
+{"kind":"textbox","id":"sh/i1kfatwb","slide":5,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/54vyl8v2","slide":5,"text":"Mục tiêu đề tài","textPreview":"Mục tiêu đề tài","textChars":15,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/k3mxc3eh","slide":5,"bbox":[64,136,270,5]}
+{"kind":"shape","id":"sh/76dgnids","slide":5,"bbox":[344,136,70,5]}
+{"kind":"shape","id":"sh/t8vyp8vy","slide":5,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/s7mhg3ed","slide":5,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/na9gbexo","slide":5,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/m90f29w3","slide":5,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/cfq1o3ql","slide":5,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/dgjix87q","slide":5,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"shape","id":"sh/qd8jmt8f","slide":5,"bbox":[80,238,300,128]}
+{"kind":"textbox","id":"sh/reh0vyp0","slide":5,"text":"Tài khoản","textPreview":"Tài khoản","textChars":9,"textLines":1,"bbox":[98,256,264,30]}
+{"kind":"textbox","id":"sh/0ja1snqh","slide":5,"text":"Đăng ký, xác thực email, đăng nhập và đổi mật khẩu.","textPreview":"Đăng ký, xác thực email, đăng nhập và đổi mật khẩu.","textChars":51,"textLines":1,"bbox":[96,300,268,52]}
+{"kind":"shape","id":"sh/1kj2l872","slide":5,"bbox":[440,238,300,128]}
+{"kind":"textbox","id":"sh/ehsjqd8b","slide":5,"text":"Đặt lịch","textPreview":"Đặt lịch","textChars":8,"textLines":1,"bbox":[458,256,264,30]}
+{"kind":"textbox","id":"sh/zi10jipw","slide":5,"text":"Chọn cơ sở, chuyên khoa, bác sĩ, ngày và khung giờ.","textPreview":"Chọn cơ sở, chuyên khoa, bác sĩ, ngày và khung giờ.","textChars":51,"textLines":1,"bbox":[456,300,268,52]}
+{"kind":"shape","id":"sh/gn61gjqd","slide":5,"bbox":[800,238,300,128]}
+{"kind":"textbox","id":"sh/hofipo7y","slide":5,"text":"Hồ sơ","textPreview":"Hồ sơ","textChars":5,"textLines":1,"bbox":[818,256,264,30]}
+{"kind":"textbox","id":"sh/xs7qxgfa","slide":5,"text":"Tạo, lưu và xem lại hồ sơ khám, đính kèm tài liệu.","textPreview":"Tạo, lưu và xem lại hồ sơ khám, đính kèm tài liệu.","textChars":50,"textLines":1,"bbox":[816,300,268,52]}
+{"kind":"shape","id":"sh/wryp4bep","slide":5,"bbox":[80,426,300,128]}
+{"kind":"textbox","id":"sh/b658v6x4","slide":5,"text":"Bác sĩ","textPreview":"Bác sĩ","textChars":6,"textLines":1,"bbox":[98,444,264,30]}
+{"kind":"textbox","id":"sh/a5w721wz","slide":5,"text":"Xử lý hàng đợi, cập nhật trạng thái và tạo kết quả.","textPreview":"Xử lý hàng đợi, cập nhật trạng thái và tạo kết quả.","textChars":51,"textLines":1,"bbox":[96,488,268,52]}
+{"kind":"shape","id":"sh/5w7q10fm","slide":5,"bbox":[440,426,300,128]}
+{"kind":"textbox","id":"sh/kvyp8ve1","slide":5,"text":"Quản trị","textPreview":"Quản trị","textChars":8,"textLines":1,"bbox":[458,444,264,30]}
+{"kind":"textbox","id":"sh/jup8zqxg","slide":5,"text":"Dashboard, danh mục, tài khoản, lịch hẹn và audit.","textPreview":"Dashboard, danh mục, tài khoản, lịch hẹn và audit.","textChars":50,"textLines":1,"bbox":[456,488,268,52]}
+{"kind":"shape","id":"sh/itg76lwv","slide":5,"bbox":[800,426,300,128]}
+{"kind":"textbox","id":"sh/t0rq50fi","slide":5,"text":"Mở rộng","textPreview":"Mở rộng","textChars":7,"textLines":1,"bbox":[818,444,264,30]}
+{"kind":"textbox","id":"sh/szipcvex","slide":5,"text":"PDF, realtime, email, AI và hướng phát triển.","textPreview":"PDF, realtime, email, AI và hướng phát triển.","textChars":45,"textLines":1,"bbox":[816,488,268,52]}
+{"kind":"image","id":"im/fad8jqh4","slide":5,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"notes","id":"nt/jw7rbp","slide":5,"text":"[Sources]\nTổng hợp từ Chương 1, Chương 2, Chương 5 của báo cáo."}
+{"kind":"slide","id":"sl/fi8xg2","slide":6,"title":"06","textShapes":7}
+{"kind":"shape","id":"sh/9sra5g7m","slide":6,"bbox":[0,0,380,662]}
+{"kind":"shape","id":"sh/vuts7q5s","slide":6,"bbox":[0,0,380,662]}
+{"kind":"shape","id":"sh/ut0bylo7","slide":6,"bbox":[76,92,112,112]}
+{"kind":"textbox","id":"sh/hgba90ny","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[76,119,112,42]}
+{"kind":"textbox","id":"sh/wv2t0v6d","slide":6,"text":"SECTION","textPreview":"SECTION","textChars":7,"textLines":1,"bbox":[210,126,110,20]}
+{"kind":"textbox","id":"sh/jitsba54","slide":6,"text":"Phân tích thiết kế","textPreview":"Phân tích thiết kế","textChars":18,"textLines":1,"bbox":[448,228,650,84]}
+{"kind":"shape","id":"sh/ihkb25oj","slide":6,"bbox":[450,332,330,6]}
+{"kind":"shape","id":"sh/srahsfid","slide":6,"bbox":[792,332,74,6]}
+{"kind":"textbox","id":"sh/tcjilkjy","slide":6,"text":"Từ yêu cầu người dùng đến mô hình nghiệp vụ","textPreview":"Từ yêu cầu người dùng đến mô hình nghiệp vụ","textChars":43,"textLines":1,"bbox":[450,368,650,70]}
+{"kind":"shape","id":"sh/6pszqp0n","slide":6,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/7q10ju1s","slide":6,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/gfuhwzip","slide":6,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/hg3ip4ja","slide":6,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/udczup0j","slide":6,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/fel0nu14","slide":6,"text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"image","id":"im/b2p4jqtc","slide":6,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/dormlgb2","slide":6,"name":"","alt":"Phân tích thiết kế","bbox":[54,150,300,350]}
+{"kind":"notes","id":"nt/fi8xg2","slide":6,"text":"[Sources]\nMẫu slide divider trong deck tham chiếu."}
+{"kind":"slide","id":"sl/rr8vhv","slide":7,"title":"CLINIC BOOKING","textShapes":15}
+{"kind":"textbox","id":"sh/2tkrytgj","slide":7,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/pwba98za","slide":7,"text":"Use case tổng quan","textPreview":"Use case tổng quan","textChars":18,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/4v2903yp","slide":7,"bbox":[64,136,300,5]}
+{"kind":"shape","id":"sh/fqt83ehs","slide":7,"bbox":[374,136,70,5]}
+{"kind":"shape","id":"sh/hsba5ozy","slide":7,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/gr29wjyd","slide":7,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/7298zehw","slide":7,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/610rq9gb","slide":7,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/s7y98ri9","slide":7,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/ds7ahwju","slide":7,"text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"shape","id":"sh/q5wr6h0j","slide":7,"bbox":[70,208,520,350]}
+{"kind":"textbox","id":"sh/43e947id","slide":7,"text":"Sơ đồ use case tổng quan","textPreview":"Sơ đồ use case tổng quan","textChars":24,"textLines":1,"bbox":[80,554,500,24]}
+{"kind":"shape","id":"sh/54nqdcjy","slide":7,"bbox":[658,232,240,112]}
+{"kind":"textbox","id":"sh/i1wr2x07","slide":7,"text":"Patient","textPreview":"Patient","textChars":7,"textLines":1,"bbox":[674,248,208,34]}
+{"kind":"textbox","id":"sh/3258b21s","slide":7,"text":"Đặt lịch, xem lịch hẹn, xem hồ sơ và tải PDF.","textPreview":"Đặt lịch, xem lịch hẹn, xem hồ sơ và tải PDF.","textChars":45,"textLines":1,"bbox":[674,286,208,50]}
+{"kind":"shape","id":"sh/ozi9gbih","slide":7,"bbox":[928,232,240,112]}
+{"kind":"textbox","id":"sh/p0rapgj2","slide":7,"text":"Doctor","textPreview":"Doctor","textChars":6,"textLines":1,"bbox":[944,248,208,34]}
+{"kind":"textbox","id":"sh/x43idcna","slide":7,"text":"Xử lý hàng đợi, tạo hồ sơ khám và lịch làm việc.","textPreview":"Xử lý hàng đợi, tạo hồ sơ khám và lịch làm việc.","textChars":48,"textLines":1,"bbox":[944,286,208,50]}
+{"kind":"shape","id":"sh/c3uhk76p","slide":7,"bbox":[658,372,240,112]}
+{"kind":"textbox","id":"sh/b2l0b2p4","slide":7,"text":"Admin","textPreview":"Admin","textChars":5,"textLines":1,"bbox":[674,388,208,34]}
+{"kind":"textbox","id":"sh/a1czixoj","slide":7,"text":"Quản lý danh mục, lịch hẹn, người dùng và audit log.","textPreview":"Quản lý danh mục, lịch hẹn, người dùng và audit log.","textChars":52,"textLines":1,"bbox":[674,426,208,50]}
+{"kind":"shape","id":"sh/pgji9s7y","slide":7,"bbox":[928,372,240,112]}
+{"kind":"textbox","id":"sh/ofahgn6d","slide":7,"text":"Guest","textPreview":"Guest","textChars":5,"textLines":1,"bbox":[944,388,208,34]}
+{"kind":"textbox","id":"sh/ne1072ps","slide":7,"text":"Tra cứu công khai, đăng ký và đăng nhập.","textPreview":"Tra cứu công khai, đăng ký và đăng nhập.","textChars":40,"textLines":1,"bbox":[944,426,208,50]}
+{"kind":"textbox","id":"sh/2dszexon","slide":7,"text":"Bốn vai trò trên cùng chia sẻ dữ liệu lõi nhưng khác nhau về quyền thao tác và màn hình làm việc.","textPreview":"Bốn vai trò trên cùng chia sẻ dữ liệu lõi nhưng khác nhau về quyền thao tác và màn hình làm việc.","textChars":97,"textLines":1,"bbox":[650,524,500,56]}
+{"kind":"image","id":"im/zq187yd4","slide":7,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/8369wji9","slide":7,"name":"","alt":"Sơ đồ use case tổng quan","bbox":[80,218,500,330]}
+{"kind":"notes","id":"nt/rr8vhv","slide":7,"text":"[Sources]\nBáo cáo: sơ đồ use case tổng quan."}
+{"kind":"slide","id":"sl/1iktxp","slide":8,"title":"CLINIC BOOKING","textShapes":10}
+{"kind":"textbox","id":"sh/d0ne5kv2","slide":8,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/qxcvupwb","slide":8,"text":"Luồng bệnh nhân","textPreview":"Luồng bệnh nhân","textChars":15,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/rylw3udw","slide":8,"bbox":[64,136,260,5]}
+{"kind":"shape","id":"sh/4budsfel","slide":8,"bbox":[334,136,70,5]}
+{"kind":"shape","id":"sh/29cvq5wf","slide":8,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/3alwzad0","slide":8,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/g7adove9","slide":8,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/h83ex0vu","slide":8,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/ton654z6","slide":8,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/s3epwzil","slide":8,"text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"textbox","id":"sh/r25o3eh0","slide":8,"text":"Bệnh nhân là người dùng trung tâm của hệ thống, nên luồng của họ phải ngắn, rõ trạng thái và có tài liệu đi kèm.","textPreview":"Bệnh nhân là người dùng trung tâm của hệ thống, nên luồng của họ phải ngắn, rõ trạng thái và có tài liệu đi kèm.","textChars":112,"textLines":1,"bbox":[74,154,1080,32]}
+{"kind":"shape","id":"sh/61w7u90f","slide":8,"bbox":[70,204,348,202]}
+{"kind":"textbox","id":"sh/kzepszi9","slide":8,"text":"Đặt lịch","textPreview":"Đặt lịch","textChars":8,"textLines":1,"bbox":[80,402,328,24]}
+{"kind":"shape","id":"sh/jylozuh4","slide":8,"bbox":[466,204,348,202]}
+{"kind":"textbox","id":"sh/xw36xkzy","slide":8,"text":"Lịch hẹn","textPreview":"Lịch hẹn","textChars":8,"textLines":1,"bbox":[476,402,328,24]}
+{"kind":"shape","id":"sh/wvupofid","slide":8,"bbox":[862,204,348,202]}
+{"kind":"textbox","id":"sh/9g76dk7u","slide":8,"text":"Hồ sơ / PDF","textPreview":"Hồ sơ / PDF","textChars":11,"textLines":1,"bbox":[872,402,328,24]}
+{"kind":"shape","id":"sh/mdg7ip83","slide":8,"bbox":[88,456,1110,110]}
+{"kind":"textbox","id":"sh/nepobu9o","slide":8,"text":"• Chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot còn trống.\n• Theo dõi các trạng thái pending, confirmed, in_progress, completed, cancelled.\n• Yêu cầu đổi hoặc hủy lịch khi đủ điều kiện và xem lại kết quả khám.","textPreview":"• Chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot còn trống. | • Theo dõi các trạng thái pending, confirmed, in_progress, completed, cancel...","textChars":209,"textLines":3,"bbox":[120,478,1030,56]}
+{"kind":"image","id":"im/crudwjet","slide":8,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/edo3u9gb","slide":8,"name":"","alt":"Đặt lịch","bbox":[80,214,328,182]}
+{"kind":"image","id":"im/1gfm5oz2","slide":8,"name":"","alt":"Lịch hẹn","bbox":[476,214,328,182]}
+{"kind":"image","id":"im/zqps3mt8","slide":8,"name":"","alt":"Hồ sơ / PDF","bbox":[872,214,328,182]}
+{"kind":"notes","id":"nt/1iktxp","slide":8,"text":"[Sources]\nBáo cáo: ảnh giao diện patient portal và phần quy trình đặt lịch."}
+{"kind":"slide","id":"sl/mx65p0","slide":9,"title":"CLINIC BOOKING","textShapes":10}
+{"kind":"textbox","id":"sh/ed4v2p8j","slide":9,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/10vex47u","slide":9,"text":"Luồng bác sĩ","textPreview":"Luồng bác sĩ","textChars":12,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/0zmd4zq9","slide":9,"bbox":[64,136,240,5]}
+{"kind":"shape","id":"sh/ratcrups","slide":9,"bbox":[314,136,70,5]}
+{"kind":"shape","id":"sh/dcbutk7y","slide":9,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/sb2d0zqd","slide":9,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/b6xw3epc","slide":9,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/a5ova98r","slide":9,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/ojuhgri1","slide":9,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/p43ipwzm","slide":9,"text":"9","textPreview":"9","textChars":1,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"textbox","id":"sh/2hczeh0v","slide":9,"text":"Mục tiêu của doctor portal là giảm thao tác lặp lại trong giờ khám và đưa bác sĩ đến đúng màn hình cần thao tác ngay.","textPreview":"Mục tiêu của doctor portal là giảm thao tác lặp lại trong giờ khám và đưa bác sĩ đến đúng màn hình cần thao tác ngay.","textChars":117,"textLines":1,"bbox":[74,154,1080,32]}
+{"kind":"shape","id":"sh/3il0nmhg","slide":9,"bbox":[70,204,348,202]}
+{"kind":"textbox","id":"sh/1gjylczq","slide":9,"text":"Dashboard","textPreview":"Dashboard","textChars":9,"textLines":1,"bbox":[80,402,328,24]}
+{"kind":"shape","id":"sh/edszax0z","slide":9,"bbox":[466,204,348,202]}
+{"kind":"textbox","id":"sh/sbah87it","slide":9,"text":"Hàng đợi","textPreview":"Hàng đợi","textChars":8,"textLines":1,"bbox":[476,402,328,24]}
+{"kind":"shape","id":"sh/tcjyhcze","slide":9,"bbox":[862,204,348,202]}
+{"kind":"textbox","id":"sh/872xcjax","slide":9,"text":"Lịch hẹn","textPreview":"Lịch hẹn","textChars":8,"textLines":1,"bbox":[872,402,328,24]}
+{"kind":"shape","id":"sh/76twjy9c","slide":9,"bbox":[88,456,1110,110]}
+{"kind":"textbox","id":"sh/65kfatsr","slide":9,"text":"• Bác sĩ xem danh sách khám trong ngày, gọi vào khám và chuyển trạng thái theo quy trình.\n• Tạo hồ sơ khám gồm triệu chứng, sinh hiệu, chẩn đoán, đơn thuốc, tái khám và tệp đính kèm.\n• Lịch làm việc và thông tin chuyên môn giúp bác sĩ quản lý ca làm chính xác hơn.","textPreview":"• Bác sĩ xem danh sách khám trong ngày, gọi vào khám và chuyển trạng thái theo quy trình. | • Tạo hồ sơ khám gồm triệu chứng, sinh hiệu, ...","textChars":264,"textLines":3,"bbox":[120,478,1030,56]}
+{"kind":"image","id":"im/zupkj21k","slide":9,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/ru1ovqdg","slide":9,"name":"","alt":"Dashboard","bbox":[80,214,328,182]}
+{"kind":"image","id":"im/cvapobe1","slide":9,"name":"","alt":"Hàng đợi","bbox":[476,214,328,182]}
+{"kind":"image","id":"im/atwripgf","slide":9,"name":"","alt":"Lịch hẹn","bbox":[872,214,328,182]}
+{"kind":"notes","id":"nt/mx65p0","slide":9,"text":"[Sources]\nBáo cáo: ảnh giao diện doctor portal."}
+{"kind":"slide","id":"sl/ue2gwh","slide":10,"title":"CLINIC BOOKING","textShapes":10}
+{"kind":"textbox","id":"sh/o7y1svut","slide":10,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/n6p0zad8","slide":10,"text":"Luồng quản trị","textPreview":"Luồng quản trị","textChars":14,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/25gjq5cn","slide":10,"bbox":[64,136,280,5]}
+{"kind":"shape","id":"sh/xwr25kva","slide":10,"bbox":[354,136,70,5]}
+{"kind":"shape","id":"sh/ba903adk","slide":10,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/a90ju5cz","slide":10,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/d0nitgv6","slide":10,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/sfe1kbul","slide":10,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/qlgfalkv","slide":10,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/rmpg3q1g","slide":10,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"textbox","id":"sh/snyxcv21","slide":10,"text":"Admin nhìn toàn cục hệ thống: dữ liệu nền, lịch hẹn, tài khoản và các nhật ký vận hành đều phải đi qua khu vực này.","textPreview":"Admin nhìn toàn cục hệ thống: dữ liệu nền, lịch hẹn, tài khoản và các nhật ký vận hành đều phải đi qua khu vực này.","textChars":115,"textLines":1,"bbox":[74,154,1080,32]}
+{"kind":"shape","id":"sh/dory50jm","slide":10,"bbox":[70,204,348,202]}
+{"kind":"textbox","id":"sh/zq9g7a1s","slide":10,"text":"Dashboard","textPreview":"Dashboard","textChars":9,"textLines":1,"bbox":[80,402,328,24]}
+{"kind":"shape","id":"sh/0rixgf2x","slide":10,"bbox":[466,204,348,202]}
+{"kind":"textbox","id":"sh/md0fi5k3","slide":10,"text":"Lịch hẹn","textPreview":"Lịch hẹn","textChars":8,"textLines":1,"bbox":[476,402,328,24]}
+{"kind":"shape","id":"sh/ne9gba1o","slide":10,"bbox":[862,204,348,202]}
+{"kind":"textbox","id":"sh/yhkfqpgb","slide":10,"text":"Audit log","textPreview":"Audit log","textChars":9,"textLines":1,"bbox":[872,402,328,24]}
+{"kind":"shape","id":"sh/lkbe1kz2","slide":10,"bbox":[88,456,1110,110]}
+{"kind":"textbox","id":"sh/kj2xsfyh","slide":10,"text":"• Quản lý cơ sở, chuyên khoa, bác sĩ, gói khám và bài viết.\n• Xử lý các yêu cầu vận hành như lịch chờ, sửa lịch và theo dõi lịch sử thao tác.\n• Audit log là điểm rất quan trọng khi trình bày với hội đồng vì thể hiện khả năng kiểm soát hệ thống.","textPreview":"• Quản lý cơ sở, chuyên khoa, bác sĩ, gói khám và bài viết. | • Xử lý các yêu cầu vận hành như lịch chờ, sửa lịch và theo dõi lịch sử tha...","textChars":244,"textLines":3,"bbox":[120,478,1030,56]}
+{"kind":"image","id":"im/5w3m547q","slide":10,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/t87qlcji","slide":10,"name":"","alt":"Dashboard","bbox":[80,214,328,182]}
+{"kind":"image","id":"im/6lg7ax07","slide":10,"name":"","alt":"Lịch hẹn","bbox":[476,214,328,182]}
+{"kind":"image","id":"im/0vypwnqp","slide":10,"name":"","alt":"Audit log","bbox":[872,214,328,182]}
+{"kind":"notes","id":"nt/ue2gwh","slide":10,"text":"[Sources]\nBáo cáo: ảnh giao diện admin portal và audit log."}
+{"kind":"slide","id":"sl/uezc7e","slide":11,"title":"11","textShapes":7}
+{"kind":"shape","id":"sh/elsr25sv","slide":11,"bbox":[0,0,380,662]}
+{"kind":"shape","id":"sh/sza90va5","slide":11,"bbox":[0,0,380,662]}
+{"kind":"shape","id":"sh/d0ja90ba","slide":11,"bbox":[76,92,112,112]}
+{"kind":"textbox","id":"sh/qxsry5sz","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[76,119,112,42]}
+{"kind":"textbox","id":"sh/ry1s7atk","slide":11,"text":"SECTION","textPreview":"SECTION","textChars":7,"textLines":1,"bbox":[210,126,110,20]}
+{"kind":"textbox","id":"sh/wve9cza9","slide":11,"text":"Kiến trúc","textPreview":"Kiến trúc","textChars":9,"textLines":1,"bbox":[448,228,650,84]}
+{"kind":"shape","id":"sh/xwnal4bu","slide":11,"bbox":[450,332,330,6]}
+{"kind":"shape","id":"sh/t4jilore","slide":11,"bbox":[792,332,74,6]}
+{"kind":"textbox","id":"sh/s3a1sjat","slide":11,"text":"Các lớp xử lý giúp hệ thống dễ mở rộng","textPreview":"Các lớp xử lý giúp hệ thống dễ mở rộng","textChars":38,"textLines":1,"bbox":[450,368,650,70]}
+{"kind":"shape","id":"sh/7210je98","slide":11,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/61sjq9sn","slide":11,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/50zih4r2","slide":11,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/kfqhozah","slide":11,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/jeh0fe9c","slide":11,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/id8zm9sr","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"image","id":"im/orip03yp","slide":11,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/2pg7ydgj","slide":11,"name":"","alt":"Kiến trúc","bbox":[54,150,300,350]}
+{"kind":"notes","id":"nt/uezc7e","slide":11,"text":"[Sources]\nMẫu slide divider trong deck tham chiếu."}
+{"kind":"slide","id":"sl/tf8xg6","slide":12,"title":"CLINIC BOOKING","textShapes":22}
+{"kind":"textbox","id":"sh/b65s3m5w","slide":12,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/c7e9wr6h","slide":12,"text":"Công nghệ sử dụng","textPreview":"Công nghệ sử dụng","textChars":17,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/x87a5wn2","slide":12,"bbox":[64,136,330,5]}
+{"kind":"shape","id":"sh/y9gry1on","slide":12,"bbox":[404,136,70,5]}
+{"kind":"shape","id":"sh/kby90r6t","slide":12,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/lc7a9wny","slide":12,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/edcrmxoj","slide":12,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/fel8v25o","slide":12,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/bq18buho","slide":12,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/ap872p03","slide":12,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"shape","id":"sh/xcjqdkze","slide":12,"bbox":[72,220,240,126]}
+{"kind":"textbox","id":"sh/crap4fi9","slide":12,"text":"React","textPreview":"React","textChars":5,"textLines":1,"bbox":[90,238,204,30]}
+{"kind":"textbox","id":"sh/nmho7ahc","slide":12,"text":"Giao diện người dùng, layout theo vai trò","textPreview":"Giao diện người dùng, layout theo vai trò","textChars":41,"textLines":1,"bbox":[88,282,208,50]}
+{"kind":"shape","id":"sh/2l87y50r","slide":12,"bbox":[356,220,240,126]}
+{"kind":"textbox","id":"sh/poz69kzi","slide":12,"text":"Vite","textPreview":"Vite","textChars":4,"textLines":1,"bbox":[374,238,204,30]}
+{"kind":"textbox","id":"sh/onqp0fix","slide":12,"text":"Cấu hình build và dev server nhanh","textPreview":"Cấu hình build và dev server nhanh","textChars":34,"textLines":1,"bbox":[372,282,208,50]}
+{"kind":"shape","id":"sh/fixo3qhg","slide":12,"bbox":[640,220,240,126]}
+{"kind":"textbox","id":"sh/eho7u50v","slide":12,"text":"Node.js","textPreview":"Node.js","textChars":7,"textLines":1,"bbox":[658,238,204,30]}
+{"kind":"textbox","id":"sh/ito76lkn","slide":12,"text":"Runtime backend","textPreview":"Runtime backend","textChars":15,"textLines":1,"bbox":[656,282,208,50]}
+{"kind":"shape","id":"sh/3ex8fql8","slide":12,"bbox":[924,220,240,126]}
+{"kind":"textbox","id":"sh/4f6p8v2t","slide":12,"text":"Express","textPreview":"Express","textChars":7,"textLines":1,"bbox":[942,238,204,30]}
+{"kind":"textbox","id":"sh/5gfqh03e","slide":12,"text":"REST API và middleware","textPreview":"REST API và middleware","textChars":22,"textLines":1,"bbox":[940,282,208,50]}
+{"kind":"shape","id":"sh/qhora5kz","slide":12,"bbox":[72,388,240,126]}
+{"kind":"textbox","id":"sh/rix8jal4","slide":12,"text":"MongoDB","textPreview":"MongoDB","textChars":7,"textLines":1,"bbox":[90,406,204,30]}
+{"kind":"textbox","id":"sh/sjq9cf2p","slide":12,"text":"Lưu dữ liệu nghiệp vụ","textPreview":"Lưu dữ liệu nghiệp vụ","textChars":21,"textLines":1,"bbox":[88,450,208,50]}
+{"kind":"shape","id":"sh/dkzqlk3a","slide":12,"bbox":[356,388,240,126]}
+{"kind":"textbox","id":"sh/el8re5kv","slide":12,"text":"Socket.IO","textPreview":"Socket.IO","textChars":9,"textLines":1,"bbox":[374,406,204,30]}
+{"kind":"textbox","id":"sh/fmh8nalg","slide":12,"text":"Thông báo realtime","textPreview":"Thông báo realtime","textChars":18,"textLines":1,"bbox":[372,450,208,50]}
+{"kind":"shape","id":"sh/pgjad4ni","slide":12,"bbox":[640,388,240,126]}
+{"kind":"textbox","id":"sh/ofatkjmx","slide":12,"text":"PDFKit","textPreview":"PDFKit","textChars":6,"textLines":1,"bbox":[658,406,204,30]}
+{"kind":"textbox","id":"sh/ne1sbe5c","slide":12,"text":"Xuất tài liệu PDF","textPreview":"Xuất tài liệu PDF","textChars":17,"textLines":1,"bbox":[656,450,208,50]}
+{"kind":"shape","id":"sh/2dsbi947","slide":12,"bbox":[924,388,240,126]}
+{"kind":"textbox","id":"sh/x43uhonu","slide":12,"text":"Nodemailer","textPreview":"Nodemailer","textChars":10,"textLines":1,"bbox":[942,406,204,30]}
+{"kind":"textbox","id":"sh/cjutojm9","slide":12,"text":"OTP và email thông báo","textPreview":"OTP và email thông báo","textChars":22,"textLines":1,"bbox":[940,450,208,50]}
+{"kind":"textbox","id":"sh/bilsfe5o","slide":12,"text":"Bảng công nghệ trong báo cáo được tóm tắt theo vai trò của từng thành phần trong hệ thống.","textPreview":"Bảng công nghệ trong báo cáo được tóm tắt theo vai trò của từng thành phần trong hệ thống.","textChars":90,"textLines":1,"bbox":[180,548,920,28]}
+{"kind":"image","id":"im/a14jadcf","slide":12,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"notes","id":"nt/tf8xg6","slide":12,"text":"[Sources]\nREADME và các file thiết kế kiến trúc trong thư mục docs/thesis."}
+{"kind":"slide","id":"sl/1zx7dn","slide":13,"title":"CLINIC BOOKING","textShapes":7}
+{"kind":"textbox","id":"sh/upgjmx8j","slide":13,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/hcr2xcru","slide":13,"text":"Kiến trúc xử lý","textPreview":"Kiến trúc xử lý","textChars":15,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/wri1o7q9","slide":13,"bbox":[64,136,300,5]}
+{"kind":"shape","id":"sh/7mp0r29s","slide":13,"bbox":[374,136,70,5]}
+{"kind":"shape","id":"sh/9o7itcry","slide":13,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/8ny1k7qd","slide":13,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/ri9k3m9w","slide":13,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/6h0juh8b","slide":13,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/ozipkv6p","slide":13,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/90r6d0na","slide":13,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"shape","id":"sh/2x07iloj","slide":13,"bbox":[60,194,542,368]}
+{"kind":"textbox","id":"sh/0bipgb6t","slide":13,"text":"Kiến trúc xử lý API","textPreview":"Kiến trúc xử lý API","textChars":19,"textLines":1,"bbox":[70,558,522,24]}
+{"kind":"shape","id":"sh/1cr69gne","slide":13,"bbox":[652,220,468,284]}
+{"kind":"textbox","id":"sh/e907elon","slide":13,"text":"• Frontend gọi API và nhận cập nhật realtime qua Socket.IO.\n• Backend chia lớp route, middleware, controller, service, model.\n• Service xử lý slot, trạng thái lịch, hồ sơ, PDF, email và thông báo.\n• Kiến trúc này giúp luồng nghiệp vụ kiểm soát được theo từng bước.","textPreview":"• Frontend gọi API và nhận cập nhật realtime qua Socket.IO. | • Backend chia lớp route, middleware, controller, service, model. | • Servi...","textChars":264,"textLines":4,"bbox":[686,256,400,178]}
+{"kind":"image","id":"im/rq5wvu10","slide":13,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/s7ex4zal","slide":13,"name":"","alt":"Kiến trúc xử lý API","bbox":[70,204,522,348]}
+{"kind":"notes","id":"nt/1zx7dn","slide":13,"text":"[Sources]\nBáo cáo: sơ đồ kiến trúc xử lý API."}
+{"kind":"slide","id":"sl/06spkg","slide":14,"title":"CLINIC BOOKING","textShapes":8}
+{"kind":"textbox","id":"sh/ruhkfu5w","slide":14,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/svql8z6h","slide":14,"text":"Lịch hẹn như một state machine","textPreview":"Lịch hẹn như một state machine","textChars":30,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/tgz2h4n2","slide":14,"bbox":[64,136,490,5]}
+{"kind":"shape","id":"sh/ipo32pof","slide":14,"bbox":[564,136,70,5]}
+{"kind":"shape","id":"sh/kr6l4f6l","slide":14,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/5sz2dkn6","slide":14,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/alo3y5oj","slide":14,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/vmxk7a5o","slide":14,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/z2lcnih4","slide":14,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/e1cbud0j","slide":14,"text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"shape","id":"sh/143upszu","slide":14,"bbox":[64,210,564,366]}
+{"kind":"textbox","id":"sh/n65cr2h0","slide":14,"text":"Luồng trạng thái lịch hẹn","textPreview":"Luồng trạng thái lịch hẹn","textChars":25,"textLines":1,"bbox":[74,572,544,24]}
+{"kind":"shape","id":"sh/m5wbyx0f","slide":14,"bbox":[656,244,478,272]}
+{"kind":"textbox","id":"sh/9snutsz6","slide":14,"text":"• Trạng thái chính: pending, confirmed, in_progress, completed, cancelled, no_show.\n• Nhánh phụ: cancel_requested, reschedule_requested, waiting list.\n• Backend kiểm tra trạng thái hợp lệ trước khi cập nhật.\n• Hoàn tất hồ sơ khám sẽ đồng bộ trạng thái lịch hẹn.","textPreview":"• Trạng thái chính: pending, confirmed, in_progress, completed, cancelled, no_show. | • Nhánh phụ: cancel_requested, reschedule_requested...","textChars":261,"textLines":4,"bbox":[692,286,404,168]}
+{"kind":"textbox","id":"sh/o7et0nyl","slide":14,"text":"Ràng buộc trạng thái giúp tránh thao tác sai khi khám bệnh và khi thay đổi lịch đã hoàn tất.","textPreview":"Ràng buộc trạng thái giúp tránh thao tác sai khi khám bệnh và khi thay đổi lịch đã hoàn tất.","textChars":92,"textLines":1,"bbox":[694,552,406,36]}
+{"kind":"image","id":"im/m5cn65wv","slide":14,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/3e18rm5o","slide":14,"name":"","alt":"Luồng trạng thái lịch hẹn","bbox":[74,220,544,346]}
+{"kind":"notes","id":"nt/06spkg","slide":14,"text":"[Sources]\nBáo cáo: activity diagram / state machine của lịch hẹn."}
+{"kind":"slide","id":"sl/tvch0b","slide":15,"title":"15","textShapes":7}
+{"kind":"shape","id":"sh/4vu18nyh","slide":15,"bbox":[0,0,380,662]}
+{"kind":"shape","id":"sh/6hcjaxgn","slide":15,"bbox":[0,0,380,662]}
+{"kind":"shape","id":"sh/ri5k3ihs","slide":15,"bbox":[76,92,112,112]}
+{"kind":"textbox","id":"sh/sje1cnyd","slide":15,"text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[76,119,112,42]}
+{"kind":"textbox","id":"sh/tkn25szy","slide":15,"text":"SECTION","textPreview":"SECTION","textChars":7,"textLines":1,"bbox":[210,126,110,20]}
+{"kind":"textbox","id":"sh/elw3exgj","slide":15,"text":"Triển khai hệ thống","textPreview":"Triển khai hệ thống","textChars":19,"textLines":1,"bbox":[448,228,650,84]}
+{"kind":"shape","id":"sh/fm5k72h4","slide":15,"bbox":[450,332,330,6]}
+{"kind":"shape","id":"sh/7ad8ritc","slide":15,"bbox":[792,332,74,6]}
+{"kind":"textbox","id":"sh/m94rydcr","slide":15,"text":"Sản phẩm đã triển khai theo từng vai trò sử dụng","textPreview":"Sản phẩm đã triển khai theo từng vai trò sử dụng","textChars":48,"textLines":1,"bbox":[450,368,650,70]}
+{"kind":"shape","id":"sh/tcfqtsb2","slide":15,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/8b690nuh","slide":15,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/z6d8nit0","slide":15,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/y54rudcf","slide":15,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/l8vqp8b6","slide":15,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/k7m9w3ul","slide":15,"text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"image","id":"im/i9s7yls7","slide":15,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/4bap0vad","slide":15,"name":"","alt":"Triển khai hệ thống","bbox":[54,150,300,350]}
+{"kind":"notes","id":"nt/tvch0b","slide":15,"text":"[Sources]\nMẫu slide divider trong deck tham chiếu."}
+{"kind":"slide","id":"sl/yvkep3","slide":16,"title":"CLINIC BOOKING","textShapes":10}
+{"kind":"textbox","id":"sh/gji5ovyd","slide":16,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/fi9ofqxs","slide":16,"text":"Giao diện người dùng","textPreview":"Giao diện người dùng","textChars":20,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/uh0nmlg7","slide":16,"bbox":[64,136,380,5]}
+{"kind":"shape","id":"sh/p8b6l0fu","slide":16,"bbox":[454,136,70,5]}
+{"kind":"shape","id":"sh/3m9ojaxo","slide":16,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/2l0nq5gj","slide":16,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/dcb6pkf6","slide":16,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/cb25wfyl","slide":16,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/e5c3il0r","slide":16,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/f65krqhc","slide":16,"text":"16","textPreview":"16","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"textbox","id":"sh/grelkvix","slide":16,"text":"Giao diện được chia theo đúng cổng sử dụng để người dùng không phải nhìn quá nhiều chức năng cùng lúc.","textPreview":"Giao diện được chia theo đúng cổng sử dụng để người dùng không phải nhìn quá nhiều chức năng cùng lúc.","textChars":102,"textLines":1,"bbox":[74,154,1070,32]}
+{"kind":"shape","id":"sh/1snmtgz2","slide":16,"bbox":[70,198,506,216]}
+{"kind":"textbox","id":"sh/3u54vqh8","slide":16,"text":"Trang chủ","textPreview":"Trang chủ","textChars":9,"textLines":1,"bbox":[80,410,486,24]}
+{"kind":"shape","id":"sh/ovelovit","slide":16,"bbox":[704,198,506,216]}
+{"kind":"textbox","id":"sh/ixs3a10j","slide":16,"text":"Đặt lịch","textPreview":"Đặt lịch","textChars":8,"textLines":1,"bbox":[714,410,486,24]}
+{"kind":"shape","id":"sh/jylkj614","slide":16,"bbox":[70,444,506,146]}
+{"kind":"textbox","id":"sh/m18zixgb","slide":16,"text":"Dashboard bác sĩ","textPreview":"Dashboard bác sĩ","textChars":16,"textLines":1,"bbox":[80,586,486,24]}
+{"kind":"shape","id":"sh/94zidcz2","slide":16,"bbox":[704,444,506,146]}
+{"kind":"textbox","id":"sh/zex07ihk","slide":16,"text":"Dashboard quản trị","textPreview":"Dashboard quản trị","textChars":18,"textLines":1,"bbox":[714,586,486,24]}
+{"kind":"image","id":"im/d8bmp43q","slide":16,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/lwnipwfu","slide":16,"name":"","alt":"Trang chủ","bbox":[80,208,486,196]}
+{"kind":"image","id":"im/ytwzehgj","slide":16,"name":"","alt":"Đặt lịch","bbox":[714,208,486,196]}
+{"kind":"image","id":"im/ovql4zmp","slide":16,"name":"","alt":"Dashboard bác sĩ","bbox":[80,454,486,126]}
+{"kind":"image","id":"im/3uhkvu5k","slide":16,"name":"","alt":"Dashboard quản trị","bbox":[714,454,486,126]}
+{"kind":"notes","id":"nt/yvkep3","slide":16,"text":"[Sources]\nẢnh giao diện từ báo cáo Word và thư mục source-report-media."}
+{"kind":"slide","id":"sl/3ct4kq","slide":17,"title":"CLINIC BOOKING","textShapes":10}
+{"kind":"textbox","id":"sh/wve1kbu5","slide":17,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/vu50b6tk","slide":17,"text":"PDF, thông báo và AI","textPreview":"PDF, thông báo và AI","textChars":20,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/atcjilcz","slide":17,"bbox":[64,136,390,5]}
+{"kind":"shape","id":"sh/9s3i9gbu","slide":17,"bbox":[464,136,70,5]}
+{"kind":"shape","id":"sh/n6l076to","slide":17,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/m5cje1c3","slide":17,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/to72l0by","slide":17,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/sny1cvud","slide":17,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/mt4zmlo3","slide":17,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/7udgvq5o","slide":17,"text":"17","textPreview":"17","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"shape","id":"sh/8vmhov69","slide":17,"bbox":[68,200,280,390]}
+{"kind":"textbox","id":"sh/y54zi1o7","slide":17,"text":"Phiếu đặt lịch","textPreview":"Phiếu đặt lịch","textChars":14,"textLines":1,"bbox":[78,586,260,24]}
+{"kind":"shape","id":"sh/z6dgr6pc","slide":17,"bbox":[328,200,280,390]}
+{"kind":"textbox","id":"sh/lsvytg7i","slide":17,"text":"Phiếu khám","textPreview":"Phiếu khám","textChars":10,"textLines":1,"bbox":[338,586,260,24]}
+{"kind":"shape","id":"sh/i1ozu5ob","slide":17,"bbox":[588,200,280,390]}
+{"kind":"textbox","id":"sh/fup4zy1w","slide":17,"text":"Kết quả khám","textPreview":"Kết quả khám","textChars":12,"textLines":1,"bbox":[598,586,260,24]}
+{"kind":"shape","id":"sh/etgn6t0b","slide":17,"bbox":[848,200,364,198]}
+{"kind":"textbox","id":"sh/gvy583ih","slide":17,"text":"Thông báo realtime","textPreview":"Thông báo realtime","textChars":18,"textLines":1,"bbox":[858,394,344,24]}
+{"kind":"shape","id":"sh/3yp43ih8","slide":17,"bbox":[848,392,364,198]}
+{"kind":"textbox","id":"sh/p0r65szy","slide":17,"text":"AI tư vấn triệu chứng","textPreview":"AI tư vấn triệu chứng","textChars":21,"textLines":1,"bbox":[858,586,344,24]}
+{"kind":"image","id":"im/h8futcza","slide":17,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"image","id":"im/e10naxwj","slide":17,"name":"","alt":"Phiếu đặt lịch","bbox":[78,210,260,370]}
+{"kind":"image","id":"im/ryp4z2ds","slide":17,"name":"","alt":"Phiếu khám","bbox":[338,210,260,370]}
+{"kind":"image","id":"im/4vy54ne1","slide":17,"name":"","alt":"Kết quả khám","bbox":[598,210,260,370]}
+{"kind":"image","id":"im/ud0nid47","slide":17,"name":"","alt":"Thông báo realtime","bbox":[858,210,344,178]}
+{"kind":"image","id":"im/9crm9s3m","slide":17,"name":"","alt":"AI tư vấn triệu chứng","bbox":[858,402,344,178]}
+{"kind":"notes","id":"nt/3ct4kq","slide":17,"text":"[Sources]\nBáo cáo: mẫu PDF, notification realtime và AI tư vấn triệu chứng."}
+{"kind":"slide","id":"sl/4hmg8d","slide":18,"title":"CLINIC BOOKING","textShapes":33}
+{"kind":"textbox","id":"sh/6poz6hcj","slide":18,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/tszihwva","slide":18,"text":"Kết quả kiểm thử chức năng","textPreview":"Kết quả kiểm thử chức năng","textChars":26,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/8rqh8rup","slide":18,"bbox":[64,136,420,5]}
+{"kind":"shape","id":"sh/vuh0j6d0","slide":18,"bbox":[494,136,70,5]}
+{"kind":"shape","id":"sh/hwzilgv6","slide":18,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/gvqhcbul","slide":18,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/3y10n6dc","slide":18,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/ix8ze1cr","slide":18,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/oruxofqt","slide":18,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/ps3yhkry","slide":18,"text":"18","textPreview":"18","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"textbox","id":"sh/2pcfm58n","slide":18,"text":"Đồ án áp dụng kiểm thử chức năng kết hợp kiểm thử hộp đen. Người kiểm thử thao tác trên giao diện và đối chiếu kết quả thực tế với kết quả mong đợi.","textPreview":"Đồ án áp dụng kiểm thử chức năng kết hợp kiểm thử hộp đen. Người kiểm thử thao tác trên giao diện và đối chiếu kết quả thực tế với kết qu...","textChars":148,"textLines":1,"bbox":[92,156,1090,42]}
+{"kind":"shape","id":"sh/nqlgfa98","slide":18,"bbox":[64,244,760,340]}
+{"kind":"shape","id":"sh/cfuhsfqp","slide":18,"bbox":[92,244,90,46]}
+{"kind":"textbox","id":"sh/xgnylkra","slide":18,"text":"Nhóm chức năng","textPreview":"Nhóm chức năng","textChars":14,"textLines":1,"bbox":[98,254,78,34]}
+{"kind":"shape","id":"sh/atcfqp8j","slide":18,"bbox":[182,244,344,46]}
+{"kind":"textbox","id":"sh/belgja94","slide":18,"text":"Nội dung kiểm thử","textPreview":"Nội dung kiểm thử","textChars":17,"textLines":1,"bbox":[188,254,332,34]}
+{"kind":"shape","id":"sh/kjehwzql","slide":18,"bbox":[672,244,110,46]}
+{"kind":"textbox","id":"sh/lknyp4r6","slide":18,"text":"Kết quả","textPreview":"Kết quả","textChars":7,"textLines":1,"bbox":[678,254,98,34]}
+{"kind":"shape","id":"sh/t0jy9kja","slide":18,"bbox":[92,290,90,42]}
+{"kind":"textbox","id":"sh/8zaxgzi5","slide":18,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[100,298,74,30]}
+{"kind":"shape","id":"sh/7y1g7u1k","slide":18,"bbox":[182,290,344,42]}
+{"kind":"textbox","id":"sh/6dsfep0z","slide":18,"text":"Đăng ký, OTP, đăng nhập, đổi mật khẩu","textPreview":"Đăng ký, OTP, đăng nhập, đổi mật khẩu","textChars":37,"textLines":1,"bbox":[190,298,328,30]}
+{"kind":"shape","id":"sh/h43yd4jm","slide":18,"bbox":[672,290,110,42]}
+{"kind":"textbox","id":"sh/g3uxkzi1","slide":18,"text":"Đạt","textPreview":"Đạt","textChars":3,"textLines":1,"bbox":[680,298,94,30]}
+{"kind":"shape","id":"sh/v2lgbu1g","slide":18,"bbox":[92,332,90,42]}
+{"kind":"textbox","id":"sh/u1sfip0v","slide":18,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[100,340,74,30]}
+{"kind":"shape","id":"sh/x8zy10ji","slide":18,"bbox":[182,332,344,42]}
+{"kind":"textbox","id":"sh/w7qx8fix","slide":18,"text":"Chọn slot, chặn trùng, trạng thái","textPreview":"Chọn slot, chặn trùng, trạng thái","textChars":33,"textLines":1,"bbox":[190,340,328,30]}
+{"kind":"shape","id":"sh/mdov21gf","slide":18,"bbox":[672,332,110,42]}
+{"kind":"textbox","id":"sh/nexcb6h0","slide":18,"text":"Đạt","textPreview":"Đạt","textChars":3,"textLines":1,"bbox":[680,340,94,30]}
+{"kind":"shape","id":"sh/of6d4byl","slide":18,"bbox":[92,374,90,42]}
+{"kind":"textbox","id":"sh/9gfudgz6","slide":18,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[100,382,74,30]}
+{"kind":"shape","id":"sh/ahov6lgr","slide":18,"bbox":[182,374,344,42]}
+{"kind":"textbox","id":"sh/bixwfqhc","slide":18,"text":"Tạo hồ sơ, tải PDF, xem lại","textPreview":"Tạo hồ sơ, tải PDF, xem lại","textChars":27,"textLines":1,"bbox":[190,382,328,30]}
+{"kind":"shape","id":"sh/wjqd8vyx","slide":18,"bbox":[672,374,110,42]}
+{"kind":"textbox","id":"sh/x4zeh0z2","slide":18,"text":"Đạt","textPreview":"Đạt","textChars":3,"textLines":1,"bbox":[680,382,94,30]}
+{"kind":"shape","id":"sh/ql4vahg7","slide":18,"bbox":[92,416,90,42]}
+{"kind":"textbox","id":"sh/rmdc3mhs","slide":18,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[100,424,74,30]}
+{"kind":"shape","id":"sh/7qlkre5k","slide":18,"bbox":[182,416,344,42]}
+{"kind":"textbox","id":"sh/65cjitoz","slide":18,"text":"Xử lý hàng đợi, cập nhật trạng thái","textPreview":"Xử lý hàng đợi, cập nhật trạng thái","textChars":35,"textLines":1,"bbox":[190,424,328,30]}
+{"kind":"shape","id":"sh/ts32tonq","slide":18,"bbox":[672,416,110,42]}
+{"kind":"textbox","id":"sh/8ru1kj65","slide":18,"text":"Đạt","textPreview":"Đạt","textChars":3,"textLines":1,"bbox":[680,424,94,30]}
+{"kind":"shape","id":"sh/vu5kvy5g","slide":18,"bbox":[92,458,90,42]}
+{"kind":"textbox","id":"sh/utcjmt4v","slide":18,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[100,466,74,30]}
+{"kind":"shape","id":"sh/hwn2x8nm","slide":18,"bbox":[182,458,344,42]}
+{"kind":"textbox","id":"sh/gve1o3m1","slide":18,"text":"Dashboard, danh mục, audit log","textPreview":"Dashboard, danh mục, audit log","textChars":30,"textLines":1,"bbox":[190,466,328,30]}
+{"kind":"shape","id":"sh/3y5kzi5s","slide":18,"bbox":[672,458,110,42]}
+{"kind":"textbox","id":"sh/ixwjqd47","slide":18,"text":"Đạt","textPreview":"Đạt","textChars":3,"textLines":1,"bbox":[680,466,94,30]}
+{"kind":"shape","id":"sh/03y1gn25","slide":18,"bbox":[92,500,90,42]}
+{"kind":"textbox","id":"sh/1o7i983q","slide":18,"text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[100,508,74,30]}
+{"kind":"shape","id":"sh/e1gjedkf","slide":18,"bbox":[182,500,344,42]}
+{"kind":"textbox","id":"sh/f2p07il0","slide":18,"text":"Mobile, tablet, desktop","textPreview":"Mobile, tablet, desktop","textChars":23,"textLines":1,"bbox":[190,508,328,30]}
+{"kind":"shape","id":"sh/sze1c329","slide":18,"bbox":[672,500,110,42]}
+{"kind":"textbox","id":"sh/d0ni583u","slide":18,"text":"Đạt","textPreview":"Đạt","textChars":3,"textLines":1,"bbox":[680,508,94,30]}
+{"kind":"shape","id":"sh/qxwjatk3","slide":18,"bbox":[886,268,292,104]}
+{"kind":"textbox","id":"sh/ry503ylo","slide":18,"text":"24/24","textPreview":"24/24","textChars":5,"textLines":1,"bbox":[902,284,260,34]}
+{"kind":"textbox","id":"sh/4ve1832d","slide":18,"text":"Luồng nghiệp vụ cốt lõi đạt yêu cầu.","textPreview":"Luồng nghiệp vụ cốt lõi đạt yêu cầu.","textChars":36,"textLines":1,"bbox":[902,322,260,50]}
+{"kind":"shape","id":"sh/5wni1o3i","slide":18,"bbox":[886,390,292,104]}
+{"kind":"textbox","id":"sh/5sfy5kvm","slide":18,"text":"6 viewport","textPreview":"6 viewport","textChars":10,"textLines":1,"bbox":[902,406,260,34]}
+{"kind":"textbox","id":"sh/kr6hcfu1","slide":18,"text":"Kiểm tra từ mobile đến desktop.","textPreview":"Kiểm tra từ mobile đến desktop.","textChars":31,"textLines":1,"bbox":[902,444,260,50]}
+{"kind":"shape","id":"sh/jqxg3adg","slide":18,"bbox":[886,512,292,104]}
+{"kind":"textbox","id":"sh/ip4za5cv","slide":18,"text":"0 overflow","textPreview":"0 overflow","textChars":10,"textLines":1,"bbox":[902,528,260,34]}
+{"kind":"textbox","id":"sh/xovy1kva","slide":18,"text":"Không phát hiện tràn chữ sau render.","textPreview":"Không phát hiện tràn chữ sau render.","textChars":36,"textLines":1,"bbox":[902,566,260,50]}
+{"kind":"image","id":"im/3yxsbuh8","slide":18,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"notes","id":"nt/4hmg8d","slide":18,"text":"[Sources]\nMục 4.7 Kiểm thử phần mềm trong báo cáo."}
+{"kind":"slide","id":"sl/zhwy1b","slide":19,"title":"CLINIC BOOKING","textShapes":10}
+{"kind":"textbox","id":"sh/9kje543q","slide":19,"text":"CLINIC BOOKING","textPreview":"CLINIC BOOKING","textChars":14,"textLines":1,"bbox":[64,40,220,18]}
+{"kind":"textbox","id":"sh/mh8vupkz","slide":19,"text":"Đóng góp và hướng phát triển","textPreview":"Đóng góp và hướng phát triển","textChars":28,"textLines":1,"bbox":[64,64,920,62]}
+{"kind":"shape","id":"sh/nihw3ulk","slide":19,"bbox":[64,136,430,5]}
+{"kind":"shape","id":"sh/0fqdsf2t","slide":19,"bbox":[504,136,70,5]}
+{"kind":"shape","id":"sh/yt8vq5k3","slide":19,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/zehwzal8","slide":19,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/cr6dof2x","slide":19,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/dszexk3i","slide":19,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/5sz2xczm","slide":19,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/4rq147y1","slide":19,"text":"19","textPreview":"19","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"shape","id":"sh/j6hkv2hg","slide":19,"bbox":[96,220,500,300]}
+{"kind":"textbox","id":"sh/i58j2xgb","slide":19,"text":"Đóng góp","textPreview":"Đóng góp","textChars":8,"textLines":1,"bbox":[114,238,464,30]}
+{"kind":"textbox","id":"sh/h4z2tszq","slide":19,"text":"Quy trình đặt lịch - khám - hồ sơ - PDF - quản trị được nối trong một hệ thống duy nhất.\n\nHệ thống có phân quyền theo vai trò, trạng thái lịch hẹn rõ ràng, hỗ trợ realtime và có dữ liệu kiểm thử đủ để trình diễn.","textPreview":"Quy trình đặt lịch - khám - hồ sơ - PDF - quản trị được nối trong một hệ thống duy nhất. |  | Hệ thống có phân quyền theo vai trò, trạng ...","textChars":212,"textLines":3,"bbox":[112,282,468,224]}
+{"kind":"shape","id":"sh/w3q10ni5","slide":19,"bbox":[684,220,500,300]}
+{"kind":"textbox","id":"sh/v2hkr2hk","slide":19,"text":"Hướng phát triển","textPreview":"Hướng phát triển","textChars":16,"textLines":1,"bbox":[702,238,464,30]}
+{"kind":"textbox","id":"sh/u1ojyx0z","slide":19,"text":"Thanh toán online, ký số PDF, SMS/Zalo nhắc lịch, tích hợp HIS/LIS, kiểm thử tự động UI và theo dõi tải lớn.","textPreview":"Thanh toán online, ký số PDF, SMS/Zalo nhắc lịch, tích hợp HIS/LIS, kiểm thử tự động UI và theo dõi tải lớn.","textChars":108,"textLines":1,"bbox":[700,282,468,224]}
+{"kind":"textbox","id":"sh/90f2psze","slide":19,"text":"Phần hạn chế hiện tại được ghi rõ để hội đồng thấy phạm vi và hướng phát triển của đồ án.","textPreview":"Phần hạn chế hiện tại được ghi rõ để hội đồng thấy phạm vi và hướng phát triển của đồ án.","textChars":89,"textLines":1,"bbox":[170,556,940,32]}
+{"kind":"image","id":"im/8rm1sjy1","slide":19,"name":"","alt":"Phenikaa University","bbox":[1100,22,150,58]}
+{"kind":"notes","id":"nt/zhwy1b","slide":19,"text":"[Sources]\nChương 5 và phần kết luận, hướng phát triển trong báo cáo."}
+{"kind":"slide","id":"sl/9c4yr4","slide":20,"title":"Xin cảm ơn hội đồng","textShapes":6}
+{"kind":"textbox","id":"sh/mx83ut4b","slide":20,"text":"Xin cảm ơn hội đồng","textPreview":"Xin cảm ơn hội đồng","textChars":19,"textLines":1,"bbox":[190,418,900,92]}
+{"kind":"textbox","id":"sh/ny1k3y5w","slide":20,"text":"Clinic Booking  |  Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến","textPreview":"Clinic Booking  |  Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến","textChars":74,"textLines":1,"bbox":[142,520,1000,64]}
+{"kind":"textbox","id":"sh/0vqlsjml","slide":20,"text":"Sẵn sàng trao đổi thêm về nghiệp vụ, kiến trúc và kiểm thử.","textPreview":"Sẵn sàng trao đổi thêm về nghiệp vụ, kiến trúc và kiểm thử.","textChars":59,"textLines":1,"bbox":[190,590,900,32]}
+{"kind":"shape","id":"sh/1wz21onq","slide":20,"bbox":[0,670,1280,50]}
+{"kind":"shape","id":"sh/et83q94f","slide":20,"bbox":[0,662,1280,8]}
+{"kind":"shape","id":"sh/zuhkze50","slide":20,"bbox":[0,662,180,8]}
+{"kind":"textbox","id":"sh/krul4nmp","slide":20,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,682,170,20]}
+{"kind":"textbox","id":"sh/5s3mds3a","slide":20,"text":"Đồ án tốt nghiệp - 08/2026","textPreview":"Đồ án tốt nghiệp - 08/2026","textChars":26,"textLines":1,"bbox":[505,682,270,20]}
+{"kind":"textbox","id":"sh/983ipo76","slide":20,"text":"20","textPreview":"20","textChars":2,"textLines":1,"bbox":[1214,680,28,22]}
+{"kind":"image","id":"im/s7a147et","slide":20,"name":"","alt":"Phenikaa University","bbox":[432,54,420,126]}
+{"kind":"notes","id":"nt/9c4yr4","slide":20,"text":"[Sources]\nSlide kết thúc theo tinh thần cover trong deck mẫu."}

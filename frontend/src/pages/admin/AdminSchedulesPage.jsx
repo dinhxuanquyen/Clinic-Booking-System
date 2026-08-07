@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../../api/client.js';
 import { useToast } from '../../context/ToastContext.jsx';
 import { AdminAlert, AdminEmptyState, AdminPagination, getId, getName, Modal, paginate } from './adminUtils.jsx';
@@ -13,6 +14,17 @@ const defaultForm = {
   slotDuration: 30,
   isWorkingDay: true,
   note: ''
+};
+const exceptionLabels = {
+  day_off: 'Nghỉ cả ngày',
+  half_day: 'Nửa ngày',
+  custom_hours: 'Đổi ca',
+  overtime: 'Tăng ca'
+};
+const exceptionStatusLabels = {
+  pending: 'Chờ duyệt',
+  approved: 'Đã duyệt',
+  rejected: 'Từ chối'
 };
 
 function todayString() {
@@ -74,10 +86,22 @@ function getDoctorMeta(doctor, fallbackClinic) {
   return [code && `Mã ${code}`, clinicName].filter(Boolean).join(' · ');
 }
 
+function getExceptionDoctor(exception, doctorById) {
+  const doctorId = getId(exception?.doctorId);
+  const populatedDoctor = typeof exception?.doctorId === 'object' ? exception.doctorId : null;
+  return doctorById.get(doctorId) || populatedDoctor || null;
+}
+
+function getExceptionStatus(exception) {
+  return exception.approvalStatus || 'approved';
+}
+
 export default function AdminSchedulesPage() {
   const toast = useToast();
+  const [searchParams] = useSearchParams();
   const [doctors, setDoctors] = useState([]);
   const [schedules, setSchedules] = useState([]);
+  const [exceptions, setExceptions] = useState([]);
   const [form, setForm] = useState(defaultForm);
   const [editing, setEditing] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -92,6 +116,7 @@ export default function AdminSchedulesPage() {
   const [slotViewed, setSlotViewed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [reviewingId, setReviewingId] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   const doctorById = useMemo(() => new Map(doctors.map((item) => [item._id, item])), [doctors]);
@@ -120,6 +145,16 @@ export default function AdminSchedulesPage() {
     const matchesDoctorSearch = doctorMatchesSearch(doctor, filters.doctorSearch, getName(item.clinicId || doctor?.clinicId));
     return matchesClinic && matchesDoctor && matchesDate && matchesDoctorSearch;
   }), [doctorById, filters, schedules]);
+  const filteredExceptions = useMemo(() => exceptions.filter((item) => {
+    const doctor = getExceptionDoctor(item, doctorById);
+    const doctorClinicId = getId(doctor?.clinicId);
+    const matchesClinic = !filters.clinicId || doctorClinicId === filters.clinicId;
+    const matchesDoctor = !filters.doctorId || getId(item.doctorId) === filters.doctorId;
+    const matchesDate = !filters.date || item.date === filters.date;
+    const matchesDoctorSearch = doctorMatchesSearch(doctor, filters.doctorSearch, getName(doctor?.clinicId));
+    return matchesClinic && matchesDoctor && matchesDate && matchesDoctorSearch;
+  }), [doctorById, exceptions, filters]);
+  const pendingExceptions = filteredExceptions.filter((item) => getExceptionStatus(item) === 'pending');
 
   const clinics = useMemo(() => {
     const map = new Map();
@@ -141,10 +176,11 @@ export default function AdminSchedulesPage() {
   function load() {
     setLoading(true);
     setError('');
-    Promise.all([api('/doctors'), api('/schedules')])
-      .then(([doctorPayload, schedulePayload]) => {
+    Promise.all([api('/doctors'), api('/schedules'), api('/doctor/schedule-exceptions')])
+      .then(([doctorPayload, schedulePayload, exceptionPayload]) => {
         setDoctors(doctorPayload.data || []);
         setSchedules(schedulePayload.data || []);
+        setExceptions(exceptionPayload.data || []);
       })
       .catch((err) => {
         setError(err.message);
@@ -154,6 +190,12 @@ export default function AdminSchedulesPage() {
   }
 
   useEffect(load, []);
+
+  useEffect(() => {
+    if (searchParams.get('tab') === 'exceptions') {
+      setActiveTab('exceptions');
+    }
+  }, [searchParams]);
 
   function openCreate() {
     setEditing(null);
@@ -302,6 +344,23 @@ export default function AdminSchedulesPage() {
     }
   }
 
+  async function reviewException(exceptionId, action) {
+    if (reviewingId) return;
+    setReviewingId(exceptionId);
+    try {
+      await api(`/doctor/schedule-exceptions/${exceptionId}/${action}`, {
+        method: 'PATCH',
+        body: JSON.stringify({})
+      });
+      toast.success(action === 'approve' ? 'Đã duyệt yêu cầu nghỉ' : 'Đã từ chối yêu cầu nghỉ');
+      load();
+    } catch (err) {
+      toast.error(err.message || 'Không xử lý được yêu cầu nghỉ');
+    } finally {
+      setReviewingId('');
+    }
+  }
+
   return (
     <div className="admin-schedules-page">
       <div className="d-flex justify-content-between align-items-center page-heading admin-page-heading admin-schedules-heading">
@@ -315,6 +374,10 @@ export default function AdminSchedulesPage() {
         </button>
         <button className={`admin-tab ${activeTab === 'doctor-calendar' ? 'active' : ''}`} type="button" onClick={() => setActiveTab('doctor-calendar')}>
           Lịch bác sĩ
+        </button>
+        <button className={`admin-tab ${activeTab === 'exceptions' ? 'active' : ''}`} type="button" onClick={() => setActiveTab('exceptions')}>
+          Duyệt nghỉ
+          {pendingExceptions.length > 0 && <span className="admin-tab-count">{pendingExceptions.length}</span>}
         </button>
       </div>
 
@@ -529,6 +592,98 @@ export default function AdminSchedulesPage() {
                 </div>
               )}
             </div>
+          )}
+        </section>
+      )}
+
+      {activeTab === 'exceptions' && (
+        <section className="management-panel admin-table-card admin-schedules-list-card">
+          <div className="admin-table-toolbar admin-schedules-filter-panel">
+            <label>
+              <span>Cơ sở</span>
+              <select className="form-select" value={filters.clinicId} onChange={(event) => updateFilterClinic(event.target.value)}>
+                <option value="">Tất cả cơ sở</option>
+                {clinics.map((item) => <option key={getId(item)} value={getId(item)}>{getName(item)}</option>)}
+              </select>
+            </label>
+            <label className="admin-schedule-search-control">
+              <span>Tìm bác sĩ</span>
+              <input
+                className="form-control"
+                placeholder="Tên, mã bác sĩ, email, SĐT..."
+                type="search"
+                value={filters.doctorSearch}
+                onChange={(event) => updateFilterDoctorSearch(event.target.value)}
+              />
+            </label>
+            <label>
+              <span>Bác sĩ</span>
+              <select className="form-select" value={filters.doctorId} onChange={(event) => setFilters({ ...filters, doctorId: event.target.value })}>
+                <option value="">{filterDoctors.length ? 'Tất cả bác sĩ phù hợp' : 'Không có bác sĩ phù hợp'}</option>
+                {filterDoctors.map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {[item.name, getDoctorCode(item)].filter(Boolean).join(' · ')}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span>Ngày</span>
+              <input className="form-control" type="date" value={filters.date} onChange={(event) => setFilters({ ...filters, date: event.target.value })} />
+            </label>
+            {(filters.clinicId || filters.doctorId || filters.date || filters.doctorSearch) && (
+              <button className="btn btn-outline-secondary admin-schedules-clear-filter" type="button" onClick={clearListFilters}>
+                Xóa lọc
+              </button>
+            )}
+          </div>
+
+          {error && <AdminAlert message={error} type="danger" />}
+
+          {loading ? (
+            <div className="admin-schedules-loading" aria-live="polite">
+              {Array.from({ length: 4 }, (_, index) => <span key={index} />)}
+            </div>
+          ) : filteredExceptions.length ? (
+            <div className="table-responsive">
+              <table className="table table-hover align-middle admin-table">
+                <thead><tr><th>Bác sĩ</th><th>Ngày</th><th>Loại</th><th>Giờ</th><th>Lý do</th><th>Trạng thái</th><th></th></tr></thead>
+                <tbody>
+                  {filteredExceptions.map((item) => {
+                    const doctor = getExceptionDoctor(item, doctorById);
+                    const status = getExceptionStatus(item);
+                    const processing = reviewingId === item._id;
+                    return (
+                      <tr key={item._id}>
+                        <td>
+                          <div className="admin-schedule-doctor-cell">
+                            <strong>{getName(doctor || item.doctorId)}</strong>
+                            <small>{getDoctorMeta(doctor || item.doctorId)}</small>
+                          </div>
+                        </td>
+                        <td className="fw-semibold">{item.date}</td>
+                        <td><span className={`schedule-exception-badge ${item.type}`}>{exceptionLabels[item.type]}</span></td>
+                        <td>{item.type === 'day_off' ? 'Nghỉ' : `${item.startTime} - ${item.endTime}`}</td>
+                        <td>{item.reason || 'Không có ghi chú'}</td>
+                        <td><span className={`schedule-exception-status ${status}`}>{exceptionStatusLabels[status]}</span></td>
+                        <td className="text-end">
+                          {status === 'pending' ? (
+                            <>
+                              <button className="btn btn-sm btn-outline-primary me-2" disabled={processing} type="button" onClick={() => reviewException(item._id, 'approve')}>Duyệt</button>
+                              <button className="btn btn-sm btn-outline-danger" disabled={processing} type="button" onClick={() => reviewException(item._id, 'reject')}>Từ chối</button>
+                            </>
+                          ) : (
+                            <span className="text-muted small">{item.reviewedAt ? new Date(item.reviewedAt).toLocaleDateString('vi-VN') : ''}</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <AdminEmptyState message="Không có yêu cầu nghỉ phù hợp" />
           )}
         </section>
       )}

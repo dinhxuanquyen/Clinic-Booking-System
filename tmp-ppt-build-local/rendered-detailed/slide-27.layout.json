@@ -1,0 +1,708 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/blxolc",
+    "id": "blxolc",
+    "slide": 27,
+    "layoutId": "47530b1e-3118-4e22-9533-77edda8d2f81",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "47530b1e-3118-4e22-9533-77edda8d2f81",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/83u943qh",
+      "id": "1",
+      "bbox": [
+        72,
+        44,
+        1060,
+        86
+      ],
+      "geometry": "rect",
+      "text": "Giới hạn hiện tại là cơ sở cho hướng phát triển tiếp theo",
+      "textPreview": "Giới hạn hiện tại là cơ sở cho hướng phát triển tiếp theo",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Giới hạn hiện tại là cơ sở cho hướng phát triển tiếp theo"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Giới hạn hiện tại là cơ sở cho hướng phát triển tiếp theo",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#101827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Giới hạn hiện tại là cơ sở cho hướng phát triển tiếp theo",
+              "fontSize": 36,
+              "color": "#101827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/72l8vy9w",
+      "id": "2",
+      "bbox": [
+        72,
+        126,
+        950,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Phần này nên trình bày chủ động để hội đồng thấy phạm vi đồ án và năng lực mở rộng của hệ thống.",
+      "textPreview": "Phần này nên trình bày chủ động để hội đồng thấy phạm vi đồ án và năng lực mở rộng của hệ thống.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Phần này nên trình bày chủ động để hội đồng thấy phạm vi đồ án và năng lực mở rộng của hệ thống."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Phần này nên trình bày chủ động để hội đồng thấy phạm vi đồ án và năng lực mở rộng của hệ thống.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Phần này nên trình bày chủ động để hội đồng thấy phạm vi đồ án và năng lực mở rộng của hệ thống.",
+              "fontSize": 19,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6hcr2t8b",
+      "id": "3",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2E8F0",
+      "lineColor": "#E2E8F0",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h8nq18ry",
+      "id": "4",
+      "bbox": [
+        72,
+        668,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 27",
+      "textPreview": "Clinic Booking | 27",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 27"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 27",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 27",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7e983qt",
+      "id": "5",
+      "bbox": [
+        92,
+        224,
+        480,
+        270
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFF1F2",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/f658zy98",
+      "id": "6",
+      "bbox": [
+        124,
+        254,
+        260,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Giới hạn",
+      "textPreview": "Giới hạn",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "color": "#DC2626",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Giới hạn"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Giới hạn",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "color": "#DC2626",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Giới hạn",
+              "fontSize": 28,
+              "color": "#DC2626",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u5wr6t8n",
+      "id": "7",
+      "bbox": [
+        124,
+        316,
+        390,
+        126
+      ],
+      "geometry": "rect",
+      "text": "• Chưa kiểm thử tải lớn với nhiều người dùng đồng thời.\n• Chưa có kiểm thử bảo mật chuyên sâu.\n• Automation UI chưa bao phủ toàn bộ luồng.\n• Triển khai production cần hardening thêm.",
+      "textPreview": "• Chưa kiểm thử tải lớn với nhiều người dùng đồng thời. | • Chưa có kiểm thử bảo mật chuyên sâu. | • Automation UI chưa bao phủ toàn bộ l...",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Chưa kiểm thử tải lớn với nhiều người dùng đồng"
+          },
+          {
+            "index": 2,
+            "text": "thời."
+          },
+          {
+            "index": 3,
+            "text": "• Chưa có kiểm thử bảo mật chuyên sâu."
+          },
+          {
+            "index": 4,
+            "text": "• Automation UI chưa bao phủ toàn bộ luồng."
+          },
+          {
+            "index": 5,
+            "text": "• Triển khai production cần hardening thêm."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Chưa kiểm thử tải lớn với nhiều người dùng đồng thời.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Chưa kiểm thử tải lớn với nhiều người dùng đồng thời.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Chưa có kiểm thử bảo mật chuyên sâu.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Chưa có kiểm thử bảo mật chuyên sâu.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• Automation UI chưa bao phủ toàn bộ luồng.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Automation UI chưa bao phủ toàn bộ luồng.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• Triển khai production cần hardening thêm.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Triển khai production cần hardening thêm.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pc7a58ra",
+      "id": "8",
+      "bbox": [
+        696,
+        224,
+        480,
+        270
+      ],
+      "geometry": "rect",
+      "fillColor": "#ECFDF5",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4be9cnqp",
+      "id": "9",
+      "bbox": [
+        728,
+        254,
+        300,
+        34
+      ],
+      "geometry": "rect",
+      "text": "Hướng phát triển",
+      "textPreview": "Hướng phát triển",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "color": "#16A34A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Hướng phát triển"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Hướng phát triển",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "color": "#16A34A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Hướng phát triển",
+              "fontSize": 28,
+              "color": "#16A34A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a1snilof",
+      "id": "10",
+      "bbox": [
+        728,
+        316,
+        390,
+        126
+      ],
+      "geometry": "rect",
+      "text": "• Thanh toán online và hóa đơn.\n• Ký số PDF, tích hợp HIS/LIS.\n• Telemedicine, SMS/Zalo nhắc lịch.\n• Báo cáo phân tích nâng cao và test tự động UI.",
+      "textPreview": "• Thanh toán online và hóa đơn. | • Ký số PDF, tích hợp HIS/LIS. | • Telemedicine, SMS/Zalo nhắc lịch. | • Báo cáo phân tích nâng cao và ...",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Thanh toán online và hóa đơn."
+          },
+          {
+            "index": 2,
+            "text": "• Ký số PDF, tích hợp HIS/LIS."
+          },
+          {
+            "index": 3,
+            "text": "• Telemedicine, SMS/Zalo nhắc lịch."
+          },
+          {
+            "index": 4,
+            "text": "• Báo cáo phân tích nâng cao và test tự động UI."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Thanh toán online và hóa đơn.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Thanh toán online và hóa đơn.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Ký số PDF, tích hợp HIS/LIS.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Ký số PDF, tích hợp HIS/LIS.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• Telemedicine, SMS/Zalo nhắc lịch.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Telemedicine, SMS/Zalo nhắc lịch.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• Báo cáo phân tích nâng cao và test tự động UI.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Báo cáo phân tích nâng cao và test tự động UI.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

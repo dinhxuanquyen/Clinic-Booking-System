@@ -1,0 +1,577 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/lpk1sj",
+    "id": "lpk1sj",
+    "slide": 20,
+    "layoutId": "47530b1e-3118-4e22-9533-77edda8d2f81",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "47530b1e-3118-4e22-9533-77edda8d2f81",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/po3el0vu",
+      "id": "1",
+      "bbox": [
+        72,
+        44,
+        1060,
+        86
+      ],
+      "geometry": "rect",
+      "text": "PDF giúp hệ thống có đầu ra giống tài liệu nghiệp vụ thực tế",
+      "textPreview": "PDF giúp hệ thống có đầu ra giống tài liệu nghiệp vụ thực tế",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PDF giúp hệ thống có đầu ra giống tài liệu nghiệp vụ thực tế"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PDF giúp hệ thống có đầu ra giống tài liệu nghiệp vụ thực tế",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#101827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PDF giúp hệ thống có đầu ra giống tài liệu nghiệp vụ thực tế",
+              "fontSize": 36,
+              "color": "#101827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/21cvalcj",
+      "id": "2",
+      "bbox": [
+        72,
+        126,
+        950,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Tài liệu có thể lưu trữ, in ra hoặc gửi cho bệnh nhân sau khi đặt lịch và sau khi khám.",
+      "textPreview": "Tài liệu có thể lưu trữ, in ra hoặc gửi cho bệnh nhân sau khi đặt lịch và sau khi khám.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tài liệu có thể lưu trữ, in ra hoặc gửi cho bệnh nhân sau khi đặt lịch và sau khi khám."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tài liệu có thể lưu trữ, in ra hoặc gửi cho bệnh nhân sau khi đặt lịch và sau khi khám.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tài liệu có thể lưu trữ, in ra hoặc gửi cho bệnh nhân sau khi đặt lịch và sau khi khám.",
+              "fontSize": 19,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3mlwjqd4",
+      "id": "3",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2E8F0",
+      "lineColor": "#E2E8F0",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cruxgful",
+      "id": "4",
+      "bbox": [
+        72,
+        668,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 20",
+      "textPreview": "Clinic Booking | 20",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 20"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 20",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 20",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dsnepkv6",
+      "id": "5",
+      "bbox": [
+        86,
+        180,
+        294,
+        418
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/by1svm9c",
+      "id": "6",
+      "bbox": [
+        96,
+        190,
+        274,
+        398
+      ],
+      "alt": "Phiếu đặt lịch",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "718e2300-5a8b-4072-a655-473dba95dc96",
+        "contentType": "image/png",
+        "byteLength": 136155
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqlwnad0",
+      "id": "7",
+      "bbox": [
+        96,
+        596,
+        274,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Phiếu đặt lịch",
+      "textPreview": "Phiếu đặt lịch",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Phiếu đặt lịch"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Phiếu đặt lịch",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Phiếu đặt lịch",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svad4buh",
+      "id": "8",
+      "bbox": [
+        494,
+        180,
+        294,
+        418
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/k3u98bqt",
+      "id": "9",
+      "bbox": [
+        504,
+        190,
+        274,
+        398
+      ],
+      "alt": "Phiếu khám/số thứ tự",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "b99b99ae-9d63-4b94-a329-8a34d0ba1035",
+        "contentType": "image/png",
+        "byteLength": 150094
+      }
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pwje1gzq",
+      "id": "10",
+      "bbox": [
+        504,
+        596,
+        274,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Phiếu khám/số thứ tự",
+      "textPreview": "Phiếu khám/số thứ tự",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Phiếu khám/số thứ tự"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Phiếu khám/số thứ tự",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Phiếu khám/số thứ tự",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4baxsbi5",
+      "id": "11",
+      "bbox": [
+        902,
+        180,
+        294,
+        418
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/kzmp4ja5",
+      "id": "12",
+      "bbox": [
+        912,
+        190,
+        274,
+        398
+      ],
+      "alt": "Kết quả khám",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "f3cec08c-2928-4b4d-b4f7-a599cee05826",
+        "contentType": "image/png",
+        "byteLength": 200249
+      }
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/298vq10z",
+      "id": "13",
+      "bbox": [
+        912,
+        596,
+        274,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Kết quả khám",
+      "textPreview": "Kết quả khám",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Kết quả khám"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Kết quả khám",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Kết quả khám",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

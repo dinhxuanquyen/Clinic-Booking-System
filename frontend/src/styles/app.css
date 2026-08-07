@@ -5304,6 +5304,21 @@ select:focus {
   transform: translateY(-1px);
 }
 
+.admin-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  margin-left: 8px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
 .admin-schedule-calendar-card {
   border: 1px solid #e6f2fb;
   border-radius: 20px;
@@ -12425,6 +12440,31 @@ a {
   background: #e0f7ff;
 }
 
+.schedule-exception-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.schedule-exception-status.pending {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.schedule-exception-status.approved {
+  color: #047857;
+  background: #dcfce7;
+}
+
+.schedule-exception-status.rejected {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
 .doctor-month-picker {
   max-width: 180px;
 }
@@ -12481,6 +12521,11 @@ a {
 .doctor-calendar-day.exception {
   background: #fff7ed;
   border-color: #fed7aa;
+}
+
+.doctor-calendar-day.pending {
+  background: #fffbeb;
+  border-color: #fde68a;
 }
 
 .doctor-calendar-day.muted {
@@ -33521,6 +33566,7 @@ button.doctor-record-follow-up-card:focus-visible {
 }
 
 .admin-appointments-page.doctor-appointments-page .admin-appointments-table {
+  table-layout: fixed;
   min-width: 1080px;
 }
 
@@ -33535,9 +33581,12 @@ button.doctor-record-follow-up-card:focus-visible {
 }
 
 .admin-appointments-name-cell {
-  max-width: 190px;
+  max-width: none;
   white-space: normal;
-  word-break: break-word;
+  word-break: normal;
+  overflow-wrap: normal;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
 }
 
 .admin-appointments-status-badge {
@@ -33555,6 +33604,46 @@ button.doctor-record-follow-up-card:focus-visible {
   color: #0f2f63;
   font-size: 0.78rem;
   letter-spacing: 0.025em;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:nth-child(1),
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:nth-child(1) {
+  width: 130px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:nth-child(2),
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:nth-child(2) {
+  width: 138px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:nth-child(3),
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:nth-child(3) {
+  width: 180px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:nth-child(4),
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:nth-child(4) {
+  width: 180px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:nth-child(5),
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:nth-child(5) {
+  width: 220px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:nth-child(6),
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:nth-child(6) {
+  width: 150px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:nth-child(7),
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:nth-child(7) {
+  width: 170px;
+}
+
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:nth-child(8),
+.admin-appointments-page.doctor-appointments-page .admin-appointments-table tbody td:nth-child(8) {
+  width: 150px;
 }
 
 .admin-appointments-page.doctor-appointments-page .admin-appointments-table thead th:first-child {

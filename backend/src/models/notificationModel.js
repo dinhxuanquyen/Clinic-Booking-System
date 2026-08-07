@@ -60,6 +60,8 @@ const notificationSchema = new mongoose.Schema(
         'doctor_waiting_list_accepted',
         'doctor_appointment_action',
         'schedule_exception_affected',
+        'schedule_exception_request',
+        'schedule_exception_reviewed',
         'medical_record_created',
         'medical_record_updated',
         'follow_up_recommended',

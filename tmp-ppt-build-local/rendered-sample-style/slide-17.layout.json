@@ -1,0 +1,931 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/bc7eo6",
+    "id": "bc7eo6",
+    "slide": 17,
+    "layoutId": "5459c5e6-8344-4440-81eb-553ff20911d3",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "bca5aa0d-945f-469e-84de-e20b1270b8ee",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "5459c5e6-8344-4440-81eb-553ff20911d3",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "bca5aa0d-945f-469e-84de-e20b1270b8ee",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "bca5aa0d-945f-469e-84de-e20b1270b8ee",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbmx83q1",
+      "id": "1",
+      "bbox": [
+        28,
+        28,
+        6,
+        110
+      ],
+      "geometry": "rect",
+      "fillColor": "#273F80",
+      "lineColor": "#273F80",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vadwzypw",
+      "id": "2",
+      "bbox": [
+        28,
+        28,
+        390,
+        6
+      ],
+      "geometry": "rect",
+      "fillColor": "#273F80",
+      "lineColor": "#273F80",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u94f6d8b",
+      "id": "3",
+      "bbox": [
+        28,
+        132,
+        390,
+        6
+      ],
+      "geometry": "rect",
+      "fillColor": "#273F80",
+      "lineColor": "#273F80",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t8vex87q",
+      "id": "4",
+      "bbox": [
+        46,
+        34,
+        760,
+        72
+      ],
+      "geometry": "rect",
+      "text": "PDF, thông báo và AI",
+      "textPreview": "PDF, thông báo và AI",
+      "resolvedFontSize": 46,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 46,
+        "typeface": "+mn-lt",
+        "color": "#273F80",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PDF, thông báo và AI"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PDF, thông báo và AI",
+          "resolvedTextStyle": {
+            "fontSize": 46,
+            "color": "#273F80",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PDF, thông báo và AI",
+              "fontSize": 46,
+              "color": "#273F80",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/54vudgnm",
+      "id": "5",
+      "bbox": [
+        1100,
+        22,
+        150,
+        58
+      ],
+      "alt": "Phenikaa University",
+      "contentType": "image/jpeg",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "461582ca-8cf9-40a6-a140-5079a6cfe27d",
+        "contentType": "image/jpeg",
+        "byteLength": 29074
+      }
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/76twvypk",
+      "id": "6",
+      "bbox": [
+        0,
+        660,
+        1280,
+        60
+      ],
+      "geometry": "rect",
+      "fillColor": "#273F80",
+      "lineColor": "#273F80",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65kf2t8z",
+      "id": "7",
+      "bbox": [
+        0,
+        651,
+        1280,
+        9
+      ],
+      "geometry": "rect",
+      "fillColor": "#F36A1B",
+      "lineColor": "#F36A1B",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d4fy9s7u",
+      "id": "8",
+      "bbox": [
+        88,
+        668,
+        120,
+        20
+      ],
+      "geometry": "rect",
+      "text": "07/2026",
+      "textPreview": "07/2026",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "07/2026"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "07/2026",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#FFFFFF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "07/2026",
+              "fontSize": 14,
+              "color": "#FFFFFF",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s36xgn69",
+      "id": "9",
+      "bbox": [
+        520,
+        668,
+        260,
+        20
+      ],
+      "geometry": "rect",
+      "text": "Phenikaa School of Computing",
+      "textPreview": "Phenikaa School of Computing",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Phenikaa School of Computing"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Phenikaa School of Computing",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#FFFFFF",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Phenikaa School of Computing",
+              "fontSize": 14,
+              "color": "#FFFFFF",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6to7y183",
+      "id": "10",
+      "bbox": [
+        1214,
+        666,
+        28,
+        22
+      ],
+      "geometry": "rect",
+      "text": "16",
+      "textPreview": "16",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "16"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "16",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#FFFFFF",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "16",
+              "fontSize": 16,
+              "color": "#FFFFFF",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7ux8r69o",
+      "id": "11",
+      "bbox": [
+        68,
+        200,
+        280,
+        390
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D8DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/nu5onqto",
+      "id": "12",
+      "bbox": [
+        78,
+        210,
+        260,
+        370
+      ],
+      "alt": "Phiếu đặt lịch",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "f196cac0-1637-4554-b21d-d7ea75f05aa9",
+        "contentType": "image/png",
+        "byteLength": 136155
+      }
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twzqtgru",
+      "id": "13",
+      "bbox": [
+        78,
+        586,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Phiếu đặt lịch",
+      "textPreview": "Phiếu đặt lịch",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#4B5563",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Phiếu đặt lịch"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Phiếu đặt lịch",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#4B5563",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Phiếu đặt lịch",
+              "fontSize": 14,
+              "color": "#4B5563",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y5o7u187",
+      "id": "14",
+      "bbox": [
+        328,
+        200,
+        280,
+        390
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D8DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/czypkval",
+      "id": "15",
+      "bbox": [
+        338,
+        210,
+        260,
+        370
+      ],
+      "alt": "Phiếu khám",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "600c60b3-971c-47b0-8e76-1607c7021af2",
+        "contentType": "image/png",
+        "byteLength": 150094
+      }
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kr6pwrqx",
+      "id": "16",
+      "bbox": [
+        338,
+        586,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Phiếu khám",
+      "textPreview": "Phiếu khám",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#4B5563",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Phiếu khám"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Phiếu khám",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#4B5563",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Phiếu khám",
+              "fontSize": 14,
+              "color": "#4B5563",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lsf6pwri",
+      "id": "17",
+      "bbox": [
+        588,
+        200,
+        280,
+        390
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D8DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/d436hwbm",
+      "id": "18",
+      "bbox": [
+        598,
+        210,
+        260,
+        370
+      ],
+      "alt": "Kết quả khám",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "d0114637-42b0-4d4c-b8e0-9d8a1353eaf2",
+        "contentType": "image/png",
+        "byteLength": 200249
+      }
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/32h8zq9w",
+      "id": "19",
+      "bbox": [
+        598,
+        586,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Kết quả khám",
+      "textPreview": "Kết quả khám",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#4B5563",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Kết quả khám"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Kết quả khám",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#4B5563",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Kết quả khám",
+              "fontSize": 14,
+              "color": "#4B5563",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z6t4rip8",
+      "id": "20",
+      "bbox": [
+        848,
+        200,
+        364,
+        198
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D8DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 21,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/5876xgji",
+      "id": "21",
+      "bbox": [
+        858,
+        210,
+        344,
+        178
+      ],
+      "alt": "Thông báo realtime",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "0aea6f52-09ce-48ee-8b1d-f85f4c25d75d",
+        "contentType": "image/png",
+        "byteLength": 1576179
+      }
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18bmts7e",
+      "id": "22",
+      "bbox": [
+        858,
+        394,
+        344,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Thông báo realtime",
+      "textPreview": "Thông báo realtime",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#4B5563",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Thông báo realtime"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Thông báo realtime",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#4B5563",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Thông báo realtime",
+              "fontSize": 14,
+              "color": "#4B5563",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/07250n6t",
+      "id": "23",
+      "bbox": [
+        848,
+        392,
+        364,
+        198
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D8DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 24,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/sbipsbi9",
+      "id": "24",
+      "bbox": [
+        858,
+        402,
+        344,
+        178
+      ],
+      "alt": "AI tư vấn triệu chứng",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "afa88ec1-0d71-4a3b-af3e-66fd25d9ff06",
+        "contentType": "image/png",
+        "byteLength": 426779
+      }
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m9kn2xoz",
+      "id": "25",
+      "bbox": [
+        858,
+        586,
+        344,
+        24
+      ],
+      "geometry": "rect",
+      "text": "AI tư vấn triệu chứng",
+      "textPreview": "AI tư vấn triệu chứng",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#4B5563",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "AI tư vấn triệu chứng"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "AI tư vấn triệu chứng",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#4B5563",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "AI tư vấn triệu chứng",
+              "fontSize": 14,
+              "color": "#4B5563",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

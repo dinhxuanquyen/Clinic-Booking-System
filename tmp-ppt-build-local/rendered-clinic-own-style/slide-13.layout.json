@@ -1,0 +1,761 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/1zx7dn",
+    "id": "1zx7dn",
+    "slide": 13,
+    "layoutId": "3016dc0c-12a9-4837-9c37-55c9fac66953",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "73075815-98e1-4f2b-936f-29b966bda216",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "3016dc0c-12a9-4837-9c37-55c9fac66953",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "73075815-98e1-4f2b-936f-29b966bda216",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "73075815-98e1-4f2b-936f-29b966bda216",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upgjmx8j",
+      "id": "1",
+      "bbox": [
+        64,
+        40,
+        220,
+        18
+      ],
+      "geometry": "rect",
+      "text": "CLINIC BOOKING",
+      "textPreview": "CLINIC BOOKING",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#00A6A6",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "CLINIC BOOKING"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "CLINIC BOOKING",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#00A6A6",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "CLINIC BOOKING",
+              "fontSize": 13,
+              "color": "#00A6A6",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcr2xcru",
+      "id": "2",
+      "bbox": [
+        64,
+        64,
+        920,
+        62
+      ],
+      "geometry": "rect",
+      "text": "Kiến trúc xử lý",
+      "textPreview": "Kiến trúc xử lý",
+      "resolvedFontSize": 46,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 46,
+        "typeface": "+mn-lt",
+        "color": "#123C69",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Kiến trúc xử lý"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Kiến trúc xử lý",
+          "resolvedTextStyle": {
+            "fontSize": 46,
+            "color": "#123C69",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Kiến trúc xử lý",
+              "fontSize": 46,
+              "color": "#123C69",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wri1o7q9",
+      "id": "3",
+      "bbox": [
+        64,
+        136,
+        300,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#00A6A6",
+      "lineColor": "#00A6A6",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7mp0r29s",
+      "id": "4",
+      "bbox": [
+        374,
+        136,
+        70,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#F9735B",
+      "lineColor": "#F9735B",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/rq5wvu10",
+      "id": "5",
+      "bbox": [
+        1100,
+        22,
+        150,
+        58
+      ],
+      "alt": "Phenikaa University",
+      "contentType": "image/jpeg",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "2522686f-4294-4283-abd3-981f26caf65a",
+        "contentType": "image/jpeg",
+        "byteLength": 29074
+      }
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9o7itcry",
+      "id": "6",
+      "bbox": [
+        0,
+        670,
+        1280,
+        50
+      ],
+      "geometry": "rect",
+      "fillColor": "#0B2742",
+      "lineColor": "#0B2742",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8ny1k7qd",
+      "id": "7",
+      "bbox": [
+        0,
+        662,
+        1280,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#00A6A6",
+      "lineColor": "#00A6A6",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ri9k3m9w",
+      "id": "8",
+      "bbox": [
+        0,
+        662,
+        180,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#F9735B",
+      "lineColor": "#F9735B",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6h0juh8b",
+      "id": "9",
+      "bbox": [
+        72,
+        682,
+        170,
+        20
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking",
+      "textPreview": "Clinic Booking",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking",
+              "fontSize": 14,
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ozipkv6p",
+      "id": "10",
+      "bbox": [
+        505,
+        682,
+        270,
+        20
+      ],
+      "geometry": "rect",
+      "text": "Đồ án tốt nghiệp - 08/2026",
+      "textPreview": "Đồ án tốt nghiệp - 08/2026",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Đồ án tốt nghiệp - 08/2026"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Đồ án tốt nghiệp - 08/2026",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#FFFFFF",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Đồ án tốt nghiệp - 08/2026",
+              "fontSize": 14,
+              "color": "#FFFFFF",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/90r6d0na",
+      "id": "11",
+      "bbox": [
+        1214,
+        680,
+        28,
+        22
+      ],
+      "geometry": "rect",
+      "text": "13",
+      "textPreview": "13",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "13"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "13",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#FFFFFF",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "13",
+              "fontSize": 16,
+              "color": "#FFFFFF",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2x07iloj",
+      "id": "12",
+      "bbox": [
+        60,
+        194,
+        542,
+        368
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D8DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/s7ex4zal",
+      "id": "13",
+      "bbox": [
+        70,
+        204,
+        522,
+        348
+      ],
+      "alt": "Kiến trúc xử lý API",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "01635945-d8b0-416c-841b-e47688a8323c",
+        "contentType": "image/png",
+        "byteLength": 63707
+      }
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0bipgb6t",
+      "id": "14",
+      "bbox": [
+        70,
+        558,
+        522,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Kiến trúc xử lý API",
+      "textPreview": "Kiến trúc xử lý API",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#4B5563",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Kiến trúc xử lý API"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Kiến trúc xử lý API",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#4B5563",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Kiến trúc xử lý API",
+              "fontSize": 14,
+              "color": "#4B5563",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cr69gne",
+      "id": "15",
+      "bbox": [
+        652,
+        220,
+        468,
+        284
+      ],
+      "geometry": "rect",
+      "fillColor": "#F7FAFC",
+      "lineColor": "#D8DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e907elon",
+      "id": "16",
+      "bbox": [
+        686,
+        256,
+        400,
+        178
+      ],
+      "geometry": "rect",
+      "text": "• Frontend gọi API và nhận cập nhật realtime qua Socket.IO.\n• Backend chia lớp route, middleware, controller, service, model.\n• Service xử lý slot, trạng thái lịch, hồ sơ, PDF, email và thông báo.\n• Kiến trúc này giúp luồng nghiệp vụ kiểm soát được theo từng bước.",
+      "textPreview": "• Frontend gọi API và nhận cập nhật realtime qua Socket.IO. | • Backend chia lớp route, middleware, controller, service, model. | • Servi...",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#1F2937",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 8,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Frontend gọi API và nhận cập nhật realtime qua"
+          },
+          {
+            "index": 2,
+            "text": "Socket.IO."
+          },
+          {
+            "index": 3,
+            "text": "• Backend chia lớp route, middleware, controller,"
+          },
+          {
+            "index": 4,
+            "text": "service, model."
+          },
+          {
+            "index": 5,
+            "text": "• Service xử lý slot, trạng thái lịch, hồ sơ, PDF, email và"
+          },
+          {
+            "index": 6,
+            "text": "thông báo."
+          },
+          {
+            "index": 7,
+            "text": "• Kiến trúc này giúp luồng nghiệp vụ kiểm soát được"
+          },
+          {
+            "index": 8,
+            "text": "theo từng bước."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Frontend gọi API và nhận cập nhật realtime qua Socket.IO.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#1F2937",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Frontend gọi API và nhận cập nhật realtime qua Socket.IO.",
+              "fontSize": 18,
+              "color": "#1F2937",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Backend chia lớp route, middleware, controller, service, model.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#1F2937",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Backend chia lớp route, middleware, controller, service, model.",
+              "fontSize": 18,
+              "color": "#1F2937",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• Service xử lý slot, trạng thái lịch, hồ sơ, PDF, email và thông báo.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#1F2937",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Service xử lý slot, trạng thái lịch, hồ sơ, PDF, email và thông báo.",
+              "fontSize": 18,
+              "color": "#1F2937",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• Kiến trúc này giúp luồng nghiệp vụ kiểm soát được theo từng bước.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#1F2937",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Kiến trúc này giúp luồng nghiệp vụ kiểm soát được theo từng bước.",
+              "fontSize": 18,
+              "color": "#1F2937",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

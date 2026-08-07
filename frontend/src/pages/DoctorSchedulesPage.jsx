@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../api/client.js';
 import BaseModal from '../components/BaseModal.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -13,6 +14,15 @@ const exceptionLabels = {
   custom_hours: 'Đổi ca',
   overtime: 'Tăng ca'
 };
+const exceptionStatusLabels = {
+  pending: 'Chờ duyệt',
+  approved: 'Đã duyệt',
+  rejected: 'Từ chối'
+};
+
+function getExceptionStatus(item) {
+  return item.approvalStatus || 'approved';
+}
 
 const defaultExceptionForm = {
   date: getVietnamToday(),
@@ -168,6 +178,7 @@ function monthDays(dateString) {
 export default function DoctorSchedulesPage() {
   const { user } = useAuth();
   const toast = useToast();
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('template');
   const [template, setTemplate] = useState([]);
   const [exceptions, setExceptions] = useState([]);
@@ -230,6 +241,12 @@ export default function DoctorSchedulesPage() {
   useEffect(() => {
     loadData();
   }, [user?.doctorId]);
+
+  useEffect(() => {
+    if (searchParams.get('tab') === 'exceptions') {
+      setActiveTab('exceptions');
+    }
+  }, [searchParams]);
 
   function addTemplateShift(dayOfWeek, presetShift = null) {
     setTemplate((current) => {
@@ -343,7 +360,7 @@ export default function DoctorSchedulesPage() {
           slotDuration: Number(exceptionForm.slotDuration || 30)
         })
       });
-      toast.success(editingException ? 'Đã cập nhật ngoại lệ lịch' : 'Đã tạo ngoại lệ lịch');
+      toast.success(editingException ? 'Đã gửi cập nhật ngoại lệ chờ admin duyệt' : 'Đã gửi yêu cầu ngoại lệ chờ admin duyệt');
       setExceptionModalOpen(false);
       loadData();
     } catch (error) {
@@ -511,7 +528,7 @@ export default function DoctorSchedulesPage() {
             <div className="table-responsive doctor-schedule-exception-table">
               <table className="table table-hover align-middle admin-table">
                 <thead>
-                  <tr><th>Ngày</th><th>Loại</th><th>Giờ</th><th>Lý do</th><th /></tr>
+                  <tr><th>Ngày</th><th>Loại</th><th>Giờ</th><th>Trạng thái</th><th>Lý do</th><th /></tr>
                 </thead>
                 <tbody>
                   {exceptions.map((item) => (
@@ -519,6 +536,12 @@ export default function DoctorSchedulesPage() {
                       <td className="fw-semibold">{item.date}</td>
                       <td><span className={`schedule-exception-badge ${item.type}`}>{exceptionLabels[item.type]}</span></td>
                       <td>{item.type === 'day_off' ? 'Nghỉ' : `${item.startTime} - ${item.endTime}`}</td>
+                      <td>
+                        <span className={`schedule-exception-status ${getExceptionStatus(item)}`}>
+                          {exceptionStatusLabels[getExceptionStatus(item)]}
+                        </span>
+                        {item.reviewNote && <small className="d-block text-muted mt-1">{item.reviewNote}</small>}
+                      </td>
                       <td>{item.reason || 'Không có ghi chú'}</td>
                       <td className="text-end">
                         <button className="btn btn-sm btn-outline-primary me-2" type="button" onClick={() => openEditException(item)}>Sửa</button>
@@ -550,13 +573,23 @@ export default function DoctorSchedulesPage() {
               if (!date) return <span className="doctor-calendar-day muted" key={`empty-${index}`} />;
               const day = new Date(`${date}T00:00:00`).getDay();
               const exception = exceptionByDate.get(date);
+              const exceptionStatus = exception ? getExceptionStatus(exception) : '';
+              const approvedException = exceptionStatus === 'approved' ? exception : null;
               const hasTemplate = (templateByDay.get(day) || []).some((item) => item.isWorking);
-              const className = exception?.type === 'day_off' ? 'off' : exception ? 'exception' : hasTemplate ? 'working' : '';
+              const className = approvedException?.type === 'day_off'
+                ? 'off'
+                : approvedException
+                  ? 'exception'
+                  : exceptionStatus === 'pending'
+                    ? 'pending'
+                    : hasTemplate
+                      ? 'working'
+                      : '';
 
               return (
                 <button className={`doctor-calendar-day ${className}`} key={date} type="button" onClick={() => openCreateException(date)}>
                   <span>{Number(date.slice(-2))}</span>
-                  <small>{exception ? exceptionLabels[exception.type] : hasTemplate ? 'Có lịch' : 'Trống'}</small>
+                  <small>{approvedException ? exceptionLabels[approvedException.type] : exceptionStatus === 'pending' ? 'Chờ duyệt' : hasTemplate ? 'Có lịch' : 'Trống'}</small>
                 </button>
               );
             })}

@@ -1,0 +1,820 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/pgsxjp",
+    "id": "pgsxjp",
+    "slide": 19,
+    "layoutId": "5459c5e6-8344-4440-81eb-553ff20911d3",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "bca5aa0d-945f-469e-84de-e20b1270b8ee",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "5459c5e6-8344-4440-81eb-553ff20911d3",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "bca5aa0d-945f-469e-84de-e20b1270b8ee",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "bca5aa0d-945f-469e-84de-e20b1270b8ee",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61wjuhcz",
+      "id": "1",
+      "bbox": [
+        28,
+        28,
+        6,
+        110
+      ],
+      "geometry": "rect",
+      "fillColor": "#273F80",
+      "lineColor": "#273F80",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t4725wba",
+      "id": "2",
+      "bbox": [
+        28,
+        28,
+        430,
+        6
+      ],
+      "geometry": "rect",
+      "fillColor": "#273F80",
+      "lineColor": "#273F80",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s3y1wrap",
+      "id": "3",
+      "bbox": [
+        28,
+        132,
+        430,
+        6
+      ],
+      "geometry": "rect",
+      "fillColor": "#273F80",
+      "lineColor": "#273F80",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jy5kzmt8",
+      "id": "4",
+      "bbox": [
+        46,
+        34,
+        760,
+        72
+      ],
+      "geometry": "rect",
+      "text": "Đóng góp và hướng phát triển",
+      "textPreview": "Đóng góp và hướng phát triển",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "+mn-lt",
+        "color": "#273F80",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Đóng góp và hướng phát triển"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Đóng góp và hướng phát triển",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "color": "#273F80",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Đóng góp và hướng phát triển",
+              "fontSize": 40,
+              "color": "#273F80",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/vyd4vixo",
+      "id": "5",
+      "bbox": [
+        1100,
+        22,
+        150,
+        58
+      ],
+      "alt": "Phenikaa University",
+      "contentType": "image/jpeg",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "4e4995f5-d83f-4d71-9bbf-80539bcbeb76",
+        "contentType": "image/jpeg",
+        "byteLength": 29074
+      }
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/50n21wbe",
+      "id": "6",
+      "bbox": [
+        0,
+        660,
+        1280,
+        60
+      ],
+      "geometry": "rect",
+      "fillColor": "#273F80",
+      "lineColor": "#273F80",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4ze1srut",
+      "id": "7",
+      "bbox": [
+        0,
+        651,
+        1280,
+        9
+      ],
+      "geometry": "rect",
+      "fillColor": "#F36A1B",
+      "lineColor": "#F36A1B",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vul0v2tc",
+      "id": "8",
+      "bbox": [
+        88,
+        668,
+        120,
+        20
+      ],
+      "geometry": "rect",
+      "text": "07/2026",
+      "textPreview": "07/2026",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "07/2026"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "07/2026",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#FFFFFF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "07/2026",
+              "fontSize": 14,
+              "color": "#FFFFFF",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9cjmxcr",
+      "id": "9",
+      "bbox": [
+        520,
+        668,
+        260,
+        20
+      ],
+      "geometry": "rect",
+      "text": "Phenikaa School of Computing",
+      "textPreview": "Phenikaa School of Computing",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Phenikaa School of Computing"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Phenikaa School of Computing",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#FFFFFF",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Phenikaa School of Computing",
+              "fontSize": 14,
+              "color": "#FFFFFF",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0bm14761",
+      "id": "10",
+      "bbox": [
+        1214,
+        666,
+        28,
+        22
+      ],
+      "geometry": "rect",
+      "text": "18",
+      "textPreview": "18",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#FFFFFF",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "18"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "18",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#FFFFFF",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "18",
+              "fontSize": 16,
+              "color": "#FFFFFF",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cvixcnm",
+      "id": "11",
+      "bbox": [
+        96,
+        220,
+        500,
+        300
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#EEF5FF",
+      "lineColor": "#B9C8E6",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e94z2hob",
+      "id": "12",
+      "bbox": [
+        114,
+        238,
+        464,
+        30
+      ],
+      "geometry": "rect",
+      "text": "Đóng góp",
+      "textPreview": "Đóng góp",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#273F80",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Đóng góp"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Đóng góp",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#273F80",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Đóng góp",
+              "fontSize": 24,
+              "color": "#273F80",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fad0vm5w",
+      "id": "13",
+      "bbox": [
+        112,
+        282,
+        468,
+        224
+      ],
+      "geometry": "rect",
+      "text": "Quy trình đặt lịch - khám - hồ sơ - PDF - quản trị được nối trong một hệ thống duy nhất.\n\nHệ thống có phân quyền theo vai trò, trạng thái lịch hẹn rõ ràng, hỗ trợ realtime và có dữ liệu kiểm thử đủ để trình diễn.",
+      "textPreview": "Quy trình đặt lịch - khám - hồ sơ - PDF - quản trị được nối trong một hệ thống duy nhất. |  | Hệ thống có phân quyền theo vai trò, trạng ...",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#1F2937",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Quy trình đặt lịch - khám - hồ sơ - PDF - quản trị được nối trong"
+          },
+          {
+            "index": 2,
+            "text": "một hệ thống duy nhất."
+          },
+          {
+            "index": 3,
+            "text": ""
+          },
+          {
+            "index": 4,
+            "text": "Hệ thống có phân quyền theo vai trò, trạng thái lịch hẹn rõ ràng, hỗ"
+          },
+          {
+            "index": 5,
+            "text": "trợ realtime và có dữ liệu kiểm thử đủ để trình diễn."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Quy trình đặt lịch - khám - hồ sơ - PDF - quản trị được nối trong một hệ thống duy nhất.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#1F2937",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Quy trình đặt lịch - khám - hồ sơ - PDF - quản trị được nối trong một hệ thống duy nhất.",
+              "fontSize": 17,
+              "color": "#1F2937",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "Hệ thống có phân quyền theo vai trò, trạng thái lịch hẹn rõ ràng, hỗ trợ realtime và có dữ liệu kiểm thử đủ để trình diễn.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#1F2937",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Hệ thống có phân quyền theo vai trò, trạng thái lịch hẹn rõ ràng, hỗ trợ realtime và có dữ liệu kiểm thử đủ để trình diễn.",
+              "fontSize": 17,
+              "color": "#1F2937",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s7mh0765",
+      "id": "14",
+      "bbox": [
+        684,
+        220,
+        500,
+        300
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#ECFDF5",
+      "lineColor": "#B9C8E6",
+      "lineWidth": 1
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8vitcnq",
+      "id": "15",
+      "bbox": [
+        702,
+        238,
+        464,
+        30
+      ],
+      "geometry": "rect",
+      "text": "Hướng phát triển",
+      "textPreview": "Hướng phát triển",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#273F80",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Hướng phát triển"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Hướng phát triển",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#273F80",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Hướng phát triển",
+              "fontSize": 24,
+              "color": "#273F80",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qlkzyxoz",
+      "id": "16",
+      "bbox": [
+        700,
+        282,
+        468,
+        224
+      ],
+      "geometry": "rect",
+      "text": "Thanh toán online, ký số PDF, SMS/Zalo nhắc lịch, tích hợp HIS/LIS, kiểm thử tự động UI và theo dõi tải lớn.",
+      "textPreview": "Thanh toán online, ký số PDF, SMS/Zalo nhắc lịch, tích hợp HIS/LIS, kiểm thử tự động UI và theo dõi tải lớn.",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#1F2937",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Thanh toán online, ký số PDF, SMS/Zalo nhắc lịch, tích hợp HIS/LIS,"
+          },
+          {
+            "index": 2,
+            "text": "kiểm thử tự động UI và theo dõi tải lớn."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Thanh toán online, ký số PDF, SMS/Zalo nhắc lịch, tích hợp HIS/LIS, kiểm thử tự động UI và theo dõi tải lớn.",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#1F2937",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Thanh toán online, ký số PDF, SMS/Zalo nhắc lịch, tích hợp HIS/LIS, kiểm thử tự động UI và theo dõi tải lớn.",
+              "fontSize": 17,
+              "color": "#1F2937",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmd0r25k",
+      "id": "17",
+      "bbox": [
+        170,
+        556,
+        940,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Phần hạn chế hiện tại được ghi rõ để hội đồng thấy phạm vi và hướng phát triển của đồ án.",
+      "textPreview": "Phần hạn chế hiện tại được ghi rõ để hội đồng thấy phạm vi và hướng phát triển của đồ án.",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "color": "#273F80",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Phần hạn chế hiện tại được ghi rõ để hội đồng thấy phạm vi và hướng phát triển của đồ án."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Phần hạn chế hiện tại được ghi rõ để hội đồng thấy phạm vi và hướng phát triển của đồ án.",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#273F80",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Phần hạn chế hiện tại được ghi rõ để hội đồng thấy phạm vi và hướng phát triển của đồ án.",
+              "fontSize": 21,
+              "color": "#273F80",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

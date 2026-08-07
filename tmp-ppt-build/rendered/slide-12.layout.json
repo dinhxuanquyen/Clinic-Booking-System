@@ -1,0 +1,562 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/iki39u",
+    "id": "iki39u",
+    "slide": 12,
+    "layoutId": "f00e8f1c-99da-460d-9aeb-60e9032e97c6",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "9f7ac7bf-f594-4485-9843-46410783e06c",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f00e8f1c-99da-460d-9aeb-60e9032e97c6",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "9f7ac7bf-f594-4485-9843-46410783e06c",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "9f7ac7bf-f594-4485-9843-46410783e06c",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/k7yhs761",
+      "id": "1",
+      "bbox": [
+        72,
+        48,
+        980,
+        88
+      ],
+      "geometry": "rect",
+      "text": "Realtime và thông báo giúp các vai trò không bỏ lỡ thay đổi",
+      "textPreview": "Realtime và thông báo giúp các vai trò không bỏ lỡ thay đổi",
+      "resolvedFontSize": 38,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 38,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Realtime và thông báo giúp các vai trò không bỏ lỡ thay đổi"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Realtime và thông báo giúp các vai trò không bỏ lỡ thay đổi",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "color": "#111827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Realtime và thông báo giúp các vai trò không bỏ lỡ thay đổi",
+              "fontSize": 38,
+              "color": "#111827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z6pgj2pw",
+      "id": "2",
+      "bbox": [
+        72,
+        132,
+        820,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Thông báo được lưu trong MongoDB và phát theo user hoặc role qua Socket.IO.",
+      "textPreview": "Thông báo được lưu trong MongoDB và phát theo user hoặc role qua Socket.IO.",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Thông báo được lưu trong MongoDB và phát theo user hoặc role qua Socket.IO."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Thông báo được lưu trong MongoDB và phát theo user hoặc role qua Socket.IO.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Thông báo được lưu trong MongoDB và phát theo user hoặc role qua Socket.IO.",
+              "fontSize": 20,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y5gfqxob",
+      "id": "3",
+      "bbox": [
+        72,
+        668,
+        240,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 12",
+      "textPreview": "Clinic Booking | 12",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 12"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 12",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 12",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x47yhs7q",
+      "id": "4",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E5E7EB",
+      "lineColor": "#E5E7EB",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3exon65",
+      "id": "5",
+      "bbox": [
+        62,
+        208,
+        550,
+        306
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D6DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/mlgjax07",
+      "id": "6",
+      "bbox": [
+        72,
+        218,
+        530,
+        286
+      ],
+      "alt": "Thông báo trong ứng dụng",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "9885f056-c373-4b81-bcb8-52aedbc94ac9",
+        "contentType": "image/png",
+        "byteLength": 1576179
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a1wfmxoz",
+      "id": "7",
+      "bbox": [
+        72,
+        512,
+        530,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Thông báo trong ứng dụng",
+      "textPreview": "Thông báo trong ứng dụng",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Thông báo trong ứng dụng"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Thông báo trong ứng dụng",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Thông báo trong ứng dụng",
+              "fontSize": 15,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0rytw7u",
+      "id": "8",
+      "bbox": [
+        644,
+        208,
+        550,
+        306
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D6DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/xcr29czu",
+      "id": "9",
+      "bbox": [
+        654,
+        218,
+        530,
+        286
+      ],
+      "alt": "AI tư vấn triệu chứng",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "a2dc0f18-039d-4c01-a3f9-0a2ff82e0e49",
+        "contentType": "image/png",
+        "byteLength": 426779
+      }
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61sfyx8n",
+      "id": "10",
+      "bbox": [
+        654,
+        512,
+        530,
+        28
+      ],
+      "geometry": "rect",
+      "text": "AI tư vấn triệu chứng",
+      "textPreview": "AI tư vấn triệu chứng",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "AI tư vấn triệu chứng"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "AI tư vấn triệu chứng",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "AI tư vấn triệu chứng",
+              "fontSize": 15,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/721gri98",
+      "id": "11",
+      "bbox": [
+        106,
+        558,
+        980,
+        54
+      ],
+      "geometry": "rect",
+      "text": "• Sự kiện quan trọng: đặt lịch, xác nhận, đổi/hủy lịch, hoàn tất hồ sơ.\n• Email hỗ trợ OTP, quên mật khẩu và xác nhận lịch; lỗi phụ trợ không làm hỏng nghiệp vụ chính.",
+      "textPreview": "• Sự kiện quan trọng: đặt lịch, xác nhận, đổi/hủy lịch, hoàn tất hồ sơ. | • Email hỗ trợ OTP, quên mật khẩu và xác nhận lịch; lỗi phụ trợ...",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Sự kiện quan trọng: đặt lịch, xác nhận, đổi/hủy lịch, hoàn tất hồ sơ."
+          },
+          {
+            "index": 2,
+            "text": "• Email hỗ trợ OTP, quên mật khẩu và xác nhận lịch; lỗi phụ trợ không làm hỏng nghiệp vụ chính."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Sự kiện quan trọng: đặt lịch, xác nhận, đổi/hủy lịch, hoàn tất hồ sơ.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Sự kiện quan trọng: đặt lịch, xác nhận, đổi/hủy lịch, hoàn tất hồ sơ.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Email hỗ trợ OTP, quên mật khẩu và xác nhận lịch; lỗi phụ trợ không làm hỏng nghiệp vụ chính.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Email hỗ trợ OTP, quên mật khẩu và xác nhận lịch; lỗi phụ trợ không làm hỏng nghiệp vụ chính.",
+              "fontSize": 18,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

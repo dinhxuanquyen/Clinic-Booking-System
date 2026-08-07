@@ -1,0 +1,540 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/pxvl7o",
+    "id": "pxvl7o",
+    "slide": 13,
+    "layoutId": "47530b1e-3118-4e22-9533-77edda8d2f81",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "47530b1e-3118-4e22-9533-77edda8d2f81",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m103ydo3",
+      "id": "1",
+      "bbox": [
+        72,
+        44,
+        1060,
+        86
+      ],
+      "geometry": "rect",
+      "text": "Mô hình dữ liệu lấy Appointment làm trục của nghiệp vụ",
+      "textPreview": "Mô hình dữ liệu lấy Appointment làm trục của nghiệp vụ",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Mô hình dữ liệu lấy Appointment làm trục của nghiệp vụ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Mô hình dữ liệu lấy Appointment làm trục của nghiệp vụ",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#101827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Mô hình dữ liệu lấy Appointment làm trục của nghiệp vụ",
+              "fontSize": 36,
+              "color": "#101827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/94r2ts7e",
+      "id": "2",
+      "bbox": [
+        72,
+        126,
+        950,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Từ lịch hẹn có thể đi đến hàng đợi, hồ sơ khám, tái khám, PDF, notification và audit log.",
+      "textPreview": "Từ lịch hẹn có thể đi đến hàng đợi, hồ sơ khám, tái khám, PDF, notification và audit log.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Từ lịch hẹn có thể đi đến hàng đợi, hồ sơ khám, tái khám, PDF, notification và audit log."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Từ lịch hẹn có thể đi đến hàng đợi, hồ sơ khám, tái khám, PDF, notification và audit log.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Từ lịch hẹn có thể đi đến hàng đợi, hồ sơ khám, tái khám, PDF, notification và audit log.",
+              "fontSize": 19,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o3il0n6t",
+      "id": "3",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2E8F0",
+      "lineColor": "#E2E8F0",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b6t4vipk",
+      "id": "4",
+      "bbox": [
+        72,
+        668,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 13",
+      "textPreview": "Clinic Booking | 13",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 13"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 13",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 13",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a5k32xoz",
+      "id": "5",
+      "bbox": [
+        60,
+        196,
+        610,
+        360
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/w3alwvmt",
+      "id": "6",
+      "bbox": [
+        70,
+        206,
+        590,
+        340
+      ],
+      "alt": "Sơ đồ dữ liệu tổng quan",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "c8748738-ef82-4e29-b906-1e15d38b0951",
+        "contentType": "image/png",
+        "byteLength": 154524
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w72l4n65",
+      "id": "7",
+      "bbox": [
+        70,
+        554,
+        590,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Sơ đồ dữ liệu tổng quan",
+      "textPreview": "Sơ đồ dữ liệu tổng quan",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Sơ đồ dữ liệu tổng quan"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Sơ đồ dữ liệu tổng quan",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Sơ đồ dữ liệu tổng quan",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rapkjypg",
+      "id": "8",
+      "bbox": [
+        730,
+        224,
+        408,
+        260
+      ],
+      "geometry": "rect",
+      "fillColor": "#ECFDF5",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q9g3qtov",
+      "id": "9",
+      "bbox": [
+        762,
+        260,
+        344,
+        158
+      ],
+      "geometry": "rect",
+      "text": "• User liên kết Appointment, Notification, MedicalRecord, DoctorReview.\n• Clinic, Specialty, Doctor phân loại lịch và dữ liệu khám.\n• Appointment sinh MedicalRecord và có thể mở WaitingList.\n• Unique index chặn trùng slot theo clinic, doctor, date, timeSlot.",
+      "textPreview": "• User liên kết Appointment, Notification, MedicalRecord, DoctorReview. | • Clinic, Specialty, Doctor phân loại lịch và dữ liệu khám. | •...",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 8,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• User liên kết Appointment, Notification,"
+          },
+          {
+            "index": 2,
+            "text": "MedicalRecord, DoctorReview."
+          },
+          {
+            "index": 3,
+            "text": "• Clinic, Specialty, Doctor phân loại lịch và dữ"
+          },
+          {
+            "index": 4,
+            "text": "liệu khám."
+          },
+          {
+            "index": 5,
+            "text": "• Appointment sinh MedicalRecord và có thể"
+          },
+          {
+            "index": 6,
+            "text": "mở WaitingList."
+          },
+          {
+            "index": 7,
+            "text": "• Unique index chặn trùng slot theo clinic,"
+          },
+          {
+            "index": 8,
+            "text": "doctor, date, timeSlot."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• User liên kết Appointment, Notification, MedicalRecord, DoctorReview.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• User liên kết Appointment, Notification, MedicalRecord, DoctorReview.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Clinic, Specialty, Doctor phân loại lịch và dữ liệu khám.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Clinic, Specialty, Doctor phân loại lịch và dữ liệu khám.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• Appointment sinh MedicalRecord và có thể mở WaitingList.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Appointment sinh MedicalRecord và có thể mở WaitingList.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• Unique index chặn trùng slot theo clinic, doctor, date, timeSlot.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Unique index chặn trùng slot theo clinic, doctor, date, timeSlot.",
+              "fontSize": 18,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

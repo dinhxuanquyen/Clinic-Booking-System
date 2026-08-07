@@ -1,0 +1,540 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/jrpasx",
+    "id": "jrpasx",
+    "slide": 15,
+    "layoutId": "47530b1e-3118-4e22-9533-77edda8d2f81",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "47530b1e-3118-4e22-9533-77edda8d2f81",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3353b39b-d260-4a8b-820a-dd4f6a7af844",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9wfm1k7",
+      "id": "1",
+      "bbox": [
+        72,
+        44,
+        1060,
+        86
+      ],
+      "geometry": "rect",
+      "text": "Luồng đặt lịch đi qua kiểm tra slot, quyền và dữ liệu đầu vào",
+      "textPreview": "Luồng đặt lịch đi qua kiểm tra slot, quyền và dữ liệu đầu vào",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Luồng đặt lịch đi qua kiểm tra slot, quyền và dữ liệu đầu vào"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Luồng đặt lịch đi qua kiểm tra slot, quyền và dữ liệu đầu vào",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#101827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Luồng đặt lịch đi qua kiểm tra slot, quyền và dữ liệu đầu vào",
+              "fontSize": 36,
+              "color": "#101827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hw7ehgjy",
+      "id": "2",
+      "bbox": [
+        72,
+        126,
+        950,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Điểm quan trọng là backend mới là nơi quyết định slot có hợp lệ và có bị trùng hay không.",
+      "textPreview": "Điểm quan trọng là backend mới là nơi quyết định slot có hợp lệ và có bị trùng hay không.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Điểm quan trọng là backend mới là nơi quyết định slot có hợp lệ và có bị trùng hay không."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Điểm quan trọng là backend mới là nơi quyết định slot có hợp lệ và có bị trùng hay không.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Điểm quan trọng là backend mới là nơi quyết định slot có hợp lệ và có bị trùng hay không.",
+              "fontSize": 19,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbyxob2d",
+      "id": "3",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E2E8F0",
+      "lineColor": "#E2E8F0",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/765wb61w",
+      "id": "4",
+      "bbox": [
+        72,
+        668,
+        260,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 15",
+      "textPreview": "Clinic Booking | 15",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 15"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 15",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 15",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wfi1kb",
+      "id": "5",
+      "bbox": [
+        58,
+        206,
+        580,
+        334
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/wzup8val",
+      "id": "6",
+      "bbox": [
+        68,
+        216,
+        560,
+        314
+      ],
+      "alt": "Luồng API đặt lịch",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "aa46cfc9-cd5a-438b-ae0a-2907154e6594",
+        "contentType": "image/png",
+        "byteLength": 145943
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87exkr2h",
+      "id": "7",
+      "bbox": [
+        68,
+        538,
+        560,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Luồng API đặt lịch",
+      "textPreview": "Luồng API đặt lịch",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 14,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Luồng API đặt lịch"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Luồng API đặt lịch",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Luồng API đặt lịch",
+              "fontSize": 14,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2lw7m1k",
+      "id": "8",
+      "bbox": [
+        704,
+        226,
+        420,
+        254
+      ],
+      "geometry": "rect",
+      "fillColor": "#EAF6FB",
+      "lineColor": "#D7DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y1cvehkz",
+      "id": "9",
+      "bbox": [
+        736,
+        260,
+        354,
+        150
+      ],
+      "geometry": "rect",
+      "text": "• Patient chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot.\n• Backend kiểm tra lịch làm việc, trạng thái giữ slot và unique index.\n• Tạo appointment ở trạng thái ban đầu phù hợp.\n• Gửi notification/email cho các bên liên quan.",
+      "textPreview": "• Patient chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot. | • Backend kiểm tra lịch làm việc, trạng thái giữ slot và unique index. | • Tạo...",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#101827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 8,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Patient chọn cơ sở, chuyên khoa, bác sĩ,"
+          },
+          {
+            "index": 2,
+            "text": "ngày và slot."
+          },
+          {
+            "index": 3,
+            "text": "• Backend kiểm tra lịch làm việc, trạng thái"
+          },
+          {
+            "index": 4,
+            "text": "giữ slot và unique index."
+          },
+          {
+            "index": 5,
+            "text": "• Tạo appointment ở trạng thái ban đầu phù"
+          },
+          {
+            "index": 6,
+            "text": "hợp."
+          },
+          {
+            "index": 7,
+            "text": "• Gửi notification/email cho các bên liên"
+          },
+          {
+            "index": 8,
+            "text": "quan."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Patient chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Patient chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot.",
+              "fontSize": 19,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Backend kiểm tra lịch làm việc, trạng thái giữ slot và unique index.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Backend kiểm tra lịch làm việc, trạng thái giữ slot và unique index.",
+              "fontSize": 19,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• Tạo appointment ở trạng thái ban đầu phù hợp.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Tạo appointment ở trạng thái ban đầu phù hợp.",
+              "fontSize": 19,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• Gửi notification/email cho các bên liên quan.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#101827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Gửi notification/email cho các bên liên quan.",
+              "fontSize": 19,
+              "color": "#101827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

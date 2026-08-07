@@ -19,6 +19,18 @@ const scheduleExceptionSchema = new mongoose.Schema(
     startTime: { type: String, default: '', trim: true },
     endTime: { type: String, default: '', trim: true },
     slotDuration: { type: Number, min: 5 },
+    approvalStatus: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: 'approved',
+      index: true
+    },
+    reviewedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    reviewedAt: { type: Date },
+    reviewNote: { type: String, default: '', trim: true },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
@@ -28,5 +40,6 @@ const scheduleExceptionSchema = new mongoose.Schema(
 );
 
 scheduleExceptionSchema.index({ doctorId: 1, date: 1, type: 1, startTime: 1, endTime: 1 });
+scheduleExceptionSchema.index({ approvalStatus: 1, date: -1 });
 
 export default mongoose.models.ScheduleException || mongoose.model('ScheduleException', scheduleExceptionSchema);

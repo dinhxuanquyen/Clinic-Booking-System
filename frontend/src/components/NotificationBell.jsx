@@ -40,6 +40,16 @@ function formatCountdown(totalSeconds) {
 }
 
 function getAdminNotificationTarget(notification) {
+  if (notification.type === 'schedule_exception_request') {
+    return notification.targetUrl?.includes('tab=exceptions')
+      ? notification.targetUrl
+      : '/admin/schedules?tab=exceptions';
+  }
+
+  if (notification.targetUrl && !getAppointmentId(notification)) {
+    return notification.targetUrl;
+  }
+
   const appointmentId = getAppointmentId(notification);
   const params = new URLSearchParams();
 
@@ -53,6 +63,16 @@ function getAdminNotificationTarget(notification) {
 }
 
 function getDoctorNotificationTarget(notification) {
+  if (notification.type === 'schedule_exception_reviewed') {
+    return notification.targetUrl?.includes('tab=exceptions')
+      ? notification.targetUrl
+      : '/doctor/schedules?tab=exceptions';
+  }
+
+  if (notification.targetUrl && !getAppointmentId(notification)) {
+    return notification.targetUrl;
+  }
+
   const appointmentId = getAppointmentId(notification);
   return appointmentId ? `/doctor/appointments?appointmentId=${appointmentId}` : '/doctor/appointments';
 }

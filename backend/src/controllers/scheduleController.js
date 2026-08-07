@@ -64,6 +64,10 @@ function resolveSlotOccupancy(appointments) {
 
 export const scheduleIdRule = [param('id').isMongoId().withMessage('Schedule id is invalid')];
 export const scheduleExceptionIdRule = [param('id').isMongoId().withMessage('Schedule exception id is invalid')];
+export const scheduleExceptionReviewRules = [
+  param('id').isMongoId().withMessage('Schedule exception id is invalid'),
+  body('reviewNote').optional().trim()
+];
 export const availableSlotsRules = [
   param('doctorId').isMongoId().withMessage('doctorId is invalid'),
   query('date').isISO8601({ strict: true }).withMessage('date must be YYYY-MM-DD')
@@ -276,6 +280,23 @@ async function resolveDoctorForScheduleAccess(req) {
   return doctor;
 }
 
+async function resolveScheduleExceptionForUser(req) {
+  const exception = await ScheduleException.findById(req.params.id).populate({ path: 'doctorId', select: 'name clinicId specialtyId' });
+  if (!exception) {
+    throw new ApiError(404, 'Schedule exception not found');
+  }
+
+  if (req.user.role === 'doctor') {
+    const doctor = await getLinkedDoctor(req.user);
+    if (String(exception.doctorId?._id || exception.doctorId) !== String(doctor._id)) {
+      throw new ApiError(403, 'Bạn không có quyền thao tác ngoại lệ lịch của bác sĩ khác');
+    }
+    return { exception, doctor };
+  }
+
+  return { exception, doctor: exception.doctorId };
+}
+
 function slotsFromTemplates(templates) {
   return templates.flatMap((item) => (
     item.isWorking
@@ -288,7 +309,11 @@ async function buildDynamicSlots({ doctor, date }) {
   const dayOfWeek = getDayOfWeek(date);
   const [templates, exceptions, legacySchedule] = await Promise.all([
     DoctorScheduleTemplate.find({ doctorId: doctor._id, dayOfWeek }).sort({ startTime: 1 }),
-    ScheduleException.find({ doctorId: doctor._id, date }).sort({ createdAt: 1 }),
+    ScheduleException.find({
+      doctorId: doctor._id,
+      date,
+      $or: [{ approvalStatus: 'approved' }, { approvalStatus: { $exists: false } }]
+    }).sort({ createdAt: 1 }),
     Schedule.findOne({ doctorId: doctor._id, clinicId: doctor.clinicId, date })
   ]);
 
@@ -333,6 +358,45 @@ async function buildDynamicSlots({ doctor, date }) {
     hasTemplate: templates.length > 0,
     hasException: exceptions.length > 0
   };
+}
+
+async function notifyAdminScheduleExceptionRequest({ exception, doctor }) {
+  const notification = await Notification.create({
+    role: 'admin',
+    doctorId: doctor._id,
+    type: 'schedule_exception_request',
+    title: 'Yêu cầu nghỉ của bác sĩ',
+    message: `Bác sĩ ${doctor.name} gửi yêu cầu ${exception.type} ngày ${exception.date}${exception.reason ? `: ${exception.reason}` : '.'}`,
+    targetUrl: '/admin/schedules?tab=exceptions',
+    metadata: {
+      scheduleExceptionId: exception._id,
+      approvalStatus: exception.approvalStatus
+    },
+    isRead: false
+  });
+  emitNotification(notification.toObject());
+}
+
+async function notifyDoctorScheduleExceptionReviewed({ exception, doctor }) {
+  const doctorUser = await User.findOne({ role: 'doctor', doctorId: doctor._id, isActive: { $ne: false } }).select('_id');
+  if (!doctorUser) return;
+
+  const approved = exception.approvalStatus === 'approved';
+  const notification = await Notification.create({
+    userId: doctorUser._id,
+    role: 'doctor',
+    doctorId: doctor._id,
+    type: 'schedule_exception_reviewed',
+    title: approved ? 'Yêu cầu nghỉ đã được duyệt' : 'Yêu cầu nghỉ bị từ chối',
+    message: `Yêu cầu ngoại lệ lịch ngày ${exception.date} đã được ${approved ? 'duyệt' : 'từ chối'}${exception.reviewNote ? `: ${exception.reviewNote}` : '.'}`,
+    targetUrl: '/doctor/schedules?tab=exceptions',
+    metadata: {
+      scheduleExceptionId: exception._id,
+      approvalStatus: exception.approvalStatus
+    },
+    isRead: false
+  });
+  emitNotification(notification.toObject());
 }
 
 async function notifyAffectedAppointments({ doctorId, date, reason }) {
@@ -600,13 +664,18 @@ export const updateDoctorScheduleTemplate = asyncHandler(async (req, res) => {
 });
 
 export const getScheduleExceptions = asyncHandler(async (req, res) => {
-  const doctor = await resolveDoctorForScheduleAccess(req);
-  const filter = { doctorId: doctor._id };
+  const filter = {};
+  if (req.user.role === 'doctor' || req.query.doctorId) {
+    const doctor = await resolveDoctorForScheduleAccess(req);
+    filter.doctorId = doctor._id;
+  }
   if (req.query.date) filter.date = req.query.date;
+  if (req.query.status) filter.approvalStatus = req.query.status;
 
   const exceptions = await ScheduleException.find(filter)
     .populate({ path: 'doctorId', select: 'name clinicId specialtyId' })
     .populate({ path: 'createdBy', select: 'name email role' })
+    .populate({ path: 'reviewedBy', select: 'name email role' })
     .sort({ date: -1, createdAt: -1 });
 
   res.json({
@@ -618,6 +687,7 @@ export const getScheduleExceptions = asyncHandler(async (req, res) => {
 
 export const createScheduleException = asyncHandler(async (req, res) => {
   const doctor = await resolveDoctorForScheduleAccess(req);
+  const isAdmin = req.user.role === 'admin';
   const exception = await ScheduleException.create({
     doctorId: doctor._id,
     date: req.body.date,
@@ -626,14 +696,21 @@ export const createScheduleException = asyncHandler(async (req, res) => {
     startTime: req.body.startTime || '',
     endTime: req.body.endTime || '',
     slotDuration: req.body.slotDuration ? Number(req.body.slotDuration) : undefined,
+    approvalStatus: isAdmin ? 'approved' : 'pending',
+    reviewedBy: isAdmin ? req.user._id : undefined,
+    reviewedAt: isAdmin ? new Date() : undefined,
     createdBy: req.user._id
   });
 
-  await notifyAffectedAppointments({
-    doctorId: doctor._id,
-    date: exception.date,
-    reason: exception.reason || exception.type
-  });
+  if (isAdmin) {
+    await notifyAffectedAppointments({
+      doctorId: doctor._id,
+      date: exception.date,
+      reason: exception.reason || exception.type
+    });
+  } else {
+    await notifyAdminScheduleExceptionRequest({ exception, doctor });
+  }
 
   await createAuditLog({
     req,
@@ -646,6 +723,7 @@ export const createScheduleException = asyncHandler(async (req, res) => {
       doctorId: doctor._id,
       date: exception.date,
       type: exception.type,
+      approvalStatus: exception.approvalStatus,
       reason: exception.reason,
       startTime: exception.startTime,
       endTime: exception.endTime
@@ -660,11 +738,8 @@ export const createScheduleException = asyncHandler(async (req, res) => {
 });
 
 export const updateScheduleException = asyncHandler(async (req, res) => {
-  const doctor = await resolveDoctorForScheduleAccess(req);
-  const exception = await ScheduleException.findOne({ _id: req.params.id, doctorId: doctor._id });
-  if (!exception) {
-    throw new ApiError(404, 'Schedule exception not found');
-  }
+  const { exception, doctor } = await resolveScheduleExceptionForUser(req);
+  const wasApproved = exception.approvalStatus === 'approved' || !exception.approvalStatus;
 
   exception.date = req.body.date;
   exception.type = req.body.type;
@@ -672,13 +747,21 @@ export const updateScheduleException = asyncHandler(async (req, res) => {
   exception.startTime = req.body.startTime || '';
   exception.endTime = req.body.endTime || '';
   exception.slotDuration = req.body.slotDuration ? Number(req.body.slotDuration) : undefined;
+  exception.approvalStatus = req.user.role === 'admin' ? 'approved' : 'pending';
+  exception.reviewedBy = req.user.role === 'admin' ? req.user._id : undefined;
+  exception.reviewedAt = req.user.role === 'admin' ? new Date() : undefined;
+  exception.reviewNote = '';
   await exception.save();
 
-  await notifyAffectedAppointments({
-    doctorId: doctor._id,
-    date: exception.date,
-    reason: exception.reason || exception.type
-  });
+  if (exception.approvalStatus === 'approved') {
+    await notifyAffectedAppointments({
+      doctorId: doctor._id,
+      date: exception.date,
+      reason: exception.reason || exception.type
+    });
+  } else {
+    await notifyAdminScheduleExceptionRequest({ exception, doctor });
+  }
 
   await createAuditLog({
     req,
@@ -691,6 +774,8 @@ export const updateScheduleException = asyncHandler(async (req, res) => {
       doctorId: doctor._id,
       date: exception.date,
       type: exception.type,
+      approvalStatus: exception.approvalStatus,
+      wasApproved,
       reason: exception.reason,
       startTime: exception.startTime,
       endTime: exception.endTime
@@ -705,11 +790,8 @@ export const updateScheduleException = asyncHandler(async (req, res) => {
 });
 
 export const deleteScheduleException = asyncHandler(async (req, res) => {
-  const doctor = await resolveDoctorForScheduleAccess(req);
-  const exception = await ScheduleException.findOneAndDelete({ _id: req.params.id, doctorId: doctor._id });
-  if (!exception) {
-    throw new ApiError(404, 'Schedule exception not found');
-  }
+  const { exception, doctor } = await resolveScheduleExceptionForUser(req);
+  await ScheduleException.findByIdAndDelete(exception._id);
 
   await createAuditLog({
     req,
@@ -730,5 +812,84 @@ export const deleteScheduleException = asyncHandler(async (req, res) => {
     success: true,
     message: 'Schedule exception deleted successfully',
     data: null
+  });
+});
+
+export const approveScheduleException = asyncHandler(async (req, res) => {
+  const { exception, doctor } = await resolveScheduleExceptionForUser(req);
+  if (req.user.role !== 'admin') {
+    throw new ApiError(403, 'Only admin can approve schedule exceptions');
+  }
+
+  exception.approvalStatus = 'approved';
+  exception.reviewedBy = req.user._id;
+  exception.reviewedAt = new Date();
+  exception.reviewNote = req.body.reviewNote || '';
+  await exception.save();
+
+  await notifyAffectedAppointments({
+    doctorId: doctor._id,
+    date: exception.date,
+    reason: exception.reason || exception.type
+  });
+  await notifyDoctorScheduleExceptionReviewed({ exception, doctor });
+
+  await createAuditLog({
+    req,
+    action: 'APPROVE_SCHEDULE_EXCEPTION',
+    entityType: 'ScheduleException',
+    entityId: exception._id,
+    entityName: `${doctor.name} - ${exception.date}`,
+    description: `Duyệt ngoại lệ lịch nghỉ của bác sĩ ${doctor.name} ngày ${exception.date}`,
+    metadata: {
+      doctorId: doctor._id,
+      date: exception.date,
+      type: exception.type,
+      reason: exception.reason,
+      reviewNote: exception.reviewNote
+    }
+  });
+
+  res.json({
+    success: true,
+    message: 'Schedule exception approved successfully',
+    data: exception
+  });
+});
+
+export const rejectScheduleException = asyncHandler(async (req, res) => {
+  const { exception, doctor } = await resolveScheduleExceptionForUser(req);
+  if (req.user.role !== 'admin') {
+    throw new ApiError(403, 'Only admin can reject schedule exceptions');
+  }
+
+  exception.approvalStatus = 'rejected';
+  exception.reviewedBy = req.user._id;
+  exception.reviewedAt = new Date();
+  exception.reviewNote = req.body.reviewNote || '';
+  await exception.save();
+
+  await notifyDoctorScheduleExceptionReviewed({ exception, doctor });
+
+  await createAuditLog({
+    req,
+    action: 'REJECT_SCHEDULE_EXCEPTION',
+    entityType: 'ScheduleException',
+    entityId: exception._id,
+    entityName: `${doctor.name} - ${exception.date}`,
+    description: `Từ chối ngoại lệ lịch nghỉ của bác sĩ ${doctor.name} ngày ${exception.date}`,
+    metadata: {
+      doctorId: doctor._id,
+      date: exception.date,
+      type: exception.type,
+      reason: exception.reason,
+      reviewNote: exception.reviewNote
+    }
+  });
+
+  res.json({
+    success: true,
+    message: 'Schedule exception rejected successfully',
+    data: exception
   });
 });

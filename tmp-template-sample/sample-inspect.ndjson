@@ -1,0 +1,606 @@
+{"kind":"layout","layoutId":"/ppt/slideMasters/slideMaster1.xml","name":"","type":"master","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout1.xml","name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"subtitle","type":"subtitle","textPreview":"Click to edit Master subtitle style"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout2.xml","name":"Title and Content","type":"obj","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"content placeholder 2","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout3.xml","name":"Section Header","type":"secHead","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout4.xml","name":"Two Content","type":"twoObj","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"content placeholder 2","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"content placeholder 3","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout5.xml","name":"Comparison","type":"twoTxTwoObj","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"content placeholder 3","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"content placeholder 5","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout6.xml","name":"Title Only","type":"titleOnly","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout7.xml","name":"Blank","type":"blank","placeholders":[{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout8.xml","name":"Content with Caption","type":"objTx","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"content placeholder 2","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout9.xml","name":"Picture with Caption","type":"picTx","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"picture","type":"picture"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout10.xml","name":"Title and Vertical Text","type":"vertTx","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout11.xml","name":"Vertical Title and Text","type":"vertTitleAndTx","placeholders":[{"name":"title","type":"title","textPreview":"Click to edit Master title style"},{"name":"body","type":"body","textPreview":"Click to edit Master text styles | Second level | Third level | Fourth level | Fifth level"},{"name":"dateTime","type":"dateTime","textPreview":"7/6/2026"},{"name":"footer","type":"footer"},{"name":"slideNumber","type":"slideNumber","textPreview":"‹#›"}]}
+{"kind":"slide","id":"sl/y90nupkv","slide":1,"title":"Faculty of Computer Science","textShapes":7}
+{"kind":"shape","id":"sh/547294r6","slide":1,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/7qp4be9c","slide":1,"name":"Freeform 4","bbox":[-1,-3,1922,1023.5]}
+{"kind":"shape","id":"sh/ts7md4r2","slide":1,"name":"Freeform 6","bbox":[586.58,56.39,746.85,246.23]}
+{"kind":"shape","id":"sh/utg3698n","slide":1,"name":"Freeform 9","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/ul4vaxgb","slide":1,"name":"Freeform 12","bbox":[636,1029.75,648,57.5]}
+{"kind":"textbox","id":"sh/vmdcj2xw","slide":1,"name":"TextBox 13","text":"Faculty of Computer Science","textPreview":"Faculty of Computer Science","textChars":27,"textLines":1,"bbox":[636,1028.25,648,59]}
+{"kind":"shape","id":"sh/5sfepcfe","slide":1,"name":"Freeform 15","bbox":[1488,1029.75,432,57.5]}
+{"kind":"textbox","id":"sh/ipovexwn","slide":1,"name":"TextBox 16","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[1488,1028.25,432,59]}
+{"kind":"textbox","id":"sh/3qxwn2x8","slide":1,"name":"TextBox 17","text":"Hà Nội 2026","textPreview":"Hà Nội 2026","textChars":11,"textLines":1,"bbox":[856.24,930.84,207.51,43.48]}
+{"kind":"shape","id":"sh/sfqdkrep","slide":1,"name":"Rectangle 17","bbox":[0,345,1920,360]}
+{"kind":"shape","id":"sh/dgzetcfa","slide":1,"name":"Rectangle 18","bbox":[400,650,1120,95]}
+{"kind":"textbox","id":"sh/1cvuxc7e","slide":1,"name":"Rectangle 19","text":"Xây dựng hệ thống đấu giá trực tuyến\nBuy The Best","textPreview":"Xây dựng hệ thống đấu giá trực tuyến | Buy The Best","textChars":49,"textLines":2,"bbox":[180,360,1560,220]}
+{"kind":"textbox","id":"sh/0bmd476t","slide":1,"name":"Rectangle 20","text":"Sinh viên thực hiện: Mạc Đức Dũng   |   Khóa: K16   |   GVHD: Vũ Thị Ngọc Anh","textPreview":"Sinh viên thực hiện: Mạc Đức Dũng   |   Khóa: K16   |   GVHD: Vũ Thị Ngọc Anh","textChars":77,"textLines":1,"bbox":[275,650,1370,58]}
+{"kind":"shape","id":"sh/zadcv2p8","slide":1,"name":"Rectangle 21","bbox":[500,720,900,90]}
+{"kind":"textbox","id":"sh/e94v2hon","slide":1,"name":"Rectangle 22","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[780,710,360,70]}
+{"kind":"shape","id":"sh/90ve1w7q","slide":1,"name":"Rectangle 23","bbox":[540,760,840,86]}
+{"kind":"textbox","id":"sh/ozmd8r65","slide":1,"name":"Rectangle 24","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"notes","id":"nt/y90nupkv","slide":1,"text":"Em xin kính chào thầy cô. Em là Mạc Đức Dũng, hôm nay em trình bày đồ án tốt nghiệp với đề tài xây dựng hệ thống đấu giá trực tuyến Buy The Best. Trọng tâm của đồ án là xây dựng một nền tảng web có thể hỗ trợ người dùng đăng bán sản phẩm, tham gia đấu giá thời gian thực, thanh toán và quản lý giao dịch một cách rõ ràng."}
+{"kind":"slide","id":"sl/hwbqtkby","slide":2,"title":"Mở đầu","textShapes":8}
+{"kind":"shape","id":"sh/9072xkry","slide":2,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/b29kza94","slide":2,"name":"Freeform 4","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/x4r21kru","slide":2,"name":"Freeform 6","bbox":[0.86,-1.92,543.09,1020.51]}
+{"kind":"shape","id":"sh/r65knqtk","slide":2,"name":"Freeform 8","bbox":[-1.85,-1.92,543.09,1020.51]}
+{"kind":"shape","id":"sh/q5wjelsz","slide":2,"name":"Freeform 9","bbox":[491.95,176.05,102.27,102.27]}
+{"kind":"textbox","id":"sh/ove9o7yd","slide":2,"name":"TextBox 10","text":"Mở đầu ","textPreview":"Mở đầu","textChars":7,"textLines":1,"bbox":[617.52,192.63,1192.71,60]}
+{"kind":"shape","id":"sh/9wnqhczy","slide":2,"name":"Freeform 11","bbox":[492.25,327.59,102.27,102.27]}
+{"kind":"textbox","id":"sh/mtwrmxg7","slide":2,"name":"TextBox 12","text":"Mục tiêu đồ án","textPreview":"Mục tiêu đồ án","textChars":14,"textLines":1,"bbox":[617.52,344.18,1256.88,60]}
+{"kind":"shape","id":"sh/nu58f2hs","slide":2,"name":"Freeform 13","bbox":[521.48,354.95,43.61,39.33]}
+{"kind":"shape","id":"sh/wjy9sry9","slide":2,"name":"Freeform 14","bbox":[491.95,482.71,102.27,102.27]}
+{"kind":"shape","id":"sh/xk7qlczu","slide":2,"name":"Freeform 15","bbox":[522.55,513.72,48.45,41.04]}
+{"kind":"textbox","id":"sh/ahwrqhgj","slide":2,"name":"TextBox 16","text":"Phân tích thiết kế hệ thống","textPreview":"Phân tích thiết kế hệ thống","textChars":27,"textLines":1,"bbox":[618.87,497.21,1255.53,66.1]}
+{"kind":"shape","id":"sh/bip8jmho","slide":2,"name":"Freeform 17","bbox":[485.04,626.64,102.27,102.27]}
+{"kind":"textbox","id":"sh/cnupgny5","slide":2,"name":"TextBox 18","text":"Triển khai hệ thống","textPreview":"Triển khai hệ thống","textChars":19,"textLines":1,"bbox":[617.52,646.85,1256.88,60]}
+{"kind":"shape","id":"sh/do3q9szq","slide":2,"name":"Freeform 19","bbox":[520.28,661.35,34.55,42.58]}
+{"kind":"shape","id":"sh/t8byxkn2","slide":2,"name":"Freeform 20","bbox":[491.95,784,102.27,102.27]}
+{"kind":"textbox","id":"sh/s72xofmh","slide":2,"name":"TextBox 21","text":"Kết luận","textPreview":"Kết luận","textChars":8,"textLines":1,"bbox":[617.52,799.88,1219.84,66.1]}
+{"kind":"shape","id":"sh/76twva5c","slide":2,"name":"Freeform 22","bbox":[521.48,815.6,43.75,41.75]}
+{"kind":"shape","id":"sh/65kfmpor","slide":2,"name":"AutoShape 23","bbox":[631.04,150.62,1132.43,0]}
+{"kind":"shape","id":"sh/hcvy14ne","slide":2,"name":"AutoShape 24","bbox":[631.04,306.28,1132.43,0]}
+{"kind":"shape","id":"sh/gbmxszmt","slide":2,"name":"AutoShape 25","bbox":[631.04,454.4,1132.43,0]}
+{"kind":"shape","id":"sh/fadgzu58","slide":2,"name":"AutoShape 26","bbox":[631.04,608.68,1132.43,0]}
+{"kind":"shape","id":"sh/u94fqp4n","slide":2,"name":"AutoShape 27","bbox":[631.04,758.85,1132.43,0]}
+{"kind":"textbox","id":"sh/p0vy54na","slide":2,"name":"TextBox 28","text":"Nội dung","textPreview":"Nội dung","textChars":8,"textLines":1,"bbox":[101.14,38.83,346.56,99]}
+{"kind":"shape","id":"sh/4zmxwzmp","slide":2,"name":"Freeform 29","bbox":[515.39,192.55,59.75,67.44]}
+{"kind":"shape","id":"sh/nmpcj6ls","slide":2,"name":"Freeform 31","bbox":[0.86,1026.95,432,57.5]}
+{"kind":"shape","id":"sh/a9gvulkj","slide":2,"name":"Freeform 34","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/ba9cn6l4","slide":2,"name":"TextBox 35","text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"shape","id":"sh/wbidwb29","slide":2,"name":"Rectangle 35","bbox":[1106,640,600,85]}
+{"kind":"shape","id":"sh/xcrupg3u","slide":2,"name":"Rectangle 36","bbox":[1030,655,550,55]}
+{"kind":"textbox","id":"sh/id0vylkf","slide":2,"name":"Rectangle 37","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0.86,1027.45,432,59]}
+{"kind":"notes","id":"nt/hwbqtkby","slide":2,"text":"Bài trình bày gồm năm phần. Đầu tiên em nêu bối cảnh và mục tiêu đề tài. Sau đó em trình bày phân tích thiết kế, kiến trúc triển khai, một số giao diện chính, kết quả kiểm thử và cuối cùng là kết luận cùng hướng phát triển."}
+{"kind":"slide","id":"sl/ofy9wn61","slide":3,"title":"Phenikaa School of Computing","textShapes":5}
+{"kind":"shape","id":"sh/cza94vmx","slide":3,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/298ryl4v","slide":3,"name":"Freeform 4","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/3ah8rqlg","slide":3,"name":"TextBox 5","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/pcjqtg36","slide":3,"name":"Freeform 7","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/m5cra54z","slide":3,"name":"TextBox 8","text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"textbox","id":"sh/n6ls3alk","slide":3,"name":"TextBox 9","text":"Mở đầu","textPreview":"Mở đầu","textChars":6,"textLines":1,"bbox":[753.76,478.3,412.48,121.8]}
+{"kind":"shape","id":"sh/943mhgre","slide":3,"name":"Freeform 12","bbox":[106.42,426.62,438.32,219.16]}
+{"kind":"shape","id":"sh/83ulovat","slide":3,"name":"TextBox 13","bbox":[190.71,443.47,269.74,109.58]}
+{"kind":"shape","id":"sh/a5c3ql8z","slide":3,"name":"Freeform 15","bbox":[264.83,373.5,324,324]}
+{"kind":"shape","id":"sh/x8nml0ra","slide":3,"name":"TextBox 16","bbox":[295.21,396.28,263.25,270.84]}
+{"kind":"textbox","id":"sh/w7ulsvqp","slide":3,"name":"TextBox 17","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[336.15,462.75,181.37,152.25]}
+{"kind":"shape","id":"sh/i9w3u58v","slide":3,"name":"Freeform 19","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/f29gbyx0","slide":3,"name":"Freeform 21","bbox":[0,1029.75,432,57.5]}
+{"kind":"textbox","id":"sh/03ix43e5","slide":3,"name":"Rectangle 21","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"notes","id":"nt/ofy9wn61","slide":3,"text":"Phần mở đầu giúp làm rõ lý do vì sao đề tài có ý nghĩa thực tiễn. Em sẽ đi từ bối cảnh thương mại điện tử, nhu cầu đấu giá trực tuyến, sau đó thu hẹp vào mục tiêu của hệ thống Buy The Best."}
+{"kind":"slide","id":"sl/jyx0ra1s","slide":4,"title":"Phenikaa School of Computing","textShapes":5}
+{"kind":"shape","id":"sh/0ba143al","slide":4,"name":"Freeform 3","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/ql8jytsj","slide":4,"name":"Freeform 5","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/sna103ap","slide":4,"name":"Freeform 7","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/3ihk3et8","slide":4,"name":"TextBox 8","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1038.47,648,41.53]}
+{"kind":"shape","id":"sh/kbm987y5","slide":4,"name":"Freeform 10","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/5cva1cfq","slide":4,"name":"TextBox 11","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[1483.64,1038,432,44.7]}
+{"kind":"shape","id":"sh/w72947yt","slide":4,"name":"Freeform 14","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/a5kr2xg3","slide":4,"name":"Freeform 16","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/g36tgryd","slide":4,"name":"Rectangle 17","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/h4fa9wfy","slide":4,"name":"Rectangle 18","text":"Lý do chọn đề tài","textPreview":"Lý do chọn đề tài","textChars":17,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/p0batw72","slide":4,"name":"Rectangle 19","bbox":[70,195,850,600]}
+{"kind":"textbox","id":"sh/oz29krqh","slide":4,"name":"Rectangle 20","text":"• Nhiều nền tảng mua bán trực tuyến vẫn tập trung vào giá cố định.\n• Đấu giá giúp người bán đạt mức giá tối ưu và tạo trải nghiệm cạnh tranh cho người mua.\n• Bài toán có nhiều thách thức kỹ thuật: thời gian thực, đồng thời cao, thanh toán và toàn vẹn dữ liệu.\n• Hệ thống có khả năng phát triển thành sản phẩm phục vụ người dùng Việt Nam.","textPreview":"• Nhiều nền tảng mua bán trực tuyến vẫn tập trung vào giá cố định. | • Đấu giá giúp người bán đạt mức giá tối ưu và tạo trải nghiệm cạnh ...","textChars":337,"textLines":4,"bbox":[105,230,790,430]}
+{"kind":"shape","id":"sh/3ytsrmpw","slide":4,"name":"Rectangle 21","bbox":[105,690,780,44]}
+{"kind":"textbox","id":"sh/gv29g7q5","slide":4,"name":"Rectangle 24","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/w7u9kj25","slide":4,"name":"Picture 38","bbox":[1042.12,95.69,740.39,412.86]}
+{"kind":"image","id":"im/x83qdojq","slide":4,"name":"Picture 39","bbox":[1035.42,495,769.88,511.38]}
+{"kind":"notes","id":"nt/jyx0ra1s","slide":4,"text":"Trong báo cáo, em xác định vấn đề chính là các nền tảng mua bán phổ biến thường chưa khai thác tốt hình thức đấu giá. Với Buy The Best, em muốn xây dựng một hệ thống có trải nghiệm gần với sản phẩm thực tế: có phiên đang diễn ra, có chi tiết sản phẩm, có giá hiện tại, có đặt giá và có các bước sau đấu giá như thanh toán, giao hàng, khiếu nại."}
+{"kind":"slide","id":"sl/i107q5of","slide":5,"title":"Phenikaa School of Computing","textShapes":16}
+{"kind":"shape","id":"sh/dgbulwnm","slide":5,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/z2tcnm5s","slide":5,"name":"Freeform 4","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/yhkbe1o7","slide":5,"name":"TextBox 5","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/032tgr6d","slide":5,"name":"Freeform 7","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/n6dcr65o","slide":5,"name":"TextBox 8","text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"shape","id":"sh/x4vedgvm","slide":5,"name":"Freeform 11","bbox":[48.2,30.48,284.63,102.87]}
+{"kind":"shape","id":"sh/v2twb6dw","slide":5,"name":"Freeform 13","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/i54fmlc7","slide":5,"name":"Freeform 16","bbox":[240.6,288.92,542.63,542.63]}
+{"kind":"shape","id":"sh/j6dwfqds","slide":5,"name":"TextBox 17","bbox":[291.47,327.07,440.89,453.61]}
+{"kind":"shape","id":"sh/tcfel0vu","slide":5,"name":"Freeform 19","bbox":[412.36,461.68,398.23,199.11]}
+{"kind":"shape","id":"sh/hgrmpwj2","slide":5,"name":"TextBox 20","bbox":[488.94,476.99,245.06,99.56]}
+{"kind":"shape","id":"sh/fe94nm1w","slide":5,"name":"Freeform 22","bbox":[182.51,247.08,329.41,626.31]}
+{"kind":"shape","id":"sh/ud0ne10b","slide":5,"name":"TextBox 23","bbox":[182.51,239.49,329.41,633.9]}
+{"kind":"shape","id":"sh/4ji5kbid","slide":5,"name":"Freeform 25","bbox":[834.38,193.15,541.12,98.22]}
+{"kind":"shape","id":"sh/3i94r61s","slide":5,"name":"TextBox 26","bbox":[834.38,179.92,541.12,111.44]}
+{"kind":"shape","id":"sh/atcjidg7","slide":5,"name":"Freeform 30","bbox":[885.27,462.02,715.58,98.22]}
+{"kind":"shape","id":"sh/vu5kbihc","slide":5,"name":"TextBox 31","bbox":[885.27,448.79,715.58,111.44]}
+{"kind":"shape","id":"sh/ihw3mxg3","slide":5,"name":"Freeform 34","bbox":[851.12,327.37,783.87,98.22]}
+{"kind":"shape","id":"sh/ji5kf2ho","slide":5,"name":"TextBox 35","bbox":[851.12,314.14,783.87,111.44]}
+{"kind":"shape","id":"sh/e1sjatgz","slide":5,"name":"Freeform 38","bbox":[885.27,596.23,558.1,98.22]}
+{"kind":"shape","id":"sh/zmlk3yhk","slide":5,"name":"TextBox 39","bbox":[885.27,583.01,558.1,111.44]}
+{"kind":"shape","id":"sh/ehkzepsn","slide":5,"name":"Freeform 41","bbox":[851.12,730.45,498.05,98.22]}
+{"kind":"shape","id":"sh/1kvi94re","slide":5,"name":"TextBox 42","bbox":[851.12,717.22,498.05,111.44]}
+{"kind":"shape","id":"sh/povid4ra","slide":5,"name":"Freeform 46","bbox":[762.4,864.67,685.07,98.22]}
+{"kind":"shape","id":"sh/onmhkzqp","slide":5,"name":"TextBox 47","bbox":[762.4,851.44,685.07,111.44]}
+{"kind":"shape","id":"sh/bqx0fe9g","slide":5,"name":"AutoShape 48","bbox":[619.82,242.26,214.56,75.67]}
+{"kind":"shape","id":"sh/qp4jm98v","slide":5,"name":"AutoShape 49","bbox":[728.45,376.48,122.67,32.87]}
+{"kind":"shape","id":"sh/8f6hcj6t","slide":5,"name":"AutoShape 50","bbox":[773.8,511.13,111.47,13.73]}
+{"kind":"shape","id":"sh/9gfy5o7e","slide":5,"name":"AutoShape 51","bbox":[762.4,624.07,122.86,21.27]}
+{"kind":"shape","id":"sh/mdoza9o3","slide":5,"name":"AutoShape 52","bbox":[721.59,719.86,129.53,59.7]}
+{"kind":"shape","id":"sh/nexg3epo","slide":5,"name":"AutoShape 53","bbox":[635.68,791.97,126.72,121.81]}
+{"kind":"shape","id":"sh/lcfy147i","slide":5,"name":"Freeform 55","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/zqxgzupc","slide":5,"name":"Rectangle 56","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/cnmh4z61","slide":5,"name":"Rectangle 57","text":"Mục tiêu đề tài","textPreview":"Mục tiêu đề tài","textChars":15,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/dovyx476","slide":5,"name":"Rectangle 58","bbox":[160,170,1600,760]}
+{"kind":"shape","id":"sh/t8n6lwvy","slide":5,"name":"Rectangle: Rounded Corners 59","bbox":[220,235,430,170]}
+{"kind":"textbox","id":"sh/s7u5crud","slide":5,"name":"Rectangle 60","text":"Tài khoản","textPreview":"Tài khoản","textChars":9,"textLines":1,"bbox":[240,251,390,44]}
+{"kind":"textbox","id":"sh/r6lojmds","slide":5,"name":"Rectangle 61","text":"Đăng ký, xác thực email, đăng nhập và quản lý hồ sơ","textPreview":"Đăng ký, xác thực email, đăng nhập và quản lý hồ sơ","textChars":51,"textLines":1,"bbox":[244,301,382,94]}
+{"kind":"shape","id":"sh/65cnahc7","slide":5,"name":"Rectangle: Rounded Corners 62","bbox":[745,235,430,170]}
+{"kind":"textbox","id":"sh/5436hcv2","slide":5,"name":"Rectangle 63","text":"Người bán","textPreview":"Người bán","textChars":9,"textLines":1,"bbox":[765,251,390,44]}
+{"kind":"textbox","id":"sh/43u587uh","slide":5,"name":"Rectangle 64","text":"Đăng sản phẩm, tạo phiên đấu giá và xử lý đơn hàng","textPreview":"Đăng sản phẩm, tạo phiên đấu giá và xử lý đơn hàng","textChars":50,"textLines":1,"bbox":[769,301,382,94]}
+{"kind":"shape","id":"sh/j2lofmdw","slide":5,"name":"Rectangle: Rounded Corners 65","bbox":[1270,235,430,170]}
+{"kind":"textbox","id":"sh/i1cn6hcb","slide":5,"name":"Rectangle 66","text":"Người mua","textPreview":"Người mua","textChars":9,"textLines":1,"bbox":[1290,251,390,44]}
+{"kind":"textbox","id":"sh/p076tgv6","slide":5,"name":"Rectangle 67","text":"Tìm kiếm, theo dõi, đặt giá, mua ngay và thanh toán","textPreview":"Tìm kiếm, theo dõi, đặt giá, mua ngay và thanh toán","textChars":51,"textLines":1,"bbox":[1294,301,382,94]}
+{"kind":"shape","id":"sh/ozepkbul","slide":5,"name":"Rectangle: Rounded Corners 68","bbox":[220,555,430,170]}
+{"kind":"textbox","id":"sh/m583eds3","slide":5,"name":"Rectangle 69","text":"Đấu giá","textPreview":"Đấu giá","textChars":7,"textLines":1,"bbox":[240,571,390,44]}
+{"kind":"textbox","id":"sh/76hk7ito","slide":5,"name":"Rectangle 70","text":"Hỗ trợ English, Dutch, Sealed-bid và Reverse","textPreview":"Hỗ trợ English, Dutch, Sealed-bid và Reverse","textChars":44,"textLines":1,"bbox":[244,621,382,94]}
+{"kind":"shape","id":"sh/87qlgna9","slide":5,"name":"Rectangle: Rounded Corners 71","bbox":[745,555,430,170]}
+{"kind":"textbox","id":"sh/98z298bu","slide":5,"name":"Rectangle 72","text":"Tương tác","textPreview":"Tương tác","textChars":9,"textLines":1,"bbox":[765,571,390,44]}
+{"kind":"textbox","id":"sh/yho3atsr","slide":5,"name":"Rectangle 73","text":"Chat riêng, chat phòng đấu giá và thông báo realtime","textPreview":"Chat riêng, chat phòng đấu giá và thông báo realtime","textChars":52,"textLines":1,"bbox":[769,621,382,94]}
+{"kind":"shape","id":"sh/zihk3ytc","slide":5,"name":"Rectangle: Rounded Corners 74","bbox":[1270,555,430,170]}
+{"kind":"textbox","id":"sh/kjqlc3ax","slide":5,"name":"Rectangle 75","text":"Quản trị","textPreview":"Quản trị","textChars":8,"textLines":1,"bbox":[1290,571,390,44]}
+{"kind":"textbox","id":"sh/lkz258bi","slide":5,"name":"Rectangle 76","text":"Duyệt sản phẩm, quản lý người dùng, danh mục, banner và khiếu nại","textPreview":"Duyệt sản phẩm, quản lý người dùng, danh mục, banner và khiếu nại","textChars":65,"textLines":1,"bbox":[1294,621,382,94]}
+{"kind":"textbox","id":"sh/ids3mxsb","slide":5,"name":"Rectangle 77","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"notes","id":"nt/i107q5of","slide":5,"text":"Mục tiêu của đề tài không chỉ là tạo một trang hiển thị phiên đấu giá. Hệ thống phải bao phủ đủ vòng đời nghiệp vụ: người dùng đăng ký, người bán đăng sản phẩm, người mua tham gia đấu giá, sau đó tiếp tục đến thanh toán, giao hàng, đánh giá hoặc khiếu nại nếu có vấn đề. Đây là phạm vi đã được thể hiện trong phần mục tiêu và phạm vi nghiên cứu của báo cáo."}
+{"kind":"slide","id":"sl/x8f69ofe","slide":6,"title":"Phenikaa School of Computing","textShapes":5}
+{"kind":"shape","id":"sh/yhg7epsj","slide":6,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/87ipkzal","slide":6,"name":"Freeform 4","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/98rqt4r6","slide":6,"name":"TextBox 5","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/7m98ru9g","slide":6,"name":"Freeform 7","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/oryp8fah","slide":6,"name":"TextBox 8","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"textbox","id":"sh/pc76hkr2","slide":6,"name":"TextBox 9","text":"Phân tích thiết kế","textPreview":"Phân tích thiết kế","textChars":18,"textLines":1,"bbox":[690.76,482.1,1058.24,121.8]}
+{"kind":"shape","id":"sh/v2tcn650","slide":6,"name":"Freeform 12","bbox":[106.42,426.62,438.32,219.16]}
+{"kind":"shape","id":"sh/u1kbu1ov","slide":6,"name":"TextBox 13","bbox":[190.71,443.47,269.74,109.58]}
+{"kind":"shape","id":"sh/47mt0b6x","slide":6,"name":"Freeform 15","bbox":[264.83,373.5,324,324]}
+{"kind":"shape","id":"sh/j6dcr65c","slide":6,"name":"TextBox 16","bbox":[295.21,396.28,263.25,270.84]}
+{"kind":"textbox","id":"sh/i54bylor","slide":6,"name":"TextBox 17","text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[336.15,462.75,181.37,152.25]}
+{"kind":"shape","id":"sh/svmt4v6t","slide":6,"name":"Freeform 19","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/dcnm98zm","slide":6,"name":"Freeform 21","bbox":[0,1029.75,432,57.5]}
+{"kind":"textbox","id":"sh/qpwnet0b","slide":6,"name":"Rectangle 21","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"notes","id":"nt/x8f69ofe","slide":6,"text":"Sang phần phân tích thiết kế, em trình bày cách hệ thống được chia thành các tác nhân, nhóm chức năng, kiến trúc xử lý và cơ sở dữ liệu."}
+{"kind":"slide","id":"sl/gnmp4jqx","slide":7,"title":"Phenikaa School of Computing","textShapes":5}
+{"kind":"shape","id":"sh/cb2tkvap","slide":7,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/ydkbm5sv","slide":7,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/kzmdova1","slide":7,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/l0vuh0rm","slide":7,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1038.47,648,41.53]}
+{"kind":"shape","id":"sh/fi9c369c","slide":7,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/baxkjqlk","slide":7,"name":"TextBox 10","text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[1483.64,1038,432,44.7]}
+{"kind":"textbox","id":"sh/xcz2l03q","slide":7,"name":"TextBox 12","text":"Sơ đồ Use cases","textPreview":"Sơ đồ Use cases","textChars":15,"textLines":1,"bbox":[63.28,46.14,531.2,75.92]}
+{"kind":"shape","id":"sh/n6x0fqlo","slide":7,"name":"Freeform 14","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/p8fih03e","slide":7,"name":"Freeform 16","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/f2d0b6lc","slide":7,"name":"Rectangle 17","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/eh4jil4r","slide":7,"name":"Rectangle 18","text":"Use case tổng quan","textPreview":"Use case tổng quan","textChars":18,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"textbox","id":"sh/jedkn654","slide":7,"name":"Rectangle 20","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/vat4ne5o","slide":7,"name":"Picture 32","bbox":[303.38,229.92,1206.32,715.07]}
+{"kind":"notes","id":"nt/gnmp4jqx","slide":7,"text":"Use case tổng quan cho thấy bốn nhóm tác nhân chính: khách, người mua, người bán và quản trị viên. Khách có thể xem và tìm kiếm phiên, người mua tham gia đấu giá và giao dịch, người bán quản lý sản phẩm và phiên đấu giá, còn quản trị viên chịu trách nhiệm kiểm soát nội dung và xử lý các nghiệp vụ quản trị."}
+{"kind":"slide","id":"sl/fu1gfa1s","slide":8,"title":"Phenikaa School of Computing","textShapes":4}
+{"kind":"shape","id":"sh/18byd4zy","slide":8,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/ri9g7uhw","slide":8,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/tkby9kzm","slide":8,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/sjix0zy1","slide":8,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/id0fu50z","slide":8,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/o7ydoret","slide":8,"name":"TextBox 10","text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"shape","id":"sh/m5gvmhwn","slide":8,"name":"Freeform 12","bbox":[1653.9,0,266.1,87.73]}
+{"kind":"shape","id":"sh/budwj61c","slide":8,"name":"Freeform 53","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/lkvepgje","slide":8,"name":"Rectangle 54","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/yx4vu10n","slide":8,"name":"Rectangle 55","text":"Kiến trúc xử lý ba lớp","textPreview":"Kiến trúc xử lý ba lớp","textChars":22,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"textbox","id":"sh/0n2dkr2p","slide":8,"name":"Rectangle 57","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/a1s7uton","slide":8,"name":"Picture 68","bbox":[235,193.72,1450,757.57]}
+{"kind":"notes","id":"nt/fu1gfa1s","slide":8,"text":"Kiến trúc xử lý trong backend được tổ chức theo ba lớp. Presentation Layer tiếp nhận request và kiểm tra đầu vào cơ bản. Business Logic Layer xử lý nghiệp vụ như đặt giá, tạo đơn hàng, thanh toán và khiếu nại. Data Access Layer làm việc với cơ sở dữ liệu thông qua repository. Cách chia này giúp mã nguồn dễ bảo trì và giảm phụ thuộc trực tiếp giữa controller và database."}
+{"kind":"slide","id":"sl/udsvah03","slide":9,"title":"Phenikaa School of Computing","textShapes":5}
+{"kind":"shape","id":"sh/1cfmhgne","slide":9,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/nex4jq5k","slide":9,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/9gzml0nq","slide":9,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/ofq5svm5","slide":9,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/ah8nu54b","slide":9,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/oza1gfyh","slide":9,"name":"TextBox 10","text":"9","textPreview":"9","textChars":1,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"shape","id":"sh/3y107axw","slide":9,"name":"Freeform 13","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/bml0buxs","slide":9,"name":"Freeform 17","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/lsn2h4fa","slide":9,"name":"Rectangle 18","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/98ji147e","slide":9,"name":"Rectangle 19","text":"Thiết kế cơ sở dữ liệu","textPreview":"Thiết kế cơ sở dữ liệu","textChars":22,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/87a18zqt","slide":9,"name":"Rectangle 20","bbox":[70,195,360,560]}
+{"kind":"textbox","id":"sh/76h0zup8","slide":9,"name":"Rectangle 21","text":"• Cơ sở dữ liệu gồm 25 bảng chính và 39 migration files.\n• Các bảng được chia theo người dùng, sản phẩm, đấu giá, giao dịch, tương tác và quản trị.\n• Thiết kế tập trung vào quan hệ giữa sản phẩm, phiên đấu giá, lượt đặt giá, đơn hàng và thanh toán.","textPreview":"• Cơ sở dữ liệu gồm 25 bảng chính và 39 migration files. | • Các bảng được chia theo người dùng, sản phẩm, đấu giá, giao dịch, tương tác ...","textChars":248,"textLines":3,"bbox":[78,220,656.51,480]}
+{"kind":"shape","id":"sh/ml8j6p8n","slide":9,"name":"Rectangle 22","bbox":[96.4,839,60,90]}
+{"kind":"shape","id":"sh/hcji5o7a","slide":9,"name":"Rectangle 23","bbox":[395,685,60,90]}
+{"kind":"textbox","id":"sh/va103ep4","slide":9,"name":"Rectangle 25","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/xkfqd0fm","slide":9,"name":"Picture 40","bbox":[754.13,43.14,840.45,968.48]}
+{"kind":"notes","id":"nt/udsvah03","slide":9,"text":"Do hệ thống có nhiều nghiệp vụ liên kết với nhau, phần cơ sở dữ liệu được chia thành nhiều phân hệ. Trên slide là ERD của nhóm sản phẩm và đấu giá. Bảng auctions là trung tâm, liên kết với products, bids, auction participants, auto bids, watchlist và audit log. Điều này giúp hệ thống theo dõi đầy đủ diễn biến của phiên đấu giá."}
+{"kind":"slide","id":"sl/m90b6t0r","slide":10,"title":"Phenikaa School of Computing","textShapes":5}
+{"kind":"shape","id":"sh/xc3mho32","slide":10,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/zelojyl8","slide":10,"name":"Freeform 4","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/ydcnatkn","slide":10,"name":"TextBox 5","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/kzu5c32t","slide":10,"name":"Freeform 7","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/725onyl4","slide":10,"name":"TextBox 8","text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"textbox","id":"sh/m1cnetkj","slide":10,"name":"TextBox 9","text":"Triển khai hệ thống","textPreview":"Triển khai hệ thống","textChars":19,"textLines":1,"bbox":[688.54,482.1,1011.09,121.8]}
+{"kind":"shape","id":"sh/q5gb21kb","slide":10,"name":"Freeform 12","bbox":[106.42,426.62,438.32,219.16]}
+{"kind":"shape","id":"sh/r6pcv6lw","slide":10,"name":"TextBox 13","bbox":[190.71,443.47,269.74,109.58]}
+{"kind":"shape","id":"sh/1cru1g3y","slide":10,"name":"Freeform 15","bbox":[264.83,373.5,324,324]}
+{"kind":"shape","id":"sh/e9gb61k7","slide":10,"name":"TextBox 16","bbox":[295.21,396.28,263.25,270.84]}
+{"kind":"textbox","id":"sh/fapcz6ls","slide":10,"name":"TextBox 17","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[336.15,462.75,181.37,152.25]}
+{"kind":"shape","id":"sh/p0ru503u","slide":10,"name":"Freeform 19","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/wvetgbud","slide":10,"name":"Freeform 21","bbox":[1,1029.75,432,57.5]}
+{"kind":"textbox","id":"sh/bu5cnqd8","slide":10,"name":"Rectangle 21","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[1,1030.25,432,59]}
+{"kind":"notes","id":"nt/m90b6t0r","slide":10,"text":"Sau khi đã có phân tích thiết kế, phần tiếp theo trình bày cách hệ thống được cài đặt và triển khai thực tế."}
+{"kind":"slide","id":"sl/jetc3ut0","slide":11,"title":"Phenikaa School of Computing","textShapes":22}
+{"kind":"shape","id":"sh/xcryxg7y","slide":11,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/n69grmpw","slide":11,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/98rytw72","slide":11,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/o7ih0r6h","slide":11,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/61kzalof","slide":11,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/ofqtgnyt","slide":11,"name":"TextBox 10","text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"shape","id":"sh/9gza9sze","slide":11,"name":"Freeform 11","bbox":[326.77,318.86,295.64,200.3]}
+{"kind":"shape","id":"sh/mdobedg3","slide":11,"name":"Freeform 12","bbox":[731.98,357.74,266.29,149.79]}
+{"kind":"shape","id":"sh/nehs7iho","slide":11,"name":"Freeform 13","bbox":[1108.27,346.1,286.97,161.42]}
+{"kind":"shape","id":"sh/0b6tc3yx","slide":11,"name":"Freeform 14","bbox":[436.15,614.39,335.67,143.78]}
+{"kind":"shape","id":"sh/1cfa58zi","slide":11,"name":"Freeform 15","bbox":[971.85,617.22,322.25,138.11]}
+{"kind":"textbox","id":"sh/epobatgr","slide":11,"name":"TextBox 16","text":"Công nghệ sử dụng","textPreview":"Công nghệ sử dụng","textChars":17,"textLines":1,"bbox":[63.28,46.14,783.54,75.92]}
+{"kind":"shape","id":"sh/cn6t83y1","slide":11,"name":"Freeform 18","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/tsnip0ny","slide":11,"name":"Freeform 20","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/7650nq5s","slide":11,"name":"Rectangle 21","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/65wzelo7","slide":11,"name":"Rectangle 22","text":"Công nghệ sử dụng","textPreview":"Công nghệ sử dụng","textChars":17,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/l43ilgn2","slide":11,"name":"Rectangle 23","bbox":[270.77,177.01,1455,745]}
+{"kind":"shape","id":"sh/k3uhcb6h","slide":11,"name":"Rectangle: Rounded Corners 24","bbox":[245,253.51,330,150]}
+{"kind":"textbox","id":"sh/j2lgjq5w","slide":11,"name":"Rectangle 25","text":"React","textPreview":"React","textChars":5,"textLines":1,"bbox":[265,269.51,290,44]}
+{"kind":"textbox","id":"sh/y1czalob","slide":11,"name":"Rectangle 26","text":"TypeScript, Vite, Ant Design","textPreview":"TypeScript, Vite, Ant Design","textChars":28,"textLines":1,"bbox":[269,319.51,282,74]}
+{"kind":"shape","id":"sh/p07ixkn6","slide":11,"name":"Rectangle: Rounded Corners 27","bbox":[640,253.51,330,150]}
+{"kind":"textbox","id":"sh/4zyhofml","slide":11,"name":"Rectangle 28","text":"Go Fiber","textPreview":"Go Fiber","textChars":8,"textLines":1,"bbox":[660,269.51,290,44]}
+{"kind":"textbox","id":"sh/m58fih43","slide":11,"name":"Rectangle 29","text":"REST API, WebSocket, middleware","textPreview":"REST API, WebSocket, middleware","textChars":31,"textLines":1,"bbox":[664,319.51,282,74]}
+{"kind":"shape","id":"sh/n61wbmlo","slide":11,"name":"Rectangle: Rounded Corners 30","bbox":[1035,253.51,330,150]}
+{"kind":"textbox","id":"sh/o7axk7m9","slide":11,"name":"Rectangle 31","text":"MySQL","textPreview":"MySQL","textChars":5,"textLines":1,"bbox":[1055,269.51,290,44]}
+{"kind":"textbox","id":"sh/98jedc3u","slide":11,"name":"Rectangle 32","text":"Dữ liệu nghiệp vụ","textPreview":"Dữ liệu nghiệp vụ","textChars":17,"textLines":1,"bbox":[1059,319.51,282,74]}
+{"kind":"shape","id":"sh/eh8fex47","slide":11,"name":"Rectangle: Rounded Corners 33","bbox":[1430,253.51,330,150]}
+{"kind":"textbox","id":"sh/z2hw72lc","slide":11,"name":"Rectangle 34","text":"Redis","textPreview":"Redis","textChars":5,"textLines":1,"bbox":[1450,269.51,290,44]}
+{"kind":"textbox","id":"sh/03qxg7mx","slide":11,"name":"Rectangle 35","text":"Cache, phiên và giới hạn tần suất","textPreview":"Cache, phiên và giới hạn tần suất","textChars":33,"textLines":1,"bbox":[1454,319.51,282,74]}
+{"kind":"shape","id":"sh/14ze9c3i","slide":11,"name":"Rectangle: Rounded Corners 36","bbox":[245,483.51,330,150]}
+{"kind":"textbox","id":"sh/ydcfq1kb","slide":11,"name":"Rectangle 37","text":"RabbitMQ","textPreview":"RabbitMQ","textChars":8,"textLines":1,"bbox":[265,499.51,290,44]}
+{"kind":"textbox","id":"sh/jylwj6lw","slide":11,"name":"Rectangle 38","text":"Hàng đợi email và tác vụ nền","textPreview":"Hàng đợi email và tác vụ nền","textChars":28,"textLines":1,"bbox":[269,549.51,282,74]}
+{"kind":"shape","id":"sh/3qhsfypc","slide":11,"name":"Rectangle: Rounded Corners 39","bbox":[640,483.51,330,150]}
+{"kind":"textbox","id":"sh/ip8bmtor","slide":11,"name":"Rectangle 40","text":"MinIO","textPreview":"MinIO","textChars":5,"textLines":1,"bbox":[660,499.51,290,44]}
+{"kind":"textbox","id":"sh/5sjah872","slide":11,"name":"Rectangle 41","text":"Ảnh sản phẩm, banner và tệp đính kèm","textPreview":"Ảnh sản phẩm, banner và tệp đính kèm","textChars":36,"textLines":1,"bbox":[664,549.51,282,74]}
+{"kind":"shape","id":"sh/4rato36h","slide":11,"name":"Rectangle: Rounded Corners 42","bbox":[1035,483.51,330,150]}
+{"kind":"textbox","id":"sh/v2hsbyp0","slide":11,"name":"Rectangle 43","text":"VNPay","textPreview":"VNPay","textChars":5,"textLines":1,"bbox":[1055,499.51,290,44]}
+{"kind":"textbox","id":"sh/u18bit8f","slide":11,"name":"Rectangle 44","text":"Thanh toán trực tuyến","textPreview":"Thanh toán trực tuyến","textChars":21,"textLines":1,"bbox":[1059,549.51,282,74]}
+{"kind":"shape","id":"sh/h4zado76","slide":11,"name":"Rectangle: Rounded Corners 45","bbox":[1430,483.51,330,150]}
+{"kind":"textbox","id":"sh/g3qtkj6l","slide":11,"name":"Rectangle 46","text":"Docker","textPreview":"Docker","textChars":6,"textLines":1,"bbox":[1450,499.51,290,44]}
+{"kind":"textbox","id":"sh/fy1cnipk","slide":11,"name":"Rectangle 47","text":"Đóng gói và triển khai","textPreview":"Đóng gói và triển khai","textChars":22,"textLines":1,"bbox":[1454,549.51,282,74]}
+{"kind":"textbox","id":"sh/exsbudoz","slide":11,"name":"Rectangle 48","text":"Bảng công nghệ trong báo cáo được tóm tắt theo vai trò của từng thành phần trong hệ thống.","textPreview":"Bảng công nghệ trong báo cáo được tóm tắt theo vai trò của từng thành phần trong hệ thống.","textChars":90,"textLines":1,"bbox":[235,758.51,1300,70]}
+{"kind":"textbox","id":"sh/c3mpof6h","slide":11,"name":"Rectangle 49","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"notes","id":"nt/jetc3ut0","slide":11,"text":"Backend sử dụng Go và Fiber để đáp ứng tốt các thao tác realtime và nhiều request đồng thời. Frontend dùng React và TypeScript để tăng tính an toàn khi phát triển giao diện. MySQL là cơ sở dữ liệu chính, Redis hỗ trợ cache và phiên, RabbitMQ xử lý tác vụ bất đồng bộ, MinIO lưu trữ ảnh và VNPay đảm nhiệm thanh toán."}
+{"kind":"slide","id":"sl/8f2psfyx","slide":12,"title":"Phenikaa School of Computing","textShapes":5}
+{"kind":"shape","id":"sh/1gbm9s3a","slide":12,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/ra943il8","slide":12,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/dcbm583y","slide":12,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/sb2lcnmd","slide":12,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/a543mx4r","slide":12,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/wvupgz6t","slide":12,"name":"TextBox 10","text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"shape","id":"sh/atc7epon","slide":12,"name":"Freeform 12","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"textbox","id":"sh/orapcf6h","slide":12,"name":"TextBox 14","text":"Kiến trúc tổng thể","textPreview":"Kiến trúc tổng thể","textChars":18,"textLines":1,"bbox":[63.28,46.14,783.54,75.92]}
+{"kind":"shape","id":"sh/mps7a5or","slide":12,"name":"Freeform 16","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/0nap8f6l","slide":12,"name":"Rectangle 17","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/1oj61kn6","slide":12,"name":"Rectangle 18","text":"Kiến trúc triển khai","textPreview":"Kiến trúc triển khai","textChars":20,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"textbox","id":"sh/gj25cry9","slide":12,"name":"Rectangle 20","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/kfa90j6t","slide":12,"name":"Picture 32","bbox":[493.29,262.49,877.24,619.81]}
+{"kind":"notes","id":"nt/8f2psfyx","slide":12,"text":"Ở mức triển khai, hệ thống được tổ chức theo mô hình monolithic. Client giao tiếp với web application qua HTTPS, REST API và WebSocket. Các thành phần nội bộ như MySQL, Redis, RabbitMQ và MinIO được đóng gói trong Docker Compose. Các dịch vụ bên ngoài gồm Email Service, VNPay và Google OAuth."}
+{"kind":"slide","id":"sl/hgzapcr6","slide":13,"title":"Phenikaa School of Computing","textShapes":13}
+{"kind":"shape","id":"sh/q50nydsj","slide":13,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/o3i5w3ad","slide":13,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/21gnuts7","slide":13,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/32ponyts","slide":13,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/1076lobm","slide":13,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/hcfy9k3u","slide":13,"name":"TextBox 10","text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"textbox","id":"sh/876xwfmx","slide":13,"name":"TextBox 15","text":"Một số giao diện hệ thống","textPreview":"Một số giao diện hệ thống","textChars":25,"textLines":1,"bbox":[63.28,46.14,896.72,75.92]}
+{"kind":"textbox","id":"sh/7mdg3als","slide":13,"name":"TextBox 16","text":"Trang chủ","textPreview":"Trang chủ","textChars":9,"textLines":1,"bbox":[127.24,174.22,253.12,63.6]}
+{"kind":"textbox","id":"sh/6l4fu547","slide":13,"name":"TextBox 17","text":"Chuỗi học tập","textPreview":"Chuỗi học tập","textChars":13,"textLines":1,"bbox":[1042.72,149.02,324,63.6]}
+{"kind":"textbox","id":"sh/lkvy103m","slide":13,"name":"TextBox 18","text":"Thống kê học tập","textPreview":"Thống kê học tập","textChars":16,"textLines":1,"bbox":[127.24,586.26,428.47,63.6]}
+{"kind":"textbox","id":"sh/kjmxsfm1","slide":13,"name":"TextBox 19","text":"Khóa học của tôi","textPreview":"Khóa học của tôi","textChars":16,"textLines":1,"bbox":[1042.72,586.26,324,63.6]}
+{"kind":"shape","id":"sh/xozyhkbi","slide":13,"name":"Freeform 21","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/bmhgfatc","slide":13,"name":"Freeform 23","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/p0zyd0b6","slide":13,"name":"Rectangle 24","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/2xof2lcv","slide":13,"name":"Rectangle 25","text":"Giao diện người dùng","textPreview":"Giao diện người dùng","textChars":20,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/3yxgbqdg","slide":13,"name":"Rectangle 26","bbox":[110,142,650,95]}
+{"kind":"shape","id":"sh/8vahgzu5","slide":13,"name":"Rectangle 27","bbox":[1030,142,650,95]}
+{"kind":"shape","id":"sh/9wjyp4bq","slide":13,"name":"Rectangle 28","bbox":[110,575,650,80]}
+{"kind":"shape","id":"sh/jqlkfyds","slide":13,"name":"Rectangle 29","bbox":[1030,575,650,80]}
+{"kind":"textbox","id":"sh/ipcjmtw7","slide":13,"name":"Rectangle 30","text":"Trang chủ","textPreview":"Trang chủ","textChars":9,"textLines":1,"bbox":[127,170,350,50]}
+{"kind":"textbox","id":"sh/5cn2h8vy","slide":13,"name":"Rectangle 31","text":"Danh sách phiên đấu giá","textPreview":"Danh sách phiên đấu giá","textChars":23,"textLines":1,"bbox":[1042,170,600,50]}
+{"kind":"textbox","id":"sh/4re1o3ed","slide":13,"name":"Rectangle 32","text":"Chi tiết phiên đấu giá","textPreview":"Chi tiết phiên đấu giá","textChars":22,"textLines":1,"bbox":[127,590,600,50]}
+{"kind":"textbox","id":"sh/re5kjydo","slide":13,"name":"Rectangle 33","text":"Thông báo","textPreview":"Thông báo","textChars":9,"textLines":1,"bbox":[1042,590,450,50]}
+{"kind":"textbox","id":"sh/mhsje9wz","slide":13,"name":"Rectangle 38","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/poji5gju","slide":13,"name":"Picture 62","bbox":[127.24,243.62,702.04,342.24]}
+{"kind":"image","id":"im/4na1wb29","slide":13,"name":"Picture 63","bbox":[1042.72,243.62,702.04,325.57]}
+{"kind":"image","id":"im/3m10361o","slide":13,"name":"Picture 64","bbox":[127.24,675.05,702.04,325.95]}
+{"kind":"image","id":"im/2lsju1kj","slide":13,"name":"Picture 65","bbox":[1042.72,671.6,702.04,329.4]}
+{"kind":"notes","id":"nt/hgzapcr6","slide":13,"text":"Đây là một số giao diện dành cho người dùng cuối. Trang chủ giúp người dùng thấy các phiên nổi bật và danh mục. Trang danh sách hỗ trợ khám phá phiên đấu giá. Trang chi tiết hiển thị thông tin sản phẩm, trạng thái phiên, giá hiện tại và các tab hoạt động. Trang thông báo giúp người dùng theo dõi các sự kiện quan trọng."}
+{"kind":"slide","id":"sl/6lsnupw7","slide":14,"title":"Phenikaa School of Computing","textShapes":13}
+{"kind":"shape","id":"sh/xc7eds76","slide":14,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/jepwf2pc","slide":14,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/5grehs7i","slide":14,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/kfidonqx","slide":14,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/ehwvat8n","slide":14,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/c3e1gjyd","slide":14,"name":"TextBox 10","text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"textbox","id":"sh/ls7idofu","slide":14,"name":"TextBox 15","text":"Một số giao diện hệ thống","textPreview":"Một số giao diện hệ thống","textChars":25,"textLines":1,"bbox":[63.28,46.14,896.72,75.92]}
+{"kind":"textbox","id":"sh/y5wjitgj","slide":14,"name":"TextBox 16","text":"Bài học video","textPreview":"Bài học video","textChars":13,"textLines":1,"bbox":[127.24,174.22,318.61,63.6]}
+{"kind":"textbox","id":"sh/z650byxo","slide":14,"name":"TextBox 17","text":"Bài học yêu thích","textPreview":"Bài học yêu thích","textChars":17,"textLines":1,"bbox":[1042.72,149.02,324,63.6]}
+{"kind":"textbox","id":"sh/0buh8zy5","slide":14,"name":"TextBox 18","text":"Ghi chú bài học","textPreview":"Ghi chú bài học","textChars":15,"textLines":1,"bbox":[127.24,586.26,428.47,63.6]}
+{"kind":"textbox","id":"sh/1w3i14fq","slide":14,"name":"TextBox 19","text":"Làm bài thi thử","textPreview":"Làm bài thi thử","textChars":15,"textLines":1,"bbox":[1042.72,586.26,324,63.6]}
+{"kind":"shape","id":"sh/grmxwvqt","slide":14,"name":"Freeform 21","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/up4fal83","slide":14,"name":"Freeform 23","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/4vmh0vq5","slide":14,"name":"Rectangle 24","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/3udg7q9k","slide":14,"name":"Rectangle 25","text":"Giao diện nghiệp vụ","textPreview":"Giao diện nghiệp vụ","textChars":19,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/2t4fyl8z","slide":14,"name":"Rectangle 26","bbox":[110,145,650,95]}
+{"kind":"shape","id":"sh/d0fydk7m","slide":14,"name":"Rectangle 27","bbox":[1030,145,650,95]}
+{"kind":"shape","id":"sh/cz6h4fq1","slide":14,"name":"Rectangle 28","bbox":[110,575,650,80]}
+{"kind":"shape","id":"sh/atg3idk7","slide":14,"name":"Rectangle 29","bbox":[1030,575,650,80]}
+{"kind":"textbox","id":"sh/bup4rils","slide":14,"name":"Rectangle 30","text":"Tạo phiên đấu giá","textPreview":"Tạo phiên đấu giá","textChars":17,"textLines":1,"bbox":[127,170,600,50]}
+{"kind":"textbox","id":"sh/cvylkn2d","slide":14,"name":"Rectangle 31","text":"Đơn hàng","textPreview":"Đơn hàng","textChars":8,"textLines":1,"bbox":[1042,170,450,50]}
+{"kind":"textbox","id":"sh/xw7mts3y","slide":14,"name":"Rectangle 32","text":"Tin nhắn","textPreview":"Tin nhắn","textChars":8,"textLines":1,"bbox":[127,590,450,50]}
+{"kind":"textbox","id":"sh/yxgnmxkj","slide":14,"name":"Rectangle 33","text":"Theo dõi","textPreview":"Theo dõi","textChars":8,"textLines":1,"bbox":[1042,590,450,50]}
+{"kind":"textbox","id":"sh/7m94j210","slide":14,"name":"Rectangle 38","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/kjadkfup","slide":14,"name":"Picture 62","bbox":[127.24,246.36,702.04,320.1]}
+{"kind":"image","id":"im/lkjutkba","slide":14,"name":"Picture 63","bbox":[1042.72,242.1,702.04,328.61]}
+{"kind":"image","id":"im/yh8vi5cj","slide":14,"name":"Picture 64","bbox":[127.24,670.49,686.98,320.1]}
+{"kind":"image","id":"im/ji1crat4","slide":14,"name":"Picture 65","bbox":[1042.72,669.98,687.17,320.62]}
+{"kind":"notes","id":"nt/6lsnupw7","slide":14,"text":"Nhóm giao diện này thể hiện các luồng nghiệp vụ chính sau khi người dùng đăng nhập. Người bán có thể tạo phiên đấu giá cho sản phẩm đã được duyệt. Người mua theo dõi đơn hàng và trạng thái thanh toán. Hệ thống cũng hỗ trợ tin nhắn riêng và danh sách theo dõi phiên đấu giá."}
+{"kind":"slide","id":"sl/vaxsvy10","slide":15,"title":"Phenikaa School of Computing","textShapes":13}
+{"kind":"shape","id":"sh/547mhg3m","slide":15,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/76p4jqls","slide":15,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/t87ml0ji","slide":15,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/s7y5sv2x","slide":15,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/m9c3e1kn","slide":15,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/wrm9kvep","slide":15,"name":"TextBox 10","text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"textbox","id":"sh/5wvax0f6","slide":15,"name":"TextBox 15","text":"Một số giao diện hệ thống","textPreview":"Một số giao diện hệ thống","textChars":25,"textLines":1,"bbox":[63.28,46.14,896.72,75.92]}
+{"kind":"textbox","id":"sh/it4rm5wv","slide":15,"name":"TextBox 16","text":"Quản lý khóa học","textPreview":"Quản lý khóa học","textChars":16,"textLines":1,"bbox":[127.24,174.22,318.61,63.6]}
+{"kind":"textbox","id":"sh/judsvqxg","slide":15,"name":"TextBox 17","text":"Quản lý thi thử","textPreview":"Quản lý thi thử","textChars":15,"textLines":1,"bbox":[1042.72,149.02,324,63.6]}
+{"kind":"textbox","id":"sh/0z29cbyh","slide":15,"name":"TextBox 18","text":"Quản lý người dùng","textPreview":"Quản lý người dùng","textChars":18,"textLines":1,"bbox":[127.24,586.26,428.47,63.6]}
+{"kind":"textbox","id":"sh/l0bqlgf2","slide":15,"name":"TextBox 19","text":"Quản lý điểm thưởng","textPreview":"Quản lý điểm thưởng","textChars":19,"textLines":1,"bbox":[1039.54,586.26,440.91,63.6]}
+{"kind":"shape","id":"sh/gjax03m9","slide":15,"name":"Freeform 21","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/ehsfyt43","slide":15,"name":"Freeform 23","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/o7ah4nm5","slide":15,"name":"Rectangle 24","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/361gvilk","slide":15,"name":"Rectangle 25","text":"Giao diện quản trị","textPreview":"Giao diện quản trị","textChars":18,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/25sf2d4z","slide":15,"name":"Rectangle 26","bbox":[110,145,650,95]}
+{"kind":"shape","id":"sh/dc3y1s3m","slide":15,"name":"Rectangle 27","bbox":[1030,145,650,95]}
+{"kind":"shape","id":"sh/cbuh8nmh","slide":15,"name":"Rectangle 28","bbox":[110,575,650,80]}
+{"kind":"shape","id":"sh/uh4v2pkj","slide":15,"name":"Rectangle 29","bbox":[1030,575,650,80]}
+{"kind":"textbox","id":"sh/vixcvu14","slide":15,"name":"Rectangle 30","text":"Dashboard quản trị","textPreview":"Dashboard quản trị","textChars":18,"textLines":1,"bbox":[127,170,600,50]}
+{"kind":"textbox","id":"sh/wj6d4z2p","slide":15,"name":"Rectangle 31","text":"Duyệt sản phẩm","textPreview":"Duyệt sản phẩm","textChars":14,"textLines":1,"bbox":[1042,170,600,50]}
+{"kind":"textbox","id":"sh/hkfexkja","slide":15,"name":"Rectangle 32","text":"Quản lý người dùng","textPreview":"Quản lý người dùng","textChars":18,"textLines":1,"bbox":[127,590,600,50]}
+{"kind":"textbox","id":"sh/ilov6pkv","slide":15,"name":"Rectangle 33","text":"Quản lý khiếu nại","textPreview":"Quản lý khiếu nại","textChars":17,"textLines":1,"bbox":[1042,590,600,50]}
+{"kind":"textbox","id":"sh/rqhw3e1c","slide":15,"name":"Rectangle 38","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/cvah4zup","slide":15,"name":"Picture 62","bbox":[127.24,244.23,686.07,324.36]}
+{"kind":"image","id":"im/dwjidkva","slide":15,"name":"Picture 63","bbox":[1043.82,244.23,686.07,331.21]}
+{"kind":"image","id":"im/qtsz2pcj","slide":15,"name":"Picture 64","bbox":[121.74,655.86,697.07,326.81]}
+{"kind":"image","id":"im/ru10bud4","slide":15,"name":"Picture 65","bbox":[1039.54,655.86,686.07,337.9]}
+{"kind":"notes","id":"nt/vaxsvy10","slide":15,"text":"Phân hệ quản trị giúp quản trị viên kiểm soát nội dung và vận hành hệ thống. Dashboard cho cái nhìn tổng quan. Trang duyệt sản phẩm kiểm tra sản phẩm trước khi công khai. Trang người dùng hỗ trợ khóa hoặc mở tài khoản. Trang khiếu nại giúp quản trị viên xem xét và đưa ra quyết định khi hai bên không tự giải quyết được."}
+{"kind":"slide","id":"sl/gny5sjyp","slide":16,"title":"Phenikaa School of Computing","textShapes":74}
+{"kind":"shape","id":"sh/8z2h8bq1","slide":16,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/ytkf2h8j","slide":16,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/kv2h4rqp","slide":16,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/lwbyxwra","slide":16,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/3qdg7qpo","slide":16,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/fm1gzq5o","slide":16,"name":"TextBox 10","text":"16","textPreview":"16","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"shape","id":"sh/e1sf65o3","slide":16,"name":"Freeform 11","bbox":[63.28,172.29,1787.97,813.52]}
+{"kind":"textbox","id":"sh/1ojy10ne","slide":16,"name":"TextBox 12","text":"Kiểm thử","textPreview":"Kiểm thử","textChars":8,"textLines":1,"bbox":[63.28,46.14,1250.26,74.53]}
+{"kind":"shape","id":"sh/nqlg3a5k","slide":16,"name":"Freeform 14","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/ps3y5knq","slide":16,"name":"Freeform 16","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/bulg7u5g","slide":16,"name":"Rectangle 17","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/atczepob","slide":16,"name":"Rectangle 18","text":"Kết quả kiểm thử chức năng","textPreview":"Kết quả kiểm thử chức năng","textChars":26,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/mpgj6t8j","slide":16,"name":"Rectangle 19","bbox":[65,160,1790,860]}
+{"kind":"textbox","id":"sh/7qp0zepo","slide":16,"name":"Rectangle 20","text":"Đồ án áp dụng kiểm thử chức năng kết hợp kiểm thử hộp đen. Người kiểm thử thao tác trên giao diện và đối chiếu kết quả thực tế với kết quả mong đợi.","textPreview":"Đồ án áp dụng kiểm thử chức năng kết hợp kiểm thử hộp đen. Người kiểm thử thao tác trên giao diện và đối chiếu kết quả thực tế với kết qu...","textChars":148,"textLines":1,"bbox":[105,170,1710,80]}
+{"kind":"shape","id":"sh/8by18jq9","slide":16,"name":"Rectangle: Rounded Corners 21","bbox":[1210,315,290,145]}
+{"kind":"textbox","id":"sh/9c7i1o7u","slide":16,"name":"Rectangle 22","text":"136","textPreview":"136","textChars":3,"textLines":1,"bbox":[1230,331,250,44]}
+{"kind":"textbox","id":"sh/ylwj2987","slide":16,"name":"Rectangle 23","text":"test case","textPreview":"test case","textChars":9,"textLines":1,"bbox":[1234,381,242,69]}
+{"kind":"shape","id":"sh/zm50veps","slide":16,"name":"Rectangle: Rounded Corners 24","bbox":[1565,315,290,145]}
+{"kind":"textbox","id":"sh/kne14jqd","slide":16,"name":"Rectangle 25","text":"127","textPreview":"127","textChars":3,"textLines":1,"bbox":[1585,331,250,44]}
+{"kind":"textbox","id":"sh/lo7ixo7y","slide":16,"name":"Rectangle 26","text":"đạt","textPreview":"đạt","textChars":3,"textLines":1,"bbox":[1589,381,242,69]}
+{"kind":"shape","id":"sh/ih0jedob","slide":16,"name":"Rectangle: Rounded Corners 27","bbox":[1210,535,290,145]}
+{"kind":"textbox","id":"sh/ji9k7ypw","slide":16,"name":"Rectangle 28","text":"9","textPreview":"9","textChars":1,"textLines":1,"bbox":[1230,551,250,44]}
+{"kind":"textbox","id":"sh/tcbmdcre","slide":16,"name":"Rectangle 29","text":"chưa đạt hoặc thiếu bằng chứng","textPreview":"chưa đạt hoặc thiếu bằng chứng","textChars":30,"textLines":1,"bbox":[1234,601,242,69]}
+{"kind":"shape","id":"sh/sb2l47at","slide":16,"name":"Rectangle: Rounded Corners 30","bbox":[1565,535,290,145]}
+{"kind":"textbox","id":"sh/rat4b298","slide":16,"name":"Rectangle 31","text":"93,38%","textPreview":"93,38%","textChars":6,"textLines":1,"bbox":[1585,551,250,44]}
+{"kind":"textbox","id":"sh/69k32xsn","slide":16,"name":"Rectangle 32","text":"tỷ lệ đạt","textPreview":"tỷ lệ đạt","textChars":9,"textLines":1,"bbox":[1589,601,242,69]}
+{"kind":"shape","id":"sh/58bm9sr2","slide":16,"name":"Rectangle 33","bbox":[90,442,92,48]}
+{"kind":"textbox","id":"sh/47il0nah","slide":16,"name":"Rectangle 34","text":"STT","textPreview":"STT","textChars":3,"textLines":1,"bbox":[97,452,78,34]}
+{"kind":"shape","id":"sh/j6947i9w","slide":16,"name":"Rectangle 35","bbox":[182,442,485,48]}
+{"kind":"textbox","id":"sh/i503ydsr","slide":16,"name":"Rectangle 36","text":"Nhóm chức năng","textPreview":"Nhóm chức năng","textChars":14,"textLines":1,"bbox":[189,452,471,34]}
+{"kind":"shape","id":"sh/p4vmlwrm","slide":16,"name":"Rectangle 37","bbox":[667,442,180,48]}
+{"kind":"textbox","id":"sh/o3m5crq1","slide":16,"name":"Rectangle 38","text":"Số test","textPreview":"Số test","textChars":7,"textLines":1,"bbox":[674,452,166,34]}
+{"kind":"shape","id":"sh/wnadcrqh","slide":16,"name":"Rectangle 39","bbox":[847,442,150,48]}
+{"kind":"textbox","id":"sh/xoju5wr2","slide":16,"name":"Rectangle 40","text":"Đạt","textPreview":"Đạt","textChars":3,"textLines":1,"bbox":[854,452,136,34]}
+{"kind":"shape","id":"sh/alsbahsb","slide":16,"name":"Rectangle 41","bbox":[997,442,150,48]}
+{"kind":"textbox","id":"sh/vm1c3m9w","slide":16,"name":"Rectangle 42","text":"Chưa đạt","textPreview":"Chưa đạt","textChars":8,"textLines":1,"bbox":[1004,452,136,34]}
+{"kind":"shape","id":"sh/kbudgrqt","slide":16,"name":"Rectangle 43","bbox":[90,490,92,48]}
+{"kind":"textbox","id":"sh/5c3u9wry","slide":16,"name":"Rectangle 44","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[97,500,78,34]}
+{"kind":"shape","id":"sh/i9sve18n","slide":16,"name":"Rectangle 45","bbox":[182,490,485,48]}
+{"kind":"textbox","id":"sh/ja1c7m98","slide":16,"name":"Rectangle 46","text":"Xác thực người dùng","textPreview":"Xác thực người dùng","textChars":19,"textLines":1,"bbox":[189,500,471,34]}
+{"kind":"shape","id":"sh/sfudkbqp","slide":16,"name":"Rectangle 47","bbox":[667,490,180,48]}
+{"kind":"textbox","id":"sh/tg3udgra","slide":16,"name":"Rectangle 48","text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[674,500,166,34]}
+{"kind":"shape","id":"sh/3apg3atc","slide":16,"name":"Rectangle 49","bbox":[847,490,150,48]}
+{"kind":"textbox","id":"sh/29wfa5sr","slide":16,"name":"Rectangle 50","text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[854,500,136,34]}
+{"kind":"shape","id":"sh/pc7y5kbi","slide":16,"name":"Rectangle 51","bbox":[997,490,150,48]}
+{"kind":"textbox","id":"sh/obyxcfax","slide":16,"name":"Rectangle 52","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[1004,500,136,34]}
+{"kind":"shape","id":"sh/f65wzqtg","slide":16,"name":"Rectangle 53","bbox":[90,538,92,48]}
+{"kind":"textbox","id":"sh/u5wf6lcv","slide":16,"name":"Rectangle 54","text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[97,548,78,34]}
+{"kind":"shape","id":"sh/h8ne10b6","slide":16,"name":"Rectangle 55","bbox":[182,538,485,48]}
+{"kind":"textbox","id":"sh/g7ex8va1","slide":16,"name":"Rectangle 56","text":"Quản lý sản phẩm","textPreview":"Quản lý sản phẩm","textChars":16,"textLines":1,"bbox":[189,548,471,34]}
+{"kind":"shape","id":"sh/z29gbutk","slide":16,"name":"Rectangle 57","bbox":[667,538,180,48]}
+{"kind":"textbox","id":"sh/y10fipsz","slide":16,"name":"Rectangle 58","text":"18","textPreview":"18","textChars":2,"textLines":1,"bbox":[674,548,166,34]}
+{"kind":"shape","id":"sh/axkjatc7","slide":16,"name":"Rectangle 59","bbox":[847,538,150,48]}
+{"kind":"textbox","id":"sh/vyt03yds","slide":16,"name":"Rectangle 60","text":"16","textPreview":"16","textChars":2,"textLines":1,"bbox":[854,548,136,34]}
+{"kind":"shape","id":"sh/wz21c3ud","slide":16,"name":"Rectangle 61","bbox":[997,538,150,48]}
+{"kind":"textbox","id":"sh/x0bi58vy","slide":16,"name":"Rectangle 62","text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[1004,548,136,34]}
+{"kind":"shape","id":"sh/i14jetcj","slide":16,"name":"Rectangle 63","bbox":[90,586,92,48]}
+{"kind":"textbox","id":"sh/j2d07yd4","slide":16,"name":"Rectangle 64","text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[97,596,78,34]}
+{"kind":"shape","id":"sh/k3m1g3u9","slide":16,"name":"Rectangle 65","bbox":[182,586,485,48]}
+{"kind":"textbox","id":"sh/5ovi98vu","slide":16,"name":"Rectangle 66","text":"Phiên đấu giá và đặt giá","textPreview":"Phiên đấu giá và đặt giá","textChars":24,"textLines":1,"bbox":[189,596,471,34]}
+{"kind":"shape","id":"sh/y50z29cz","slide":16,"name":"Rectangle 67","bbox":[667,586,180,48]}
+{"kind":"textbox","id":"sh/z690vedk","slide":16,"name":"Rectangle 68","text":"20","textPreview":"20","textChars":2,"textLines":1,"bbox":[674,596,166,34]}
+{"kind":"shape","id":"sh/hkzmhcf2","slide":16,"name":"Rectangle 69","bbox":[847,586,150,48]}
+{"kind":"textbox","id":"sh/gj6l87eh","slide":16,"name":"Rectangle 70","text":"18","textPreview":"18","textChars":2,"textLines":1,"bbox":[854,596,136,34]}
+{"kind":"shape","id":"sh/fixkf2xc","slide":16,"name":"Rectangle 71","bbox":[997,586,150,48]}
+{"kind":"textbox","id":"sh/uxo36xwr","slide":16,"name":"Rectangle 72","text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[1004,596,136,34]}
+{"kind":"shape","id":"sh/pozm5cfe","slide":16,"name":"Rectangle 73","bbox":[90,634,92,48]}
+{"kind":"textbox","id":"sh/4nqlcret","slide":16,"name":"Rectangle 74","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[97,644,78,34]}
+{"kind":"shape","id":"sh/3mh4jmx8","slide":16,"name":"Rectangle 75","bbox":[182,634,485,48]}
+{"kind":"textbox","id":"sh/2l83ahwn","slide":16,"name":"Rectangle 76","text":"Đơn hàng và thanh toán","textPreview":"Đơn hàng và thanh toán","textChars":22,"textLines":1,"bbox":[189,644,471,34]}
+{"kind":"shape","id":"sh/5sf29sfu","slide":16,"name":"Rectangle 77","bbox":[667,634,180,48]}
+{"kind":"textbox","id":"sh/krml0nep","slide":16,"name":"Rectangle 78","text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[674,644,166,34]}
+{"kind":"shape","id":"sh/wr2p0b65","slide":16,"name":"Rectangle 79","bbox":[847,634,150,48]}
+{"kind":"textbox","id":"sh/xsbq9gnq","slide":16,"name":"Rectangle 80","text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[854,644,136,34]}
+{"kind":"shape","id":"sh/apk7yloz","slide":16,"name":"Rectangle 81","bbox":[997,634,150,48]}
+{"kind":"textbox","id":"sh/bqt8765k","slide":16,"name":"Rectangle 82","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[1004,644,136,34]}
+{"kind":"shape","id":"sh/on2pwb69","slide":16,"name":"Rectangle 83","bbox":[90,682,92,48]}
+{"kind":"textbox","id":"sh/9obq5gne","slide":16,"name":"Rectangle 84","text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[97,692,78,34]}
+{"kind":"shape","id":"sh/2l07u1o3","slide":16,"name":"Rectangle 85","bbox":[182,682,485,48]}
+{"kind":"textbox","id":"sh/nmt8365o","slide":16,"name":"Rectangle 86","text":"Chat và tin nhắn","textPreview":"Chat và tin nhắn","textChars":16,"textLines":1,"bbox":[189,692,471,34]}
+{"kind":"shape","id":"sh/8jmp8v6d","slide":16,"name":"Rectangle 87","bbox":[667,682,180,48]}
+{"kind":"textbox","id":"sh/tkvqh0ny","slide":16,"name":"Rectangle 88","text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[674,692,166,34]}
+{"kind":"shape","id":"sh/3ehs7up0","slide":16,"name":"Rectangle 89","bbox":[847,682,150,48]}
+{"kind":"textbox","id":"sh/id8byp8f","slide":16,"name":"Rectangle 90","text":"9","textPreview":"9","textChars":1,"textLines":1,"bbox":[854,692,136,34]}
+{"kind":"shape","id":"sh/5gza9476","slide":16,"name":"Rectangle 91","bbox":[997,682,150,48]}
+{"kind":"textbox","id":"sh/4fqt0zql","slide":16,"name":"Rectangle 92","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[1004,692,136,34]}
+{"kind":"shape","id":"sh/rihsbepw","slide":16,"name":"Rectangle 93","bbox":[90,730,92,48]}
+{"kind":"textbox","id":"sh/qh8b298r","slide":16,"name":"Rectangle 94","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[97,740,78,34]}
+{"kind":"shape","id":"sh/d4jado72","slide":16,"name":"Rectangle 95","bbox":[182,730,485,48]}
+{"kind":"textbox","id":"sh/s3qt4jqh","slide":16,"name":"Rectangle 96","text":"Thông báo","textPreview":"Thông báo","textChars":9,"textLines":1,"bbox":[189,740,471,34]}
+{"kind":"shape","id":"sh/7mxszaps","slide":16,"name":"Rectangle 97","bbox":[667,730,180,48]}
+{"kind":"textbox","id":"sh/6lorq587","slide":16,"name":"Rectangle 98","text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[674,740,166,34]}
+{"kind":"shape","id":"sh/na107axg","slide":16,"name":"Rectangle 99","bbox":[847,730,150,48]}
+{"kind":"textbox","id":"sh/29sje5wv","slide":16,"name":"Rectangle 100","text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[854,740,136,34]}
+{"kind":"shape","id":"sh/pwji90f6","slide":16,"name":"Rectangle 101","bbox":[997,730,150,48]}
+{"kind":"textbox","id":"sh/ova1gfe1","slide":16,"name":"Rectangle 102","text":"0","textPreview":"0","textChars":1,"textLines":1,"bbox":[1004,740,136,34]}
+{"kind":"shape","id":"sh/f6103qx4","slide":16,"name":"Rectangle 103","bbox":[90,778,92,48]}
+{"kind":"textbox","id":"sh/e5szalwj","slide":16,"name":"Rectangle 104","text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[97,788,78,34]}
+{"kind":"shape","id":"sh/18ji50fa","slide":16,"name":"Rectangle 105","bbox":[182,778,485,48]}
+{"kind":"textbox","id":"sh/07ahcvep","slide":16,"name":"Rectangle 106","text":"Theo dõi phiên đấu giá","textPreview":"Theo dõi phiên đấu giá","textChars":22,"textLines":1,"bbox":[189,788,471,34]}
+{"kind":"shape","id":"sh/z2l0fuxo","slide":16,"name":"Rectangle 107","bbox":[667,778,180,48]}
+{"kind":"textbox","id":"sh/y1cjmpw3","slide":16,"name":"Rectangle 108","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[674,788,166,34]}
+{"kind":"shape","id":"sh/w76x0rul","slide":16,"name":"Rectangle 109","bbox":[847,778,150,48]}
+{"kind":"textbox","id":"sh/h8fy9wv6","slide":16,"name":"Rectangle 110","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[854,788,136,34]}
+{"kind":"shape","id":"sh/u54fyhcf","slide":16,"name":"Rectangle 111","bbox":[997,778,150,48]}
+{"kind":"textbox","id":"sh/v6xg7md0","slide":16,"name":"Rectangle 112","text":"0","textPreview":"0","textChars":1,"textLines":1,"bbox":[1004,788,136,34]}
+{"kind":"shape","id":"sh/4b6x4ruh","slide":16,"name":"Rectangle 113","bbox":[90,826,92,48]}
+{"kind":"textbox","id":"sh/5cfydwv2","slide":16,"name":"Rectangle 114","text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[97,836,78,34]}
+{"kind":"shape","id":"sh/i9of2hcb","slide":16,"name":"Rectangle 115","bbox":[182,826,485,48]}
+{"kind":"textbox","id":"sh/3axgbmdw","slide":16,"name":"Rectangle 116","text":"Quản trị","textPreview":"Quản trị","textChars":8,"textLines":1,"bbox":[189,836,471,34]}
+{"kind":"shape","id":"sh/sfqx8but","slide":16,"name":"Rectangle 117","bbox":[667,826,180,48]}
+{"kind":"textbox","id":"sh/dgzyhgvy","slide":16,"name":"Rectangle 118","text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[674,836,166,34]}
+{"kind":"shape","id":"sh/1kb65cj6","slide":16,"name":"Rectangle 119","bbox":[847,826,150,48]}
+{"kind":"textbox","id":"sh/0j25c7il","slide":16,"name":"Rectangle 120","text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[854,836,136,34]}
+{"kind":"shape","id":"sh/fito3210","slide":16,"name":"Rectangle 121","bbox":[997,826,150,48]}
+{"kind":"textbox","id":"sh/ehknax0f","slide":16,"name":"Rectangle 122","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[1004,836,136,34]}
+{"kind":"shape","id":"sh/pov69cj2","slide":16,"name":"Rectangle 123","bbox":[90,874,92,48]}
+{"kind":"textbox","id":"sh/onmpg7ih","slide":16,"name":"Rectangle 124","text":"9","textPreview":"9","textChars":1,"textLines":1,"bbox":[97,884,78,34]}
+{"kind":"shape","id":"sh/nmto7m1w","slide":16,"name":"Rectangle 125","bbox":[182,874,485,48]}
+{"kind":"textbox","id":"sh/2lk7eh0r","slide":16,"name":"Rectangle 126","text":"Khiếu nại","textPreview":"Khiếu nại","textChars":9,"textLines":1,"bbox":[189,884,471,34]}
+{"kind":"shape","id":"sh/5sr6xsjy","slide":16,"name":"Rectangle 127","bbox":[667,874,180,48]}
+{"kind":"textbox","id":"sh/4ri54nid","slide":16,"name":"Rectangle 128","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[674,884,166,34]}
+{"kind":"shape","id":"sh/uxg3etgb","slide":16,"name":"Rectangle 129","bbox":[847,874,150,48]}
+{"kind":"textbox","id":"sh/vyp47yhw","slide":16,"name":"Rectangle 130","text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[854,884,136,34]}
+{"kind":"shape","id":"sh/wzylgjy1","slide":16,"name":"Rectangle 131","bbox":[997,874,150,48]}
+{"kind":"textbox","id":"sh/h07m9ozm","slide":16,"name":"Rectangle 132","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[1004,884,136,34]}
+{"kind":"shape","id":"sh/ilg3itg7","slide":16,"name":"Rectangle 133","bbox":[90,922,92,48]}
+{"kind":"textbox","id":"sh/jmp4byhs","slide":16,"name":"Rectangle 134","text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[97,932,78,34]}
+{"kind":"shape","id":"sh/4nilk3yd","slide":16,"name":"Rectangle 135","bbox":[182,922,485,48]}
+{"kind":"textbox","id":"sh/5ormd8zy","slide":16,"name":"Rectangle 136","text":"Production smoke","textPreview":"Production smoke","textChars":16,"textLines":1,"bbox":[189,932,471,34]}
+{"kind":"shape","id":"sh/ypw369g3","slide":16,"name":"Rectangle 137","bbox":[667,922,180,48]}
+{"kind":"textbox","id":"sh/zq5kzeho","slide":16,"name":"Rectangle 138","text":"26","textPreview":"26","textChars":2,"textLines":1,"bbox":[674,932,166,34]}
+{"kind":"shape","id":"sh/zmx03q9c","slide":16,"name":"Rectangle 139","bbox":[847,922,150,48]}
+{"kind":"textbox","id":"sh/elojalsr","slide":16,"name":"Rectangle 140","text":"26","textPreview":"26","textChars":2,"textLines":1,"bbox":[854,932,136,34]}
+{"kind":"shape","id":"sh/1ofi50ri","slide":16,"name":"Rectangle 141","bbox":[997,922,150,48]}
+{"kind":"textbox","id":"sh/0n61cvax","slide":16,"name":"Rectangle 142","text":"0","textPreview":"0","textChars":1,"textLines":1,"bbox":[1004,932,136,34]}
+{"kind":"shape","id":"sh/nqxk7a98","slide":16,"name":"Rectangle 143","bbox":[90,970,92,48]}
+{"kind":"shape","id":"sh/mpoje5s3","slide":16,"name":"Rectangle 144","bbox":[97,980,78,34]}
+{"kind":"shape","id":"sh/9sz29kre","slide":16,"name":"Rectangle 145","bbox":[182,970,485,48]}
+{"kind":"textbox","id":"sh/or61gfat","slide":16,"name":"Rectangle 146","text":"Tổng cộng","textPreview":"Tổng cộng","textChars":9,"textLines":1,"bbox":[189,980,471,34]}
+{"kind":"shape","id":"sh/behkba9k","slide":16,"name":"Rectangle 147","bbox":[667,970,180,48]}
+{"kind":"textbox","id":"sh/at8ji58z","slide":16,"name":"Rectangle 148","text":"136","textPreview":"136","textChars":3,"textLines":1,"bbox":[674,980,166,34]}
+{"kind":"shape","id":"sh/8ja1sf6d","slide":16,"name":"Rectangle 149","bbox":[847,970,150,48]}
+{"kind":"textbox","id":"sh/tkji1k7i","slide":16,"name":"Rectangle 150","text":"127","textPreview":"127","textChars":3,"textLines":1,"bbox":[854,980,136,34]}
+{"kind":"shape","id":"sh/6h8zqpo7","slide":16,"name":"Rectangle 151","bbox":[997,970,150,48]}
+{"kind":"textbox","id":"sh/7ih0zups","slide":16,"name":"Rectangle 152","text":"9","textPreview":"9","textChars":1,"textLines":1,"bbox":[1004,980,136,34]}
+{"kind":"textbox","id":"sh/kfqhof61","slide":16,"name":"Rectangle 153","text":"Các điểm chưa đạt được ghi nhận trong báo cáo kèm hướng xử lý, không trình bày kết quả theo kiểu tuyệt đối.","textPreview":"Các điểm chưa đạt được ghi nhận trong báo cáo kèm hướng xử lý, không trình bày kết quả theo kiểu tuyệt đối.","textChars":107,"textLines":1,"bbox":[1210,765,620,80]}
+{"kind":"textbox","id":"sh/lgzixk7m","slide":16,"name":"Rectangle 154","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"notes","id":"nt/gny5sjyp","slide":16,"text":"Phần kiểm thử được thực hiện theo hướng black-box, nghĩa là kiểm tra dựa trên thao tác và kết quả quan sát được trên giao diện. Tổng cộng có 136 test case, trong đó 127 test case đạt và 9 test case chưa đạt hoặc chưa đủ bằng chứng kiểm thử. Các điểm chưa đạt chủ yếu nằm ở tích hợp dịch vụ bên ngoài, một số trường hợp ngách về ảnh, tự động đặt giá, file xuất và khiếu nại."}
+{"kind":"slide","id":"sl/14bup87q","slide":17,"title":"Phenikaa School of Computing","textShapes":14}
+{"kind":"shape","id":"sh/1c7e50ni","slide":17,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/rm5czq50","slide":17,"name":"Freeform 4","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/6lwvql4v","slide":17,"name":"TextBox 5","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1039.22,648,40.78]}
+{"kind":"shape","id":"sh/snedsvml","slide":17,"name":"Freeform 7","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/jilcvq54","slide":17,"name":"TextBox 8","text":"17","textPreview":"17","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"shape","id":"sh/14rqpgne","slide":17,"name":"Freeform 19","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/8ze9gbyx","slide":17,"name":"Freeform 21","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/mxw7e1gr","slide":17,"name":"Rectangle 22","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/lwnq5gf6","slide":17,"name":"Rectangle 23","text":"Kiểm thử hiệu năng","textPreview":"Kiểm thử hiệu năng","textChars":18,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"textbox","id":"sh/0vepcbyl","slide":17,"name":"Rectangle 24","text":"Kịch bản kiểm thử tải gửi request song song ở các mức 1, 5, 10, 20 và 40 người dùng đồng thời.","textPreview":"Kịch bản kiểm thử tải gửi request song song ở các mức 1, 5, 10, 20 và 40 người dùng đồng thời.","textChars":94,"textLines":1,"bbox":[100,150,1720,60]}
+{"kind":"shape","id":"sh/zul836xg","slide":17,"name":"Rectangle: Rounded Corners 25","bbox":[140,245,310,135]}
+{"kind":"textbox","id":"sh/ytc7a1gv","slide":17,"name":"Rectangle 26","text":"912","textPreview":"912","textChars":3,"textLines":1,"bbox":[160,261,270,44]}
+{"kind":"textbox","id":"sh/d83q1wfa","slide":17,"name":"Rectangle 27","text":"request hợp lệ","textPreview":"request hợp lệ","textChars":14,"textLines":1,"bbox":[164,311,262,59]}
+{"kind":"shape","id":"sh/c7up8ryp","slide":17,"name":"Rectangle: Rounded Corners 28","bbox":[520,245,310,135]}
+{"kind":"textbox","id":"sh/2dsn2xwn","slide":17,"name":"Rectangle 29","text":"7,08ms","textPreview":"7,08ms","textChars":6,"textLines":1,"bbox":[540,261,270,44]}
+{"kind":"textbox","id":"sh/3e1ob2d8","slide":17,"name":"Rectangle 30","text":"p50 tổng hợp","textPreview":"p50 tổng hợp","textChars":12,"textLines":1,"bbox":[544,311,262,59]}
+{"kind":"shape","id":"sh/oza547ed","slide":17,"name":"Rectangle: Rounded Corners 31","bbox":[900,245,310,135]}
+{"kind":"textbox","id":"sh/p0j6dcvy","slide":17,"name":"Rectangle 32","text":"39,81ms","textPreview":"39,81ms","textChars":7,"textLines":1,"bbox":[920,261,270,44]}
+{"kind":"textbox","id":"sh/e98nydwb","slide":17,"name":"Rectangle 33","text":"p95 tổng hợp","textPreview":"p95 tổng hợp","textChars":12,"textLines":1,"bbox":[924,311,262,59]}
+{"kind":"shape","id":"sh/fah47idw","slide":17,"name":"Rectangle: Rounded Corners 34","bbox":[1280,245,390,135]}
+{"kind":"textbox","id":"sh/gbq50neh","slide":17,"name":"Rectangle 35","text":"2440,3","textPreview":"2440,3","textChars":6,"textLines":1,"bbox":[1300,261,350,44]}
+{"kind":"textbox","id":"sh/1cj69sv2","slide":17,"name":"Rectangle 36","text":"request/giây cao nhất","textPreview":"request/giây cao nhất","textChars":21,"textLines":1,"bbox":[1304,311,342,59]}
+{"kind":"textbox","id":"sh/jy1kfehg","slide":17,"name":"Rectangle 39","text":"Kết quả cho thấy các API đọc chính phản hồi ổn định trong phạm vi kiểm thử của đồ án.","textPreview":"Kết quả cho thấy các API đọc chính phản hồi ổn định trong phạm vi kiểm thử của đồ án.","textChars":85,"textLines":1,"bbox":[245,930,1430,55]}
+{"kind":"textbox","id":"sh/ixsj690v","slide":17,"name":"Rectangle 40","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"image","id":"im/ihkvyx4b","slide":17,"name":"Picture 63","bbox":[105,461.3,790,442.4]}
+{"kind":"image","id":"im/3itw72lw","slide":17,"name":"Picture 64","bbox":[985,461.3,790,442.4]}
+{"kind":"notes","id":"nt/14bup87q","slide":17,"text":"Ngoài kiểm thử chức năng, em thực hiện thêm kiểm thử hiệu năng cho các API đọc chính. Tổng cộng có 912 request và toàn bộ đều nhận phản hồi hợp lệ. p95 tổng hợp đạt 39,81 mili giây, thông lượng cao nhất ghi nhận là 2440,3 request mỗi giây ở mức 40 người dùng đồng thời. Kết quả này cho thấy kiến trúc hiện tại đáp ứng tốt phạm vi đồ án, nhưng vẫn cần kiểm thử với dữ liệu lớn hơn trước khi mở rộng thật."}
+{"kind":"slide","id":"sl/y5wne50z","slide":18,"title":"Phenikaa School of Computing","textShapes":6}
+{"kind":"shape","id":"sh/wrelszu9","slide":18,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/itw3upcf","slide":18,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/4felwzu5","slide":18,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/5gnmp4bq","slide":18,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1038.47,648,41.53]}
+{"kind":"shape","id":"sh/rip4retw","slide":18,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/fapkr6pw","slide":18,"name":"TextBox 10","text":"18","textPreview":"18","textChars":2,"textLines":1,"bbox":[1483.64,1038,432,44.7]}
+{"kind":"textbox","id":"sh/upg3i18r","slide":18,"name":"TextBox 11","text":"Kết quả đạt được","textPreview":"Kết quả đạt được","textChars":16,"textLines":1,"bbox":[63.28,46.14,1250.26,74.53]}
+{"kind":"shape","id":"sh/7mpknmp0","slide":18,"name":"Freeform 14","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/to72pw76","slide":18,"name":"Freeform 16","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/bi94zqp4","slide":18,"name":"Rectangle 17","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/qh03ql8j","slide":18,"name":"Rectangle 18","text":"Kết quả đạt được","textPreview":"Kết quả đạt được","textChars":16,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/md4nipsr","slide":18,"name":"Rectangle 19","bbox":[12.72,150.72,1680,700]}
+{"kind":"textbox","id":"sh/nedoru9c","slide":18,"name":"Rectangle 20","text":"• Hoàn thiện nền tảng web đấu giá với bốn hình thức: English, Dutch, Sealed-bid và Reverse.\n• Xây dựng đầy đủ luồng người bán, người mua và quản trị viên.\n• Tích hợp thanh toán VNPay, thông báo, chat, theo dõi phiên và xử lý khiếu nại.\n• Triển khai production bằng Docker, Coolify và Cloudflare.\n• Kiểm thử chức năng đạt 127/136 test case, đồng thời ghi nhận rõ các điểm cần cải thiện.","textPreview":"• Hoàn thiện nền tảng web đấu giá với bốn hình thức: English, Dutch, Sealed-bid và Reverse. | • Xây dựng đầy đủ luồng người bán, người mu...","textChars":385,"textLines":5,"bbox":[145,205,1600,580]}
+{"kind":"textbox","id":"sh/8zm5kzax","slide":18,"name":"Rectangle 21","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"notes","id":"nt/y5wne50z","slide":18,"text":"Về kết quả, hệ thống đã hoàn thiện được các phân hệ chính từ đăng ký, sản phẩm, phiên đấu giá, đặt giá, mua ngay, thanh toán, giao hàng, chat, thông báo, khiếu nại đến quản trị. Điểm quan trọng là các luồng này không chỉ tồn tại trên tài liệu mà đã có giao diện và đã được triển khai trên môi trường production để kiểm thử."}
+{"kind":"slide","id":"sl/nid43ytk","slide":19,"title":"Phenikaa School of Computing","textShapes":6}
+{"kind":"shape","id":"sh/9gb6xgbi","slide":19,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/vitozqt8","slide":19,"name":"Freeform 4","bbox":[44.52,32.54,284.63,102.87]}
+{"kind":"shape","id":"sh/xkbq10be","slide":19,"name":"Freeform 6","bbox":[612,1039.97,648,40.03]}
+{"kind":"textbox","id":"sh/wj2psvat","slide":19,"name":"TextBox 7","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[612,1036.97,648,43.03]}
+{"kind":"shape","id":"sh/il47u5sz","slide":19,"name":"Freeform 9","bbox":[1483.64,1039.5,432,43.2]}
+{"kind":"textbox","id":"sh/cri1gnql","slide":19,"name":"TextBox 10","text":"19","textPreview":"19","textChars":2,"textLines":1,"bbox":[1483.64,1036.5,432,46.2]}
+{"kind":"textbox","id":"sh/dsri9sr6","slide":19,"name":"TextBox 11","text":"Hướng phát triển","textPreview":"Hướng phát triển","textChars":16,"textLines":1,"bbox":[63.28,46.14,1250.26,74.53]}
+{"kind":"shape","id":"sh/0vi1k7qx","slide":19,"name":"Freeform 14","bbox":[1653.9,-2.03,266.1,87.73]}
+{"kind":"shape","id":"sh/et0jix8r","slide":19,"name":"Freeform 16","bbox":[1,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/oj21o7qt","slide":19,"name":"Rectangle 17","bbox":[52,36,1000,100]}
+{"kind":"textbox","id":"sh/9kb2hcre","slide":19,"name":"Rectangle 18","text":"Hướng phát triển","textPreview":"Hướng phát triển","textChars":16,"textLines":1,"bbox":[64,46,980,80]}
+{"kind":"shape","id":"sh/x07i1cji","slide":19,"name":"Rectangle 19","bbox":[105,165,1680,700]}
+{"kind":"textbox","id":"sh/wfy1s7ix","slide":19,"name":"Rectangle 20","text":"• Hoàn thiện thêm các trường hợp ngách của VNPay sandbox\n• Bổ sung kiểm thử tải với dữ liệu lớn và nhiều người đặt giá đồng thời.\n• Tối ưu trải nghiệm trên thiết bị di động cho các form dài.\n• Mở rộng gợi ý phiên đấu giá theo hành vi người dùng.\n• Tăng cường giám sát production bằng dashboard và cảnh báo tự động.","textPreview":"• Hoàn thiện thêm các trường hợp ngách của VNPay sandbox | • Bổ sung kiểm thử tải với dữ liệu lớn và nhiều người đặt giá đồng thời. | • T...","textChars":314,"textLines":5,"bbox":[145,205,1600,580]}
+{"kind":"textbox","id":"sh/vep0z21c","slide":19,"name":"Rectangle 21","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[1,1030.25,432,59]}
+{"kind":"notes","id":"nt/nid43ytk","slide":19,"text":"Nếu tiếp tục phát triển, em sẽ ưu tiên hoàn thiện các điểm còn thiếu bằng chứng kiểm thử, đặc biệt là các tích hợp bên ngoài như VNPay và Google. Sau đó là mở rộng kiểm thử tải cho các luồng ghi quan trọng như đặt giá, mua ngay và thanh toán. Về sản phẩm, hệ thống có thể phát triển thêm gợi ý phiên đấu giá, cải thiện mobile và bổ sung giám sát production."}
+{"kind":"slide","id":"sl/zyxsni5k","slide":20,"title":"Phenikaa School of Computing","textShapes":4}
+{"kind":"shape","id":"sh/qpwjmh8n","slide":20,"name":"Freeform 2","bbox":[0,1022.69,1920,58.75]}
+{"kind":"shape","id":"sh/4nu1krqh","slide":20,"name":"Freeform 4","bbox":[-1,-3,1922,1023.5]}
+{"kind":"shape","id":"sh/2lczih8r","slide":20,"name":"Freeform 6","bbox":[586.58,56.39,746.85,246.23]}
+{"kind":"shape","id":"sh/hk3ipcr6","slide":20,"name":"Freeform 9","bbox":[636,1029.75,648,57.5]}
+{"kind":"textbox","id":"sh/dkfmp4zy","slide":20,"name":"TextBox 10","text":"Phenikaa School of Computing","textPreview":"Phenikaa School of Computing","textChars":28,"textLines":1,"bbox":[636,1028.25,648,59]}
+{"kind":"shape","id":"sh/rid4nuhs","slide":20,"name":"Freeform 12","bbox":[1488,1029.75,432,57.5]}
+{"kind":"textbox","id":"sh/qh4nupg7","slide":20,"name":"TextBox 13","text":"20","textPreview":"20","textChars":2,"textLines":1,"bbox":[1488,1028.25,432,59]}
+{"kind":"shape","id":"sh/4vm5sfy1","slide":20,"name":"Freeform 15","bbox":[0,1029.75,432,57.5]}
+{"kind":"shape","id":"sh/2t4nqpgb","slide":20,"name":"Rectangle 16","bbox":[180,400,1560,170]}
+{"kind":"textbox","id":"sh/hsvmhkzq","slide":20,"name":"Rectangle 17","text":"Em xin cảm ơn sự lắng nghe\ncủa các thầy cô và các bạn","textPreview":"Em xin cảm ơn sự lắng nghe | của các thầy cô và các bạn","textChars":53,"textLines":2,"bbox":[230,405,1460,155]}
+{"kind":"textbox","id":"sh/grm5ofy5","slide":20,"name":"Rectangle 18","text":"07/2026","textPreview":"07/2026","textChars":7,"textLines":1,"bbox":[0,1030.25,432,59]}
+{"kind":"notes","id":"nt/zyxsni5k","slide":20,"text":"Em xin cảm ơn thầy cô đã lắng nghe phần trình bày của em. Em rất mong nhận được góp ý của thầy cô để có thể hoàn thiện thêm hệ thống và báo cáo."}

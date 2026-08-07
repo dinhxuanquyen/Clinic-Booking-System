@@ -1,0 +1,593 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/oq2w6t",
+    "id": "oq2w6t",
+    "slide": 6,
+    "layoutId": "f00e8f1c-99da-460d-9aeb-60e9032e97c6",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "9f7ac7bf-f594-4485-9843-46410783e06c",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "f00e8f1c-99da-460d-9aeb-60e9032e97c6",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "9f7ac7bf-f594-4485-9843-46410783e06c",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "9f7ac7bf-f594-4485-9843-46410783e06c",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x0bmds7e",
+      "id": "1",
+      "bbox": [
+        72,
+        48,
+        980,
+        88
+      ],
+      "geometry": "rect",
+      "text": "Luồng API bảo đảm mỗi thao tác đều đi qua kiểm tra nghiệp vụ",
+      "textPreview": "Luồng API bảo đảm mỗi thao tác đều đi qua kiểm tra nghiệp vụ",
+      "resolvedFontSize": 38,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 38,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Luồng API bảo đảm mỗi thao tác đều đi qua kiểm tra nghiệp"
+          },
+          {
+            "index": 2,
+            "text": "vụ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Luồng API bảo đảm mỗi thao tác đều đi qua kiểm tra nghiệp vụ",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "color": "#111827",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Luồng API bảo đảm mỗi thao tác đều đi qua kiểm tra nghiệp vụ",
+              "fontSize": 38,
+              "color": "#111827",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ax032xon",
+      "id": "2",
+      "bbox": [
+        72,
+        132,
+        820,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Slot, trạng thái, quyền truy cập và dữ liệu PDF được kiểm soát ở backend thay vì chỉ dựa vào giao diện.",
+      "textPreview": "Slot, trạng thái, quyền truy cập và dữ liệu PDF được kiểm soát ở backend thay vì chỉ dựa vào giao diện.",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Slot, trạng thái, quyền truy cập và dữ liệu PDF được kiểm soát ở backend thay vì chỉ dựa vào giao"
+          },
+          {
+            "index": 2,
+            "text": "diện."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Slot, trạng thái, quyền truy cập và dữ liệu PDF được kiểm soát ở backend thay vì chỉ dựa vào giao diện.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#475569",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Slot, trạng thái, quyền truy cập và dữ liệu PDF được kiểm soát ở backend thay vì chỉ dựa vào giao diện.",
+              "fontSize": 20,
+              "color": "#475569",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/by94bip8",
+      "id": "3",
+      "bbox": [
+        72,
+        668,
+        240,
+        24
+      ],
+      "geometry": "rect",
+      "text": "Clinic Booking | 06",
+      "textPreview": "Clinic Booking | 06",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#64748B",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinic Booking | 06"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinic Booking | 06",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#64748B",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinic Booking | 06",
+              "fontSize": 13,
+              "color": "#64748B",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/k32l8765",
+      "id": "4",
+      "bbox": [
+        72,
+        650,
+        1136,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#E5E7EB",
+      "lineColor": "#E5E7EB",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l4bmhc7a",
+      "id": "5",
+      "bbox": [
+        68,
+        206,
+        568,
+        332
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D6DEE8",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/rup83qd8",
+      "id": "6",
+      "bbox": [
+        78,
+        216,
+        548,
+        312
+      ],
+      "alt": "Luồng xử lý API đặt lịch",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "22bfc1e4-f6bf-4493-9eec-2406d1b6ca3b",
+        "contentType": "image/png",
+        "byteLength": 145943
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z2t4f2pk",
+      "id": "7",
+      "bbox": [
+        78,
+        536,
+        548,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Luồng xử lý API đặt lịch",
+      "textPreview": "Luồng xử lý API đặt lịch",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "+mn-lt",
+        "color": "#475569",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Luồng xử lý API đặt lịch"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Luồng xử lý API đặt lịch",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "color": "#475569",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Luồng xử lý API đặt lịch",
+              "fontSize": 15,
+              "color": "#475569",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/07ylw3ql",
+      "id": "8",
+      "bbox": [
+        704,
+        224,
+        360,
+        36
+      ],
+      "geometry": "rect",
+      "text": "Nhóm API chính",
+      "textPreview": "Nhóm API chính",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26,
+        "typeface": "+mn-lt",
+        "color": "#0284C7",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Nhóm API chính"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Nhóm API chính",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "color": "#0284C7",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Nhóm API chính",
+              "fontSize": 26,
+              "color": "#0284C7",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18rm5876",
+      "id": "9",
+      "bbox": [
+        704,
+        286,
+        420,
+        184
+      ],
+      "geometry": "rect",
+      "text": "• Auth: đăng ký, OTP, đăng nhập, đổi mật khẩu.\n• Appointment: tạo lịch, đổi/hủy, cập nhật trạng thái, xuất PDF.\n• Medical records: tạo hồ sơ, xem chi tiết, tải PDF kết quả.\n• Admin/Doctor portal: dashboard, lịch làm việc, audit log.",
+      "textPreview": "• Auth: đăng ký, OTP, đăng nhập, đổi mật khẩu. | • Appointment: tạo lịch, đổi/hủy, cập nhật trạng thái, xuất PDF. | • Medical records: tạ...",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#111827",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 7,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Auth: đăng ký, OTP, đăng nhập, đổi mật khẩu."
+          },
+          {
+            "index": 2,
+            "text": "• Appointment: tạo lịch, đổi/hủy, cập nhật trạng"
+          },
+          {
+            "index": 3,
+            "text": "thái, xuất PDF."
+          },
+          {
+            "index": 4,
+            "text": "• Medical records: tạo hồ sơ, xem chi tiết, tải PDF"
+          },
+          {
+            "index": 5,
+            "text": "kết quả."
+          },
+          {
+            "index": 6,
+            "text": "• Admin/Doctor portal: dashboard, lịch làm việc,"
+          },
+          {
+            "index": 7,
+            "text": "audit log."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "• Auth: đăng ký, OTP, đăng nhập, đổi mật khẩu.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Auth: đăng ký, OTP, đăng nhập, đổi mật khẩu.",
+              "fontSize": 20,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "• Appointment: tạo lịch, đổi/hủy, cập nhật trạng thái, xuất PDF.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Appointment: tạo lịch, đổi/hủy, cập nhật trạng thái, xuất PDF.",
+              "fontSize": 20,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "• Medical records: tạo hồ sơ, xem chi tiết, tải PDF kết quả.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Medical records: tạo hồ sơ, xem chi tiết, tải PDF kết quả.",
+              "fontSize": 20,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "• Admin/Doctor portal: dashboard, lịch làm việc, audit log.",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#111827",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "• Admin/Doctor portal: dashboard, lịch làm việc, audit log.",
+              "fontSize": 20,
+              "color": "#111827",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

@@ -1,0 +1,212 @@
+{"kind":"deck","id":"pr/8lakcy","name":"Deck"}
+{"kind":"layout","layoutId":"9f7ac7bf-f594-4485-9843-46410783e06c","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"f00e8f1c-99da-460d-9aeb-60e9032e97c6","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/xr8n8w","slide":1,"title":"Clinic Booking","textShapes":4}
+{"kind":"textbox","id":"sh/vuhcvi1c","slide":1,"text":"Clinic Booking","textPreview":"Clinic Booking","textChars":14,"textLines":1,"bbox":[72,190,560,78]}
+{"kind":"textbox","id":"sh/8rqd0321","slide":1,"text":"Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến","textPreview":"Hệ thống đặt lịch khám và quản lý hồ sơ khám trực tuyến","textChars":55,"textLines":1,"bbox":[72,282,620,104]}
+{"kind":"textbox","id":"sh/9szut8j6","slide":1,"text":"Báo cáo đồ án tốt nghiệp\nSinh viên: Đinh Xuân Quyền\nMã sinh viên: 22010342","textPreview":"Báo cáo đồ án tốt nghiệp | Sinh viên: Đinh Xuân Quyền | Mã sinh viên: 22010342","textChars":74,"textLines":3,"bbox":[72,430,520,112]}
+{"kind":"textbox","id":"sh/mpovydkv","slide":1,"text":"Clinic Booking | 01","textPreview":"Clinic Booking | 01","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/7qxcry1g","slide":1,"bbox":[72,650,1136,1]}
+{"kind":"image","id":"im/8z2p0j65","slide":1,"name":"","alt":"Trang chủ hệ thống","bbox":[660,96,548,300]}
+{"kind":"image","id":"im/nyto7e5k","slide":1,"name":"","alt":"Logo Phenikaa University","bbox":[72,46,150,110]}
+{"kind":"notes","id":"nt/xr8n8w","slide":1,"text":"[Sources]\nBáo cáo 22010342_Đinh_Xuân_Quyền_Final.docm: ảnh logo và ảnh trang chủ.\nDự án clinic-booking: README và docs/thesis/12-slide-outline.md."}
+{"kind":"slide","id":"sl/cvs99y","slide":2,"title":"Bài toán là số hóa trọn vòng đời đặt lịch - khám - theo dõi","textShapes":7}
+{"kind":"textbox","id":"sh/balonq5w","slide":2,"text":"Bài toán là số hóa trọn vòng đời đặt lịch - khám - theo dõi","textPreview":"Bài toán là số hóa trọn vòng đời đặt lịch - khám - theo dõi","textChars":59,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/cbu5wvmh","slide":2,"text":"Từ một quy trình thủ công rời rạc thành một luồng dữ liệu có trạng thái, có phân quyền và có minh chứng.","textPreview":"Từ một quy trình thủ công rời rạc thành một luồng dữ liệu có trạng thái, có phân quyền và có minh chứng.","textChars":104,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/xc36pgn2","slide":2,"text":"Clinic Booking | 02","textPreview":"Clinic Booking | 02","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/25snq14f","slide":2,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/n614j650","slide":2,"bbox":[72,218,500,340]}
+{"kind":"textbox","id":"sh/o7a5sbml","slide":2,"text":"Khó khăn thực tế","textPreview":"Khó khăn thực tế","textChars":16,"textLines":1,"bbox":[104,244,420,34]}
+{"kind":"textbox","id":"sh/p836lgnq","slide":2,"text":"• Đặt lịch thủ công dễ trùng khung giờ.\n• Lịch hẹn và hồ sơ khám bị phân tán.\n• Bác sĩ thiếu hàng đợi và dashboard trong ngày.\n• Quản trị viên khó giám sát trạng thái vận hành.","textPreview":"• Đặt lịch thủ công dễ trùng khung giờ. | • Lịch hẹn và hồ sơ khám bị phân tán. | • Bác sĩ thiếu hàng đợi và dashboard trong ngày. | • Qu...","textChars":176,"textLines":4,"bbox":[104,306,410,176]}
+{"kind":"shape","id":"sh/ehsnm143","slide":2,"bbox":[646,218,562,340]}
+{"kind":"textbox","id":"sh/f214f65o","slide":2,"text":"Mục tiêu hệ thống","textPreview":"Mục tiêu hệ thống","textChars":17,"textLines":1,"bbox":[680,244,430,34]}
+{"kind":"textbox","id":"sh/nuxg3qpc","slide":2,"text":"• Đặt lịch trực tuyến theo cơ sở, chuyên khoa, bác sĩ và slot.\n• Quản lý trạng thái lịch hẹn, đổi lịch, hủy lịch, danh sách chờ.\n• Tạo hồ sơ khám, đơn thuốc, tái khám và PDF kết quả.\n• Cung cấp dashboard riêng cho patient, doctor và admin.","textPreview":"• Đặt lịch trực tuyến theo cơ sở, chuyên khoa, bác sĩ và slot. | • Quản lý trạng thái lịch hẹn, đổi lịch, hủy lịch, danh sách chờ. | • Tạ...","textChars":239,"textLines":4,"bbox":[680,306,460,190]}
+{"kind":"notes","id":"nt/cvs99y","slide":2,"text":"[Sources]\nBáo cáo: Chương 1, Chương 2, Chương 5.\nDự án: docs/thesis/12-slide-outline.md và docs/thesis/03-use-cases.md."}
+{"kind":"slide","id":"sl/jdee94","slide":3,"title":"Phạm vi được tổ chức quanh ba vai trò chính","textShapes":10}
+{"kind":"textbox","id":"sh/pgju9ozy","slide":3,"text":"Phạm vi được tổ chức quanh ba vai trò chính","textPreview":"Phạm vi được tổ chức quanh ba vai trò chính","textChars":43,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/2t8be90n","slide":3,"text":"Mỗi vai trò có một cổng làm việc riêng, nhưng cùng chia sẻ dữ liệu lịch hẹn và hồ sơ.","textPreview":"Mỗi vai trò có một cổng làm việc riêng, nhưng cùng chia sẻ dữ liệu lịch hẹn và hồ sơ.","textChars":85,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/3ehc7eh8","slide":3,"text":"Clinic Booking | 03","textPreview":"Clinic Booking | 03","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/grqtcjih","slide":3,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/hszu5oz2","slide":3,"bbox":[62,204,430,350]}
+{"kind":"textbox","id":"sh/fqhc3ehw","slide":3,"text":"Use case tổng quan","textPreview":"Use case tổng quan","textChars":18,"textLines":1,"bbox":[72,552,410,28]}
+{"kind":"shape","id":"sh/0nado3yl","slide":3,"bbox":[546,224,280,118]}
+{"kind":"textbox","id":"sh/1o3uh8z6","slide":3,"text":"Patient","textPreview":"Patient","textChars":7,"textLines":1,"bbox":[564,244,244,42]}
+{"kind":"textbox","id":"sh/povi50fa","slide":3,"text":"Đặt lịch, xem lịch, xem hồ sơ, tải PDF, đánh giá bác sĩ.","textPreview":"Đặt lịch, xem lịch, xem hồ sơ, tải PDF, đánh giá bác sĩ.","textChars":56,"textLines":1,"bbox":[564,292,244,36]}
+{"kind":"shape","id":"sh/onmhcvyp","slide":3,"bbox":[546,368,280,118]}
+{"kind":"textbox","id":"sh/3mdg3qx4","slide":3,"text":"Doctor","textPreview":"Doctor","textChars":6,"textLines":1,"bbox":[564,388,244,42]}
+{"kind":"textbox","id":"sh/2lkzalgj","slide":3,"text":"Xử lý hàng đợi, cập nhật trạng thái, tạo hồ sơ khám.","textPreview":"Xử lý hàng đợi, cập nhật trạng thái, tạo hồ sơ khám.","textChars":52,"textLines":1,"bbox":[564,436,244,36]}
+{"kind":"shape","id":"sh/1kby1gfy","slide":3,"bbox":[866,296,280,118]}
+{"kind":"textbox","id":"sh/gj2h8byd","slide":3,"text":"Admin","textPreview":"Admin","textChars":5,"textLines":1,"bbox":[884,316,244,42]}
+{"kind":"textbox","id":"sh/fytgz6x8","slide":3,"text":"Quản lý danh mục, lịch hẹn, người dùng, audit log.","textPreview":"Quản lý danh mục, lịch hẹn, người dùng, audit log.","textChars":50,"textLines":1,"bbox":[884,364,244,36]}
+{"kind":"image","id":"im/zel8nmlo","slide":3,"name":"","alt":"Use case tổng quan","bbox":[72,214,410,330]}
+{"kind":"notes","id":"nt/jdee94","slide":3,"text":"[Sources]\nBáo cáo: biểu đồ use case tổng quan.\nDự án: docs/thesis/03-use-cases.md."}
+{"kind":"slide","id":"sl/v12gzf","slide":4,"title":"Kiến trúc tách rõ frontend, API, dịch vụ và dữ liệu","textShapes":6}
+{"kind":"textbox","id":"sh/8fihcr2d","slide":4,"text":"Kiến trúc tách rõ frontend, API, dịch vụ và dữ liệu","textPreview":"Kiến trúc tách rõ frontend, API, dịch vụ và dữ liệu","textChars":51,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/ne9gjm1s","slide":4,"text":"React đảm nhiệm trải nghiệm người dùng; Express/Mongoose xử lý nghiệp vụ; MongoDB lưu dữ liệu vận hành.","textPreview":"React đảm nhiệm trải nghiệm người dùng; Express/Mongoose xử lý nghiệp vụ; MongoDB lưu dữ liệu vận hành.","textChars":103,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/md0zahk7","slide":4,"text":"Clinic Booking | 04","textPreview":"Clinic Booking | 04","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/lcryhcj2","slide":4,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/0bix872h","slide":4,"bbox":[60,206,586,346]}
+{"kind":"textbox","id":"sh/ypgf6hkb","slide":4,"text":"Sơ đồ kiến trúc xử lý API","textPreview":"Sơ đồ kiến trúc xử lý API","textChars":25,"textLines":1,"bbox":[70,550,566,28]}
+{"kind":"textbox","id":"sh/do7ydcjq","slide":4,"text":"Điểm nhấn kỹ thuật","textPreview":"Điểm nhấn kỹ thuật","textChars":18,"textLines":1,"bbox":[710,226,420,36]}
+{"kind":"textbox","id":"sh/cnyx4725","slide":4,"text":"• REST API theo lớp routes, middleware, controller, service, model.\n• JWT, role middleware và kiểm tra quyền sở hữu dữ liệu.\n• Socket.IO cho thông báo realtime theo user hoặc role.\n• PDFKit, Nodemailer, upload storage phục vụ nghiệp vụ sau khám.","textPreview":"• REST API theo lớp routes, middleware, controller, service, model. | • JWT, role middleware và kiểm tra quyền sở hữu dữ liệu. | • Socket...","textChars":245,"textLines":4,"bbox":[710,292,430,180]}
+{"kind":"image","id":"im/qh8b2lcb","slide":4,"name":"","alt":"Sơ đồ kiến trúc xử lý API","bbox":[70,216,566,326]}
+{"kind":"notes","id":"nt/v12gzf","slide":4,"text":"[Sources]\nBáo cáo: Hình sơ đồ kiến trúc xử lý API.\nDự án: docs/thesis/01-architecture.md."}
+{"kind":"slide","id":"sl/qgjd3n","slide":5,"title":"Mô hình dữ liệu giữ liên kết xuyên suốt lịch hẹn và hồ sơ","textShapes":5}
+{"kind":"textbox","id":"sh/vmhwna1o","slide":5,"text":"Mô hình dữ liệu giữ liên kết xuyên suốt lịch hẹn và hồ sơ","textPreview":"Mô hình dữ liệu giữ liên kết xuyên suốt lịch hẹn và hồ sơ","textChars":57,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/wnadwfi9","slide":5,"text":"Appointment là trục nghiệp vụ, liên kết bệnh nhân, bác sĩ, cơ sở, chuyên khoa, gói khám, hồ sơ và thông báo.","textPreview":"Appointment là trục nghiệp vụ, liên kết bệnh nhân, bác sĩ, cơ sở, chuyên khoa, gói khám, hồ sơ và thông báo.","textChars":108,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/xojepkju","slide":5,"text":"Clinic Booking | 05","textPreview":"Clinic Booking | 05","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/ipsvyp0f","slide":5,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/jq1wra10","slide":5,"bbox":[62,196,580,354]}
+{"kind":"textbox","id":"sh/5cjetkjq","slide":5,"text":"Sơ đồ dữ liệu tổng quan","textPreview":"Sơ đồ dữ liệu tổng quan","textChars":23,"textLines":1,"bbox":[72,548,560,28]}
+{"kind":"shape","id":"sh/6dsv2p0b","slide":5,"bbox":[698,220,454,294]}
+{"kind":"textbox","id":"sh/7elwvu1w","slide":5,"text":"• Appointment có trạng thái nghiệp vụ rõ ràng.\n• MedicalRecord unique theo appointmentId để tránh tạo trùng.\n• Unique index theo clinic, doctor, date, timeSlot giúp chặn trùng slot.\n• Notification và AuditLog lưu lại sự kiện quan trọng.","textPreview":"• Appointment có trạng thái nghiệp vụ rõ ràng. | • MedicalRecord unique theo appointmentId để tránh tạo trùng. | • Unique index theo clin...","textChars":236,"textLines":4,"bbox":[730,254,390,190]}
+{"kind":"image","id":"im/90vehkzq","slide":5,"name":"","alt":"Sơ đồ dữ liệu tổng quan","bbox":[72,206,560,334]}
+{"kind":"notes","id":"nt/qgjd3n","slide":5,"text":"[Sources]\nBáo cáo: sơ đồ dữ liệu tổng quan.\nDự án: docs/thesis/02-database-diagram.md."}
+{"kind":"slide","id":"sl/oq2w6t","slide":6,"title":"Luồng API bảo đảm mỗi thao tác đều đi qua kiểm tra nghiệp vụ","textShapes":6}
+{"kind":"textbox","id":"sh/x0bmds7e","slide":6,"text":"Luồng API bảo đảm mỗi thao tác đều đi qua kiểm tra nghiệp vụ","textPreview":"Luồng API bảo đảm mỗi thao tác đều đi qua kiểm tra nghiệp vụ","textChars":60,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/ax032xon","slide":6,"text":"Slot, trạng thái, quyền truy cập và dữ liệu PDF được kiểm soát ở backend thay vì chỉ dựa vào giao diện.","textPreview":"Slot, trạng thái, quyền truy cập và dữ liệu PDF được kiểm soát ở backend thay vì chỉ dựa vào giao diện.","textChars":103,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/by94bip8","slide":6,"text":"Clinic Booking | 06","textPreview":"Clinic Booking | 06","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/k32l8765","slide":6,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/l4bmhc7a","slide":6,"bbox":[68,206,568,332]}
+{"kind":"textbox","id":"sh/z2t4f2pk","slide":6,"text":"Luồng xử lý API đặt lịch","textPreview":"Luồng xử lý API đặt lịch","textChars":24,"textLines":1,"bbox":[78,536,548,28]}
+{"kind":"textbox","id":"sh/07ylw3ql","slide":6,"text":"Nhóm API chính","textPreview":"Nhóm API chính","textChars":14,"textLines":1,"bbox":[704,224,360,36]}
+{"kind":"textbox","id":"sh/18rm5876","slide":6,"text":"• Auth: đăng ký, OTP, đăng nhập, đổi mật khẩu.\n• Appointment: tạo lịch, đổi/hủy, cập nhật trạng thái, xuất PDF.\n• Medical records: tạo hồ sơ, xem chi tiết, tải PDF kết quả.\n• Admin/Doctor portal: dashboard, lịch làm việc, audit log.","textPreview":"• Auth: đăng ký, OTP, đăng nhập, đổi mật khẩu. | • Appointment: tạo lịch, đổi/hủy, cập nhật trạng thái, xuất PDF. | • Medical records: tạ...","textChars":232,"textLines":4,"bbox":[704,286,420,184]}
+{"kind":"image","id":"im/rup83qd8","slide":6,"name":"","alt":"Luồng xử lý API đặt lịch","bbox":[78,216,548,312]}
+{"kind":"notes","id":"nt/oq2w6t","slide":6,"text":"[Sources]\nBáo cáo: sơ đồ kiến trúc xử lý API và luồng đặt lịch.\nDự án: docs/thesis/06-api-summary.md."}
+{"kind":"slide","id":"sl/sh7t4a","slide":7,"title":"Patient portal giúp bệnh nhân tự chủ từ chọn lịch đến xem kết quả","textShapes":6}
+{"kind":"textbox","id":"sh/bmpozmpg","slide":7,"text":"Patient portal giúp bệnh nhân tự chủ từ chọn lịch đến xem kết quả","textPreview":"Patient portal giúp bệnh nhân tự chủ từ chọn lịch đến xem kết quả","textChars":65,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/c7y58rq1","slide":7,"text":"Trải nghiệm chính: tìm thông tin, đặt lịch, quản lý lịch hẹn, xem hồ sơ và tải tài liệu.","textPreview":"Trải nghiệm chính: tìm thông tin, đặt lịch, quản lý lịch hẹn, xem hồ sơ và tải tài liệu.","textChars":88,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/x8761w76","slide":7,"text":"Clinic Booking | 07","textPreview":"Clinic Booking | 07","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/y90na18r","slide":7,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/za9o36pc","slide":7,"bbox":[58,208,540,306]}
+{"kind":"textbox","id":"sh/lcr65w7i","slide":7,"text":"Màn hình đặt lịch","textPreview":"Màn hình đặt lịch","textChars":17,"textLines":1,"bbox":[68,512,520,28]}
+{"kind":"shape","id":"sh/edwnyx8n","slide":7,"bbox":[630,208,540,306]}
+{"kind":"textbox","id":"sh/faxcje1s","slide":7,"text":"Lịch hẹn của tôi","textPreview":"Lịch hẹn của tôi","textChars":16,"textLines":1,"bbox":[640,512,520,28]}
+{"kind":"textbox","id":"sh/e9ovq9k7","slide":7,"text":"• Luồng đặt lịch có chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot.\n• Bệnh nhân theo dõi trạng thái, gửi yêu cầu hủy/đổi lịch và tải phiếu.","textPreview":"• Luồng đặt lịch có chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot. | • Bệnh nhân theo dõi trạng thái, gửi yêu cầu hủy/đổi lịch và tải phiếu.","textChars":138,"textLines":2,"bbox":[106,560,980,54]}
+{"kind":"image","id":"im/l8buh4va","slide":7,"name":"","alt":"Màn hình đặt lịch","bbox":[68,218,520,286]}
+{"kind":"image","id":"im/m9kva9wv","slide":7,"name":"","alt":"Lịch hẹn của tôi","bbox":[640,218,520,286]}
+{"kind":"notes","id":"nt/sh7t4a","slide":7,"text":"[Sources]\nBáo cáo: ảnh giao diện Patient portal.\nDự án: frontend/src/pages/BookingPage.jsx và frontend/src/pages/MyAppointments.jsx."}
+{"kind":"slide","id":"sl/z42ngm","slide":8,"title":"Doctor portal ưu tiên xử lý nhanh công việc trong ngày","textShapes":6}
+{"kind":"textbox","id":"sh/g721obal","slide":8,"text":"Doctor portal ưu tiên xử lý nhanh công việc trong ngày","textPreview":"Doctor portal ưu tiên xử lý nhanh công việc trong ngày","textChars":54,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/vmtkf690","slide":8,"text":"Bác sĩ có dashboard, hàng đợi khám, lịch hẹn, hồ sơ và lịch làm việc theo vai trò.","textPreview":"Bác sĩ có dashboard, hàng đợi khám, lịch hẹn, hồ sơ và lịch làm việc theo vai trò.","textChars":82,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/ulkjm1sf","slide":8,"text":"Clinic Booking | 08","textPreview":"Clinic Booking | 08","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/tkridgbu","slide":8,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/8ji1kba9","slide":8,"bbox":[58,206,540,306]}
+{"kind":"textbox","id":"sh/6h0ji1sj","slide":8,"text":"Tổng quan lịch khám","textPreview":"Tổng quan lịch khám","textChars":19,"textLines":1,"bbox":[68,510,520,28]}
+{"kind":"shape","id":"sh/lgri9wby","slide":8,"bbox":[630,206,540,306]}
+{"kind":"textbox","id":"sh/6tgzm14j","slide":8,"text":"Hàng đợi của tôi","textPreview":"Hàng đợi của tôi","textChars":16,"textLines":1,"bbox":[640,510,520,28]}
+{"kind":"textbox","id":"sh/rup0f65o","slide":8,"text":"• Cập nhật trạng thái từ chờ xác nhận đến đang khám và hoàn thành.\n• Tạo hồ sơ khám ngay trong quy trình, giảm thao tác rời rạc.","textPreview":"• Cập nhật trạng thái từ chờ xác nhận đến đang khám và hoàn thành. | • Tạo hồ sơ khám ngay trong quy trình, giảm thao tác rời rạc.","textChars":128,"textLines":2,"bbox":[106,558,980,54]}
+{"kind":"image","id":"im/yx8ve5cv","slide":8,"name":"","alt":"Tổng quan lịch khám","bbox":[68,216,520,286]}
+{"kind":"image","id":"im/xwze50vq","slide":8,"name":"","alt":"Hàng đợi của tôi","bbox":[640,216,520,286]}
+{"kind":"notes","id":"nt/z42ngm","slide":8,"text":"[Sources]\nBáo cáo: ảnh giao diện Doctor portal.\nDự án: frontend/src/pages/DoctorDashboardPage.jsx và frontend/src/pages/DoctorQueuePage.jsx."}
+{"kind":"slide","id":"sl/y7bty0","slide":9,"title":"Admin portal tạo góc nhìn vận hành toàn hệ thống","textShapes":6}
+{"kind":"textbox","id":"sh/zy9cralw","slide":9,"text":"Admin portal tạo góc nhìn vận hành toàn hệ thống","textPreview":"Admin portal tạo góc nhìn vận hành toàn hệ thống","textChars":48,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/0zid0f2h","slide":9,"text":"Quản trị viên theo dõi số liệu, xử lý lịch hẹn và quản lý dữ liệu nền theo một giao diện thống nhất.","textPreview":"Quản trị viên theo dõi số liệu, xử lý lịch hẹn và quản lý dữ liệu nền theo một giao diện thống nhất.","textChars":100,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/l0rutk32","slide":9,"text":"Clinic Booking | 09","textPreview":"Clinic Booking | 09","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/qtgbulkf","slide":9,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/bu9cnql0","slide":9,"bbox":[58,204,540,306]}
+{"kind":"textbox","id":"sh/dwrup03q","slide":9,"text":"Bảng điều khiển quản trị","textPreview":"Bảng điều khiển quản trị","textChars":24,"textLines":1,"bbox":[68,508,520,28]}
+{"kind":"shape","id":"sh/25gbqlk3","slide":9,"bbox":[630,204,540,306]}
+{"kind":"textbox","id":"sh/3mp4va9g","slide":9,"text":"Danh sách lịch hẹn","textPreview":"Danh sách lịch hẹn","textChars":18,"textLines":1,"bbox":[640,508,520,28]}
+{"kind":"textbox","id":"sh/i1g3258v","slide":9,"text":"• Quản lý cơ sở, chuyên khoa, bác sĩ, tài khoản, gói khám và bài viết.\n• Audit log giúp truy vết thao tác quan trọng trong hệ thống.","textPreview":"• Quản lý cơ sở, chuyên khoa, bác sĩ, tài khoản, gói khám và bài viết. | • Audit log giúp truy vết thao tác quan trọng trong hệ thống.","textChars":132,"textLines":2,"bbox":[106,556,980,54]}
+{"kind":"image","id":"im/9srmdoja","slide":9,"name":"","alt":"Bảng điều khiển quản trị","bbox":[68,214,520,286]}
+{"kind":"image","id":"im/ad036tkv","slide":9,"name":"","alt":"Danh sách lịch hẹn","bbox":[640,214,520,286]}
+{"kind":"notes","id":"nt/y7bty0","slide":9,"text":"[Sources]\nBáo cáo: ảnh giao diện Admin portal.\nDự án: frontend/src/pages/AdminDashboard.jsx và frontend/src/pages/admin."}
+{"kind":"slide","id":"sl/17ygzq","slide":10,"title":"PDF biến dữ liệu khám thành tài liệu có thể lưu trữ và in ấn","textShapes":6}
+{"kind":"textbox","id":"sh/dsjmdobi","slide":10,"text":"PDF biến dữ liệu khám thành tài liệu có thể lưu trữ và in ấn","textPreview":"PDF biến dữ liệu khám thành tài liệu có thể lưu trữ và in ấn","textChars":60,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/qp83i9s7","slide":10,"text":"Hệ thống xuất phiếu đặt lịch, phiếu khám/số thứ tự và phiếu kết quả khám cho đúng người có quyền.","textPreview":"Hệ thống xuất phiếu đặt lịch, phiếu khám/số thứ tự và phiếu kết quả khám cho đúng người có quyền.","textChars":97,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/rqh4bets","slide":10,"text":"Clinic Booking | 10","textPreview":"Clinic Booking | 10","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/0valoja9","slide":10,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/1gjmhobu","slide":10,"bbox":[78,184,320,428]}
+{"kind":"textbox","id":"sh/zu14fyto","slide":10,"text":"Phiếu đặt lịch","textPreview":"Phiếu đặt lịch","textChars":14,"textLines":1,"bbox":[88,610,300,28]}
+{"kind":"shape","id":"sh/ojuls3a5","slide":10,"bbox":[480,184,320,428]}
+{"kind":"textbox","id":"sh/ds7q5wzu","slide":10,"text":"Phiếu khám","textPreview":"Phiếu khám","textChars":10,"textLines":1,"bbox":[490,610,300,28]}
+{"kind":"shape","id":"sh/cry9wry9","slide":10,"bbox":[882,184,320,428]}
+{"kind":"textbox","id":"sh/qpgruhg3","slide":10,"text":"Kết quả khám","textPreview":"Kết quả khám","textChars":12,"textLines":1,"bbox":[892,610,300,28]}
+{"kind":"image","id":"im/7m1gzylc","slide":10,"name":"","alt":"Phiếu đặt lịch","bbox":[88,194,300,408]}
+{"kind":"image","id":"im/sjuh4n21","slide":10,"name":"","alt":"Phiếu khám","bbox":[490,194,300,408]}
+{"kind":"image","id":"im/kralovu1","slide":10,"name":"","alt":"Kết quả khám","bbox":[892,194,300,408]}
+{"kind":"notes","id":"nt/17ygzq","slide":10,"text":"[Sources]\nBáo cáo: ảnh mẫu các tài liệu PDF.\nDự án: backend/src/services/pdfService.js và docs/sample-medical-record.pdf."}
+{"kind":"slide","id":"sl/aak5zo","slide":11,"title":"Bảo mật dựa trên xác thực, vai trò và quyền sở hữu dữ liệu","textShapes":10}
+{"kind":"textbox","id":"sh/lovup4fy","slide":11,"text":"Bảo mật dựa trên xác thực, vai trò và quyền sở hữu dữ liệu","textPreview":"Bảo mật dựa trên xác thực, vai trò và quyền sở hữu dữ liệu","textChars":58,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/yl4bepg7","slide":11,"text":"Giao diện chỉ là lớp đầu; backend vẫn kiểm tra token, role và phạm vi dữ liệu cho từng nghiệp vụ.","textPreview":"Giao diện chỉ là lớp đầu; backend vẫn kiểm tra token, role và phạm vi dữ liệu cho từng nghiệp vụ.","textChars":97,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/zmdcnuxs","slide":11,"text":"Clinic Booking | 11","textPreview":"Clinic Booking | 11","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/cj2tcfyh","slide":11,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/xkbulkfm","slide":11,"bbox":[92,218,320,260]}
+{"kind":"textbox","id":"sh/axkbapgb","slide":11,"text":"JWT","textPreview":"JWT","textChars":3,"textLines":1,"bbox":[124,250,240,44]}
+{"kind":"textbox","id":"sh/bitcjaxw","slide":11,"text":"• Token cho API bảo vệ.\n• Đổi mật khẩu ban đầu.\n• OTP email khi đăng ký.","textPreview":"• Token cho API bảo vệ. | • Đổi mật khẩu ban đầu. | • OTP email khi đăng ký.","textChars":72,"textLines":3,"bbox":[124,318,238,100]}
+{"kind":"shape","id":"sh/gf6dojel","slide":11,"bbox":[480,218,320,260]}
+{"kind":"textbox","id":"sh/hgfuxof6","slide":11,"text":"Role","textPreview":"Role","textChars":4,"textLines":1,"bbox":[512,250,240,44]}
+{"kind":"textbox","id":"sh/hwned0ra","slide":11,"text":"• Patient, Doctor, Admin.\n• ProtectedRoute ở frontend.\n• roleMiddleware ở backend.","textPreview":"• Patient, Doctor, Admin. | • ProtectedRoute ở frontend. | • roleMiddleware ở backend.","textChars":82,"textLines":3,"bbox":[512,318,238,100]}
+{"kind":"shape","id":"sh/wved4vap","slide":11,"bbox":[868,218,320,260]}
+{"kind":"textbox","id":"sh/vu5cbq9k","slide":11,"text":"Ownership","textPreview":"Ownership","textChars":9,"textLines":1,"bbox":[900,250,240,44]}
+{"kind":"textbox","id":"sh/utcv2lsz","slide":11,"text":"• Patient chỉ xem dữ liệu của mình.\n• Doctor chỉ xử lý lịch thuộc phạm vi.\n• Admin quản trị và audit.","textPreview":"• Patient chỉ xem dữ liệu của mình. | • Doctor chỉ xử lý lịch thuộc phạm vi. | • Admin quản trị và audit.","textChars":101,"textLines":3,"bbox":[900,318,238,112]}
+{"kind":"textbox","id":"sh/9s3u9gre","slide":11,"text":"Kết quả: giảm nguy cơ truy cập sai vai trò và bảo vệ dữ liệu khám bệnh nhạy cảm.","textPreview":"Kết quả: giảm nguy cơ truy cập sai vai trò và bảo vệ dữ liệu khám bệnh nhạy cảm.","textChars":80,"textLines":1,"bbox":[156,548,960,36]}
+{"kind":"notes","id":"nt/aak5zo","slide":11,"text":"[Sources]\nBáo cáo: phần bảo mật và phân quyền.\nDự án: backend/src/middleware/authMiddleware.js, backend/src/middleware/roleMiddleware.js, frontend/src/components/ProtectedRoute.jsx."}
+{"kind":"slide","id":"sl/iki39u","slide":12,"title":"Realtime và thông báo giúp các vai trò không bỏ lỡ thay đổi","textShapes":6}
+{"kind":"textbox","id":"sh/k7yhs761","slide":12,"text":"Realtime và thông báo giúp các vai trò không bỏ lỡ thay đổi","textPreview":"Realtime và thông báo giúp các vai trò không bỏ lỡ thay đổi","textChars":59,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/z6pgj2pw","slide":12,"text":"Thông báo được lưu trong MongoDB và phát theo user hoặc role qua Socket.IO.","textPreview":"Thông báo được lưu trong MongoDB và phát theo user hoặc role qua Socket.IO.","textChars":75,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/y5gfqxob","slide":12,"text":"Clinic Booking | 12","textPreview":"Clinic Booking | 12","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/x47yhs7q","slide":12,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/c3exon65","slide":12,"bbox":[62,208,550,306]}
+{"kind":"textbox","id":"sh/a1wfmxoz","slide":12,"text":"Thông báo trong ứng dụng","textPreview":"Thông báo trong ứng dụng","textChars":24,"textLines":1,"bbox":[72,512,530,28]}
+{"kind":"shape","id":"sh/h0rytw7u","slide":12,"bbox":[644,208,550,306]}
+{"kind":"textbox","id":"sh/61sfyx8n","slide":12,"text":"AI tư vấn triệu chứng","textPreview":"AI tư vấn triệu chứng","textChars":21,"textLines":1,"bbox":[654,512,530,28]}
+{"kind":"textbox","id":"sh/721gri98","slide":12,"text":"• Sự kiện quan trọng: đặt lịch, xác nhận, đổi/hủy lịch, hoàn tất hồ sơ.\n• Email hỗ trợ OTP, quên mật khẩu và xác nhận lịch; lỗi phụ trợ không làm hỏng nghiệp vụ chính.","textPreview":"• Sự kiện quan trọng: đặt lịch, xác nhận, đổi/hủy lịch, hoàn tất hồ sơ. | • Email hỗ trợ OTP, quên mật khẩu và xác nhận lịch; lỗi phụ trợ...","textChars":167,"textLines":2,"bbox":[106,558,980,54]}
+{"kind":"image","id":"im/mlgjax07","slide":12,"name":"","alt":"Thông báo trong ứng dụng","bbox":[72,218,530,286]}
+{"kind":"image","id":"im/xcr29czu","slide":12,"name":"","alt":"AI tư vấn triệu chứng","bbox":[654,218,530,286]}
+{"kind":"notes","id":"nt/iki39u","slide":12,"text":"[Sources]\nBáo cáo: ảnh thông báo và AI tư vấn triệu chứng.\nDự án: backend/src/services/socketService.js, backend/src/controllers/notificationController.js, backend/src/services/geminiService.js."}
+{"kind":"slide","id":"sl/ob8v2b","slide":13,"title":"Kiểm thử xác nhận các luồng cốt lõi đã sẵn sàng trình diễn","textShapes":10}
+{"kind":"textbox","id":"sh/3e1o7ql0","slide":13,"text":"Kiểm thử xác nhận các luồng cốt lõi đã sẵn sàng trình diễn","textPreview":"Kiểm thử xác nhận các luồng cốt lõi đã sẵn sàng trình diễn","textChars":58,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/4fa50vml","slide":13,"text":"Kết hợp smoke test backend với kiểm thử thủ công giao diện và responsive.","textPreview":"Kết hợp smoke test backend với kiểm thử thủ công giao diện và responsive.","textChars":73,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/5g369036","slide":13,"text":"Clinic Booking | 13","textPreview":"Clinic Booking | 13","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/u9snul4j","slide":13,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/va1o3ql4","slide":13,"bbox":[92,226,270,118]}
+{"kind":"textbox","id":"sh/gba5wvmp","slide":13,"text":"24/24","textPreview":"24/24","textChars":5,"textLines":1,"bbox":[110,246,234,42]}
+{"kind":"textbox","id":"sh/hcj6503u","slide":13,"text":"Luồng nghiệp vụ cốt lõi đạt trong smoke test backend.","textPreview":"Luồng nghiệp vụ cốt lõi đạt trong smoke test backend.","textChars":53,"textLines":1,"bbox":[110,294,234,36]}
+{"kind":"shape","id":"sh/e5c76p4n","slide":13,"bbox":[396,226,270,118]}
+{"kind":"textbox","id":"sh/f6lofal8","slide":13,"text":"3 vai trò","textPreview":"3 vai trò","textChars":9,"textLines":1,"bbox":[414,246,234,42]}
+{"kind":"textbox","id":"sh/fyx0z29k","slide":13,"text":"Patient, Doctor, Admin đều có kiểm thử thao tác chính.","textPreview":"Patient, Doctor, Admin đều có kiểm thử thao tác chính.","textChars":54,"textLines":1,"bbox":[414,294,234,36]}
+{"kind":"shape","id":"sh/udojqx8z","slide":13,"bbox":[700,226,270,118]}
+{"kind":"textbox","id":"sh/h0fi1cra","slide":13,"text":"6 viewport","textPreview":"6 viewport","textChars":10,"textLines":1,"bbox":[718,246,234,42]}
+{"kind":"textbox","id":"sh/gz61s7qp","slide":13,"text":"Kiểm tra giao diện từ mobile đến desktop.","textPreview":"Kiểm tra giao diện từ mobile đến desktop.","textChars":41,"textLines":1,"bbox":[718,294,234,36]}
+{"kind":"shape","id":"sh/32h03m9g","slide":13,"bbox":[92,402,878,114]}
+{"kind":"textbox","id":"sh/21ojuh8v","slide":13,"text":"• Bao phủ xác thực, đặt lịch, chống trùng slot, cập nhật trạng thái, hồ sơ khám, PDF, đánh giá, waiting list, thông báo và audit log.\n• Giới hạn còn lại: chưa có kiểm thử tải lớn, kiểm thử bảo mật chuyên sâu và automation UI toàn diện.","textPreview":"• Bao phủ xác thực, đặt lịch, chống trùng slot, cập nhật trạng thái, hồ sơ khám, PDF, đánh giá, waiting list, thông báo và audit log. | •...","textChars":235,"textLines":2,"bbox":[122,426,818,56]}
+{"kind":"image","id":"im/29kb2pg3","slide":13,"name":"","alt":"Vite logo","bbox":[1038,250,80,80]}
+{"kind":"image","id":"im/3atsvuho","slide":13,"name":"","alt":"Node.js logo","bbox":[1036,380,92,60]}
+{"kind":"notes","id":"nt/ob8v2b","slide":13,"text":"[Sources]\nBáo cáo: mục 4.7 Kiểm thử phần mềm.\nDự án: 4.7_kiem_thu_phan_mem.md và backend/src/scripts/e2eSmokeTest.js."}
+{"kind":"slide","id":"sl/vn4a9x","slide":14,"title":"Kịch bản demo nên đi theo một câu chuyện liên tục","textShapes":16}
+{"kind":"textbox","id":"sh/kbelsfah","slide":14,"text":"Kịch bản demo nên đi theo một câu chuyện liên tục","textPreview":"Kịch bản demo nên đi theo một câu chuyện liên tục","textChars":49,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/ja5kja9w","slide":14,"text":"Bắt đầu từ bệnh nhân đặt lịch, sau đó chuyển sang bác sĩ xử lý và kết thúc bằng quản trị giám sát.","textPreview":"Bắt đầu từ bệnh nhân đặt lịch, sau đó chuyển sang bác sĩ xử lý và kết thúc bằng quản trị giám sát.","textChars":98,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/y9w3q5sb","slide":14,"text":"Clinic Booking | 14","textPreview":"Clinic Booking | 14","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/x832h0rq","slide":14,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/w7uloval","slide":14,"bbox":[92,246,236,230]}
+{"kind":"textbox","id":"sh/b6lkfqt0","slide":14,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[114,266,50,46]}
+{"kind":"textbox","id":"sh/a5cjmlsf","slide":14,"text":"Patient đặt lịch","textPreview":"Patient đặt lịch","textChars":16,"textLines":1,"bbox":[114,330,190,34]}
+{"kind":"textbox","id":"sh/h472tkra","slide":14,"text":"Chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot.","textPreview":"Chọn cơ sở, chuyên khoa, bác sĩ, ngày và slot.","textChars":46,"textLines":1,"bbox":[114,382,188,72]}
+{"kind":"shape","id":"sh/g3yl0zap","slide":14,"bbox":[380,246,236,230]}
+{"kind":"textbox","id":"sh/q5czedkn","slide":14,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[402,266,50,46]}
+{"kind":"textbox","id":"sh/r6lg7i18","slide":14,"text":"Doctor xử lý","textPreview":"Doctor xử lý","textChars":12,"textLines":1,"bbox":[402,330,190,34]}
+{"kind":"textbox","id":"sh/c7uhgn2t","slide":14,"text":"Xác nhận, gọi vào khám, tạo hồ sơ và hoàn tất.","textPreview":"Xác nhận, gọi vào khám, tạo hồ sơ và hoàn tất.","textChars":46,"textLines":1,"bbox":[402,382,188,72]}
+{"kind":"shape","id":"sh/ds3y9sje","slide":14,"bbox":[668,246,236,230]}
+{"kind":"textbox","id":"sh/21sfadkr","slide":14,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[690,266,50,46]}
+{"kind":"textbox","id":"sh/321g3ilc","slide":14,"text":"Patient xem kết quả","textPreview":"Patient xem kết quả","textChars":19,"textLines":1,"bbox":[690,330,190,34]}
+{"kind":"textbox","id":"sh/43uhc32h","slide":14,"text":"Mở hồ sơ, tải PDF và theo dõi tái khám.","textPreview":"Mở hồ sơ, tải PDF và theo dõi tái khám.","textChars":39,"textLines":1,"bbox":[690,382,188,72]}
+{"kind":"shape","id":"sh/p43y58j2","slide":14,"bbox":[956,246,236,230]}
+{"kind":"textbox","id":"sh/mxwzmxkv","slide":14,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[978,266,50,46]}
+{"kind":"textbox","id":"sh/ny5gf21g","slide":14,"text":"Admin giám sát","textPreview":"Admin giám sát","textChars":14,"textLines":1,"bbox":[978,330,190,34]}
+{"kind":"textbox","id":"sh/z6d4raxg","slide":14,"text":"Xem dashboard, lịch cần xử lý và audit log.","textPreview":"Xem dashboard, lịch cần xử lý và audit log.","textChars":43,"textLines":1,"bbox":[978,382,188,72]}
+{"kind":"textbox","id":"sh/y54ni5wv","slide":14,"text":"Thông điệp xuyên suốt: hệ thống đã nối được đặt lịch - khám - hồ sơ - PDF - quản trị trong cùng một sản phẩm.","textPreview":"Thông điệp xuyên suốt: hệ thống đã nối được đặt lịch - khám - hồ sơ - PDF - quản trị trong cùng một sản phẩm.","textChars":109,"textLines":1,"bbox":[126,548,1028,48]}
+{"kind":"notes","id":"nt/vn4a9x","slide":14,"text":"[Sources]\nDự án: docs/thesis/08-presentation-script.md."}
+{"kind":"slide","id":"sl/kjqdom","slide":15,"title":"Kết quả đạt được là một hệ thống có thể trình diễn trọn quy trình","textShapes":7}
+{"kind":"textbox","id":"sh/a1o3ap07","slide":15,"text":"Kết quả đạt được là một hệ thống có thể trình diễn trọn quy trình","textPreview":"Kết quả đạt được là một hệ thống có thể trình diễn trọn quy trình","textChars":65,"textLines":1,"bbox":[72,48,980,88]}
+{"kind":"textbox","id":"sh/x4z2l4zi","slide":15,"text":"Đồ án không chỉ đặt lịch, mà còn xử lý vận hành sau đặt lịch và dữ liệu sau khám.","textPreview":"Đồ án không chỉ đặt lịch, mà còn xử lý vận hành sau đặt lịch và dữ liệu sau khám.","textChars":81,"textLines":1,"bbox":[72,132,820,52]}
+{"kind":"textbox","id":"sh/w3qlczyx","slide":15,"text":"Clinic Booking | 15","textPreview":"Clinic Booking | 15","textChars":19,"textLines":1,"bbox":[72,668,240,24]}
+{"kind":"shape","id":"sh/nyxkfuhg","slide":15,"bbox":[72,650,1136,1]}
+{"kind":"shape","id":"sh/mxo36p0v","slide":15,"bbox":[60,212,540,320]}
+{"kind":"textbox","id":"sh/oz6l8zi1","slide":15,"text":"Mô hình triển khai hệ thống","textPreview":"Mô hình triển khai hệ thống","textChars":27,"textLines":1,"bbox":[70,530,520,28]}
+{"kind":"textbox","id":"sh/7u14rehk","slide":15,"text":"Đóng góp chính","textPreview":"Đóng góp chính","textChars":14,"textLines":1,"bbox":[676,224,360,34]}
+{"kind":"textbox","id":"sh/6t83i9gf","slide":15,"text":"• Quản lý lịch theo trạng thái, chống trùng slot và hỗ trợ đổi/hủy.\n• Hồ sơ khám, tái khám, PDF và upload file gắn với lịch hẹn.\n• Phân quyền theo vai trò, notification realtime, email và audit log.\n• Hướng mở rộng: thanh toán online, chữ ký số, HIS/LIS, telemedicine.","textPreview":"• Quản lý lịch theo trạng thái, chống trùng slot và hỗ trợ đổi/hủy. | • Hồ sơ khám, tái khám, PDF và upload file gắn với lịch hẹn. | • Ph...","textChars":268,"textLines":4,"bbox":[676,286,440,184]}
+{"kind":"textbox","id":"sh/gjelwr2d","slide":15,"text":"Xin cảm ơn hội đồng đã lắng nghe.","textPreview":"Xin cảm ơn hội đồng đã lắng nghe.","textChars":33,"textLines":1,"bbox":[676,546,440,44]}
+{"kind":"image","id":"im/gvm1onu5","slide":15,"name":"","alt":"Mô hình triển khai hệ thống","bbox":[70,222,520,300]}
+{"kind":"notes","id":"nt/kjqdom","slide":15,"text":"[Sources]\nBáo cáo: Chương 5 và hình mô hình triển khai.\nDự án: 5_chuong_5_giai_phap_va_dong_gop.md và 4.8_trien_khai_he_thong.md."}

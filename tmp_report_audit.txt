@@ -1,0 +1,113 @@
+paragraphs: 2939
+media_count: 78
+
+--- PLACEHOLDER / ?NH ?? XU?T / C?N CH?N ---
+2695: Tên ảnh đề xuất: `Hinh_4_49_mo_hinh_trien_khai_he_thong.png`
+
+--- HEADING 4.8, 5, K?T LU?N, T?I LI?U ---
+391: 5. Nếu dữ liệu hợp lệ, hệ thống tạo tài khoản mới.
+418: 5. Nếu hợp lệ, hệ thống xác thực và tạo phiên làm việc.
+447: 5. Hệ thống kiểm tra tính hợp lệ của dữ liệu.
+476: 5. Người dùng chọn một kết quả để xem chi tiết.
+503: 5. AI phân tích nội dung và trả về kết quả gợi ý.
+561: 5. Bệnh nhân tiếp tục theo dõi khi có thay đổi từ hệ thống.
+587: 5. Nếu đổi lịch, bệnh nhân chọn ngày giờ mới phù hợp.
+618: 5. Bệnh nhân xem các nội dung như triệu chứng, chẩn đoán, kết luận, lời dặn, đơn thuốc, kết quả cận lâm sàng và lịch tái khám nếu có.
+644: 5. Bệnh nhân xem chi tiết tên thuốc, liều dùng, thời gian dùng hoặc nội dung kết quả cận lâm sàng.
+2688: 4.8. Triển khai hệ thống
+2691: 4.8.1. Mô hình triển khai hệ thống
+2697: 4.8.2. Chuẩn bị mã nguồn và môi trường triển khai
+2732: 4.8.3. Triển khai backend, frontend và cơ sở dữ liệu
+2737: 4.8.4. Cấu hình biến môi trường và dịch vụ hỗ trợ
+2769: 4.8.5. Kết quả triển khai thực tế
+2804: 4.8.6. Hạn chế của môi trường triển khai
+2811: 5.1. Khó khăn trong quá trình thực hiện
+2818: 5.2. Giải pháp quản lý lịch hẹn theo trạng thái
+2825: 5.3. Giải pháp quản lý hồ sơ khám bệnh
+2832: 5.4. Giải pháp phân quyền theo vai trò
+2839: 5.5. Giải pháp thông báo cho người dùng
+2846: 5.6. Giải pháp dashboard và thống kê
+2852: 5.7. Giải pháp nâng cao trải nghiệm người dùng
+2860: 5.8. Đóng góp chính của đề tài
+
+--- CAPTION-LIKE LAST 80 ---
+1458: Mặc định 0, min 0
+1508: Bắt buộc, mặc định 30, min 1
+1537: Người cập nhật gói khám gần nhất.
+1542: Nhìn chung, các collection nền tảng đóng vai trò định danh và cung cấp dữ liệu dùng chung cho toàn bộ hệ thống. Các collection nghiệp vụ như Appointments, MedicalRecords và WaitingLists sẽ tham chiếu đến nhóm collection này để xác định bệnh nhân, bác sĩ, cơ sở khám, chuyên khoa và gói khám liên quan.
+1681: Người cập nhật hồ sơ gần nhất.
+1682: Ngoài các trường trên, MedicalRecords còn lưu các nhóm thông tin chuyên môn như sinh hiệu, dị ứng, mã ICD-10, lời khuyên điều trị và các mốc thời gian theo dõi tái khám. Việc tách riêng hồ sơ khám bệnh thành một collection độc lập giúp dữ liệu chuyên môn được quản lý chặt chẽ, đồng thời dễ mở rộng khi cần bổ sung thêm thuốc, chỉ định hoặc các loại tệp đính kèm mới.
+1752: Các collection hỗ trợ vận hành gồm Notifications, DoctorReviews, Articles và AuditLogs. Nhóm dữ liệu này không trực tiếp xử lý quy trình khám bệnh chính nhưng giúp hệ thống vận hành đầy đủ hơn thông qua các chức năng thông báo, đánh giá bác sĩ, quản lý bài viết và ghi nhận nhật ký thao tác.
+1753: Các collection này được thiết kế theo mô hình document của MongoDB và liên kết với dữ liệu chính bằng các trường ObjectId. Nhờ đó, hệ thống có thể truy xuất thông tin liên quan như người nhận thông báo, lịch hẹn, bác sĩ được đánh giá, tác giả bài viết và người thực hiện thao tác trong hệ thống.
+1927: Mặc định 0, min 0
+1995: Thời điểm ghi nhận nhật ký thao tác.
+1999: Trong hệ thống “Ứng dụng đặt lịch khám bệnh cho phòng khám nhỏ”, API được thiết kế theo hướng RESTful, sử dụng giao thức HTTP và trao đổi dữ liệu dưới dạng JSON. Các API được tổ chức thành nhiều nhóm chức năng khác nhau, tương ứng với các nghiệp vụ chính của hệ thống. Việc phân nhóm API giúp mã nguồn backend rõ ràng hơn, thuận tiện cho quá trình phát triển, kiểm thử và bảo trì hệ thống.
+2000: Các API quan trọng được bảo vệ bằng cơ chế xác thực JWT. Sau khi đăng nhập thành công, người dùng nhận được token và sử dụng token này trong các request tiếp theo để truy cập các chức năng cần đăng nhập. Ngoài ra, hệ thống còn áp dụng phân quyền theo vai trò người dùng gồm bệnh nhân, bác sĩ và quản trị viên nhằm bảo đảm mỗi nhóm người dùng chỉ được sử dụng các chức năng phù hợp với quyền hạn của mình.
+2002: Hình 4.3. Sơ đồ kiến trúc xử lý API tổng quan
+2396: Thiết kế luồng trình tự được thực hiện nhằm mô tả thứ tự trao đổi thông điệp giữa tác nhân, giao diện người dùng, các thành phần xử lý nghiệp vụ, cơ sở dữ liệu và các dịch vụ hỗ trợ. Các luồng trong mục này được xây dựng dựa trên các Use Case đã đặc tả ở Chương 2, kiến trúc hệ thống ở mục 4.1 và nhóm API ở mục 4.3.
+2398: Mũi tên nét liền biểu diễn request hoặc lời gọi xử lý; mũi tên nét đứt biểu diễn kết quả trả về. Khối alt được dùng cho các nhánh điều kiện hoặc lỗi, còn khối opt được dùng cho các bước tùy chọn như gửi email, upload tệp hoặc tạo lịch tái khám.
+2403: Hình 4.4.a Sơ đồ trình tự đăng ký tài khoản và gửi OTP
+2404: Hình 4.4.b Sơ đồ trình tự xác thực email bằng OTP
+2408: Nếu tài khoản hợp lệ, hệ thống cập nhật thời điểm đăng nhập, tạo JWT chứa thông tin nhận diện và vai trò, ghi AuditLog đăng nhập thành công rồi trả token cùng thông tin người dùng về frontend. Frontend lưu token và điều hướng người dùng đến giao diện phù hợp với vai trò patient, doctor hoặc admin.
+2409: Hình 4.5a. Sơ đồ trình tự đăng nhập và cấp JWT
+2410: Luồng có các nhánh thay thế gồm: email hoặc mật khẩu không đúng, tài khoản bị khóa, tài khoản bệnh nhân chưa xác thực email và tài khoản được tạo bởi quản trị viên nhưng bắt buộc đổi mật khẩu ban đầu. Các lần đăng nhập thành công hoặc thất bại quan trọng đều được ghi nhận trong AuditLog.
+2414: Hình 4.5b. Sơ đồ trình tự phân quyền khi truy cập chức năng bảo vệ
+2418: Hình 4.6. Sơ đồ trình tự tư vấn triệu chứng bằng AI
+2424: Hình 4.7. Sơ đồ trình tự đặt lịch khám
+2429: Hình 4.8. Sơ đồ trình tự yêu cầu và duyệt đổi lịch hẹn
+2433: Hình 4.9. Sơ đồ trình tự hủy lịch hẹn
+2437: Hình 4.10. Sơ đồ trình tự xử lý danh sách chờ khám
+2442: Hình 4.11. Sơ đồ trình tự bác sĩ xử lý hàng đợi và lượt khám
+2446: Hình 4.12. Sơ đồ trình tự tạo hồ sơ khám bệnh
+2450: Hình 4.13. Sơ đồ trình tự cập nhật hồ sơ và tệp đính kèm
+2454: Hình 4.14. Sơ đồ trình tự xuất phiếu kết quả khám PDF
+2457: Thông báo được tạo sau các sự kiện như đặt lịch mới, xác nhận lịch, đổi lịch, hủy lịch, gọi bệnh nhân vào khám, hoàn tất hồ sơ hoặc tạo lịch tái khám. Controller nghiệp vụ tạo bản ghi Notification trong MongoDB, sau đó phát sự kiện Socket đến người dùng hoặc vai trò tương ứng. Với các sự kiện cần thiết, hệ thống gửi thêm email.
+2458: Hình 4.15. Sơ đồ trình tự tạo và gửi thông báo
+2462: Hình 4.16. Sơ đồ trình tự xem và đánh dấu thông báo
+2466: Hình 4.17. Sơ đồ trình tự quản trị dữ liệu hệ thống và ghi AuditLog
+2470: Hình 4.18. Sơ đồ trình tự tra cứu AuditLog
+2480: Hệ thống sử dụng ReactJS kết hợp React Router để tổ chức các màn hình theo tuyến truy cập. Các thành phần ProtectedRoute, PublicLayout, DoctorLayout, AdminLayout và ManagementLayout giúp phân tách khu vực công khai, khu vực bệnh nhân, khu vực bác sĩ và khu vực quản trị. Cách tổ chức này làm cho giao diện nhất quán với cơ chế phân quyền ở backend, đồng thời giúp người dùng chỉ nhìn thấy các chức năng phù hợp với vai trò của mình.
+2484: Nguyên tắc thứ ba là đảm bảo khả năng đáp ứng trên nhiều kích thước màn hình. Các trang công khai được thiết kế trực quan, có hình ảnh và khối nội dung dễ đọc trên thiết bị di động. Các trang vận hành của bác sĩ và quản trị viên ưu tiên bố cục gọn, bộ lọc rõ ràng, bảng hoặc danh sách dễ quét để phù hợp với tần suất sử dụng cao trong quá trình quản lý phòng khám.
+2487: Màn hình đặt lịch được thiết kế theo luồng chọn thông tin từng bước: chọn cơ sở khám, chuyên khoa, bác sĩ, ngày khám, khung giờ và nhập lý do khám. Sau khi đặt lịch, bệnh nhân có thể theo dõi lịch hẹn trong trang lịch hẹn cá nhân. Trang này hỗ trợ phân nhóm lịch, lọc theo trạng thái, xem lịch sắp tới, mở modal chi tiết, tải phiếu đặt lịch, tải phiếu số thứ tự, yêu cầu đổi lịch, yêu cầu hủy lịch hoặc gửi đánh giá bác sĩ khi lịch đã hoàn thành.
+2488: Đối với hồ sơ khám bệnh, bệnh nhân có thể xem danh sách hồ sơ, mở chi tiết kết quả khám, theo dõi thông tin tái khám, xem đơn thuốc, chỉ số sinh tồn, tệp đính kèm và tải phiếu kết quả khám dạng PDF. Ngoài ra, chuông thông báo trên thanh điều hướng giúp bệnh nhân nhận biết các sự kiện mới như lịch được xác nhận, lịch bị thay đổi, hồ sơ khám được cập nhật hoặc có lời mời từ danh sách chờ.
+2494: Giao diện phía quản trị viên tập trung vào quản lý dữ liệu nền và giám sát vận hành. Khu vực quản trị sử dụng sidebar để truy cập các nhóm chức năng như dashboard, cơ sở khám, chuyên khoa, bác sĩ, tài khoản, bài viết, gói dịch vụ, lịch làm việc, hàng đợi khám, lịch hẹn và nhật ký hệ thống. Cách bố trí này giúp quản trị viên di chuyển nhanh giữa các nhóm dữ liệu thường xuyên phải cập nhật.
+2500: Hình 4.19. Tổng quan trang chủ và điều hướng hệ thống
+2504: Hình 4.20. Màn hình đăng nhập
+2505: Hình 4.21. Màn hình đăng ký tài khoản
+2506: Hình 4.22. Màn hình nhập mã OTP
+2507: Hình 4.23. Màn hình đổi mật khẩu lần đầu của bác sĩ
+2511: Chức năng đặt lịch cho phép bệnh nhân lựa chọn cơ sở, chuyên khoa, bác sĩ, ngày khám và khung giờ còn trống. Khi gửi yêu cầu, backend kiểm tra tính hợp lệ của lịch, tránh đặt lịch trong quá khứ, tránh trùng lịch của bệnh nhân, tránh trùng slot của bác sĩ và xử lý lỗi cạnh tranh bằng unique index. Lịch hẹn sau khi tạo có trạng thái ban đầu phù hợp và có thể được xác nhận, đổi lịch, hủy lịch hoặc đưa vào luồng xử lý tiếp theo. Ở cấp API, các endpoint chi tiết và danh sách liên quan như /api/clinics/:id, /api/specialties/:id, /api/doctors/:id, /api/service-packages/:id và /api/articles/:slug được dùng để dựng các màn hình chi tiết tương ứng.
+2521: Hình 4.28. Màn hình tổng quan của bác sĩ
+2529: Đối với quản trị viên, hệ thống đã xây dựng khu vực Admin Portal để quản lý dữ liệu nền và theo dõi hoạt động vận hành. Dashboard quản trị hiển thị các số liệu tổng quan như lịch hẹn, bệnh nhân, bác sĩ, cơ sở, danh sách chờ, hồ sơ khám và các yêu cầu cần xử lý. Đây là màn hình giúp quản trị viên có cái nhìn nhanh về trạng thái hoạt động của phòng khám. Khu vực quản trị cũng đã bao phủ màn hình quản lý cơ sở khám, chuyên khoa, bác sĩ, tài khoản, bài viết, gói dịch vụ, lịch làm việc, lịch hẹn và nhật ký hệ thống theo từng nhóm riêng.
+2532: Hình 4.35. Màn hình tổng quan của quản trị
+2533: Hình 4.36. Màn hình quản lý lịch hẹn
+2534: Hình 4.37. Màn hình quản lý bác sĩ
+2535: Hình 4.38. Màn hình quản lý tài khoản
+2536: Hình 4.39. Màn hình quản lý cơ sở
+2537: Hình 4.40. Màn hình quản lý chuyên khoa
+2538: Hình 4.41. Màn hình quản lý gói khám
+2539: Hình 4.42. Màn hình quản lý cẩm nang
+2540: Hình 4.43. Màn hình nhật ký hệ thống Audit_Log
+2546: Hình 4.44. Màn hình thông báo
+2547: Hình 4.45. Màn hình upload tệp đính kèm hồ sơ khám
+2548: Hình 4.46. Mẫu phiếu đặt lịch và phiếu số thứ tự PDF
+2549: Hình 4.47. Mẫu phiếu kết quả khám bệnh PDF
+2550: Hình 4.48. Màn hình tư vấn triệu chứng bằng AI
+2557: Sau khi hoàn thiện các chức năng chính của hệ thống, quá trình kiểm thử được thực hiện nhằm đánh giá mức độ đúng đắn, ổn định và phù hợp nghiệp vụ của ứng dụng. Nội dung kiểm thử tập trung vào các luồng cốt lõi của hệ thống đặt lịch khám bệnh cho phòng khám nhỏ, bao gồm xác thực người dùng, phân quyền theo vai trò, đặt lịch khám, xử lý lịch hẹn, lập hồ sơ khám bệnh, xuất PDF, thông báo, danh sách chờ và các chức năng quản trị.
+2558: Quá trình kiểm thử được thực hiện kết hợp giữa kiểm thử tự động ở phía backend và kiểm thử thủ công trên giao diện người dùng. Kiểm thử tự động giúp xác nhận nhanh các API và ràng buộc nghiệp vụ quan trọng, trong khi kiểm thử thủ công giúp đánh giá trải nghiệm thao tác, bố cục giao diện, khả năng hiển thị trên nhiều kích thước màn hình và tính hợp lý của các thông báo phản hồi.
+2679: Kết quả kiểm thử tự động ghi nhận 24/24 luồng nghiệp vụ cốt lõi đạt yêu cầu, không có kịch bản thất bại trong lần chạy gần nhất. Các luồng đã được kiểm tra bao gồm đăng ký và xác thực OTP, đăng nhập, đổi mật khẩu ban đầu, chính sách mật khẩu, đặt lịch, chặn đặt trùng slot, chặn đặt lịch quá khứ, kiểm tra quyền bác sĩ, cập nhật trạng thái lịch hẹn, tạo hồ sơ khám bệnh, phân quyền xem hồ sơ, tải PDF, đánh giá bác sĩ, danh sách chờ, thông báo, AuditLog và lọc lịch hẹn của bác sĩ.
+2695: Tên ảnh đề xuất: `Hinh_4_49_mo_hinh_trien_khai_he_thong.png`
+2731: Trước khi đưa lên production, cần bảo đảm mã nguồn đã được kiểm thử, các dữ liệu mẫu không bị đưa vào môi trường thật một cách tùy tiện và các thông tin nhạy cảm không được lưu trực tiếp trong mã nguồn. Những thông tin như chuỗi kết nối MongoDB, khóa JWT, tài khoản SMTP, khóa Brevo và khóa Gemini API phải được khai báo bằng biến môi trường trên nền tảng triển khai.
+2733: Backend được triển khai như một dịch vụ Node.js. File cấu hình triển khai xác định thư mục gốc của backend là `backend`, lệnh build là `npm ci` và lệnh chạy là `npm start`. Khi dịch vụ khởi động, backend thực hiện kết nối cơ sở dữ liệu, đồng bộ một số index quan trọng của các collection như lịch hẹn, danh sách chờ và outbox đồng bộ cơ sở, sau đó tạo HTTP server và khởi tạo Socket.IO để phục vụ thông báo thời gian thực.
+2735: Frontend được triển khai dưới dạng static site. Quá trình build frontend sử dụng lệnh `npm ci && npm run build`, tạo ra thư mục `dist`. Các file trong thư mục này được phục vụ trực tiếp cho trình duyệt. Vì ứng dụng sử dụng React Router, cấu hình triển khai cần rewrite mọi route về `index.html`. Cách cấu hình này giúp người dùng có thể truy cập trực tiếp các đường dẫn như trang lịch hẹn, hồ sơ khám hoặc trang quản trị mà không bị lỗi 404 từ static server.
+2738: Biến môi trường là thành phần quan trọng trong quá trình triển khai vì hệ thống có nhiều thông tin cấu hình khác nhau giữa môi trường phát triển và môi trường production. Các biến này không nên ghi cứng trong mã nguồn để tránh rò rỉ thông tin nhạy cảm và giúp hệ thống dễ thay đổi cấu hình khi chuyển môi trường.
+2813: Khó khăn thứ hai là bảo đảm tính nhất quán giữa các nhóm người dùng. Một thao tác của bệnh nhân có thể ảnh hưởng đến bác sĩ và quản trị viên, chẳng hạn khi bệnh nhân đặt lịch mới, gửi yêu cầu đổi lịch hoặc yêu cầu hủy lịch. Ngược lại, khi bác sĩ xác nhận lịch, gọi bệnh nhân vào khám hoặc tạo hồ sơ khám bệnh, bệnh nhân cần nhận được thông tin cập nhật kịp thời. Vì vậy, hệ thống không thể chỉ xử lý từng màn hình riêng lẻ mà cần thiết kế cơ chế đồng bộ giữa frontend, backend, cơ sở dữ liệu và thông báo.
+2814: Khó khăn thứ ba nằm ở nghiệp vụ hồ sơ khám bệnh và tái khám. Hồ sơ khám bệnh chứa nhiều nhóm thông tin chuyên môn như triệu chứng, sinh hiệu, chẩn đoán, kết luận, đơn thuốc, lời dặn, tệp cận lâm sàng và kế hoạch tái khám. Bên cạnh đó, lịch tái khám phải liên kết được với hồ sơ gốc để bác sĩ và bệnh nhân theo dõi quá trình điều trị. Nếu dữ liệu không được thiết kế tốt, người dùng sẽ khó tra cứu lại lịch sử khám, còn bác sĩ khó nắm được tiến trình chăm sóc bệnh nhân.
+2828: Đối với tệp cận lâm sàng, hệ thống hỗ trợ upload ảnh hoặc PDF và gắn vào hồ sơ khám bệnh. Điều này giúp hồ sơ không chỉ lưu thông tin dạng văn bản mà còn lưu được tài liệu liên quan như ảnh xét nghiệm, kết quả chẩn đoán hình ảnh hoặc phiếu cận lâm sàng. Cách tổ chức này phù hợp với thực tế khám bệnh, nơi kết quả điều trị thường cần nhiều loại minh chứng khác nhau.
+2848: Đối với bác sĩ, dashboard tập trung vào công việc chuyên môn trong ngày. Các thông tin như lịch hẹn hôm nay, bệnh nhân tiếp theo, hàng đợi khám, lịch đang chờ xác nhận, lịch đã hoàn thành hoặc đánh giá gần đây giúp bác sĩ ưu tiên xử lý đúng việc. Màn hình hàng đợi khám kết hợp số thứ tự, trạng thái tiếp nhận và thao tác cập nhật giúp bác sĩ chuyển từ việc theo dõi lịch sang việc bắt đầu khám và tạo hồ sơ một cách liền mạch.
+2850: Hệ thống cũng sử dụng các bộ lọc theo ngày, trạng thái, bác sĩ, chuyên khoa hoặc nhóm dữ liệu để người dùng dễ tra cứu. Việc kết hợp dashboard tổng quan với danh sách chi tiết giúp cân bằng giữa nhu cầu nhìn nhanh và nhu cầu xử lý cụ thể. Khi cần, người dùng có thể đi từ số liệu tổng quan đến màn hình chi tiết để thao tác tiếp.
+2854: Đối với bệnh nhân, hệ thống tập trung vào sự dễ hiểu và khả năng theo dõi. Trang lịch hẹn cá nhân phân nhóm lịch theo trạng thái, cho phép xem chi tiết, đổi lịch, hủy lịch, tải phiếu đặt lịch, tải phiếu khám và xem hồ sơ liên quan. Trang hồ sơ khám bệnh giúp bệnh nhân xem lại kết quả sau khám, đơn thuốc, tệp đính kèm, kế hoạch tái khám và tải PDF. Những chức năng này giúp bệnh nhân chủ động hơn trong quá trình chăm sóc sức khỏe.
+2859: Về giao diện đáp ứng, hệ thống được thiết kế để hoạt động trên nhiều kích thước màn hình. Các màn hình công khai ưu tiên bố cục thân thiện với thiết bị di động, trong khi các màn hình vận hành sử dụng bảng, bộ lọc và vùng cuộn hợp lý để giữ khả năng thao tác trên màn hình lớn. Điều này phù hợp với thực tế người dùng có thể truy cập hệ thống bằng cả điện thoại, máy tính bảng và máy tính cá nhân.
+2898: Đối với bệnh nhân, hệ thống hỗ trợ xem thông tin cơ sở khám, chuyên khoa, bác sĩ, gói khám, bài viết sức khỏe, tư vấn triệu chứng bằng AI ở mức tham khảo, đặt lịch khám, quản lý lịch hẹn cá nhân, gửi yêu cầu đổi hoặc hủy lịch, xem hồ sơ khám bệnh và tải các phiếu PDF liên quan. Đối với bác sĩ, hệ thống cung cấp khu vực làm việc riêng để theo dõi dashboard, xem lịch hẹn, xử lý hàng đợi khám, cập nhật trạng thái lượt khám và tạo hồ sơ khám bệnh với các thông tin như triệu chứng, sinh hiệu, chẩn đoán, đơn thuốc, lời dặn, tệp đính kèm và kế hoạch tái khám. Đối với quản trị viên, hệ thống hỗ trợ quản lý cơ sở khám, chuyên khoa, bác sĩ, tài khoản, lịch làm việc, gói khám, bài viết, lịch hẹn, hàng đợi và nhật ký hệ thống.
+2899: Một kết quả quan trọng của đồ án là thiết kế được cơ chế quản lý lịch hẹn theo trạng thái. Lịch hẹn được kiểm soát qua các trạng thái như chờ xác nhận, đã xác nhận, đang khám, hoàn thành, đã hủy, không đến khám, yêu cầu hủy và yêu cầu đổi lịch. Cách tổ chức này giúp hạn chế thao tác sai luồng, tránh trùng khung giờ, hỗ trợ danh sách chờ khi có slot trống và tạo nền tảng cho các chức năng liên quan như hàng đợi khám, thông báo, xuất PDF và hồ sơ khám bệnh.
+2901: Tuy nhiên, do giới hạn về thời gian và phạm vi thực hiện, hệ thống vẫn còn một số hạn chế. Chức năng thanh toán trực tuyến, hóa đơn điện tử và quản lý doanh thu chưa được triển khai. Phần thống kê mới dừng ở mức tổng quan, chưa có các báo cáo phân tích chuyên sâu như hiệu suất bác sĩ, tỷ lệ hủy lịch, tỷ lệ bệnh nhân không đến khám hoặc xu hướng đặt lịch theo thời gian. Hệ thống cũng chưa tích hợp với các dịch vụ bên ngoài như bảo hiểm y tế, SMS, Zalo OA, cổng thanh toán hoặc hệ thống hồ sơ bệnh án điện tử chuẩn hóa. Về bảo mật, hệ thống mới đáp ứng các yêu cầu cơ bản như xác thực, phân quyền và kiểm tra dữ liệu đầu vào, chưa triển khai các cơ chế nâng cao như xác thực hai lớp, mã hóa dữ liệu nhạy cảm hoặc giám sát bất thường.

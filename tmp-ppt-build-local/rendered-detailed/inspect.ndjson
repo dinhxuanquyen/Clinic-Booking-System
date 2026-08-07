@@ -1,0 +1,350 @@
+{"kind":"slide","id":"sl/esnbgc","slide":1,"title":"Clinic Booking","textShapes":4}
+{"kind":"textbox","id":"sh/i58vmd8f","slide":1,"textChars":14,"textLines":1}
+{"kind":"textbox","id":"sh/twjelsr2","slide":1,"textChars":55,"textLines":1}
+{"kind":"textbox","id":"sh/svads7qh","slide":1,"textChars":74,"textLines":3}
+{"kind":"shape","id":"sh/7a1wj29w","slide":1,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/69svqx8r","slide":1,"textChars":19,"textLines":1}
+{"kind":"image","id":"im/1kfqxgri","slide":1,"name":"","alt":"Logo Phenikaa University","bbox":[72,42,145,104]}
+{"kind":"image","id":"im/eho721sr","slide":1,"name":"","alt":"Trang chủ BookingCare Mini","bbox":[646,92,560,312]}
+{"kind":"notes","id":"nt/esnbgc","slide":1,"text":"[Sources] | Báo cáo Word: ảnh logo và ảnh trang chủ. | Dự án clinic-booking: ..."}
+{"kind":"slide","id":"sl/c562zy","slide":2,"title":"Mạch trình bày đi từ bài toán đến sản phẩm có thể demo","textShapes":18}
+{"kind":"textbox","id":"sh/lkrqx0n2","slide":2,"textChars":54,"textLines":1}
+{"kind":"textbox","id":"sh/yh07m54r","slide":2,"textChars":93,"textLines":1}
+{"kind":"shape","id":"sh/ji98vq5w","slide":2,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/cfipkvml","slide":2,"textChars":19,"textLines":1}
+{"kind":"textbox","id":"sh/xgrqt0n6","slide":2,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/atg7il4f","slide":2,"bbox":[184,204,914,52]}
+{"kind":"textbox","id":"sh/be98rq50","slide":2,"textChars":20,"textLines":1}
+{"kind":"textbox","id":"sh/gb29wfmp","slide":2,"textChars":36,"textLines":1}
+{"kind":"textbox","id":"sh/hcvqpkna","slide":2,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/d43qhs3i","slide":2,"bbox":[184,278,914,52]}
+{"kind":"textbox","id":"sh/c3up8n2x","slide":2,"textChars":19,"textLines":1}
+{"kind":"textbox","id":"sh/r2l8filc","slide":2,"textChars":51,"textLines":1}
+{"kind":"textbox","id":"sh/q1c76dkr","slide":2,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/p03qd836","slide":2,"bbox":[184,352,914,52]}
+{"kind":"textbox","id":"sh/4zup4321","slide":2,"textChars":17,"textLines":1}
+{"kind":"textbox","id":"sh/3yl8bylg","slide":2,"textChars":43,"textLines":1}
+{"kind":"textbox","id":"sh/2xs72tkv","slide":2,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/9wnqpc3q","slide":2,"bbox":[184,426,914,52]}
+{"kind":"textbox","id":"sh/ove9g725","slide":2,"textChars":18,"textLines":1}
+{"kind":"textbox","id":"sh/8fmtcbah","slide":2,"textChars":51,"textLines":1}
+{"kind":"textbox","id":"sh/90valgrm","slide":2,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/md4ba1sb","slide":2,"bbox":[184,500,914,52]}
+{"kind":"textbox","id":"sh/7edsj69w","slide":2,"textChars":20,"textLines":1}
+{"kind":"textbox","id":"sh/kbmt8ra5","slide":2,"textChars":47,"textLines":1}
+{"kind":"notes","id":"nt/c562zy","slide":2,"text":"[Sources] | Dự án: docs/thesis/12-slide-outline.md và docs/thesis/08-presenta..."}
+{"kind":"slide","id":"sl/ejz4eu","slide":3,"title":"Bài toán xuất phát từ quy trình phòng khám nhỏ còn rời rạc","textShapes":9}
+{"kind":"textbox","id":"sh/jqx4jid4","slide":3,"textChars":58,"textLines":1}
+{"kind":"textbox","id":"sh/kr65cnep","slide":3,"textChars":107,"textLines":1}
+{"kind":"shape","id":"sh/5sfmlsvu","slide":3,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/a14n6dw7","slide":3,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/v2d4fids","slide":3,"bbox":[72,220,338,280]}
+{"kind":"textbox","id":"sh/wnm58ned","slide":3,"textChars":10,"textLines":1}
+{"kind":"textbox","id":"sh/xovmhsvy","slide":3,"textChars":142,"textLines":4}
+{"kind":"shape","id":"sh/ux8nihwr","slide":3,"bbox":[472,220,338,280]}
+{"kind":"textbox","id":"sh/fihor2dc","slide":3,"textChars":14,"textLines":1}
+{"kind":"textbox","id":"sh/rmx83qp4","slide":3,"textChars":132,"textLines":4}
+{"kind":"shape","id":"sh/qloraloj","slide":3,"bbox":[872,220,338,280]}
+{"kind":"textbox","id":"sh/dofq5g7a","slide":3,"textChars":7,"textLines":1}
+{"kind":"textbox","id":"sh/cn69cb6p","slide":3,"textChars":155,"textLines":4}
+{"kind":"notes","id":"nt/ejz4eu","slide":3,"text":"[Sources] | Báo cáo: Chương 1, Chương 2, Chương 5. | Dự án: docs/thesis/03-us..."}
+{"kind":"slide","id":"sl/rr2v50","slide":4,"title":"Mục tiêu được cụ thể hóa thành năm nhóm chức năng","textShapes":13}
+{"kind":"textbox","id":"sh/hkvypsr2","slide":4,"textChars":49,"textLines":1}
+{"kind":"textbox","id":"sh/uxkfedsb","slide":4,"textChars":89,"textLines":1}
+{"kind":"shape","id":"sh/vydwni9w","slide":4,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/8v2xc3a5","slide":4,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/9wbel8rq","slide":4,"bbox":[92,222,310,128]}
+{"kind":"textbox","id":"sh/mtkfadsz","slide":4,"textChars":8,"textLines":1}
+{"kind":"textbox","id":"sh/7utwjy9k","slide":4,"textChars":59,"textLines":1}
+{"kind":"shape","id":"sh/kr2x83a9","slide":4,"bbox":[464,222,310,128]}
+{"kind":"textbox","id":"sh/lsbeh8ru","slide":4,"textChars":10,"textLines":1}
+{"kind":"textbox","id":"sh/dwr2hofu","slide":4,"textChars":54,"textLines":1}
+{"kind":"shape","id":"sh/cvi18je9","slide":4,"bbox":[836,222,310,128]}
+{"kind":"textbox","id":"sh/ru9kfexo","slide":4,"textChars":10,"textLines":1}
+{"kind":"textbox","id":"sh/qt0j69w3","slide":4,"textChars":55,"textLines":1}
+{"kind":"shape","id":"sh/ps72d4fi","slide":4,"bbox":[92,410,310,128]}
+{"kind":"textbox","id":"sh/4ry14zed","slide":4,"textChars":8,"textLines":1}
+{"kind":"textbox","id":"sh/3qpkbexs","slide":4,"textChars":55,"textLines":1}
+{"kind":"shape","id":"sh/2pgj29w7","slide":4,"bbox":[464,410,310,128]}
+{"kind":"textbox","id":"sh/ho7294fm","slide":4,"textChars":8,"textLines":1}
+{"kind":"textbox","id":"sh/g3y10ze1","slide":4,"textChars":53,"textLines":1}
+{"kind":"notes","id":"nt/rr2v50","slide":4,"text":"[Sources] | Báo cáo: Chương 3 và Chương 4. | Dự án: docs/thesis/12-slide-outl..."}
+{"kind":"slide","id":"sl/78nhc6","slide":5,"title":"Hệ thống được chia thành bốn nhóm tác nhân rõ ràng","textShapes":12}
+{"kind":"textbox","id":"sh/ux43u58j","slide":5,"textChars":50,"textLines":1}
+{"kind":"textbox","id":"sh/h0fm5kru","slide":5,"textChars":104,"textLines":1}
+{"kind":"shape","id":"sh/gz6lwfq9","slide":5,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/3mx47a90","slide":5,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/21o3yp8f","slide":5,"bbox":[62,192,460,368]}
+{"kind":"textbox","id":"sh/4n6l0fql","slide":5,"textChars":18,"textLines":1}
+{"kind":"shape","id":"sh/jqtkvq9w","slide":5,"bbox":[584,220,330,138]}
+{"kind":"textbox","id":"sh/i5k3ml8b","slide":5,"textChars":5,"textLines":1}
+{"kind":"textbox","id":"sh/wby1svqt","slide":5,"textChars":46,"textLines":1}
+{"kind":"shape","id":"sh/xc72107e","slide":5,"bbox":[584,390,330,138]}
+{"kind":"textbox","id":"sh/a9wjq583","slide":5,"textChars":7,"textLines":1}
+{"kind":"textbox","id":"sh/bapkzapo","slide":5,"textChars":47,"textLines":1}
+{"kind":"shape","id":"sh/kfy1wfq5","slide":5,"bbox":[918,220,330,138]}
+{"kind":"textbox","id":"sh/5g725k7q","slide":5,"textChars":6,"textLines":1}
+{"kind":"textbox","id":"sh/idgju58z","slide":5,"textChars":49,"textLines":1}
+{"kind":"shape","id":"sh/jepk3apk","slide":5,"bbox":[918,390,330,138]}
+{"kind":"textbox","id":"sh/0je1kbq1","slide":5,"textChars":5,"textLines":1}
+{"kind":"textbox","id":"sh/1knitg76","slide":5,"textChars":48,"textLines":1}
+{"kind":"image","id":"im/87ipwnut","slide":5,"name":"","alt":"Use case tổng quan","bbox":[72,202,440,348]}
+{"kind":"notes","id":"nt/78nhc6","slide":5,"text":"[Sources] | Báo cáo: hình use case tổng quan. | Dự án: docs/thesis/03-use-cas..."}
+{"kind":"slide","id":"sl/v51n8e","slide":6,"title":"Use case Patient tập trung vào tự phục vụ và theo dõi sau khám","textShapes":5}
+{"kind":"textbox","id":"sh/d8r694ra","slide":6,"textChars":62,"textLines":1}
+{"kind":"textbox","id":"sh/q5g7y9sz","slide":6,"textChars":95,"textLines":1}
+{"kind":"shape","id":"sh/r6po7u9k","slide":6,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/0bip4ja1","slide":6,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/1cr6dorm","slide":6,"bbox":[68,204,440,356]}
+{"kind":"textbox","id":"sh/fa9obe9g","slide":6,"textChars":18,"textLines":1}
+{"kind":"shape","id":"sh/gfe5sfah","slide":6,"bbox":[590,226,526,254]}
+{"kind":"textbox","id":"sh/hgn61kr2","slide":6,"textChars":240,"textLines":4}
+{"kind":"image","id":"im/nupo3md0","slide":6,"name":"","alt":"Use case bệnh nhân","bbox":[78,214,420,336]}
+{"kind":"notes","id":"nt/v51n8e","slide":6,"text":"[Sources] | Báo cáo: hình use case bệnh nhân. | Dự án: docs/thesis/03-use-cas..."}
+{"kind":"slide","id":"sl/fezd84","slide":7,"title":"Use case Doctor xoay quanh hàng đợi, trạng thái khám và hồ sơ","textShapes":5}
+{"kind":"textbox","id":"sh/761g3ydo","slide":7,"textChars":61,"textLines":1}
+{"kind":"textbox","id":"sh/87uhc3u9","slide":7,"textChars":81,"textLines":1}
+{"kind":"shape","id":"sh/t83y5ovu","slide":7,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/u9czetcf","slide":7,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/val07ydk","slide":7,"bbox":[68,204,440,356]}
+{"kind":"textbox","id":"sh/hc3i98vq","slide":7,"textChars":15,"textLines":1}
+{"kind":"shape","id":"sh/ad8z29wv","slide":7,"bbox":[590,226,526,254]}
+{"kind":"textbox","id":"sh/behgvedg","slide":7,"textChars":231,"textLines":4}
+{"kind":"image","id":"im/pgbmd0v6","slide":7,"name":"","alt":"Use case bác sĩ","bbox":[78,214,420,336]}
+{"kind":"notes","id":"nt/fezd84","slide":7,"text":"[Sources] | Báo cáo: hình use case bác sĩ. | Dự án: docs/thesis/03-use-cases...."}
+{"kind":"slide","id":"sl/ggr26d","slide":8,"title":"Use case Admin bảo đảm hệ thống có thể vận hành và truy vết","textShapes":5}
+{"kind":"textbox","id":"sh/2ds7ehgf","slide":8,"textChars":59,"textLines":1}
+{"kind":"textbox","id":"sh/pg3qpwfq","slide":8,"textChars":97,"textLines":1}
+{"kind":"shape","id":"sh/ofupgry5","slide":8,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/b2l8rmxw","slide":8,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/ahc7ihgb","slide":8,"bbox":[68,204,440,356]}
+{"kind":"textbox","id":"sh/c3upkryh","slide":8,"textChars":22,"textLines":1}
+{"kind":"shape","id":"sh/r61of2xs","slide":8,"bbox":[590,226,526,254]}
+{"kind":"textbox","id":"sh/ql876xg7","slide":8,"textChars":259,"textLines":4}
+{"kind":"image","id":"im/4r2torql","slide":8,"name":"","alt":"Use case quản trị viên","bbox":[78,214,420,336]}
+{"kind":"notes","id":"nt/ggr26d","slide":8,"text":"[Sources] | Báo cáo: hình use case quản trị viên. | Dự án: docs/thesis/03-use..."}
+{"kind":"slide","id":"sl/x13zwh","slide":9,"title":"Stack kỹ thuật phù hợp với ứng dụng web full-stack","textShapes":9}
+{"kind":"textbox","id":"sh/pgbipc7e","slide":9,"textChars":50,"textLines":1}
+{"kind":"textbox","id":"sh/2d0zuho3","slide":9,"textChars":106,"textLines":1}
+{"kind":"shape","id":"sh/3et0nmp8","slide":9,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/gbihs76x","slide":9,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/hcrilc7i","slide":9,"bbox":[90,230,170,120]}
+{"kind":"textbox","id":"sh/fq90j2pc","slide":9,"textChars":5,"textLines":1}
+{"kind":"shape","id":"sh/snihon6l","slide":9,"bbox":[320,220,170,120]}
+{"kind":"textbox","id":"sh/54rmh87q","slide":9,"textChars":4,"textLines":1}
+{"kind":"shape","id":"sh/43i5o365","slide":9,"bbox":[550,232,170,120]}
+{"kind":"textbox","id":"sh/i10nmtoz","slide":9,"textChars":7,"textLines":1}
+{"kind":"shape","id":"sh/h0rmto7u","slide":9,"bbox":[780,238,170,120]}
+{"kind":"textbox","id":"sh/vy94repo","slide":9,"textChars":7,"textLines":1}
+{"kind":"shape","id":"sh/uxg3it83","slide":9,"bbox":[1010,222,170,120]}
+{"kind":"textbox","id":"sh/8bylgjqx","slide":9,"textChars":7,"textLines":1}
+{"kind":"shape","id":"sh/0f25wjyt","slide":9,"bbox":[116,438,1048,92]}
+{"kind":"textbox","id":"sh/lgbm5ofe","slide":9,"textChars":211,"textLines":3}
+{"kind":"image","id":"im/bq94j65c","slide":9,"name":"","alt":"React","bbox":[100,240,150,100]}
+{"kind":"image","id":"im/g7m5ofm1","slide":9,"name":"","alt":"Vite","bbox":[330,230,150,100]}
+{"kind":"image","id":"im/g3id0reh","slide":9,"name":"","alt":"Express","bbox":[560,242,150,100]}
+{"kind":"image","id":"im/7e9w3mx0","slide":9,"name":"","alt":"Node.js","bbox":[790,248,150,100]}
+{"kind":"image","id":"im/q9kf6lwj","slide":9,"name":"","alt":"MongoDB","bbox":[1020,232,150,100]}
+{"kind":"notes","id":"nt/x13zwh","slide":9,"text":"[Sources] | Báo cáo: hình logo công nghệ. | Dự án: README.md, docs/thesis/01-..."}
+{"kind":"slide","id":"sl/gxnff6","slide":10,"title":"Kiến trúc tổng thể tách rõ UI, API, dữ liệu và dịch vụ phụ trợ","textShapes":5}
+{"kind":"textbox","id":"sh/ful8jy14","slide":10,"textChars":62,"textLines":1}
+{"kind":"textbox","id":"sh/0vepc3i9","slide":10,"textChars":106,"textLines":1}
+{"kind":"shape","id":"sh/1wnql8ju","slide":10,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/2xw7ed0f","slide":10,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/ny58ni10","slide":10,"bbox":[62,200,500,362]}
+{"kind":"textbox","id":"sh/p0nqp8j6","slide":10,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/i1s7290b","slide":10,"bbox":[638,224,486,272]}
+{"kind":"textbox","id":"sh/321obe1w","slide":10,"textChars":239,"textLines":4}
+{"kind":"image","id":"im/dgnm1wb6","slide":10,"name":"","alt":"Kiến trúc tổng quan","bbox":[72,210,480,342]}
+{"kind":"notes","id":"nt/gxnff6","slide":10,"text":"[Sources] | Báo cáo: hình kiến trúc tổng quan. | Dự án: docs/thesis/01-archit..."}
+{"kind":"slide","id":"sl/cdk5lj","slide":11,"title":"Backend được tổ chức theo lớp để dễ kiểm soát nghiệp vụ","textShapes":5}
+{"kind":"textbox","id":"sh/xsry5oru","slide":11,"textChars":55,"textLines":1}
+{"kind":"textbox","id":"sh/apgzu9sj","slide":11,"textChars":124,"textLines":1}
+{"kind":"shape","id":"sh/bqpg3e9o","slide":11,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/kfih03al","slide":11,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/lgri9or6","slide":11,"bbox":[60,204,568,340]}
+{"kind":"textbox","id":"sh/zu9g7y90","slide":11,"textChars":15,"textLines":1}
+{"kind":"shape","id":"sh/0jehoza1","slide":11,"bbox":[690,228,432,252]}
+{"kind":"textbox","id":"sh/1k7yx4rm","slide":11,"textChars":304,"textLines":4}
+{"kind":"image","id":"im/rm1k3ehc","slide":11,"name":"","alt":"Sơ đồ xử lý API","bbox":[70,214,548,320]}
+{"kind":"notes","id":"nt/cdk5lj","slide":11,"text":"[Sources] | Báo cáo: sơ đồ xử lý API. | Dự án: backend/src/routes, backend/sr..."}
+{"kind":"slide","id":"sl/w4hzzd","slide":12,"title":"Frontend được chia theo cổng sử dụng để giảm rối khi thao tác","textShapes":7}
+{"kind":"textbox","id":"sh/fapwjahg","slide":12,"textChars":61,"textLines":1}
+{"kind":"textbox","id":"sh/gbyxcfil","slide":12,"textChars":113,"textLines":1}
+{"kind":"shape","id":"sh/1c7elkz6","slide":12,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/2dgfe50r","slide":12,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/3epwnahc","slide":12,"bbox":[68,202,360,218]}
+{"kind":"textbox","id":"sh/p0repkzi","slide":12,"textChars":13,"textLines":1}
+{"kind":"shape","id":"sh/ihwv2l0n","slide":12,"bbox":[460,202,360,218]}
+{"kind":"textbox","id":"sh/r6987i90","slide":12,"textChars":14,"textLines":1}
+{"kind":"shape","id":"sh/6507ydsf","slide":12,"bbox":[852,202,360,218]}
+{"kind":"textbox","id":"sh/s7ip0na5","slide":12,"textChars":13,"textLines":1}
+{"kind":"shape","id":"sh/j2983y9o","slide":12,"bbox":[140,492,1000,74]}
+{"kind":"textbox","id":"sh/i107uts3","slide":12,"textChars":172,"textLines":2}
+{"kind":"image","id":"im/h4zi5c3q","slide":12,"name":"","alt":"Public portal","bbox":[78,212,340,198]}
+{"kind":"image","id":"im/mdoz6xk3","slide":12,"name":"","alt":"Patient portal","bbox":[470,212,340,198]}
+{"kind":"image","id":"im/ipcryhwn","slide":12,"name":"","alt":"Doctor portal","bbox":[862,212,340,198]}
+{"kind":"notes","id":"nt/w4hzzd","slide":12,"text":"[Sources] | Báo cáo: ảnh giao diện hệ thống. | Dự án: frontend/src/App.jsx, f..."}
+{"kind":"slide","id":"sl/pxvl7o","slide":13,"title":"Mô hình dữ liệu lấy Appointment làm trục của nghiệp vụ","textShapes":5}
+{"kind":"textbox","id":"sh/m103ydo3","slide":13,"textChars":54,"textLines":1}
+{"kind":"textbox","id":"sh/94r2ts7e","slide":13,"textChars":89,"textLines":1}
+{"kind":"shape","id":"sh/o3il0n6t","slide":13,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/b6t4vipk","slide":13,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/a5k32xoz","slide":13,"bbox":[60,196,610,360]}
+{"kind":"textbox","id":"sh/w72l4n65","slide":13,"textChars":23,"textLines":1}
+{"kind":"shape","id":"sh/rapkjypg","slide":13,"bbox":[730,224,408,260]}
+{"kind":"textbox","id":"sh/q9g3qtov","slide":13,"textChars":258,"textLines":4}
+{"kind":"image","id":"im/w3alwvmt","slide":13,"name":"","alt":"Sơ đồ dữ liệu tổng quan","bbox":[70,206,590,340]}
+{"kind":"notes","id":"nt/pxvl7o","slide":13,"text":"[Sources] | Báo cáo: sơ đồ dữ liệu tổng quan. | Dự án: docs/thesis/02-databas..."}
+{"kind":"slide","id":"sl/rzu712","slide":14,"title":"Lịch hẹn được quản lý như một state machine","textShapes":5}
+{"kind":"textbox","id":"sh/j654rix8","slide":14,"textChars":43,"textLines":1}
+{"kind":"textbox","id":"sh/47e50nyt","slide":14,"textChars":116,"textLines":1}
+{"kind":"shape","id":"sh/58n6t8fe","slide":14,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/69wn2dgj","slide":14,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/rapovix4","slide":14,"bbox":[68,204,440,354]}
+{"kind":"textbox","id":"sh/tw76xsfa","slide":14,"textChars":25,"textLines":1}
+{"kind":"shape","id":"sh/exgn6xgv","slide":14,"bbox":[590,226,526,254]}
+{"kind":"textbox","id":"sh/fypoz2xg","slide":14,"textChars":267,"textLines":4}
+{"kind":"image","id":"im/l4fm1knm","slide":14,"name":"","alt":"Luồng trạng thái lịch hẹn","bbox":[78,214,420,334]}
+{"kind":"notes","id":"nt/rzu712","slide":14,"text":"[Sources] | Báo cáo: activity/state diagram lịch hẹn. | Dự án: backend/src/co..."}
+{"kind":"slide","id":"sl/jrpasx","slide":15,"title":"Luồng đặt lịch đi qua kiểm tra slot, quyền và dữ liệu đầu vào","textShapes":5}
+{"kind":"textbox","id":"sh/u9wfm1k7","slide":15,"textChars":61,"textLines":1}
+{"kind":"textbox","id":"sh/hw7ehgjy","slide":15,"textChars":89,"textLines":1}
+{"kind":"shape","id":"sh/gbyxob2d","slide":15,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/765wb61w","slide":15,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/65wfi1kb","slide":15,"bbox":[58,206,580,334]}
+{"kind":"textbox","id":"sh/87exkr2h","slide":15,"textChars":18,"textLines":1}
+{"kind":"shape","id":"sh/j2lw7m1k","slide":15,"bbox":[704,226,420,254]}
+{"kind":"textbox","id":"sh/y1cvehkz","slide":15,"textChars":223,"textLines":4}
+{"kind":"image","id":"im/wzup8val","slide":15,"name":"","alt":"Luồng API đặt lịch","bbox":[68,216,560,314]}
+{"kind":"notes","id":"nt/jrpasx","slide":15,"text":"[Sources] | Báo cáo: hình luồng xử lý API đặt lịch. | Dự án: backend/src/cont..."}
+{"kind":"slide","id":"sl/6ixp2z","slide":16,"title":"Luồng khám nối lịch hẹn với hồ sơ và tài liệu sau khám","textShapes":5}
+{"kind":"textbox","id":"sh/t0fet8r6","slide":16,"textChars":54,"textLines":1}
+{"kind":"textbox","id":"sh/6d4fydsv","slide":16,"textChars":103,"textLines":1}
+{"kind":"shape","id":"sh/7ydw7i90","slide":16,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/kbmdw3ap","slide":16,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/lcve58ra","slide":16,"bbox":[62,196,540,360]}
+{"kind":"textbox","id":"sh/jadw3y94","slide":16,"textChars":20,"textLines":1}
+{"kind":"shape","id":"sh/47qx87at","slide":16,"bbox":[666,224,456,260]}
+{"kind":"textbox","id":"sh/p8ze1sre","slide":16,"textChars":248,"textLines":4}
+{"kind":"image","id":"im/7ah07i54","slide":16,"name":"","alt":"Luồng tạo hồ sơ khám","bbox":[72,206,520,340]}
+{"kind":"notes","id":"nt/6ixp2z","slide":16,"text":"[Sources] | Báo cáo: sequence diagram tạo hồ sơ khám. | Dự án: backend/src/co..."}
+{"kind":"slide","id":"sl/7mama5","slide":17,"title":"Patient portal đã triển khai đủ luồng tự phục vụ","textShapes":8}
+{"kind":"textbox","id":"sh/6povypg3","slide":17,"textChars":48,"textLines":1}
+{"kind":"textbox","id":"sh/tsfetkze","slide":17,"textChars":97,"textLines":1}
+{"kind":"shape","id":"sh/sr6d0fyt","slide":17,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/jmdcnahc","slide":17,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/i14vu5gr","slide":17,"bbox":[60,198,368,212]}
+{"kind":"textbox","id":"sh/4nmdwfyx","slide":17,"textChars":9,"textLines":1}
+{"kind":"shape","id":"sh/3ihwzehg","slide":17,"bbox":[456,198,368,212]}
+{"kind":"textbox","id":"sh/wra5wb2t","slide":17,"textChars":8,"textLines":1}
+{"kind":"shape","id":"sh/hsjmpg3e","slide":17,"bbox":[852,198,368,212]}
+{"kind":"textbox","id":"sh/vq14n6l8","slide":17,"textChars":8,"textLines":1}
+{"kind":"shape","id":"sh/8na5sb2x","slide":17,"bbox":[260,438,368,152]}
+{"kind":"textbox","id":"sh/ml83q1kr","slide":17,"textChars":13,"textLines":1}
+{"kind":"shape","id":"sh/7mh4j6lc","slide":17,"bbox":[704,422,230,176]}
+{"kind":"textbox","id":"sh/lkzmhw36","slide":17,"textChars":9,"textLines":1}
+{"kind":"image","id":"im/ofm50bm5","slide":17,"name":"","alt":"Đăng nhập","bbox":[70,208,348,192]}
+{"kind":"image","id":"im/fqt4nm5o","slide":17,"name":"","alt":"Đặt lịch","bbox":[466,208,348,192]}
+{"kind":"image","id":"im/5kvq9sz2","slide":17,"name":"","alt":"Lịch hẹn","bbox":[862,208,348,192]}
+{"kind":"image","id":"im/ql47ix0n","slide":17,"name":"","alt":"Chi tiết lịch","bbox":[270,448,348,132]}
+{"kind":"image","id":"im/7qt8zyho","slide":17,"name":"","alt":"Hồ sơ/PDF","bbox":[714,432,210,156]}
+{"kind":"notes","id":"nt/7mama5","slide":17,"text":"[Sources] | Báo cáo: ảnh giao diện Patient portal. | Dự án: frontend/src/page..."}
+{"kind":"slide","id":"sl/6u20gw","slide":18,"title":"Doctor portal tập trung vào thao tác khám trong ngày","textShapes":8}
+{"kind":"textbox","id":"sh/54zip0je","slide":18,"textChars":52,"textLines":1}
+{"kind":"textbox","id":"sh/i18jelkn","slide":18,"textChars":102,"textLines":1}
+{"kind":"shape","id":"sh/j2h0nq18","slide":18,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/sra1kf25","slide":18,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/tsjit0ja","slide":18,"bbox":[60,198,368,212]}
+{"kind":"textbox","id":"sh/rqh0ra1k","slide":18,"textChars":16,"textLines":1}
+{"kind":"shape","id":"sh/8v6h8b2l","slide":18,"bbox":[456,198,368,212]}
+{"kind":"textbox","id":"sh/xgre5ofm","slide":18,"textChars":8,"textLines":1}
+{"kind":"shape","id":"sh/wvidc3e1","slide":18,"bbox":[852,198,368,212]}
+{"kind":"textbox","id":"sh/atgvatwv","slide":18,"textChars":8,"textLines":1}
+{"kind":"shape","id":"sh/5kre98fi","slide":18,"bbox":[260,438,368,152]}
+{"kind":"textbox","id":"sh/ji9w7yxs","slide":18,"textChars":10,"textLines":1}
+{"kind":"shape","id":"sh/ih0vetw7","slide":18,"bbox":[704,438,368,152]}
+{"kind":"textbox","id":"sh/sn2xkne9","slide":18,"textChars":16,"textLines":1}
+{"kind":"image","id":"im/vihsrulk","slide":18,"name":"","alt":"Dashboard bác sĩ","bbox":[70,208,348,192]}
+{"kind":"image","id":"im/cn698fml","slide":18,"name":"","alt":"Hàng đợi","bbox":[466,208,348,192]}
+{"kind":"image","id":"im/0nqxwzmd","slide":18,"name":"","alt":"Lịch hẹn","bbox":[862,208,348,192]}
+{"kind":"image","id":"im/nqhg7el4","slide":18,"name":"","alt":"Hồ sơ khám","bbox":[270,448,348,132]}
+{"kind":"image","id":"im/at8z2t4v","slide":18,"name":"","alt":"Thông tin bác sĩ","bbox":[714,448,348,132]}
+{"kind":"notes","id":"nt/6u20gw","slide":18,"text":"[Sources] | Báo cáo: ảnh giao diện Doctor portal. | Dự án: frontend/src/pages..."}
+{"kind":"slide","id":"sl/wyh7gy","slide":19,"title":"Admin portal bao phủ dữ liệu nền và giám sát vận hành","textShapes":9}
+{"kind":"textbox","id":"sh/5gj2lgri","slide":19,"textChars":53,"textLines":1}
+{"kind":"textbox","id":"sh/ytsja1sr","slide":19,"textChars":88,"textLines":1}
+{"kind":"shape","id":"sh/je1kj69c","slide":19,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/wra18ra1","slide":19,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/xsj2hwrm","slide":19,"bbox":[60,194,368,210]}
+{"kind":"textbox","id":"sh/bqh0f69g","slide":19,"textChars":15,"textLines":1}
+{"kind":"shape","id":"sh/gnu1kva5","slide":19,"bbox":[456,194,368,210]}
+{"kind":"textbox","id":"sh/t8nitsfm","slide":19,"textChars":8,"textLines":1}
+{"kind":"shape","id":"sh/s7e10ny1","slide":19,"bbox":[852,194,368,210]}
+{"kind":"textbox","id":"sh/6lwzydgv","slide":19,"textChars":9,"textLines":1}
+{"kind":"shape","id":"sh/5knipsza","slide":19,"bbox":[60,434,368,150]}
+{"kind":"textbox","id":"sh/ji50nih4","slide":19,"textChars":6,"textLines":1}
+{"kind":"shape","id":"sh/ihczudgz","slide":19,"bbox":[456,434,368,150]}
+{"kind":"textbox","id":"sh/4fy187y9","slide":19,"textChars":8,"textLines":1}
+{"kind":"shape","id":"sh/oj6l4b65","slide":19,"bbox":[852,434,368,150]}
+{"kind":"textbox","id":"sh/mho32lof","slide":19,"textChars":9,"textLines":1}
+{"kind":"image","id":"im/je5kfq1g","slide":19,"name":"","alt":"Dashboard admin","bbox":[70,204,348,190]}
+{"kind":"image","id":"im/wbe14b2p","slide":19,"name":"","alt":"Lịch hẹn","bbox":[466,204,348,190]}
+{"kind":"image","id":"im/kzyh03ed","slide":19,"name":"","alt":"Tài khoản","bbox":[862,204,348,190]}
+{"kind":"image","id":"im/bu5g3ydw","slide":19,"name":"","alt":"Bác sĩ","bbox":[70,444,348,130]}
+{"kind":"image","id":"im/25czq9wz","slide":19,"name":"","alt":"Gói khám","bbox":[466,444,348,130]}
+{"kind":"image","id":"im/69svy5cr","slide":19,"name":"","alt":"Audit log","bbox":[862,444,348,130]}
+{"kind":"notes","id":"nt/wyh7gy","slide":19,"text":"[Sources] | Báo cáo: ảnh giao diện Admin portal. | Dự án: frontend/src/pages/..."}
+{"kind":"slide","id":"sl/lpk1sj","slide":20,"title":"PDF giúp hệ thống có đầu ra giống tài liệu nghiệp vụ thực tế","textShapes":6}
+{"kind":"textbox","id":"sh/po3el0vu","slide":20,"textChars":60,"textLines":1}
+{"kind":"textbox","id":"sh/21cvalcj","slide":20,"textChars":87,"textLines":1}
+{"kind":"shape","id":"sh/3mlwjqd4","slide":20,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/cruxgful","slide":20,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/dsnepkv6","slide":20,"bbox":[86,180,294,418]}
+{"kind":"textbox","id":"sh/rqlwnad0","slide":20,"textChars":14,"textLines":1}
+{"kind":"shape","id":"sh/svad4buh","slide":20,"bbox":[494,180,294,418]}
+{"kind":"textbox","id":"sh/pwje1gzq","slide":20,"textChars":20,"textLines":1}
+{"kind":"shape","id":"sh/4baxsbi5","slide":20,"bbox":[902,180,294,418]}
+{"kind":"textbox","id":"sh/298vq10z","slide":20,"textChars":12,"textLines":1}
+{"kind":"image","id":"im/by1svm9c","slide":20,"name":"","alt":"Phiếu đặt lịch","bbox":[96,190,274,398]}
+{"kind":"image","id":"im/k3u98bqt","slide":20,"name":"","alt":"Phiếu khám/số thứ tự","bbox":[504,190,274,398]}
+{"kind":"image","id":"im/kzmp4ja5","slide":20,"name":"","alt":"Kết quả khám","bbox":[912,190,274,398]}
+{"kind":"notes","id":"nt/lpk1sj","slide":20,"text":"[Sources] | Báo cáo: ảnh mẫu PDF. | Dự án: backend/src/services/pdfService.js..."}
+{"kind":"slide","id":"sl/6hh05h","slide":21,"title":"Bảo mật được triển khai ở cả frontend và backend","textShapes":10}
+{"kind":"textbox","id":"sh/fahcvm9w","slide":21,"textChars":48,"textLines":1}
+{"kind":"textbox","id":"sh/gbqtorqh","slide":21,"textChars":109,"textLines":1}
+{"kind":"shape","id":"sh/hczuxc72","slide":21,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/6lobix8f","slide":21,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/7mxcr290","slide":21,"bbox":[92,224,300,118]}
+{"kind":"textbox","id":"sh/s76tk7ql","slide":21,"textChars":3,"textLines":1}
+{"kind":"textbox","id":"sh/t8zutcrq","slide":21,"textChars":57,"textLines":1}
+{"kind":"shape","id":"sh/ihobex83","slide":21,"bbox":[490,224,300,118]}
+{"kind":"textbox","id":"sh/jixcn29o","slide":21,"textChars":4,"textLines":1}
+{"kind":"textbox","id":"sh/jidwzq1g","slide":21,"textChars":50,"textLines":1}
+{"kind":"shape","id":"sh/ih4vqlkv","slide":21,"bbox":[888,224,300,118]}
+{"kind":"textbox","id":"sh/54ve10j6","slide":21,"textChars":9,"textLines":1}
+{"kind":"textbox","id":"sh/kjmdsv21","slide":21,"textChars":52,"textLines":1}
+{"kind":"shape","id":"sh/76xw3q1c","slide":21,"bbox":[144,430,992,86]}
+{"kind":"textbox","id":"sh/65ovulkr","slide":21,"textChars":166,"textLines":2}
+{"kind":"notes","id":"nt/6hh05h","slide":21,"text":"[Sources] | Báo cáo: phần bảo mật và phân quyền. | Dự án: backend/src/middlew..."}
+{"kind":"slide","id":"sl/t8vgqo","slide":22,"title":"Realtime, email và AI là các tiện ích làm hệ thống gần sản phẩm thực tế","textShapes":6}
+{"kind":"textbox","id":"sh/fa10b690","slide":22,"textChars":71,"textLines":1}
+{"kind":"textbox","id":"sh/gba14bal","slide":22,"textChars":109,"textLines":1}
+{"kind":"shape","id":"sh/hcjidgrq","slide":22,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/6l8zy1s3","slide":22,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/7mh0769o","slide":22,"bbox":[62,200,530,302]}
+{"kind":"textbox","id":"sh/toji9wru","slide":22,"textChars":21,"textLines":1}
+{"kind":"shape","id":"sh/ih8zuhs7","slide":22,"bbox":[644,200,530,302]}
+{"kind":"textbox","id":"sh/nm5g7eh0","slide":22,"textChars":21,"textLines":1}
+{"kind":"shape","id":"sh/mlwzy9gf","slide":22,"bbox":[134,560,1010,50]}
+{"kind":"textbox","id":"sh/9ony9oz6","slide":22,"textChars":140,"textLines":1}
+{"kind":"image","id":"im/983ad8ze","slide":22,"name":"","alt":"Notification realtime","bbox":[72,210,510,282]}
+{"kind":"image","id":"im/ehsrytgr","slide":22,"name":"","alt":"AI tư vấn triệu chứng","bbox":[654,210,510,282]}
+{"kind":"notes","id":"nt/t8vgqo","slide":22,"text":"[Sources] | Báo cáo: ảnh notification và AI. | Dự án: backend/src/services/so..."}
+{"kind":"slide","id":"sl/tbzhyy","slide":23,"title":"Mô hình triển khai tách frontend, backend, database và dịch vụ ngoài","textShapes":5}
+{"kind":"textbox","id":"sh/kzixcryh","slide":23,"textChars":68,"textLines":1}
+{"kind":"textbox","id":"sh/zy9gj6xw","slide":23,"textChars":101,"textLines":1}
+{"kind":"shape","id":"sh/yx0fa1gb","slide":23,"bbox":[72,650,1136,1]}
+{"kind":"textbox","id":"sh/94bypgfy","slide":23,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/832xgbyt","slide":23,"bbox":[78,200,580,368]}
+{"kind":"notice","message":"Truncated: omitted 83 lines. Increase maxChars or narrow target."}
